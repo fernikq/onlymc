@@ -12,6 +12,8 @@ public class CorePlugin extends JavaPlugin {
     @Override
     public void onDisable(){
 
-        //test
-    }
+        //testowy 2
+
+        //test dobra to co ja bd robil >????
+
 }
