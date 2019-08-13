@@ -16,7 +16,6 @@ public abstract class CustomCommand implements CommandExecutor {
 
     private String name;
     private String usage;
-    private String description;
     private List<String> aliases;
     private UserGroup group;
     private CorePlugin plugin;
@@ -40,7 +39,6 @@ public abstract class CustomCommand implements CommandExecutor {
 
     public CustomCommand(String name, String[] aliases, CorePlugin plugin){
         this.name = name;
-        this.group = group;
         this.plugin = plugin;
         this.aliases = Arrays.asList(aliases);
     }
@@ -68,9 +66,6 @@ public abstract class CustomCommand implements CommandExecutor {
         }
         if(this.usage != null){
             reflectCommand.setUsage(this.usage);
-        }
-        if(this.description != null){
-            reflectCommand.setDescription(this.description);
         }
         reflectCommand.setExecutor(this);
         return reflectCommand;
