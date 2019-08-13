@@ -8,7 +8,16 @@ import java.util.List;
 
 public enum UserGroup {
 
-    PLAYER(0, 1, "", "");
+    PLAYER(0, 1, "", ""),
+    VIP(1, 2, "&8[&eVIP&8]", "&eVIP"),
+    SV(2, 3, "&8[&6SV&8]", "&6SV"),
+    MVP(3, 4, "&8[&3MVP&8]", "&3MVP"),
+    YT(4, 4, "&8[&4Y&fT&8]", "&4Y&fT"),
+    HELPER(5, 5, "&8[&bHelper&8]", "&bHelper"),
+    MOD(6, 10, "&8[&aMod&8]", "&aMod"),
+    ADMIN(7, 100, "&8[&cAdmin&8]", "&cAdmin"),
+    ROOT(8, 100, "&8[&4ROOT&8]", "&4ROOT"),
+    DEV(9, 100, "&8[&9DEV&8]", "&9DEV");
 
     private int level;
     private int homes;
