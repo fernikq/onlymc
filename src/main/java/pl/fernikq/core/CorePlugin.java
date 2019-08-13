@@ -65,7 +65,7 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private void registerCommands(){
-        new GroupCommand("group", new String[]{"pex"}, UserGroup.PLAYER, this).register();
+        new GroupCommand("group", new String[]{"pex"}, UserGroup.ROOT, this).register();
     }
 
     private void registerListeners(){
