@@ -21,7 +21,7 @@ public class PlayerQuitListener implements Listener {
     public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
         User user = this.plugin.getUserManager().getUser(player);
-        //TODO update
+        this.plugin.getUserManager().getUserData().updateUser(user);
         this.plugin.getTagManager().removeTag(player);
     }
 }

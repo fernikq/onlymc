@@ -14,16 +14,21 @@ public class UserManager {
 
     private final CorePlugin plugin;
     private ConcurrentMap<UUID, User> users;
+    private UserData userData;
 
     public UserManager(CorePlugin plugin){
         this.plugin = plugin;
         this.users = new ConcurrentHashMap<>();
     }
 
+    public void init(){
+        this.userData = new UserData(this.plugin);
+    }
+
     public User getUser(Player player){
         return this.users.computeIfAbsent(player.getUniqueId(), uuid -> {
            User user = new User(player);
-           //TODO insert user
+           this.userData.insertUser(user);
            return user;
         });
     }
@@ -42,5 +47,9 @@ public class UserManager {
 
     public Set<User> getUsers(){
         return HashSet.ofAll(this.users.values());
+    }
+
+    public UserData getUserData() {
+        return userData;
     }
 }

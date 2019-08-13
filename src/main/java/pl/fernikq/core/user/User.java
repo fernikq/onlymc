@@ -3,6 +3,8 @@ package pl.fernikq.core.user;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class User {
@@ -20,6 +22,18 @@ public class User {
         this.firstAddress = player.getAddress().getAddress().getHostAddress();
         this.lastAddress = player.getAddress().getAddress().getHostAddress();
         this.group = UserGroup.PLAYER;
+    }
+
+    public User(ResultSet rs){
+        try {
+            this.uuid = UUID.fromString(rs.getString("uuid"));
+            this.name = rs.getString("name");
+            this.firstAddress = rs.getString("firstAddress");
+            this.lastAddress = rs.getString("lastAddress");
+            this.group = UserGroup.getByName(rs.getString("groupName"));
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean canByGroup(UserGroup group){

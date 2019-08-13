@@ -1,5 +1,6 @@
 package pl.fernikq.core;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.GroupCommand;
@@ -11,6 +12,7 @@ import pl.fernikq.core.mysql.MySQL;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
+import pl.fernikq.core.util.ChatUtil;
 
 public class CorePlugin extends JavaPlugin {
 
@@ -33,7 +35,11 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable(){
-
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            this.userManager.getUser(player.getUniqueId()).peek(user -> this.userManager.getUserData().updateUser(user));
+            player.kickPlayer(ChatUtil.fixColor("&c&lRestart serwera!"));
+        });
+        Bukkit.getWorlds().forEach(world -> world.save());
     }
 
     private void initManagers(){
@@ -43,7 +49,7 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private void initData(){
-
+        this.userManager.init();
     }
 
     private void initDatabase(){
