@@ -2,11 +2,48 @@ package pl.fernikq.core.mysql;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.util.Logger;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MySQL {
 
+    private final CorePlugin plugin;
     private HikariConfig hikariConfig;
     private HikariDataSource hikariDataSource;
+    private Connection connection;
+    private ConfigManager config;
 
+    public MySQL(CorePlugin plugin){
+        this.plugin = plugin;
+        this.config = this.plugin.getConfigManager();
+        this.hikariConfig = new HikariConfig();
+        this.hikariConfig.setJdbcUrl("jdbc:mysql://"+config.getMysqlHost()+":"+config.getMysqlPort()+"/"+config.getMysqlBase());
+        this.hikariConfig.setUsername(config.getMysqlUser());
+        this.hikariConfig.setPassword(config.getMysqlPassword());
+        this.hikariDataSource = new HikariDataSource(this.hikariConfig);
+        try{
+            this.connection = this.hikariDataSource.getConnection();
+            Logger.info("Polaczenie z baza danych zostalo nawiazane!");
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
 
+    public ResultSet query(String string) throws SQLException {
+        return this.connection.prepareStatement(string).executeQuery();
+    }
+
+    public int update(String string) throws SQLException {
+        return this.connection.prepareStatement(string).executeUpdate();
+    }
+
+    public PreparedStatement generateStatement(String string) throws SQLException {
+        return this.connection.prepareStatement(string);
+    }
 }
