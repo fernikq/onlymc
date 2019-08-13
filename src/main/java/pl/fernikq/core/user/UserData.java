@@ -61,7 +61,10 @@ public class UserData {
         try {
             final PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_users` SET `name` = ?, `lastAddress` = ?, "+
                     "`groupName` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
-            Logger.info("UPDATE "+user.getName());
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getLastAddress());
+            statement.setString(3, user.getGroup().name());
+            statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
