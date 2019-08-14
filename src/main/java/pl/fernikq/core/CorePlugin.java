@@ -13,6 +13,7 @@ import pl.fernikq.core.mysql.MySQL;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
+import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.util.ChatUtil;
 
 public class CorePlugin extends JavaPlugin {
@@ -23,6 +24,7 @@ public class CorePlugin extends JavaPlugin {
     private CommandManager commandManager;
     private UserManager userManager;
     private TagManager tagManager;
+    private HomeManager homeManager;
 
     @Override
     public void onEnable() {
@@ -47,10 +49,12 @@ public class CorePlugin extends JavaPlugin {
         this.commandManager = new CommandManager();
         this.userManager = new UserManager(this);
         this.tagManager = new TagManager(this);
+        this.homeManager = new HomeManager(this);
     }
 
     private void initData(){
         this.userManager.init();
+        this.homeManager.init();
     }
 
     private void initDatabase(){

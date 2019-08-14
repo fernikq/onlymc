@@ -3,12 +3,11 @@ package pl.fernikq.core.user;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.user.home.Home;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class User {
 
@@ -18,6 +17,7 @@ public class User {
     private String lastAddress;
     private UserGroup group;
 
+    private Map<String, Home> homes;
     private Map<String, InventoryGUI> inventories;
 
 
@@ -28,6 +28,7 @@ public class User {
         this.lastAddress = player.getAddress().getAddress().getHostAddress();
         this.group = UserGroup.PLAYER;
         this.inventories = new HashMap<>();
+        this.homes = new HashMap<>();
     }
 
     public User(ResultSet rs){
@@ -38,6 +39,7 @@ public class User {
             this.lastAddress = rs.getString("lastAddress");
             this.group = UserGroup.getByName(rs.getString("groupName"));
             this.inventories = new HashMap<>();
+            this.homes = new HashMap<>();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -93,5 +95,9 @@ public class User {
 
     public Map<String, InventoryGUI> getInventories() {
         return inventories;
+    }
+
+    public Map<String, Home> getHomes() {
+        return homes;
     }
 }
