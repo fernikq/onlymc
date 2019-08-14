@@ -2,9 +2,12 @@ package pl.fernikq.core.user;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import pl.fernikq.core.inventory.InventoryGUI;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class User {
@@ -15,6 +18,8 @@ public class User {
     private String lastAddress;
     private UserGroup group;
 
+    private Map<String, InventoryGUI> inventories;
+
 
     public User(Player player){
         this.uuid = player.getUniqueId();
@@ -22,6 +27,7 @@ public class User {
         this.firstAddress = player.getAddress().getAddress().getHostAddress();
         this.lastAddress = player.getAddress().getAddress().getHostAddress();
         this.group = UserGroup.PLAYER;
+        this.inventories = new HashMap<>();
     }
 
     public User(ResultSet rs){
@@ -31,6 +37,7 @@ public class User {
             this.firstAddress = rs.getString("firstAddress");
             this.lastAddress = rs.getString("lastAddress");
             this.group = UserGroup.getByName(rs.getString("groupName"));
+            this.inventories = new HashMap<>();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -82,5 +89,9 @@ public class User {
 
     public boolean isOnline(){
         return asPlayer() != null;
+    }
+
+    public Map<String, InventoryGUI> getInventories() {
+        return inventories;
     }
 }

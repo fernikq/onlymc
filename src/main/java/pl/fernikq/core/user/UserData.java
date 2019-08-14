@@ -20,11 +20,11 @@ public class UserData {
     private void checkTable(){
         try {
             this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_users` ("+
-                    "`uuid` VARCHAR(128) PRIMARY KEY UNIQUE,"+
-                    "`name` VARCHAR(32) UNIQUE,"+
-                    "`firstAddress` TEXT,"+
-                    "`lastAddress` TEXT,"+
-                    "`groupName` TEXT);");
+                    "`uuid` VARCHAR(128) NOT NULL PRIMARY KEY UNIQUE,"+
+                    "`name` VARCHAR(32) NOT NULL UNIQUE,"+
+                    "`firstAddress` TEXT NOT NULL,"+
+                    "`lastAddress` TEXT NOT NULL,"+
+                    "`groupName` TEXT NOT NULL);");
         } catch(SQLException e) {
             e.printStackTrace();
         }

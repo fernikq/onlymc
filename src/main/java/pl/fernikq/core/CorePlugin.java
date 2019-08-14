@@ -6,6 +6,7 @@ import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.GroupCommand;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.listener.inventory.InventoryClickListener;
 import pl.fernikq.core.listener.player.PlayerJoinListener;
 import pl.fernikq.core.listener.player.PlayerQuitListener;
 import pl.fernikq.core.mysql.MySQL;
@@ -71,6 +72,7 @@ public class CorePlugin extends JavaPlugin {
     private void registerListeners(){
         new PlayerJoinListener(this);
         new PlayerQuitListener(this);
+        new InventoryClickListener(this);
     }
 
     public ConfigManager getConfigManager() {
