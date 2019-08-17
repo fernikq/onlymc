@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.GroupCommand;
+import pl.fernikq.core.command.player.SethomeCommand;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
@@ -15,6 +16,7 @@ import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.TeleportManager;
 
 public class CorePlugin extends JavaPlugin {
 
@@ -25,6 +27,7 @@ public class CorePlugin extends JavaPlugin {
     private UserManager userManager;
     private TagManager tagManager;
     private HomeManager homeManager;
+    private TeleportManager teleportManager;
 
     @Override
     public void onEnable() {
@@ -50,6 +53,7 @@ public class CorePlugin extends JavaPlugin {
         this.userManager = new UserManager(this);
         this.tagManager = new TagManager(this);
         this.homeManager = new HomeManager(this);
+        this.teleportManager = new TeleportManager(this);
     }
 
     private void initData(){
@@ -70,7 +74,12 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private void registerCommands(){
+
+        //ADMIN
         new GroupCommand("group", new String[]{"pex"}, UserGroup.ROOT, this).register();
+
+        //PLAYER
+        new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){
@@ -101,5 +110,13 @@ public class CorePlugin extends JavaPlugin {
 
     public TagManager getTagManager() {
         return tagManager;
+    }
+
+    public HomeManager getHomeManager() {
+        return homeManager;
+    }
+
+    public TeleportManager getTeleportManager() {
+        return teleportManager;
     }
 }

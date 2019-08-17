@@ -19,4 +19,8 @@ public class LocationUtil {
     public static String locationToString(Location l) {
         return l.getWorld().getName() + "," + l.getX() + "," + l.getY() + "," + l.getZ() + "," + l.getYaw() + "," + l.getPitch();
     }
+
+    public static boolean move(Location l, Location x) {
+        return l.getBlockX() != x.getBlockX() && l.getBlockY() != x.getBlockY() && l.getBlockZ() != x.getBlockZ();
+    }
 }

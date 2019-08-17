@@ -17,15 +17,13 @@ public class MySQL {
     private HikariConfig hikariConfig;
     private HikariDataSource hikariDataSource;
     private Connection connection;
-    private ConfigManager config;
 
     public MySQL(CorePlugin plugin){
         this.plugin = plugin;
-        this.config = this.plugin.getConfigManager();
         this.hikariConfig = new HikariConfig();
-        this.hikariConfig.setJdbcUrl("jdbc:mysql://"+config.getMysqlHost()+":"+config.getMysqlPort()+"/"+config.getMysqlBase());
-        this.hikariConfig.setUsername(config.getMysqlUser());
-        this.hikariConfig.setPassword(config.getMysqlPassword());
+        this.hikariConfig.setJdbcUrl("jdbc:mysql://"+ConfigManager.mysqlHost+":"+ConfigManager.mysqlPort+"/"+ConfigManager.mysqlBase);
+        this.hikariConfig.setUsername(ConfigManager.mysqlUser);
+        this.hikariConfig.setPassword(ConfigManager.mysqlPassword);
         this.hikariDataSource = new HikariDataSource(this.hikariConfig);
         try{
             this.connection = this.hikariDataSource.getConnection();

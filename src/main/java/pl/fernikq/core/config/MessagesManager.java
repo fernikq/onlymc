@@ -16,6 +16,10 @@ public class MessagesManager {
     public static String commandErrorPermission;
     public static String commandCorrectUsage;
     public static String errorFormat;
+    public static String teleportStartMessage;
+    public static String teleportCancelMessage;
+    public static String teleportFinishPlayerMessage;
+    public static String teleportFinishLocationMessage;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -69,21 +73,9 @@ public class MessagesManager {
         this.commandErrorPermission = "&4&lBlad &8>> &fNie posiadasz wystarczajacych uprawnien aby uzyc tej komendy!";
         this.errorFormat = "&4&lBlad &8>> &f{ERROR}";
         this.commandCorrectUsage = "&c&lPoprawne uzycie&8: &f{USAGE}";
-    }
-
-    public String getCommandErrorMessage() {
-        return commandErrorMessage;
-    }
-
-    public String getCommandErrorPermission() {
-        return commandErrorPermission;
-    }
-
-    public String getCommandCorrectUsage() {
-        return commandCorrectUsage;
-    }
-
-    public String getErrorFormat() {
-        return errorFormat;
+        this.teleportCancelMessage = "&4&lBlad &8>> &fPoruszyles sie, teleportacja anulowana!";
+        this.teleportStartMessage = "&8>> {n}Zostaniesz przeteleportowany za {c}{TIME} sek.";
+        this.teleportFinishLocationMessage = "&8>> {n}Zostales przeteleportowany na {c}{LOCATION}";
+        this.teleportFinishPlayerMessage = "&8>> {n}Zostales przeteleportowany do gracza {c}{PLAYER}";
     }
 }

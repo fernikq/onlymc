@@ -26,6 +26,18 @@ public class HomeManager {
         return user.getHomes().get(name);
     }
 
+    public Home get(User user, int index){
+        return user.getHomeList().get(index);
+    }
+
+    public String getHomesToString(User user){
+        StringBuilder sb = new StringBuilder();
+        for(String name : user.getHomes().keySet()){
+            sb.append("&8, {c}").append(name);
+        }
+        return sb.toString().replaceFirst("&8, ", "");
+    }
+
     public void create(User user, String name, Location location){
         Home home = new Home(user, name, location);
         user.getHomes().put(home.getName() ,home);

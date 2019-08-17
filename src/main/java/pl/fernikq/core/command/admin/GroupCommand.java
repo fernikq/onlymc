@@ -30,7 +30,7 @@ public class GroupCommand extends CustomCommand {
         this.plugin.getUserManager().getUser(args[0])
                 .onEmpty(() -> ChatUtil.sendMessage(sender, Lang.userNotExists))
                 .peek(user -> {
-                    ChatUtil.sendMessage(sender, "&8>> {n}Nadales range {c}"+group.name()+" &fgraczowi {c}"+user.getName());
+                    ChatUtil.sendMessage(sender, "&8>> {n}Nadales range {c}"+group.name()+" {n}graczowi {c}"+user.getName());
                     user.setGroup(group);
                     if(user.isOnline()){
                         this.plugin.getTagManager().updateTag(user.asPlayer());

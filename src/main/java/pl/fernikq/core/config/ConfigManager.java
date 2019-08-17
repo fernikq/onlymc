@@ -61,24 +61,4 @@ public class ConfigManager {
         mysqlPassword = "password";
         mysqlPort = 3306;
     }
-
-    public String getMysqlHost() {
-        return mysqlHost;
-    }
-
-    public String getMysqlBase() {
-        return mysqlBase;
-    }
-
-    public String getMysqlUser() {
-        return mysqlUser;
-    }
-
-    public String getMysqlPassword() {
-        return mysqlPassword;
-    }
-
-    public int getMysqlPort() {
-        return mysqlPort;
-    }
 }

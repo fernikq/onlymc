@@ -75,12 +75,10 @@ public abstract class CustomCommand implements CommandExecutor {
 
         private CorePlugin plugin;
         private CustomCommand executor;
-        private MessagesManager messages;
 
         public ReflectCommand(String command, CorePlugin plugin){
             super(command);
             this.plugin = plugin;
-            this.messages = plugin.getMessagesManager();
             this.executor = null;
         }
 
@@ -94,12 +92,12 @@ public abstract class CustomCommand implements CommandExecutor {
                 Player player = (Player)sender;
                 this.plugin.getUserManager().getUser(player.getUniqueId())
                         .onEmpty(() -> {
-                            ChatUtil.sendMessage(sender, messages.getCommandErrorMessage());
+                            ChatUtil.sendMessage(sender, MessagesManager.commandErrorMessage);
                             return;
                         })
                         .peek(user -> {
                             if(!user.canByGroup(this.executor.getGroup())){
-                                ChatUtil.sendMessage(sender, messages.getCommandErrorPermission());
+                                ChatUtil.sendMessage(sender, MessagesManager.commandErrorPermission);
                                 return;
                             }
                             if(this.executor != null){

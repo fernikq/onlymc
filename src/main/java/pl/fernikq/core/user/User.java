@@ -100,4 +100,8 @@ public class User {
     public Map<String, Home> getHomes() {
         return homes;
     }
+
+    public List<Home> getHomeList(){
+        return new ArrayList<Home>(this.homes.values());
+    }
 }
