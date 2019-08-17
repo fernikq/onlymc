@@ -50,6 +50,7 @@ public class SethomeCommand extends CustomCommand {
             if(this.plugin.getHomeManager().exists(user, homeName)){
                 Home home = this.plugin.getHomeManager().get(user, homeName);
                 home.setLocation(player.getLocation());
+                this.plugin.getHomeManager().getHomeData().update(home);
                 ChatUtil.sendMessage(player, "&8>> {n}Zmieniles lokalizacje domu o nazwie {c}"+homeName);
                 return;
             }
