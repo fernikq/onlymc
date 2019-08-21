@@ -39,7 +39,7 @@ public class SethomeCommand extends CustomCommand {
             });
             return true;
         }
-        String homeName = args[0];
+        String homeName = args[0].toLowerCase();
         if(homeName.length() > 32){
             return ChatUtil.sendMessage(player, MessagesManager.error("Nazwa nie moze byc dluzsza niz 32 znaki!"));
         }
