@@ -37,6 +37,7 @@ public class SethomeCommand extends CustomCommand {
                     return;
                 }
             });
+            return true;
         }
         String homeName = args[0];
         if(homeName.length() > 32){

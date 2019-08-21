@@ -33,15 +33,54 @@ public class MySQL {
         }
     }
 
+    public void openConnection(){
+        try {
+            closeConnection();
+            this.connection = this.hikariDataSource.getConnection();
+            Logger.info("Polaczenie z baza danych zostalo nawiazane!");
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeConnection(){
+        try {
+            if(!this.connection.isClosed()){
+                this.connection.close();
+            }
+            if(this.connection != null){
+                this.connection = null;
+            }
+            Logger.info("Polaczenie z mySQL zostalo zamkniete!");
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isConnected() throws SQLException {
+        if(this.connection == null) return false;
+        if(this.connection.isClosed()) return false;
+        return true;
+    }
+
     public ResultSet query(String string) throws SQLException {
+        if(!isConnected()){
+            openConnection();
+        }
         return this.connection.prepareStatement(string).executeQuery();
     }
 
     public int update(String string) throws SQLException {
+        if(!isConnected()){
+            openConnection();
+        }
         return this.connection.prepareStatement(string).executeUpdate();
     }
 
     public PreparedStatement generateStatement(String string) throws SQLException {
+        if(!isConnected()){
+            openConnection();
+        }
         return this.connection.prepareStatement(string);
     }
 }

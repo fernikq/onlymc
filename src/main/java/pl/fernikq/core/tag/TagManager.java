@@ -22,25 +22,26 @@ public class TagManager {
 
     public void createTag(Player player){
         try{
-            User user = this.plugin.getUserManager().getUser(player);
-            ScoreboardTeam scoreboardTeam = null;
-            if(scoreboard.getPlayerTeam(user.getName()) == null){
-                scoreboardTeam = scoreboard.createTeam(user.getName());
-            }
-            scoreboard.addPlayerToTeam(user.getName(), scoreboardTeam.getName());
-            scoreboardTeam.setDisplayName("");
-            scoreboardTeam.setPrefix("");
-            scoreboardTeam.setSuffix(" "+ ChatUtil.fixColor(user.getGroup().getTag()));
-            PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(scoreboardTeam, 0);
-            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-            for(Player online : Bukkit.getOnlinePlayers()){
-                if(!online.equals(player)){
-                    ((CraftPlayer)online).getHandle().playerConnection.sendPacket(packet);
-                    ScoreboardTeam team = scoreboard.getTeam(online.getName());
-                    PacketPlayOutScoreboardTeam packetShow = new PacketPlayOutScoreboardTeam(team, 0);
-                    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packetShow);
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+                ScoreboardTeam scoreboardTeam = null;
+                if(scoreboard.getPlayerTeam(user.getName()) == null){
+                    scoreboardTeam = scoreboard.createTeam(user.getName());
                 }
-            }
+                scoreboard.addPlayerToTeam(user.getName(), scoreboardTeam.getName());
+                scoreboardTeam.setDisplayName("");
+                scoreboardTeam.setPrefix("");
+                scoreboardTeam.setSuffix(" "+ ChatUtil.fixColor(user.getGroup().getTag()));
+                PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(scoreboardTeam, 0);
+                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+                for(Player online : Bukkit.getOnlinePlayers()){
+                    if(!online.equals(player)){
+                        ((CraftPlayer)online).getHandle().playerConnection.sendPacket(packet);
+                        ScoreboardTeam team = scoreboard.getTeam(online.getName());
+                        PacketPlayOutScoreboardTeam packetShow = new PacketPlayOutScoreboardTeam(team, 0);
+                        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packetShow);
+                    }
+                }
+            });
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -48,18 +49,19 @@ public class TagManager {
 
     public void updateTag(Player player) {
         try {
-            User user = this.plugin.getUserManager().getUser(player);
-            ScoreboardTeam team = scoreboard.getPlayerTeam(user.getName());
-            if(team == null) {
-                return;
-            }
-            team.setDisplayName("");
-            team.setSuffix(" " + ChatUtil.fixColor(user.getGroup().getTag()));
-            team.setPrefix("");
-            for(Player online : Bukkit.getServer().getOnlinePlayers()) {
-                PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 2);
-                ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
-            }
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+                ScoreboardTeam team = scoreboard.getPlayerTeam(user.getName());
+                if(team == null) {
+                    return;
+                }
+                team.setDisplayName("");
+                team.setSuffix(" " + ChatUtil.fixColor(user.getGroup().getTag()));
+                team.setPrefix("");
+                for(Player online : Bukkit.getServer().getOnlinePlayers()) {
+                    PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 2);
+                    ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
+                }
+            });
         }catch(Exception e) {
             e.printStackTrace();
         }

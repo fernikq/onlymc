@@ -20,8 +20,9 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        User user = this.plugin.getUserManager().getUser(player);
-        this.plugin.getUserManager().getUserData().updateUser(user);
-        this.plugin.getTagManager().removeTag(player);
+        this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+            this.plugin.getUserManager().getUserData().updateUser(user);
+            this.plugin.getTagManager().removeTag(player);
+        });
     }
 }

@@ -46,6 +46,7 @@ public class CorePlugin extends JavaPlugin {
             player.kickPlayer(ChatUtil.fixColor("&c&lRestart serwera!"));
         });
         Bukkit.getWorlds().forEach(world -> world.save());
+        this.mySQL.closeConnection();
     }
 
     private void initManagers(){
