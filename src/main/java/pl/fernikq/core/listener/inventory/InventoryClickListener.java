@@ -26,15 +26,16 @@ public class InventoryClickListener implements Listener {
             return;
         }
         Player player = (Player)event.getWhoClicked();
-        User user = this.plugin.getUserManager().getUser(player);
-        InventoryGUI inventoryGUI = user.getInventories().get(ChatUtil.fixColor(event.getInventory().getName()));
-        if(inventoryGUI != null){
-            event.setCancelled(true);
-            InventoryAction action = inventoryGUI.getActions().get(event.getRawSlot());
-            if(action != null){
-                action.execute(player, event.getInventory(), event.getRawSlot(), event.getInventory().getItem(event.getRawSlot()));
+        this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+            InventoryGUI inventoryGUI = user.getInventories().get(ChatUtil.fixColor(event.getInventory().getName()));
+            if(inventoryGUI != null){
+                event.setCancelled(true);
+                InventoryAction action = inventoryGUI.getActions().get(event.getRawSlot());
+                if(action != null){
+                    action.execute(player, event.getInventory(), event.getRawSlot(), event.getInventory().getItem(event.getRawSlot()));
+                }
+                return;
             }
-            return;
-        }
+        });
     }
 }

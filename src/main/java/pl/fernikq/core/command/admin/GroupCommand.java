@@ -36,6 +36,6 @@ public class GroupCommand extends CustomCommand {
                         this.plugin.getTagManager().updateTag(user.asPlayer());
                     }
                 });
-        return false;
+        return true;
     }
 }
