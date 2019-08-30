@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.GroupCommand;
+import pl.fernikq.core.command.player.DelhomeCommand;
 import pl.fernikq.core.command.player.SethomeCommand;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
@@ -81,6 +82,7 @@ public class CorePlugin extends JavaPlugin {
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
+        new DelhomeCommand("delhome", new String[0], UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){

@@ -28,9 +28,16 @@ public class SethomeCommand extends CustomCommand {
         Player player = (Player)sender;
         if(args.length == 0){
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
-                if(user.getHomes().isEmpty()){
+                if(user.getHomes().isEmpty()) {
                     this.plugin.getHomeManager().create(user, "home", player.getLocation());
                     ChatUtil.sendMessage(player, "&8>> {n}Ustawiles dom o nazwie {c}home");
+                    return;
+                }
+                if(user.getHomes().size() == 1){
+                    Home home = this.plugin.getHomeManager().get(user, 0);
+                    home.setLocation(player.getLocation());
+                    this.plugin.getHomeManager().getHomeData().update(home);
+                    ChatUtil.sendMessage(player, "&8>> {n}Zmieniles lokalizacje domu o nazwie {c}"+home.getName());
                     return;
                 }else{
                     ChatUtil.sendMessage(player, MessagesManager.usage("/sethome <nazwa>"));
@@ -39,7 +46,7 @@ public class SethomeCommand extends CustomCommand {
             });
             return true;
         }
-        String homeName = args[0].toLowerCase();
+        String homeName = args[0];
         if(homeName.length() > 32){
             return ChatUtil.sendMessage(player, MessagesManager.error("Nazwa nie moze byc dluzsza niz 32 znaki!"));
         }
@@ -52,7 +59,7 @@ public class SethomeCommand extends CustomCommand {
                 Home home = this.plugin.getHomeManager().get(user, homeName);
                 home.setLocation(player.getLocation());
                 this.plugin.getHomeManager().getHomeData().update(home);
-                ChatUtil.sendMessage(player, "&8>> {n}Zmieniles lokalizacje domu o nazwie {c}"+homeName);
+                ChatUtil.sendMessage(player, "&8>> {n}Zmieniles lokalizacje domu o nazwie {c}"+home.getName());
                 return;
             }
             this.plugin.getHomeManager().create(user, homeName, player.getLocation());

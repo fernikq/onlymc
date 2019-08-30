@@ -21,6 +21,9 @@ public class TagManager {
     }
 
     public void createTag(Player player){
+        if(player == null){
+            return;
+        }
         try{
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
                 ScoreboardTeam scoreboardTeam = null;
@@ -48,6 +51,9 @@ public class TagManager {
     }
 
     public void updateTag(Player player) {
+        if(player == null){
+            return;
+        }
         try {
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
                 ScoreboardTeam team = scoreboard.getPlayerTeam(user.getName());
@@ -68,6 +74,9 @@ public class TagManager {
     }
 
     public void removeTag(Player player) {
+        if(player == null){
+            return;
+        }
         try {
             ScoreboardTeam team = null;
             if(scoreboard.getPlayerTeam(player.getName()) == null) {

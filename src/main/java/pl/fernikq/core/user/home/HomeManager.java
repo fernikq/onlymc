@@ -19,11 +19,11 @@ public class HomeManager {
     }
 
     public boolean exists(User user, String name){
-        return user.getHomes().containsKey(name);
+        return user.getHomes().containsKey(name.toLowerCase());
     }
 
     public Home get(User user, String name){
-        return user.getHomes().get(name);
+        return user.getHomes().get(name.toLowerCase());
     }
 
     public Home get(User user, int index){
@@ -32,20 +32,20 @@ public class HomeManager {
 
     public String getHomesToString(User user){
         StringBuilder sb = new StringBuilder();
-        for(String name : user.getHomes().keySet()){
-            sb.append("&8, {c}").append(name);
+        for(Home home : user.getHomes().values()){
+            sb.append("&8, {c}").append(home.getName());
         }
         return sb.toString().replaceFirst("&8, ", "");
     }
 
     public void create(User user, String name, Location location){
         Home home = new Home(user, name, location);
-        user.getHomes().put(home.getName() ,home);
+        user.getHomes().put(home.getName().toLowerCase(), home);
         this.homeData.insertHome(home);
     }
 
     public void delete(User user, Home home){
-        user.getHomes().remove(home);
+        user.getHomes().remove(home.getName().toLowerCase());
         this.homeData.deleteHome(home);
     }
 
