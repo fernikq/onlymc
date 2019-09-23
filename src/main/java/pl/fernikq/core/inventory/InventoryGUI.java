@@ -72,7 +72,7 @@ public class InventoryGUI {
     }
 
     public boolean isCorrectSlot(int slot){
-        return this.slots <= slot;
+        return slot <= this.slots;
     }
 
     public Inventory getInventory() {

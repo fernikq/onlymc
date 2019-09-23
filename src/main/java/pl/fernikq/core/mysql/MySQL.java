@@ -1,48 +1,58 @@
 package pl.fernikq.core.mysql;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitTask;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.util.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class MySQL {
 
     private final CorePlugin plugin;
-    private HikariConfig hikariConfig;
-    private HikariDataSource hikariDataSource;
     private Connection connection;
+    private BukkitTask connectionTask;
 
     public MySQL(CorePlugin plugin){
         this.plugin = plugin;
-        this.hikariConfig = new HikariConfig();
-        this.hikariConfig.setJdbcUrl("jdbc:mysql://"+ConfigManager.mysqlHost+":"+ConfigManager.mysqlPort+"/"+ConfigManager.mysqlBase);
-        this.hikariConfig.setUsername(ConfigManager.mysqlUser);
-        this.hikariConfig.setPassword(ConfigManager.mysqlPassword);
-        this.hikariDataSource = new HikariDataSource(this.hikariConfig);
-        try{
-            this.connection = this.hikariDataSource.getConnection();
-            Logger.info("Polaczenie z baza danych zostalo nawiazane!");
-        }catch(SQLException ex){
+        openConnection();
+        closeConnection();
+    }
+
+    public void openConnection(){
+        try {
+            if(this.connection != null && !this.connection.isClosed()){
+                if(this.connectionTask != null){
+                    this.connectionTask.cancel();
+                    this.connectionTask = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+                        closeConnection();
+                    }, 3600);
+                }
+                return;
+            }
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            this.connection = DriverManager.getConnection("jdbc:mysql://" + ConfigManager.mysqlHost + ":" + ConfigManager.mysqlPort + "/" + ConfigManager.mysqlBase, ConfigManager.mysqlUser, ConfigManager.mysqlPassword);
+            this.connectionTask = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+                closeConnection();
+            }, 3600);
+        }catch(SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             ex.printStackTrace();
         }
     }
 
     public void closeConnection(){
         try {
+            if(this.connection == null){
+                return;
+            }
             if(!this.connection.isClosed()){
                 this.connection.close();
             }
-            if(this.connection != null){
-                this.connection = null;
-            }
-            if(this.hikariDataSource.isRunning()){
-                this.hikariDataSource.close();
+            this.connection = null;
+            if(this.connectionTask != null){
+                this.connectionTask.cancel();
+                this.connectionTask = null;
             }
         } catch(SQLException e) {
             e.printStackTrace();

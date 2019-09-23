@@ -20,6 +20,7 @@ public class HomeData {
 
     public void checkTable(){
         try {
+            this.plugin.getMySQL().openConnection();
             this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_homes` ("+
                     "`owner` VARCHAR(128) NOT NULL,"+
                     "`name` TEXT NOT NULL,"+
@@ -31,6 +32,7 @@ public class HomeData {
 
     public void loadHomes(){
         try {
+            this.plugin.getMySQL().openConnection();
             ResultSet rs = this.plugin.getMySQL().query("SELECT * FROM `core_homes`");
             while(rs.next()){
                 this.plugin.getUserManager().getUser(UUID.fromString(rs.getString("owner"))).peek(user -> {
@@ -49,6 +51,7 @@ public class HomeData {
 
     public void insertHome(Home home){
         try {
+            this.plugin.getMySQL().openConnection();
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_homes` (owner, name, location) VALUES ("+
                     "?, ?, ?);");
             statement.setString(1, home.getOwner().getUuid().toString());
@@ -62,6 +65,7 @@ public class HomeData {
 
     public void deleteHome(Home home){
         try {
+            this.plugin.getMySQL().openConnection();
             this.plugin.getMySQL().update("DELETE FROM `core_homes` WHERE `owner` = '"+home.getOwner().getUuid().toString()+"' AND `name` = '"+home.getName()+"';");
         } catch(SQLException e) {
             e.printStackTrace();
@@ -70,6 +74,7 @@ public class HomeData {
 
     public void update(Home home){
         try {
+            this.plugin.getMySQL().openConnection();
             this.plugin.getMySQL().update("UPDATE `core_homes` SET `location` = '"+LocationUtil.locationToString(home.getLocation())+"' "+
                     "WHERE `owner` = '"+home.getOwner().getUuid().toString()+"' AND `name` = '"+home.getName()+"';");
         } catch(SQLException e) {

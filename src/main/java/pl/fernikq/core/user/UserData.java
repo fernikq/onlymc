@@ -19,6 +19,7 @@ public class UserData {
 
     private void checkTable(){
         try {
+            this.plugin.getMySQL().openConnection();
             this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_users` ("+
                     "`uuid` VARCHAR(128) NOT NULL PRIMARY KEY UNIQUE,"+
                     "`name` VARCHAR(32) NOT NULL UNIQUE,"+
@@ -32,6 +33,7 @@ public class UserData {
 
     private void loadUsers(){
         try {
+            this.plugin.getMySQL().openConnection();
             ResultSet rs = this.plugin.getMySQL().query("SELECT * FROM `core_users`");
             while(rs.next()){
                 User user = new User(rs);
@@ -44,6 +46,7 @@ public class UserData {
 
     public void insertUser(User user){
         try {
+            this.plugin.getMySQL().openConnection();
             final PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_users` "+
                     "(uuid, name, firstAddress, lastAddress, groupName) VALUES (?, ?, ?, ?, ?);");
             statement.setString(1, user.getUuid().toString());
@@ -59,6 +62,7 @@ public class UserData {
 
     public void updateUser(User user){
         try {
+            this.plugin.getMySQL().openConnection();
             final PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_users` SET `name` = ?, `lastAddress` = ?, "+
                     "`groupName` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
             statement.setString(1, user.getName());
