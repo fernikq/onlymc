@@ -5,11 +5,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.GroupCommand;
 import pl.fernikq.core.command.player.DelhomeCommand;
+import pl.fernikq.core.command.player.HomeCommand;
 import pl.fernikq.core.command.player.HomelistCommand;
 import pl.fernikq.core.command.player.SethomeCommand;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
+import pl.fernikq.core.listener.player.AsyncPlayerChatListener;
 import pl.fernikq.core.listener.player.PlayerJoinListener;
 import pl.fernikq.core.listener.player.PlayerQuitListener;
 import pl.fernikq.core.mysql.MySQL;
@@ -85,12 +87,14 @@ public class CorePlugin extends JavaPlugin {
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
         new DelhomeCommand("delhome", new String[0], UserGroup.PLAYER, this).register();
         new HomelistCommand("homelist", new String[0], UserGroup.PLAYER, this).register();
+        new HomeCommand("home", new String[0], UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){
         new PlayerJoinListener(this);
         new PlayerQuitListener(this);
         new InventoryClickListener(this);
+        new AsyncPlayerChatListener(this);
     }
 
     public ConfigManager getConfigManager() {

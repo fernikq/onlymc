@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
@@ -33,7 +34,7 @@ public class TagManager {
                 scoreboard.addPlayerToTeam(user.getName(), scoreboardTeam.getName());
                 scoreboardTeam.setDisplayName("");
                 scoreboardTeam.setPrefix("");
-                scoreboardTeam.setSuffix(" "+ ChatUtil.fixColor(user.getGroup().getTag()));
+                scoreboardTeam.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
                 PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(scoreboardTeam, 0);
                 ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
                 for(Player online : Bukkit.getOnlinePlayers()){
@@ -61,7 +62,7 @@ public class TagManager {
                     return;
                 }
                 team.setDisplayName("");
-                team.setSuffix(" " + ChatUtil.fixColor(user.getGroup().getTag()));
+                team.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
                 team.setPrefix("");
                 for(Player online : Bukkit.getServer().getOnlinePlayers()) {
                     PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 2);

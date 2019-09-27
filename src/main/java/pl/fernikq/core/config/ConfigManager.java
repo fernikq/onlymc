@@ -22,6 +22,8 @@ public class ConfigManager {
     public static String mysqlPassword;
     public static int mysqlPort;
 
+    public static int teleportHomeTime;
+
     public void load(){
         try{
             this.plugin.saveDefaultConfig();

@@ -21,6 +21,14 @@ public class MessagesManager {
     public static String teleportFinishPlayerMessage;
     public static String teleportFinishLocationMessage;
 
+    //VISUAL
+    public static String playerNametagGuildAllyFormat;
+    public static String playerNametagGuildEnemyFormat;
+    public static String playerNametagGuildOwnFormat;
+    public static String playerChatGuildFormat;
+    public static String playerChatFormat;
+    public static String playerChatAdminFormat;
+
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
         this.file = new File(this.plugin.getDataFolder(), "messages.yml");
@@ -69,13 +77,19 @@ public class MessagesManager {
     }
 
     private void setDefaultValues(){
-        this.commandErrorMessage = "&4&lBlad &8>> &fBlad podczas wykonywania komendy, zglos sie do administratora!";
-        this.commandErrorPermission = "&4&lBlad &8>> &fNie posiadasz wystarczajacych uprawnien aby uzyc tej komendy!";
-        this.errorFormat = "&4&lBlad &8>> &f{ERROR}";
-        this.commandCorrectUsage = "&c&lPoprawne uzycie&8: &f{USAGE}";
-        this.teleportCancelMessage = "&4&lBlad &8>> &fPoruszyles sie, teleportacja anulowana!";
-        this.teleportStartMessage = "&8>> {n}Zostaniesz przeteleportowany za {c}{TIME} sek.";
-        this.teleportFinishLocationMessage = "&8>> {n}Zostales przeteleportowany na {c}{LOCATION}";
-        this.teleportFinishPlayerMessage = "&8>> {n}Zostales przeteleportowany do gracza {c}{PLAYER}";
+        commandErrorMessage = "&4&lBlad &8>> &fBlad podczas wykonywania komendy, zglos sie do administratora!";
+        commandErrorPermission = "&4&lBlad &8>> &fNie posiadasz wystarczajacych uprawnien aby uzyc tej komendy!";
+        errorFormat = "&4&lBlad &8>> &f{ERROR}";
+        commandCorrectUsage = "&c&lPoprawne uzycie&8: &f{USAGE}";
+        teleportCancelMessage = "&4&lBlad &8>> &fPoruszyles sie, teleportacja anulowana!";
+        teleportStartMessage = "&8>> {n}Zostaniesz przeteleportowany za {c}{TIME} sek.";
+        teleportFinishLocationMessage = "&8>> {n}Zostales przeteleportowany na {c}{LOCATION}";
+        teleportFinishPlayerMessage = "&8>> {n}Zostales przeteleportowany do gracza {c}{PLAYER}";
+        playerNametagGuildOwnFormat = "&8[&a{GUILD}&8] ";
+        playerNametagGuildAllyFormat = "&8[&e{GUILD}&8] ";
+        playerNametagGuildEnemyFormat = "&8[&c{GUILD}&8] ";
+        playerChatGuildFormat = "&8[&c{GUILD}&8] ";
+        playerChatFormat = "&8[&7{LVL}&8] {GUILD}{RANK} &f{NAME}&8: &f{MESSAGE}";
+        playerChatAdminFormat = "{RANK} &f{NAME}&8: &f{MESSAGE}";
     }
 }
