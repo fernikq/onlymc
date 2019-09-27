@@ -25,10 +25,10 @@ public class MySQL {
             if(this.connection != null && !this.connection.isClosed()){
                 if(this.connectionTask != null){
                     this.connectionTask.cancel();
-                    this.connectionTask = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                        closeConnection();
-                    }, 3600);
                 }
+                this.connectionTask = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+                    closeConnection();
+                }, 3600);
                 return;
             }
             Class.forName("com.mysql.jdbc.Driver").newInstance();
