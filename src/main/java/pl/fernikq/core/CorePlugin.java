@@ -1,5 +1,6 @@
 package pl.fernikq.core;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.command.CommandManager;
@@ -8,10 +9,7 @@ import pl.fernikq.core.command.player.*;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
-import pl.fernikq.core.listener.player.AsyncPlayerChatListener;
-import pl.fernikq.core.listener.player.PlayerDamageListener;
-import pl.fernikq.core.listener.player.PlayerJoinListener;
-import pl.fernikq.core.listener.player.PlayerQuitListener;
+import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.user.UserGroup;
@@ -39,6 +37,7 @@ public class CorePlugin extends JavaPlugin {
         initData();
         registerCommands();
         registerListeners();
+        initPacketReceiving();
     }
 
     @Override
@@ -51,6 +50,10 @@ public class CorePlugin extends JavaPlugin {
         });
         Bukkit.getWorlds().forEach(world -> world.save());
         this.mySQL.closeConnection();
+    }
+
+    private void initPacketReceiving(){
+        //new BlockDigListener(this);
     }
 
     private void initManagers(){
