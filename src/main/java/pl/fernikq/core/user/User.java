@@ -20,6 +20,7 @@ public class User {
     private Map<String, Home> homes;
     private boolean godMode;
     private Map<String, InventoryGUI> inventories;
+    private User privateMessageSender;
 
 
     public User(Player player){
@@ -31,6 +32,7 @@ public class User {
         this.inventories = new HashMap<>();
         this.homes = new HashMap<>();
         this.godMode = false;
+        this.privateMessageSender = null;
     }
 
     public User(ResultSet rs){
@@ -43,6 +45,7 @@ public class User {
             this.inventories = new HashMap<>();
             this.homes = new HashMap<>();
             this.godMode = false;
+            this.privateMessageSender = null;
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -94,6 +97,14 @@ public class User {
 
     public void setGodMode(boolean godMode) {
         this.godMode = godMode;
+    }
+
+    public User getPrivateMessageSender() {
+        return privateMessageSender;
+    }
+
+    public void setPrivateMessageSender(User privateMessageSender) {
+        this.privateMessageSender = privateMessageSender;
     }
 
     public Player asPlayer(){
