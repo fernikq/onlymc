@@ -41,6 +41,16 @@ public class MySQL {
         }
     }
 
+    public void openWithoutTask(){
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            this.connection = DriverManager.getConnection("jdbc:mysql://" + ConfigManager.mysqlHost + ":" + ConfigManager.mysqlPort + "/" + ConfigManager.mysqlBase, ConfigManager.mysqlUser, ConfigManager.mysqlPassword);
+        }catch(SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            ex.printStackTrace();
+        }
+    }
+
+
     public void closeConnection(){
         try {
             if(this.connection == null){

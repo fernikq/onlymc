@@ -3,7 +3,7 @@ package pl.fernikq.core;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.command.CommandManager;
-import pl.fernikq.core.command.admin.GroupCommand;
+import pl.fernikq.core.command.admin.*;
 import pl.fernikq.core.command.player.DelhomeCommand;
 import pl.fernikq.core.command.player.HomeCommand;
 import pl.fernikq.core.command.player.HomelistCommand;
@@ -12,6 +12,7 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
 import pl.fernikq.core.listener.player.AsyncPlayerChatListener;
+import pl.fernikq.core.listener.player.PlayerDamageListener;
 import pl.fernikq.core.listener.player.PlayerJoinListener;
 import pl.fernikq.core.listener.player.PlayerQuitListener;
 import pl.fernikq.core.mysql.MySQL;
@@ -45,6 +46,8 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable(){
+        this.mySQL.closeConnection();
+        this.mySQL.openWithoutTask();
         Bukkit.getOnlinePlayers().forEach(player -> {
             this.userManager.getUser(player.getUniqueId()).peek(user -> this.userManager.getUserData().updateUser(user));
             player.kickPlayer(ChatUtil.fixColor("&c&lRestart serwera!"));
@@ -82,6 +85,10 @@ public class CorePlugin extends JavaPlugin {
 
         //ADMIN
         new GroupCommand("group", new String[]{"pex"}, UserGroup.ROOT, this).register();
+        new GamemodeCommand("gamemode", new String[]{"gm"}, UserGroup.MOD, this).register();
+        new GodCommand("god", new String[0], UserGroup.HELPER, this).register();
+        new FlyCommand("fly", new String[0], UserGroup.HELPER, this).register();
+        new ClearCommand("clear", new String[0], UserGroup.HELPER, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -95,6 +102,7 @@ public class CorePlugin extends JavaPlugin {
         new PlayerQuitListener(this);
         new InventoryClickListener(this);
         new AsyncPlayerChatListener(this);
+        new PlayerDamageListener(this);
     }
 
     public ConfigManager getConfigManager() {

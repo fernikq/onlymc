@@ -25,6 +25,9 @@ public class AsyncPlayerChatListener implements Listener {
         Player player = event.getPlayer();
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
            String format = user.canByGroup(UserGroup.HELPER) ? MessagesManager.playerChatAdminFormat : MessagesManager.playerChatFormat;
+           if(user.canByGroup(UserGroup.HELPER)){
+               event.setMessage(ChatUtil.fixColor(event.getMessage()));
+           }
            format = StringUtil.replace(format, "{LVL}", "TODO");
            format = StringUtil.replace(format, "{GUILD}", "TODO");
            format = StringUtil.replace(format, "{RANK}", user.getGroup().getPrefix());

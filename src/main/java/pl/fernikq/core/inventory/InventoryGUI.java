@@ -15,11 +15,13 @@ public class InventoryGUI {
     private Inventory inventory;
     private Map<Integer, InventoryAction> actions;
     private int slots;
+    private boolean cancelling;
 
-    public InventoryGUI(String name, int rows){
+    public InventoryGUI(String name, int rows, boolean cancelling){
         this.inventory = Bukkit.createInventory(null, rows * 9, ChatUtil.fixColor(name));
         this.actions = new HashMap<>();
         this.slots = rows * 9;
+        this.cancelling = cancelling;
     }
 
     public void setItem(int slot, ItemStack itemStack){
@@ -85,5 +87,9 @@ public class InventoryGUI {
 
     public Map<Integer, InventoryAction> getActions() {
         return actions;
+    }
+
+    public boolean isCancelling() {
+        return cancelling;
     }
 }

@@ -21,6 +21,7 @@ public class PlayerQuitListener implements Listener {
     public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+            this.plugin.getMySQL().openConnection();
             this.plugin.getUserManager().getUserData().updateUser(user);
             this.plugin.getTagManager().removeTag(player);
         });

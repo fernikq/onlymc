@@ -36,15 +36,15 @@ public class HomeCommand extends CustomCommand {
             if(args.length < 1){
                 if(user.getHomes().size() == 1){
                     Home home = this.plugin.getHomeManager().get(user, 0);
-                    this.plugin.getTeleportManager().teleportToLocation(player, home.getLocation(), ConfigManager.teleportHomeTime, "dom o nazwie "+home.getName());
+                    this.plugin.getTeleportManager().teleportToLocation(player, home.getLocation(), ConfigManager.teleportHomeTime, "dom");
                     return;
                 }
-                ChatUtil.sendMessage(player, MessagesManager.error("Musisz podac nazwe domu!"));
+                ChatUtil.sendMessage(player, MessagesManager.error("Musisz podac nazwe domu, sprawdzisz je pod /homelist"));
                 return;
             }
             String homeName = args[0];
             if(!this.plugin.getHomeManager().exists(user, homeName)){
-                ChatUtil.sendMessage(player, MessagesManager.error("Dom o podanej nazwie nie istnieje!"));
+                ChatUtil.sendMessage(player, MessagesManager.error("Dom o podanej nazwie nie istnieje, aby sprawdzic domy wpisz /homelist"));
                 return;
             }
             Home home = this.plugin.getHomeManager().get(user, homeName);

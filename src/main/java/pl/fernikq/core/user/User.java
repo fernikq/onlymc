@@ -18,6 +18,7 @@ public class User {
     private UserGroup group;
 
     private Map<String, Home> homes;
+    private boolean godMode;
     private Map<String, InventoryGUI> inventories;
 
 
@@ -29,6 +30,7 @@ public class User {
         this.group = UserGroup.PLAYER;
         this.inventories = new HashMap<>();
         this.homes = new HashMap<>();
+        this.godMode = false;
     }
 
     public User(ResultSet rs){
@@ -40,6 +42,7 @@ public class User {
             this.group = UserGroup.getByName(rs.getString("groupName"));
             this.inventories = new HashMap<>();
             this.homes = new HashMap<>();
+            this.godMode = false;
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -83,6 +86,14 @@ public class User {
 
     public void setGroup(UserGroup group) {
         this.group = group;
+    }
+
+    public boolean isGodMode() {
+        return godMode;
+    }
+
+    public void setGodMode(boolean godMode) {
+        this.godMode = godMode;
     }
 
     public Player asPlayer(){
