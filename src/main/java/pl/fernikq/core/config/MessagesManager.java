@@ -29,6 +29,7 @@ public class MessagesManager {
     public static String playerChatFormat;
     public static String playerChatAdminFormat;
     public static String playerPrivateMessageFormat;
+    public static String helpopFormat;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -93,5 +94,6 @@ public class MessagesManager {
         playerChatFormat = "&8[&7{LVL}&8] {GUILD}{RANK} &f{NAME}&8: &f{MESSAGE}";
         playerChatAdminFormat = "{RANK} &f{NAME}&8: &f{MESSAGE}";
         playerPrivateMessageFormat = "&3{SENDER} &8>> &3{RECEIVER}&8: &f";
+        helpopFormat = "&8[ &4&lHELPOP&8 ] &c{NICK}&8: &f";
     }
 }

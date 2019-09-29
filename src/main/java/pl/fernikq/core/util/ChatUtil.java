@@ -4,6 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class ChatUtil {
 
     public static String fixColor(String message){
@@ -13,6 +15,14 @@ public class ChatUtil {
         message = StringUtil.replace(message, "<<", "«");
         message = StringUtil.replace(message, "<3", "♥");
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public static List<String> fixColor(List<String> list) {
+        for (int i = 0; i < list.size(); i++) {
+            String string = (String)list.get(i);
+            list.set(i, fixColor(string));
+        }
+        return list;
     }
 
     public static boolean sendMessage(CommandSender sender, String... messages){

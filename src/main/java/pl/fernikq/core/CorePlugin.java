@@ -3,9 +3,11 @@ package pl.fernikq.core;
 import com.comphenix.protocol.ProtocolLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.fernikq.core.automessage.AutoMessageManager;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
 import pl.fernikq.core.command.player.*;
+import pl.fernikq.core.command.premium.RepairCommand;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
@@ -28,6 +30,7 @@ public class CorePlugin extends JavaPlugin {
     private TagManager tagManager;
     private HomeManager homeManager;
     private TeleportManager teleportManager;
+    private AutoMessageManager autoMessageManager;
 
     @Override
     public void onEnable() {
@@ -62,6 +65,7 @@ public class CorePlugin extends JavaPlugin {
         this.tagManager = new TagManager(this);
         this.homeManager = new HomeManager(this);
         this.teleportManager = new TeleportManager(this);
+        this.autoMessageManager = new AutoMessageManager(this);
     }
 
     private void initData(){
@@ -91,6 +95,8 @@ public class CorePlugin extends JavaPlugin {
         new ClearCommand("clear", new String[0], UserGroup.HELPER, this).register();
         new InvseeCommand("invsee", new String[0], UserGroup.HELPER, this).register();
         new HealCommand("heal", new String[0], UserGroup.HELPER, this).register();
+        new GiveCommand("give", new String[0], UserGroup.MOD, this).register();
+        new EnchantCommand("enchant", new String[0], UserGroup.MOD, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -99,6 +105,8 @@ public class CorePlugin extends JavaPlugin {
         new HomeCommand("home", new String[0], UserGroup.PLAYER, this).register();
         new MessageCommand("msg", new String[0], UserGroup.PLAYER, this).register();
         new ReplyCommand("reply", new String[]{"r"}, UserGroup.PLAYER, this).register();
+        new RepairCommand("repair", new String[0], UserGroup.VIP, this).register();
+        new HelpopCommand("helpop", new String[0], UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){
