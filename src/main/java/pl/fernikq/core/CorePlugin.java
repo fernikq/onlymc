@@ -97,6 +97,7 @@ public class CorePlugin extends JavaPlugin {
         new HealCommand("heal", new String[0], UserGroup.HELPER, this).register();
         new GiveCommand("give", new String[0], UserGroup.MOD, this).register();
         new EnchantCommand("enchant", new String[0], UserGroup.MOD, this).register();
+        new CoreCommand("core", new String[0], UserGroup.ROOT, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -147,5 +148,9 @@ public class CorePlugin extends JavaPlugin {
 
     public TeleportManager getTeleportManager() {
         return teleportManager;
+    }
+
+    public AutoMessageManager getAutoMessageManager() {
+        return autoMessageManager;
     }
 }

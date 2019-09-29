@@ -27,7 +27,6 @@ public class AutoMessageManager {
     public AutoMessageManager(CorePlugin plugin){
         this.plugin = plugin;
         this.autoMessages = new ArrayList<>();
-        this.executorService = Executors.newSingleThreadScheduledExecutor();
         checkFile();
         loadAutoMessages();
         start();
@@ -43,8 +42,17 @@ public class AutoMessageManager {
         }
     }
 
+    public void reload(){
+        stop();
+        this.autoMessages.clear();
+        checkFile();
+        loadAutoMessages();
+        start();
+    }
+
     public void start(){
         repeat = 0;
+        this.executorService = Executors.newSingleThreadScheduledExecutor();
         this.executorService.scheduleAtFixedRate(() -> {
             if(this.autoMessages.isEmpty()){
                 return;
