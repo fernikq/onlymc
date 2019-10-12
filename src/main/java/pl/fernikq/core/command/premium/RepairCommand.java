@@ -40,7 +40,7 @@ public class RepairCommand extends CustomCommand {
         }
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
            if(!user.canByGroup(UserGroup.MVP)){
-               ChatUtil.sendMessage(sender, "&8>> {n}Aby uzyc tej komendy musisz posiadac range "+UserGroup.MVP.getPrefix());
+               ChatUtil.sendMessage(sender, "&8>> {n}Aby uzyc tej komendy musisz posiadac range "+UserGroup.MVP.getPrefix()+" {n}lub wyzsza!");
                return;
            }
            for(ItemStack itemStack : player.getInventory().getContents()){

@@ -22,6 +22,7 @@ public class HomeData {
         try {
             this.plugin.getMySQL().openConnection();
             this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_homes` ("+
+                    "`id` INT(16) NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
                     "`owner` VARCHAR(128) NOT NULL,"+
                     "`name` TEXT NOT NULL,"+
                     "`location` TEXT NOT NULL);");
@@ -52,11 +53,12 @@ public class HomeData {
     public void insertHome(Home home){
         try {
             this.plugin.getMySQL().openConnection();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_homes` (owner, name, location) VALUES ("+
-                    "?, ?, ?);");
-            statement.setString(1, home.getOwner().getUuid().toString());
-            statement.setString(2, home.getName());
-            statement.setString(3, LocationUtil.locationToString(home.getLocation()));
+            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_homes` (id, owner, name, location) VALUES ("+
+                    "?, ?, ?, ?);");
+            statement.setString(1, null);
+            statement.setString(2, home.getOwner().getUuid().toString());
+            statement.setString(3, home.getName());
+            statement.setString(4, LocationUtil.locationToString(home.getLocation()));
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

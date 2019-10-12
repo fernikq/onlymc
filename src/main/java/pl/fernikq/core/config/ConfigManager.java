@@ -23,6 +23,7 @@ public class ConfigManager {
     public static int mysqlPort;
 
     public static int teleportHomeTime;
+    public static int teleportWarpTime;
     public static int autoMessageTime;
 
     public void load(){
@@ -64,6 +65,7 @@ public class ConfigManager {
         mysqlPassword = "password";
         mysqlPort = 3306;
         teleportHomeTime = 10;
+        teleportWarpTime = 10;
         autoMessageTime = 60;
     }
 }

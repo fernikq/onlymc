@@ -21,7 +21,8 @@ public class UserData {
         try {
             this.plugin.getMySQL().openConnection();
             this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_users` ("+
-                    "`uuid` VARCHAR(128) NOT NULL PRIMARY KEY UNIQUE,"+
+                    "`id` INT(16) NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
+                    "`uuid` VARCHAR(128) NOT NULL UNIQUE,"+
                     "`name` VARCHAR(32) NOT NULL UNIQUE,"+
                     "`firstAddress` TEXT NOT NULL,"+
                     "`lastAddress` TEXT NOT NULL,"+
@@ -48,12 +49,13 @@ public class UserData {
         try {
             this.plugin.getMySQL().openConnection();
             final PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_users` "+
-                    "(uuid, name, firstAddress, lastAddress, groupName) VALUES (?, ?, ?, ?, ?);");
-            statement.setString(1, user.getUuid().toString());
-            statement.setString(2, user.getName());
-            statement.setString(3, user.getFirstAddress());
-            statement.setString(4, user.getLastAddress());
-            statement.setString(5, user.getGroup().name());
+                    "(id, uuid, name, firstAddress, lastAddress, groupName) VALUES (?, ?, ?, ?, ?, ?);");
+            statement.setString(1, null);
+            statement.setString(2, user.getUuid().toString());
+            statement.setString(3, user.getName());
+            statement.setString(4, user.getFirstAddress());
+            statement.setString(5, user.getLastAddress());
+            statement.setString(6, user.getGroup().name());
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

@@ -19,6 +19,7 @@ import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.TeleportManager;
+import pl.fernikq.core.warp.WarpManager;
 
 public class CorePlugin extends JavaPlugin {
 
@@ -31,6 +32,7 @@ public class CorePlugin extends JavaPlugin {
     private HomeManager homeManager;
     private TeleportManager teleportManager;
     private AutoMessageManager autoMessageManager;
+    private WarpManager warpManager;
 
     @Override
     public void onEnable() {
@@ -66,11 +68,13 @@ public class CorePlugin extends JavaPlugin {
         this.homeManager = new HomeManager(this);
         this.teleportManager = new TeleportManager(this);
         this.autoMessageManager = new AutoMessageManager(this);
+        this.warpManager = new WarpManager(this);
     }
 
     private void initData(){
         this.userManager.init();
         this.homeManager.init();
+        this.warpManager.init();
     }
 
     private void initDatabase(){
@@ -98,6 +102,9 @@ public class CorePlugin extends JavaPlugin {
         new GiveCommand("give", new String[0], UserGroup.MOD, this).register();
         new EnchantCommand("enchant", new String[0], UserGroup.MOD, this).register();
         new CoreCommand("core", new String[0], UserGroup.ROOT, this).register();
+        new SetWarpCommand("setwarp", new String[0], UserGroup.MOD, this).register();
+        new DelWarpCommand("delwarp", new String[0], UserGroup.MOD, this).register();
+        new WarpGroupCommand("warpgroup", new String[0], UserGroup.MOD, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -108,6 +115,7 @@ public class CorePlugin extends JavaPlugin {
         new ReplyCommand("reply", new String[]{"r"}, UserGroup.PLAYER, this).register();
         new RepairCommand("repair", new String[0], UserGroup.VIP, this).register();
         new HelpopCommand("helpop", new String[0], UserGroup.PLAYER, this).register();
+        new WarpCommand("warp", new String[0], UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){
@@ -152,5 +160,9 @@ public class CorePlugin extends JavaPlugin {
 
     public AutoMessageManager getAutoMessageManager() {
         return autoMessageManager;
+    }
+
+    public WarpManager getWarpManager() {
+        return warpManager;
     }
 }
