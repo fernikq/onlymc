@@ -27,7 +27,8 @@ public class WarpCommand extends CustomCommand {
             return ChatUtil.sendMessage(sender, Lang.mustBePlayer);
         }
         if(args.length < 1){
-            return ChatUtil.sendMessage(sender, MessagesManager.usage("/warp <nazwa>"));
+           ChatUtil.sendMessage(sender, MessagesManager.usage("/warp <nazwa>"));
+           return ChatUtil.sendMessage(sender, "&8>> {n}Dostpne warpy&8: "+this.plugin.getWarpManager().getWarpsToString());
         }
         if(this.plugin.getWarpManager().getWarps().isEmpty()){
             return ChatUtil.sendMessage(sender, MessagesManager.error("Na serwerze nie ma zadnych warpow!"));

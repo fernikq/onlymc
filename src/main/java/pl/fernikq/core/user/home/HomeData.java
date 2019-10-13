@@ -39,7 +39,7 @@ public class HomeData {
                 this.plugin.getUserManager().getUser(UUID.fromString(rs.getString("owner"))).peek(user -> {
                     try {
                         Home home = new Home(user, rs.getString("name"), LocationUtil.locationFromString(rs.getString("location")));
-                        user.getHomes().put(home.getName().toLowerCase(), home);
+                        user.addHome(home);
                     } catch(SQLException e) {
                         e.printStackTrace();
                     }

@@ -142,6 +142,14 @@ public class User {
         return new HashMap<>(this.homes);
     }
 
+    public void addHome(Home home){
+        this.homes.putIfAbsent(home.getName().toLowerCase(), home);
+    }
+
+    public void removeHome(Home home){
+        this.homes.remove(home.getName().toLowerCase());
+    }
+
     public List<Home> getHomeList(){
         return new ArrayList<Home>(this.homes.values());
     }
