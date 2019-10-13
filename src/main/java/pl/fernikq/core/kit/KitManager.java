@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
@@ -12,10 +13,7 @@ import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.TimeUtil;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class KitManager {
 
@@ -49,7 +47,7 @@ public class KitManager {
             String[] kitItemData = kitCfg.getString("item").split(":");
             ItemStack itemStack = new ItemStack(ItemUtil.getMaterial(kitItemData[0]), 1, (short) Short.parseShort(kitItemData[1]));
             String kitName = kitCfg.getString("name");
-            long time = System.currentTimeMillis() + TimeUtil.getTime(kitCfg.getString("time"));
+            long time = TimeUtil.getTime(kitCfg.getString("time"));
             UserGroup group = UserGroup.getByName(kitCfg.getString("group"));
             if(group == null){
                 group = UserGroup.PLAYER;
@@ -79,13 +77,57 @@ public class KitManager {
         }
     }
 
+    public String kitsToString(Map<String, Long> kits) {
+        if(kits.isEmpty() || kits == null) {
+            return "";
+        }
+        StringBuilder string = new StringBuilder();
+        int i = 0;
+        for(Map.Entry<String, Long> e : kits.entrySet()) {
+            if(i == 0) {
+                string.append(e.getKey() + ":" + e.getValue());
+            }else {
+                string.append(";" + e.getKey() + ":" + e.getValue());
+            }
+            i++;
+        }
+        return string.toString();
+    }
+
+    public Map<String, Long> kitsFromString(String data){
+        Map<String, Long> kits = new HashMap<String, Long>();
+        if(data.isEmpty() || data == null) {
+            return kits;
+        }
+        String[] str = data.split(";");
+        for(int i = 0; i < str.length; i++) {
+            String s = str[i];
+            String[] ss = s.split(":");
+            kits.put(ss[0], Long.valueOf(ss[1]));
+        }
+        return kits;
+    }
+
     public void giveItems(Player player, Kit kit){
         for(KitItem items : kit.getItems()){
             ItemUtil.giveItems(player, items.getItemStack());
+
+            //TODO SEPARACJA
         }
+    }
+
+    public boolean canTake(User user, Kit kit){
+        if(!user.getKitTimes().containsKey(kit.getName())){
+            return true;
+        }
+        return user.getKitTimes().get(kit.getName()) < System.currentTimeMillis();
     }
 
     public YamlConfiguration getAutoMessageFile() {
         return YamlConfiguration.loadConfiguration(kitFile);
+    }
+
+    public Set<Kit> getKits() {
+        return new HashSet<>(this.kits);
     }
 }

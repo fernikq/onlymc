@@ -20,6 +20,7 @@ public class User {
     private Map<String, Home> homes;
     private boolean godMode;
     private Map<String, InventoryGUI> inventories;
+    private Map<String, Long> kitTimes;
     private User privateMessageSender;
 
 
@@ -33,6 +34,7 @@ public class User {
         this.homes = new HashMap<>();
         this.godMode = false;
         this.privateMessageSender = null;
+        this.kitTimes = new HashMap<>();
     }
 
     public User(ResultSet rs){
@@ -46,6 +48,7 @@ public class User {
             this.homes = new HashMap<>();
             this.godMode = false;
             this.privateMessageSender = null;
+            this.kitTimes = new HashMap<>();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -69,6 +72,18 @@ public class User {
 
     public String getFirstAddress() {
         return firstAddress;
+    }
+
+    public Map<String, Long> getKitTimes() {
+        return new HashMap<>(this.kitTimes);
+    }
+
+    public void setKitTimes(Map<String, Long> kitTimes) {
+        this.kitTimes = kitTimes;
+    }
+
+    public void addKitTime(String kitName, long time){
+        this.kitTimes.put(kitName, time);
     }
 
     public void setFirstAddress(String firstAddress) {
@@ -116,11 +131,15 @@ public class User {
     }
 
     public Map<String, InventoryGUI> getInventories() {
-        return inventories;
+        return new HashMap<>(this.inventories);
+    }
+
+    public void addInventory(InventoryGUI inventoryGUI){
+        this.inventories.putIfAbsent(inventoryGUI.getInventory().getName(), inventoryGUI);
     }
 
     public Map<String, Home> getHomes() {
-        return homes;
+        return new HashMap<>(this.homes);
     }
 
     public List<Home> getHomeList(){

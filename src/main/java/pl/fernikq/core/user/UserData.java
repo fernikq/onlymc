@@ -26,7 +26,8 @@ public class UserData {
                     "`name` VARCHAR(32) NOT NULL UNIQUE,"+
                     "`firstAddress` TEXT NOT NULL,"+
                     "`lastAddress` TEXT NOT NULL,"+
-                    "`groupName` TEXT NOT NULL);");
+                    "`groupName` TEXT NOT NULL,"+
+                    "`kitTimes` TEXT NOT NULL);");
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -38,6 +39,7 @@ public class UserData {
             ResultSet rs = this.plugin.getMySQL().query("SELECT * FROM `core_users`");
             while(rs.next()){
                 User user = new User(rs);
+                user.setKitTimes(this.plugin.getKitManager().kitsFromString(rs.getString("kitTimes")));
                 this.plugin.getUserManager().registerUser(user);
             }
         } catch(SQLException e) {
@@ -49,13 +51,14 @@ public class UserData {
         try {
             this.plugin.getMySQL().openConnection();
             final PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_users` "+
-                    "(id, uuid, name, firstAddress, lastAddress, groupName) VALUES (?, ?, ?, ?, ?, ?);");
+                    "(id, uuid, name, firstAddress, lastAddress, groupName, kitTimes) VALUES (?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, user.getUuid().toString());
             statement.setString(3, user.getName());
             statement.setString(4, user.getFirstAddress());
             statement.setString(5, user.getLastAddress());
             statement.setString(6, user.getGroup().name());
+            statement.setString(7, this.plugin.getKitManager().kitsToString(user.getKitTimes()));
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -65,10 +68,11 @@ public class UserData {
     public void updateUser(User user){
         try {
             final PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_users` SET `name` = ?, `lastAddress` = ?, "+
-                    "`groupName` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
+                    "`groupName` = ?, `kitTimes` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
             statement.setString(1, user.getName());
             statement.setString(2, user.getLastAddress());
             statement.setString(3, user.getGroup().name());
+            statement.setString(4, this.plugin.getKitManager().kitsToString(user.getKitTimes()));
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

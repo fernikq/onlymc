@@ -122,6 +122,7 @@ public class CorePlugin extends JavaPlugin {
         new RepairCommand("repair", new String[0], UserGroup.VIP, this).register();
         new HelpopCommand("helpop", new String[0], UserGroup.PLAYER, this).register();
         new WarpCommand("warp", new String[0], UserGroup.PLAYER, this).register();
+        new KitCommand("kit", new String[0], UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){
