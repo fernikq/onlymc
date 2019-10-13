@@ -26,12 +26,12 @@ public class WarpCommand extends CustomCommand {
         if(!(sender instanceof Player)){
             return ChatUtil.sendMessage(sender, Lang.mustBePlayer);
         }
+        if(this.plugin.getWarpManager().getWarps().isEmpty()){
+            return ChatUtil.sendMessage(sender, MessagesManager.error("Na serwerze nie ma zadnych warpow!"));
+        }
         if(args.length < 1){
            ChatUtil.sendMessage(sender, MessagesManager.usage("/warp <nazwa>"));
            return ChatUtil.sendMessage(sender, "&8>> {n}Dostpne warpy&8: "+this.plugin.getWarpManager().getWarpsToString());
-        }
-        if(this.plugin.getWarpManager().getWarps().isEmpty()){
-            return ChatUtil.sendMessage(sender, MessagesManager.error("Na serwerze nie ma zadnych warpow!"));
         }
         this.plugin.getWarpManager().getWarp(args[0]).peek(warp -> {
             if(!this.plugin.getWarpManager().canTeleport(this.plugin.getUserManager().getUser(((Player)sender).getUniqueId()).get(), warp)){
