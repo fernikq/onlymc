@@ -40,7 +40,7 @@ public class KitManager {
 
     public void loadKits(){
         this.kits.clear();
-        ConfigurationSection configurationSection = getAutoMessageFile().getConfigurationSection("Kits");
+        ConfigurationSection configurationSection = getKitFile().getConfigurationSection("Kits");
         for(String s : configurationSection.getKeys(false)){
             List<KitItem> kitItemList = new ArrayList<>();
             ConfigurationSection kitCfg = configurationSection.getConfigurationSection(s);
@@ -130,6 +130,9 @@ public class KitManager {
         if(!user.getKitTimes().containsKey(kit.getName())){
             return true;
         }
+        if(user.canByGroup(UserGroup.ADMIN)){
+            return true;
+        }
         return user.getKitTimes().get(kit.getName()) < System.currentTimeMillis();
     }
 
@@ -143,7 +146,7 @@ public class KitManager {
         return user.getGroup().equals(kit.getGroup());
     }
 
-    public YamlConfiguration getAutoMessageFile() {
+    public YamlConfiguration getKitFile() {
         return YamlConfiguration.loadConfiguration(kitFile);
     }
 

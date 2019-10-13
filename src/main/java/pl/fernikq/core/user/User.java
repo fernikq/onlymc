@@ -135,7 +135,7 @@ public class User {
     }
 
     public void addInventory(InventoryGUI inventoryGUI){
-        this.inventories.putIfAbsent(inventoryGUI.getInventory().getName(), inventoryGUI);
+        this.inventories.put(inventoryGUI.getInventory().getName(), inventoryGUI);
     }
 
     public Map<String, Home> getHomes() {
