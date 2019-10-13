@@ -29,7 +29,7 @@ public class UserInventory {
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lDostepne zestawy &8]", 1, true);
         user.addInventory(gui);
         for(Kit kit : this.plugin.getKitManager().getKits()){
-            ItemBuilder builder = new ItemBuilder(kit.getItem()).setAmount(1).setName(ChatUtil.fixColor(kit.getName()));
+            ItemBuilder builder = new ItemBuilder(kit.getItem().clone()).setAmount(1).setName(ChatUtil.fixColor(kit.getName()));
             builder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Zestaw dostepny dla "+(kit.getGroup().equals(UserGroup.PLAYER) ? "&7Gracza" : kit.getGroup().getPrefix()), "&8>> {n}Kliknij aby obejrzec")));
             gui.addItem(builder.toItemStack(), new KitAction(this.plugin, kit, KitActionType.CHOOSE));
         }
@@ -45,7 +45,7 @@ public class UserInventory {
             gui.addItem(builder.toItemStack());
         }
         ItemBuilder take = new ItemBuilder(Material.WOOL).setDurability((short)5).setName(ChatUtil.fixColor("&a&lOdbierz zestaw"));
-        take.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Czas&8: "+(this.plugin.getKitManager().canTake(user, kit) ? "&aTak" : "&cNie"), "&8>> {n}Ranga&8: "+(user.canByGroup(kit.getGroup()) ? "&aTak" : "&cNie"))));
+        take.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Czas&8: "+(this.plugin.getKitManager().canTakeByTime(user, kit) ? "&aTak" : "&cNie"), "&8>> {n}Ranga&8: "+(this.plugin.getKitManager().canTakeByGroup(user, kit) ? "&aTak" : "&cNie"))));
         ItemBuilder back = new ItemBuilder(Material.WOOL).setDurability((short)14).setName(ChatUtil.fixColor("&c&lPowrot"));
         gui.setItem(52, back.toItemStack(), new KitAction(this.plugin, KitActionType.BACK));
         gui.setItem(53, take.toItemStack(), new KitAction(this.plugin, kit, KitActionType.TAKE));

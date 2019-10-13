@@ -2,10 +2,229 @@ Kits:
   Jedzenie:
     time: '1m'
     group: 'PLAYER'
-    item: 'apple:0'
+    item: 'cooked_beef:0'
     name: '&8[ &fKit Jedzenie &8]'
+    canRankHigher: true
     items:
       Mieso:
         item: 'cooked_beef:0'
-        amount: 64
+        amount: 32
+        separate: false
+  Gracz:
+    time: '1h'
+    group: 'PLAYER'
+    item: 'wood_sword:0'
+    name: '&8[ &fKit &7Gracza &8]'
+    canRankHigher: true
+    items:
+      Kilof:
+        item: 'iron_pickaxe:0'
+        amount: 1
+        separate: false
+        enchant: 'efficiency:3;durability:3'
+      Enderchest:
+        item: 'ender_chest:0'
+        amount: 1
+        separate: false
+      Stoniarka:
+        item: 'emerald_ore:0'
+        amount: 5
+        separate: false
+        name: '&aGenerator kamienia'
+        lore:
+          - ' '
+          - '&8>> &fZniszczyc mozna jedynie &ezlotym &fkilofem!'
+        enchant: 'efficiency:5'
+      Drewno:
+        item: 'log:0'
+        amount: 16
+        separate: false
+  Vip:
+    time: '24h'
+    group: 'VIP'
+    item: 'stone_sword:0'
+    name: '&8[ &fKit &eVIPa &8]'
+    canRankHigher: true
+    items:
+      Miecz1:
+        item: 'diamond_sword:0'
+        amount: 1
+        separate: false
+        enchant: 'sharpness:5;fire_aspect:2'
+      Miecz2:
+        item: 'diamond_sword:0'
+        amount: 1
+        separate: false
+        enchant: 'sharpness:5;knockback:2'
+      Helm:
+        item: 'diamond_helmet:0'
+        amount: 1
+        separate: false
+        enchant: 'protection:4;durability:3'
+      Zbroja:
+        item: 'diamond_chestplate:0'
+        amount: 1
+        separate: false
+        enchant: 'protection:4;durability:3'
+      Spodnie:
+        item: 'diamond_leggings:0'
+        amount: 1
+        separate: false
+        enchant: 'protection:4;durability:3'
+      Buty:
+        item: 'diamond_boots:0'
+        amount: 1
+        separate: false
+        enchant: 'protection:4;durability:3'
+      Koxy:
+        item: 'golden_apple:1'
+        amount: 6
+        separate: false
+      Refile:
+        item: 'golden_apple:0'
+        amount: 12
+        separate: false
+      Perly:
+        item: 'ender_pearl:0'
+        amount: 6
+        separate: false
+      Luk1:
+        item: 'bow:0'
+        amount: 1
+        separate: false
+        enchant: 'power:5;flame:1;infinite:1'
+      Luk2:
+        item: 'bow:0'
+        amount: 1
+        separate: false
+        enchant: 'power:5;punch:2;infinite:1'
+      Strzala:
+        item: 'arrow:0'
+        amount: 1
+        separate: false
+  SV:
+    time: '24h'
+    group: 'SV'
+    item: 'iron_sword:0'
+    name: '&8[ &fKit &6SVa &8]'
+    canRankHigher: true
+    items:
+      Miecz1:
+        item: 'diamond_sword:0'
+        amount: 2
+        separate: true
+        enchant: 'sharpness:5;fire_aspect:2'
+      Miecz2:
+        item: 'diamond_sword:0'
+        amount: 2
+        separate: true
+        enchant: 'sharpness:5;knockback:2'
+      Helm:
+        item: 'diamond_helmet:0'
+        amount: 2
+        separate: true
+        enchant: 'protection:4;durability:3'
+      Zbroja:
+        item: 'diamond_chestplate:0'
+        amount: 2
+        separate: true
+        enchant: 'protection:4;durability:3'
+      Spodnie:
+        item: 'diamond_leggings:0'
+        amount: 2
+        separate: true
+        enchant: 'protection:4;durability:3'
+      Buty:
+        item: 'diamond_boots:0'
+        amount: 2
+        separate: true
+        enchant: 'protection:4;durability:3'
+      Koxy:
+        item: 'golden_apple:1'
+        amount: 12
+        separate: false
+      Refile:
+        item: 'golden_apple:0'
+        amount: 24
+        separate: false
+      Perly:
+        item: 'ender_pearl:0'
+        amount: 12
+        separate: false
+      Luk1:
+        item: 'bow:0'
+        amount: 2
+        separate: true
+        enchant: 'power:5;flame:1;infinite:1'
+      Luk2:
+        item: 'bow:0'
+        amount: 2
+        separate: true
+        enchant: 'power:5;punch:2;infinite:1'
+      Strzala:
+        item: 'arrow:0'
+        amount: 1
+        separate: false
+  MVP:
+    time: '24h'
+    group: 'MVP'
+    item: 'gold_sword:0'
+    name: '&8[ &fKit &3MVPa &8]'
+    canRankHigher: true
+    items:
+      Miecz1:
+        item: 'diamond_sword:0'
+        amount: 3
+        separate: true
+        enchant: 'sharpness:5;fire_aspect:2'
+      Miecz2:
+        item: 'diamond_sword:0'
+        amount: 3
+        separate: true
+        enchant: 'sharpness:5;knockback:2'
+      Helm:
+        item: 'diamond_helmet:0'
+        amount: 3
+        separate: true
+        enchant: 'protection:4;durability:3'
+      Zbroja:
+        item: 'diamond_chestplate:0'
+        amount: 3
+        separate: true
+        enchant: 'protection:4;durability:3'
+      Spodnie:
+        item: 'diamond_leggings:0'
+        amount: 3
+        separate: true
+        enchant: 'protection:4;durability:3'
+      Buty:
+        item: 'diamond_boots:0'
+        amount: 3
+        separate: true
+        enchant: 'protection:4;durability:3'
+      Koxy:
+        item: 'golden_apple:1'
+        amount: 24
+        separate: false
+      Refile:
+        item: 'golden_apple:0'
+        amount: 38
+        separate: false
+      Perly:
+        item: 'ender_pearl:0'
+        amount: 24
+        separate: false
+      Luk1:
+        item: 'bow:0'
+        amount: 3
+        separate: true
+        enchant: 'power:5;flame:1;infinite:1'
+      Luk2:
+        item: 'bow:0'
+        amount: 3
+        separate: true
+        enchant: 'power:5;punch:2;infinite:1'
+      Strzala:
+        item: 'arrow:0'
+        amount: 1
         separate: false

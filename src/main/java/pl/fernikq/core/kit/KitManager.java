@@ -19,11 +19,11 @@ public class KitManager {
 
     private final CorePlugin plugin;
     private File kitFile;
-    private Set<Kit> kits;
+    private List<Kit> kits;
 
     public KitManager(CorePlugin plugin){
         this.plugin = plugin;
-        this.kits = new HashSet<>();
+        this.kits = new ArrayList<>();
         checkFile();
         loadKits();
     }
@@ -52,7 +52,8 @@ public class KitManager {
             if(group == null){
                 group = UserGroup.PLAYER;
             }
-            Kit kit = new Kit(itemStack, kitName, time, group);
+            boolean canRankHigher = kitCfg.getBoolean("canRankHigher");
+            Kit kit = new Kit(itemStack, kitName, time, group, canRankHigher);
             ConfigurationSection configuration = kitCfg.getConfigurationSection("items");
             for(String items : configuration.getKeys(false)){
                 ConfigurationSection itemCfg = configuration.getConfigurationSection(items);
@@ -76,6 +77,8 @@ public class KitManager {
             this.kits.add(kit);
         }
     }
+
+
 
     public String kitsToString(Map<String, Long> kits) {
         if(kits.isEmpty() || kits == null) {
@@ -109,25 +112,39 @@ public class KitManager {
     }
 
     public void giveItems(Player player, Kit kit){
-        for(KitItem items : kit.getItems()){
-            ItemUtil.giveItems(player, items.getItemStack());
-
-            //TODO SEPARACJA
+        for(KitItem item : kit.getItems()){
+            if(item.isSeparate()){
+                for(int i = 0; i < item.getItemStack().getAmount(); i++){
+                    ItemUtil.giveItems(player, new ItemBuilder(item.getItemStack().clone()).setAmount(1).toItemStack());
+                }
+                continue;
+            }
+            ItemUtil.giveItems(player, item.getItemStack());
         }
     }
 
-    public boolean canTake(User user, Kit kit){
+    public boolean canTakeByTime(User user, Kit kit){
         if(!user.getKitTimes().containsKey(kit.getName())){
             return true;
         }
         return user.getKitTimes().get(kit.getName()) < System.currentTimeMillis();
     }
 
+    public boolean canTakeByGroup(User user, Kit kit){
+        if(kit.canRankHigher()){
+            return user.canByGroup(kit.getGroup());
+        }
+        if(user.canByGroup(UserGroup.ADMIN)){
+            return true;
+        }
+        return user.getGroup().equals(kit.getGroup());
+    }
+
     public YamlConfiguration getAutoMessageFile() {
         return YamlConfiguration.loadConfiguration(kitFile);
     }
 
-    public Set<Kit> getKits() {
-        return new HashSet<>(this.kits);
+    public List<Kit> getKits() {
+        return new ArrayList<>(this.kits);
     }
 }

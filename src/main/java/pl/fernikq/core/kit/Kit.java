@@ -14,13 +14,15 @@ public class Kit {
     private List<KitItem> items;
     private long time;
     private UserGroup group;
+    private boolean canRankHigher;
 
-    public Kit(ItemStack itemStack, String name, long time, UserGroup userGroup){
+    public Kit(ItemStack itemStack, String name, long time, UserGroup userGroup, boolean canRankHigher){
         this.item = itemStack;
         this.name = name;
         this.time = time;
         this.group = userGroup;
         this.items = new ArrayList<>();
+        this.canRankHigher = canRankHigher;
     }
 
     public ItemStack getItem() {
@@ -65,5 +67,13 @@ public class Kit {
 
     public void setGroup(UserGroup group) {
         this.group = group;
+    }
+
+    public boolean canRankHigher() {
+        return canRankHigher;
+    }
+
+    public void setCanRankHigher(boolean canRankHigher) {
+        this.canRankHigher = canRankHigher;
     }
 }

@@ -44,11 +44,11 @@ public class KitAction implements InventoryAction {
         }
         if(kitActionType.equals(KitActionType.TAKE)){
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
-                if(!user.canByGroup(kit.getGroup())){
-                    ChatUtil.sendMessage(player, "&8>> {n}Aby odebrac ten zestaw potrzebujesz rangi "+kit.getGroup().getPrefix()+" {n}lub wyzszej!");
+                if(!this.plugin.getKitManager().canTakeByGroup(user, kit)){
+                    ChatUtil.sendMessage(player, "&8>> {n}Aby odebrac ten zestaw musisz miec range "+kit.getGroup().getPrefix()+(kit.canRankHigher() ? " {n}lub wyzsza!" : ""));
                     return;
                 }
-                if(!this.plugin.getKitManager().canTake(user, kit)){
+                if(!this.plugin.getKitManager().canTakeByTime(user, kit)){
                     ChatUtil.sendMessage(player, "&8>> {n}Zestaw mozesz odebrac za&8: {c}"+ TimeUtil.getTimeToString(user.getKitTimes().get(kit.getName()) - System.currentTimeMillis()));
                     return;
                 }
