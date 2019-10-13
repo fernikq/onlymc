@@ -1,0 +1,11 @@
+Kits:
+  Jedzenie:
+    time: '1m'
+    group: 'PLAYER'
+    item: 'apple:0'
+    name: '&8[ &fKit Jedzenie &8]'
+    items:
+      Mieso:
+        item: 'cooked_beef:0'
+        amount: 64
+        separate: false

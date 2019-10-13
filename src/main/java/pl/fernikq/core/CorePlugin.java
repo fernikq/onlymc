@@ -10,6 +10,8 @@ import pl.fernikq.core.command.player.*;
 import pl.fernikq.core.command.premium.RepairCommand;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.inventory.user.UserInventory;
+import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
 import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
@@ -33,6 +35,8 @@ public class CorePlugin extends JavaPlugin {
     private TeleportManager teleportManager;
     private AutoMessageManager autoMessageManager;
     private WarpManager warpManager;
+    private UserInventory userInventory;
+    private KitManager kitManager;
 
     @Override
     public void onEnable() {
@@ -69,6 +73,8 @@ public class CorePlugin extends JavaPlugin {
         this.teleportManager = new TeleportManager(this);
         this.autoMessageManager = new AutoMessageManager(this);
         this.warpManager = new WarpManager(this);
+        this.userInventory = new UserInventory(this);
+        this.kitManager = new KitManager(this);
     }
 
     private void initData(){
@@ -164,5 +170,13 @@ public class CorePlugin extends JavaPlugin {
 
     public WarpManager getWarpManager() {
         return warpManager;
+    }
+
+    public UserInventory getUserInventory() {
+        return userInventory;
+    }
+
+    public KitManager getKitManager() {
+        return kitManager;
     }
 }
