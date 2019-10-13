@@ -27,6 +27,7 @@ public class CoreCommand extends CustomCommand {
             this.plugin.getConfigManager().reload();
             this.plugin.getMessagesManager().reload();
             this.plugin.getAutoMessageManager().reload();
+            this.plugin.getKitManager().reload();
             return ChatUtil.sendMessage(sender, "&8>> {c}Core {n}zostal przeladowany&8!");
         }
         return ChatUtil.sendMessage(sender, MessagesManager.usage("/core <reload>"));

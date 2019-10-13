@@ -78,7 +78,10 @@ public class KitManager {
         }
     }
 
-
+    public void reload(){
+        checkFile();
+        loadKits();
+    }
 
     public String kitsToString(Map<String, Long> kits) {
         if(kits.isEmpty() || kits == null) {
