@@ -82,7 +82,7 @@ public class User {
         this.kitTimes = kitTimes;
     }
 
-    public void addKitTime(String kitName, long time){
+    public void setKitTime(String kitName, long time){
         this.kitTimes.put(kitName, time);
     }
 

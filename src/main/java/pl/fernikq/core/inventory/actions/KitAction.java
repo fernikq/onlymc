@@ -54,7 +54,7 @@ public class KitAction implements InventoryAction {
                 }
                 this.plugin.getKitManager().giveItems(player, kit);
                 ChatUtil.sendMessage(player, "&8>> {n}Odebrales zestaw "+kit.getName());
-                user.addKitTime(kit.getName(), kit.getTime() + System.currentTimeMillis());
+                user.setKitTime(kit.getName(), kit.getTime() + System.currentTimeMillis());
                 player.closeInventory();
                 return;
             });
