@@ -63,6 +63,8 @@ public class CorePlugin extends JavaPlugin {
 
     private void initPacketReceiving(){
         //new BlockDigListener(this);
+
+        //TODO
     }
 
     private void initManagers(){
