@@ -25,6 +25,7 @@ public class ConfigManager {
     public static int teleportHomeTime;
     public static int teleportWarpTime;
     public static int autoMessageTime;
+    public static boolean chatEnabled;
 
     public void load(){
         try{
@@ -67,5 +68,6 @@ public class ConfigManager {
         teleportHomeTime = 10;
         teleportWarpTime = 10;
         autoMessageTime = 60;
+        chatEnabled = true;
     }
 }

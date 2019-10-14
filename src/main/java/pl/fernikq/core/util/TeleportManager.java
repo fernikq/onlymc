@@ -99,7 +99,7 @@ public class TeleportManager {
                 }
                 if(i >= delay) {
                     player.teleport(targetLocation);
-                    ChatUtil.sendMessage(player, MessagesManager.teleportFinishLocationMessage.replace("{PLAYER}", targetName));
+                    ChatUtil.sendMessage(player, MessagesManager.teleportFinishPlayerMessage.replace("{PLAYER}", targetName));
                     ((BukkitTask)tasks.get(player.getName().toLowerCase())).cancel();
                     tasks.remove(player.getName().toLowerCase());
                     player.removePotionEffect(PotionEffectType.CONFUSION);
