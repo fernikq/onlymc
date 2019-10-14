@@ -111,6 +111,8 @@ public class CorePlugin extends JavaPlugin {
         new SetWarpCommand("setwarp", new String[0], UserGroup.MOD, this).register();
         new DelWarpCommand("delwarp", new String[0], UserGroup.MOD, this).register();
         new WarpGroupCommand("warpgroup", new String[0], UserGroup.MOD, this).register();
+        new NameCommand("name", new String[0], UserGroup.HELPER, this).register();
+        new LoreCommand("lore", new String[0], UserGroup.HELPER, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();

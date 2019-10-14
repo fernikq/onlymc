@@ -6,11 +6,13 @@ public class Lang {
     public static String mustBePlayer;
     public static String playerOffline;
     public static String badIntegerFormat;
+    public static String integerLessThanOne;
 
     static {
         userNotExists = MessagesManager.error("Gracz nie istnieje w bazie danych!");
         playerOffline = MessagesManager.error("Podany gracz jest offline!");
         mustBePlayer = "Musisz byc graczem aby uzyc tej komendy";
         badIntegerFormat = MessagesManager.error("Format liczby jest niepoprawny!");
+        integerLessThanOne = MessagesManager.error("Liczba nie moze byc mniejsza niz 1!");
     }
 }
