@@ -2,6 +2,7 @@ package pl.fernikq.core;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.automessage.AutoMessageManager;
 import pl.fernikq.core.command.CommandManager;

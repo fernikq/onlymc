@@ -78,4 +78,13 @@ public class UserData {
             e.printStackTrace();
         }
     }
+
+    public void deleteUser(User user){
+        try {
+            this.plugin.getMySQL().openConnection();
+            this.plugin.getMySQL().update("DELETE FROM `core_users` WHERE `uuid` = '"+user.getUuid().toString()+"';");
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -25,6 +25,14 @@ public class UserManager {
         this.userData = new UserData(this.plugin);
     }
 
+    public boolean isCorrect(String name){
+        User user = getUser(name).getOrNull();
+        if(user == null){
+            return true;
+        }
+        return user.getName().equals(name);
+    }
+
     public User getUser(Player player){
         return this.users.computeIfAbsent(player.getUniqueId(), uuid -> {
            User user = new User(player);
@@ -45,8 +53,13 @@ public class UserManager {
         this.users.putIfAbsent(user.getUuid(), user);
     }
 
+    public void deleteUser(User user){
+        this.users.remove(user.getUuid());
+        this.userData.deleteUser(user);
+    }
+
     public Set<User> getUsers(){
-        return HashSet.ofAll(this.users.values());
+        return HashSet.ofAll(new ConcurrentHashMap<UUID, User>(this.users).values());
     }
 
     public UserData getUserData() {

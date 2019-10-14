@@ -55,7 +55,7 @@ public class WarpManager {
     }
 
     public Set<Warp> getWarps(){
-        return HashSet.ofAll(this.warps.values());
+        return HashSet.ofAll(new HashMap<String, Warp>(this.warps).values());
     }
 
     public WarpData getWarpData() {

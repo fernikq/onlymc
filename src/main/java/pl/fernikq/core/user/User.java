@@ -1,5 +1,7 @@
 package pl.fernikq.core.user;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.inventory.InventoryGUI;
@@ -8,6 +10,7 @@ import pl.fernikq.core.user.home.Home;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class User {
 
@@ -21,6 +24,7 @@ public class User {
     private boolean godMode;
     private Map<String, InventoryGUI> inventories;
     private Map<String, Long> kitTimes;
+    private Cache<User, Long> tpaRequests;
     private User privateMessageSender;
 
 
@@ -35,6 +39,7 @@ public class User {
         this.godMode = false;
         this.privateMessageSender = null;
         this.kitTimes = new HashMap<>();
+        this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
     }
 
     public User(ResultSet rs){
@@ -49,6 +54,7 @@ public class User {
             this.godMode = false;
             this.privateMessageSender = null;
             this.kitTimes = new HashMap<>();
+            this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -152,5 +158,9 @@ public class User {
 
     public List<Home> getHomeList(){
         return new ArrayList<Home>(this.homes.values());
+    }
+
+    public Cache<User, Long> getTpaRequests() {
+        return tpaRequests;
     }
 }
