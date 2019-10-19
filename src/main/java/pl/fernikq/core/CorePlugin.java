@@ -138,6 +138,7 @@ public class CorePlugin extends JavaPlugin {
         new InventoryClickListener(this);
         new AsyncPlayerChatListener(this);
         new PlayerDamageListener(this);
+        new PlayerLoginListener(this);
     }
 
     public ConfigManager getConfigManager() {
