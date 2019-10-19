@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
 public class PlayerJoinListener implements Listener {
@@ -32,6 +33,9 @@ public class PlayerJoinListener implements Listener {
         user.setLastAddress(player.getAddress().getAddress().getHostAddress());
         this.plugin.getTagManager().createTag(player);
         for(Player vanished : this.plugin.getVanishManager().getVanished()){
+            if(user.canByGroup(UserGroup.HELPER)){
+                return;
+            }
             player.hidePlayer(vanished);
         }
     }
