@@ -8,6 +8,7 @@ import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
 import pl.fernikq.core.command.player.*;
 import pl.fernikq.core.command.premium.RepairCommand;
+import pl.fernikq.core.command.simpleCommand.SimpleCommandManager;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.inventory.user.UserInventory;
@@ -39,6 +40,7 @@ public class CorePlugin extends JavaPlugin {
     private UserInventory userInventory;
     private KitManager kitManager;
     private VanishManager vanishManager;
+    private SimpleCommandManager simpleCommandManager;
 
     @Override
     public void onEnable() {
@@ -80,6 +82,7 @@ public class CorePlugin extends JavaPlugin {
         this.userInventory = new UserInventory(this);
         this.kitManager = new KitManager(this);
         this.vanishManager = new VanishManager(this);
+        this.simpleCommandManager = new SimpleCommandManager(this);
     }
 
     private void initData(){
@@ -195,5 +198,9 @@ public class CorePlugin extends JavaPlugin {
 
     public VanishManager getVanishManager() {
         return vanishManager;
+    }
+
+    public SimpleCommandManager getSimpleCommandManager() {
+        return simpleCommandManager;
     }
 }

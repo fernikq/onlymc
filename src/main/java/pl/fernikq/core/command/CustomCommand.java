@@ -37,6 +37,13 @@ public abstract class CustomCommand implements CommandExecutor {
         this.aliases = Arrays.asList(aliases);
     }
 
+    public CustomCommand(String name, List<String> aliases, UserGroup group, CorePlugin plugin){
+        this.name = name;
+        this.group = group;
+        this.plugin = plugin;
+        this.aliases = aliases;
+    }
+
     public CustomCommand(String name, String[] aliases, CorePlugin plugin){
         this.name = name;
         this.plugin = plugin;
