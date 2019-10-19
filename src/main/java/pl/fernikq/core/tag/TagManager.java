@@ -33,15 +33,16 @@ public class TagManager {
                 }
                 scoreboard.addPlayerToTeam(user.getName(), scoreboardTeam.getName());
                 scoreboardTeam.setDisplayName("");
-                scoreboardTeam.setPrefix("");
+                String prefix = "";
+                prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8] " : prefix;
+                scoreboardTeam.setPrefix(ChatUtil.fixColor(prefix));
                 scoreboardTeam.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
                 PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(scoreboardTeam, 0);
                 ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
                 for(Player online : Bukkit.getOnlinePlayers()){
                     if(!online.equals(player)){
-                        String prefix = "";
-                        prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8] " : prefix;
-                        scoreboardTeam.setPrefix(prefix);
+                        prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : prefix;
+                        scoreboardTeam.setPrefix(ChatUtil.fixColor(prefix));
                         ((CraftPlayer)online).getHandle().playerConnection.sendPacket(packet);
                         ScoreboardTeam team = scoreboard.getTeam(online.getName());
                         PacketPlayOutScoreboardTeam packetShow = new PacketPlayOutScoreboardTeam(team, 0);
@@ -68,8 +69,8 @@ public class TagManager {
                 team.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
                 for(Player online : Bukkit.getServer().getOnlinePlayers()) {
                     String prefix = "";
-                    prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8] " : prefix;
-                    team.setPrefix(prefix);
+                    prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : prefix;
+                    team.setPrefix(ChatUtil.fixColor(prefix));
                     PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 2);
                     ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
                 }
