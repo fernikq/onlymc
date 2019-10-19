@@ -21,6 +21,7 @@ import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.TeleportManager;
+import pl.fernikq.core.vanish.VanishManager;
 import pl.fernikq.core.warp.WarpManager;
 
 public class CorePlugin extends JavaPlugin {
@@ -37,6 +38,7 @@ public class CorePlugin extends JavaPlugin {
     private WarpManager warpManager;
     private UserInventory userInventory;
     private KitManager kitManager;
+    private VanishManager vanishManager;
 
     @Override
     public void onEnable() {
@@ -77,6 +79,7 @@ public class CorePlugin extends JavaPlugin {
         this.warpManager = new WarpManager(this);
         this.userInventory = new UserInventory(this);
         this.kitManager = new KitManager(this);
+        this.vanishManager = new VanishManager(this);
     }
 
     private void initData(){
@@ -100,7 +103,7 @@ public class CorePlugin extends JavaPlugin {
     private void registerCommands(){
 
         //ADMIN
-        new GroupCommand("group", new String[]{"pex"}, UserGroup.ROOT, this).register();
+        new GroupCommand("group", new String[0], UserGroup.ROOT, this).register();
         new GamemodeCommand("gamemode", new String[]{"gm"}, UserGroup.MOD, this).register();
         new GodCommand("god", new String[0], UserGroup.HELPER, this).register();
         new FlyCommand("fly", new String[0], UserGroup.HELPER, this).register();
@@ -118,6 +121,7 @@ public class CorePlugin extends JavaPlugin {
         new ChatCommand("chat", new String[0], UserGroup.HELPER, this).register();
         new TphereCommand("tphere", new String[]{"s"}, UserGroup.HELPER, this).register();
         new TeleportCommand("teleport", new String[]{"tp"}, UserGroup.HELPER, this).register();
+        new VanishCommand("vanish", new String[]{"v"}, UserGroup.HELPER, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -187,5 +191,9 @@ public class CorePlugin extends JavaPlugin {
 
     public KitManager getKitManager() {
         return kitManager;
+    }
+
+    public VanishManager getVanishManager() {
+        return vanishManager;
     }
 }

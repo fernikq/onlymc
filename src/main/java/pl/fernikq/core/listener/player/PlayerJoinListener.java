@@ -31,6 +31,9 @@ public class PlayerJoinListener implements Listener {
         }
         user.setLastAddress(player.getAddress().getAddress().getHostAddress());
         this.plugin.getTagManager().createTag(player);
+        for(Player vanished : this.plugin.getVanishManager().getVanished()){
+            player.hidePlayer(vanished);
+        }
     }
 }
 

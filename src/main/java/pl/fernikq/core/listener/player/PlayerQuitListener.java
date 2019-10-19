@@ -28,5 +28,6 @@ public class PlayerQuitListener implements Listener {
             this.plugin.getUserManager().getUserData().updateUser(user);
         });
         this.plugin.getTagManager().removeTag(player);
+        this.plugin.getVanishManager().removeVanished(player);
     }
 }

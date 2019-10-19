@@ -39,6 +39,9 @@ public class TagManager {
                 ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
                 for(Player online : Bukkit.getOnlinePlayers()){
                     if(!online.equals(player)){
+                        String prefix = "";
+                        prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8] " : prefix;
+                        scoreboardTeam.setPrefix(prefix);
                         ((CraftPlayer)online).getHandle().playerConnection.sendPacket(packet);
                         ScoreboardTeam team = scoreboard.getTeam(online.getName());
                         PacketPlayOutScoreboardTeam packetShow = new PacketPlayOutScoreboardTeam(team, 0);
@@ -63,8 +66,10 @@ public class TagManager {
                 }
                 team.setDisplayName("");
                 team.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
-                team.setPrefix("");
                 for(Player online : Bukkit.getServer().getOnlinePlayers()) {
+                    String prefix = "";
+                    prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8] " : prefix;
+                    team.setPrefix(prefix);
                     PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 2);
                     ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
                 }
