@@ -1,4 +1,4 @@
-package pl.fernikq.core.listener.player;
+package pl.fernikq.core.listener.block;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;

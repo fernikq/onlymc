@@ -13,9 +13,14 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
+import pl.fernikq.core.listener.block.BlockBreakListener;
+import pl.fernikq.core.listener.block.BlockPlaceListener;
+import pl.fernikq.core.listener.block.BucketListener;
+import pl.fernikq.core.listener.entity.EntityExplodeListener;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
 import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
+import pl.fernikq.core.region.RegionManager;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
@@ -41,6 +46,7 @@ public class CorePlugin extends JavaPlugin {
     private KitManager kitManager;
     private VanishManager vanishManager;
     private SimpleCommandManager simpleCommandManager;
+    private RegionManager regionManager;
 
     @Override
     public void onEnable() {
@@ -83,6 +89,7 @@ public class CorePlugin extends JavaPlugin {
         this.kitManager = new KitManager(this);
         this.vanishManager = new VanishManager(this);
         this.simpleCommandManager = new SimpleCommandManager(this);
+        this.regionManager = new RegionManager(this);
     }
 
     private void initData(){
@@ -146,6 +153,12 @@ public class CorePlugin extends JavaPlugin {
         new AsyncPlayerChatListener(this);
         new PlayerDamageListener(this);
         new PlayerLoginListener(this);
+        new BlockPlaceListener(this);
+        new BlockBreakListener(this);
+        new EntityExplodeListener(this);
+        new BucketListener(this);
+        new TeleportListener(this);
+        new PlayerInteractListener(this);
     }
 
     public ConfigManager getConfigManager() {
@@ -202,5 +215,9 @@ public class CorePlugin extends JavaPlugin {
 
     public SimpleCommandManager getSimpleCommandManager() {
         return simpleCommandManager;
+    }
+
+    public RegionManager getRegionManager() {
+        return regionManager;
     }
 }

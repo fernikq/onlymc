@@ -12,6 +12,7 @@
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/automessage.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/kits.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/commands.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/regions.yml" />
     </root>
   </artifact>
 </component>

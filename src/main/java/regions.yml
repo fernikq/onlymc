@@ -1,0 +1,23 @@
+regionsEnabled: true
+Regions:
+  1:
+    name: 'spawn'
+    location:
+      world: 'world'
+      lower:
+        x: -27
+        y: 0
+        z: -28
+      upper:
+        x: -18
+        y: 256
+        z: -21
+    priority: 1
+    canBuild: false
+    canDestroy: false
+    canThrowPearls: false
+    canUseBuckets: false
+    canExplode: false
+    canHurt: false
+    canSpawnVehicles: false
+    isStoneGeneratorRegion: false
