@@ -113,6 +113,35 @@ public class RegionManager {
         return HashSet.ofAll(this.regions);
     }
 
+    public RegionFeedback canHurt(Player damager, Player victim){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        Region damagerRegion = getRegionByLocation(damager.getLocation().getBlock().getLocation());
+        Region victimRegion = getRegionByLocation(victim.getLocation().getBlock().getLocation());
+        if(damagerRegion == null && victimRegion == null){
+            return RegionFeedback.ALLOW;
+        }
+        if(damagerRegion == null){
+            if(victimRegion.isCanHurt()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY_PVP_SPAWN;
+            }
+        }
+        if(victimRegion == null){
+            if(damagerRegion.isCanHurt()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY_PVP_OTHER_REGION;
+            }
+        }
+        if(!victimRegion.isCanHurt() && !damagerRegion.isCanHurt()){
+            return RegionFeedback.DENY_PVP_SPAWN;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
     public RegionFeedback canExplode(Location location){
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;

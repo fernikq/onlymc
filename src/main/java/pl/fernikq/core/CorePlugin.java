@@ -159,6 +159,7 @@ public class CorePlugin extends JavaPlugin {
         new BucketListener(this);
         new TeleportListener(this);
         new PlayerInteractListener(this);
+        new EntityDamageByEntityListener(this);
     }
 
     public ConfigManager getConfigManager() {
