@@ -113,6 +113,20 @@ public class RegionManager {
         return HashSet.ofAll(this.regions);
     }
 
+    public RegionFeedback canHurt(Player player){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        Region region = getRegionByLocation(player.getLocation().getBlock().getLocation());
+        if(region == null){
+            return RegionFeedback.ALLOW;
+        }
+        if(!region.isCanHurt()){
+            return RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
     public RegionFeedback canHurt(Player damager, Player victim){
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
