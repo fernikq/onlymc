@@ -140,7 +140,7 @@ public class RegionManager {
             if(victimRegion.isCanHurt()){
                 return RegionFeedback.ALLOW;
             }else{
-                return RegionFeedback.DENY_PVP_SPAWN;
+                return RegionFeedback.DENY;
             }
         }
         if(victimRegion == null){
@@ -151,10 +151,10 @@ public class RegionManager {
             }
         }
         if(!victimRegion.isCanHurt() && !damagerRegion.isCanHurt()){
-            return RegionFeedback.DENY_PVP_SPAWN;
+            return RegionFeedback.DENY;
         }
         if(damagerRegion.isCanHurt() && !victimRegion.isCanHurt()){
-            return RegionFeedback.DENY_PVP_SPAWN;
+            return RegionFeedback.DENY;
         }
         if(!damagerRegion.isCanHurt() && victimRegion.isCanHurt()){
             return RegionFeedback.DENY_PVP_OTHER_REGION;

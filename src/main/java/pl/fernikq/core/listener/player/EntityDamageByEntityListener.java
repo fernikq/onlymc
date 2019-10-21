@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.PlayerUtil;
 
 public class EntityDamageByEntityListener implements Listener {
 
@@ -25,10 +26,10 @@ public class EntityDamageByEntityListener implements Listener {
         if(event.getEntity().getType() != EntityType.PLAYER){
             return;
         }
-        if(event.getDamager().getType() != EntityType.PLAYER){
+        Player damager = PlayerUtil.getDamager(event);
+        if(damager == null){
             return;
         }
-        Player damager = (Player)event.getDamager();
         Player victim = (Player)event.getEntity();
         RegionFeedback regionFeedback = this.plugin.getRegionManager().canHurt(damager, victim);
         if(!regionFeedback.isPermit()){
