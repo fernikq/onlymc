@@ -1,4 +1,4 @@
-package pl.fernikq.core.listener.player;
+package pl.fernikq.core.listener.entity;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;

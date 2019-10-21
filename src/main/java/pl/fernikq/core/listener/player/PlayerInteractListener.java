@@ -1,6 +1,7 @@
 package pl.fernikq.core.listener.player;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,7 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.util.ChatUtil;
 
+@SuppressWarnings("deprecation")
 public class PlayerInteractListener implements Listener {
 
     private final CorePlugin plugin;
@@ -21,14 +23,22 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onVehicleSpawn(PlayerInteractEvent event){
+    public void onRegion(PlayerInteractEvent event){
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canSpawnVehicles(player, block.getLocation());
+        RegionFeedback regionFeedback;
+        regionFeedback = this.plugin.getRegionManager().canSpawnVehicles(player, block.getLocation());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
             return;
+        }
+        if(block.getTypeId() == 60){
+            regionFeedback = this.plugin.getRegionManager().canDestroyFarmlands(block.getLocation());
+            if(!regionFeedback.isPermit()){
+                event.setCancelled(true);
+                return;
+            }
         }
     }
 }

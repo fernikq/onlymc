@@ -21,6 +21,10 @@ public class Region {
     private boolean canSpreadFire;
     private boolean allowMobSpawning;
     private boolean canEnterDuringFight;
+    private boolean canDestroyFarmland;
+    private boolean canDestroyFrames;
+    private boolean canRotateItemInFrame;
+    private boolean canDestroyPaintings;
 
 
     public boolean isIn(Location location){
@@ -89,6 +93,22 @@ public class Region {
 
     public boolean isCanEnterDuringFight() {
         return canEnterDuringFight;
+    }
+
+    public boolean isCanDestroyFarmland() {
+        return canDestroyFarmland;
+    }
+
+    public boolean isCanDestroyFrames() {
+        return canDestroyFrames;
+    }
+
+    public boolean isCanRotateItemInFrame() {
+        return canRotateItemInFrame;
+    }
+
+    public boolean isCanDestroyPaintings() {
+        return canDestroyPaintings;
     }
 
     public Region setRegionName(String regionName) {
@@ -168,6 +188,26 @@ public class Region {
 
     public Region setCanEnterDuringFight(boolean canEnterDuringFight) {
         this.canEnterDuringFight = canEnterDuringFight;
+        return this;
+    }
+
+    public Region setCanDestroyFarmland(boolean canDestroyFarmland) {
+        this.canDestroyFarmland = canDestroyFarmland;
+        return this;
+    }
+
+    public Region setCanDestroyFrames(boolean canDestroyFrames) {
+        this.canDestroyFrames = canDestroyFrames;
+        return this;
+    }
+
+    public Region setCanRotateItemInFrame(boolean canRotateItemInFrame) {
+        this.canRotateItemInFrame = canRotateItemInFrame;
+        return this;
+    }
+
+    public Region setCanDestroyPaintings(boolean canDestroyPaintings) {
+        this.canDestroyPaintings = canDestroyPaintings;
         return this;
     }
 }

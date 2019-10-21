@@ -85,7 +85,8 @@ public class RegionManager {
                     setCanHurt(c.getBoolean("canHurt")).setCanSpawnVehicles(c.getBoolean("canSpawnVehicles")).
                     setStoneGeneratorRegion(c.getBoolean("isStoneGeneratorRegion")).setAllowFireSpread(c.getBoolean("allowFireSpread")).
                     setCanSpreadFire(c.getBoolean("canSpreadFire")).setAllowMobSpawning(c.getBoolean("allowMobSpawning")).
-                    setCanEnterDuringFight(c.getBoolean("canEnterDuringFight"));
+                    setCanEnterDuringFight(c.getBoolean("canEnterDuringFight")).setCanDestroyPaintings(c.getBoolean("canDestroyPaintings")).
+                    setCanDestroyFrames(c.getBoolean("canDestroyFrames")).setCanDestroyFarmland(c.getBoolean("canDestroyFarmlands"));
             this.regions.add(region);
         }
     }
@@ -115,16 +116,100 @@ public class RegionManager {
         return HashSet.ofAll(this.regions);
     }
 
+    public RegionFeedback canDestroyFarmlands(Location location){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isCanDestroyFarmland()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canDestroyPaintings(Player player, Location location){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(user == null){
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)){
+            return RegionFeedback.ALLOW;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isCanDestroyPaintings()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canDestroyPaintings(Location location){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isCanDestroyPaintings()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canDestroyFrames(Player player, Location location){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(user == null){
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)){
+            return RegionFeedback.ALLOW;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isCanDestroyFrames()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canDestroyFrames(Location location){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isCanDestroyFrames()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
+        }
+        return RegionFeedback.ALLOW;
+    }
+
     public RegionFeedback canHurt(Player player){
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
         }
-        Region region = getRegionByLocation(player.getLocation().getBlock().getLocation());
-        if(region == null){
-            return RegionFeedback.ALLOW;
-        }
-        if(!region.isCanHurt()){
-            return RegionFeedback.DENY;
+        for(Region region : getRegionsByLocation(player.getLocation().getBlock().getLocation())){
+            if(region.isCanHurt()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
         }
         return RegionFeedback.ALLOW;
     }

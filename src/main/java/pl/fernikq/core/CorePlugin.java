@@ -13,8 +13,10 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.block.*;
+import pl.fernikq.core.listener.entity.EntityDamageByEntityListener;
 import pl.fernikq.core.listener.entity.EntityExplodeListener;
 import pl.fernikq.core.listener.entity.CreatureSpawnListener;
+import pl.fernikq.core.listener.entity.HangingBreakListener;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
 import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
@@ -162,6 +164,7 @@ public class CorePlugin extends JavaPlugin {
         new BlockIgniteListener(this);
         new BlockSpreadListener(this);
         new CreatureSpawnListener(this);
+        new HangingBreakListener(this);
     }
 
     public ConfigManager getConfigManager() {
