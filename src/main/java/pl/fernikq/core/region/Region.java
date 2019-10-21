@@ -17,6 +17,11 @@ public class Region {
     private boolean canHurt;
     private boolean canSpawnVehicles;
     private boolean isStoneGeneratorRegion;
+    private boolean allowFireSpread;
+    private boolean canSpreadFire;
+    private boolean allowMobSpawning;
+    private boolean canEnterDuringFight;
+
 
     public boolean isIn(Location location){
         return location.toVector().isInAABB(this.lowerCorner.toVector(), this.upperCorner.toVector());
@@ -68,6 +73,22 @@ public class Region {
 
     public boolean isStoneGeneratorRegion() {
         return isStoneGeneratorRegion;
+    }
+
+    public boolean isAllowFireSpread() {
+        return allowFireSpread;
+    }
+
+    public boolean isCanSpreadFire() {
+        return canSpreadFire;
+    }
+
+    public boolean isAllowMobSpawning() {
+        return allowMobSpawning;
+    }
+
+    public boolean isCanEnterDuringFight() {
+        return canEnterDuringFight;
     }
 
     public Region setRegionName(String regionName) {
@@ -127,6 +148,26 @@ public class Region {
 
     public Region setStoneGeneratorRegion(boolean stoneGeneratorRegion) {
         isStoneGeneratorRegion = stoneGeneratorRegion;
+        return this;
+    }
+
+    public Region setAllowFireSpread(boolean allowFireSpread) {
+        this.allowFireSpread = allowFireSpread;
+        return this;
+    }
+
+    public Region setCanSpreadFire(boolean canSpreadFire) {
+        this.canSpreadFire = canSpreadFire;
+        return this;
+    }
+
+    public Region setAllowMobSpawning(boolean allowMobSpawning) {
+        this.allowMobSpawning = allowMobSpawning;
+        return this;
+    }
+
+    public Region setCanEnterDuringFight(boolean canEnterDuringFight) {
+        this.canEnterDuringFight = canEnterDuringFight;
         return this;
     }
 }

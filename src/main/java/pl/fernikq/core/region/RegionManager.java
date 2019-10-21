@@ -83,7 +83,9 @@ public class RegionManager {
                     setCanDestroy(c.getBoolean("canDestroy")).setCanThrowPearls(c.getBoolean("canThrowPearls")).
                     setCanUseBuckets(c.getBoolean("canUseBuckets")).setCanExplode(c.getBoolean("canExplode")).
                     setCanHurt(c.getBoolean("canHurt")).setCanSpawnVehicles(c.getBoolean("canSpawnVehicles")).
-                    setStoneGeneratorRegion(c.getBoolean("isStoneGeneratorRegion"));
+                    setStoneGeneratorRegion(c.getBoolean("isStoneGeneratorRegion")).setAllowFireSpread(c.getBoolean("allowFireSpread")).
+                    setCanSpreadFire(c.getBoolean("canSpreadFire")).setAllowMobSpawning(c.getBoolean("allowMobSpawning")).
+                    setCanEnterDuringFight(c.getBoolean("canEnterDuringFight"));
             this.regions.add(region);
         }
     }
@@ -158,6 +160,50 @@ public class RegionManager {
         }
         if(!damagerRegion.isCanHurt() && victimRegion.isCanHurt()){
             return RegionFeedback.DENY_PVP_OTHER_REGION;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback allowFireSpread(Location location){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isAllowFireSpread()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
+        }
+        //TODO Gildie
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canSpreadFire(Location location){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isCanSpreadFire()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
+        }
+        //TODO Gildie
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback allowMobSpawning(Location location){
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isAllowMobSpawning()){
+                return RegionFeedback.ALLOW;
+            }else{
+                return RegionFeedback.DENY;
+            }
         }
         return RegionFeedback.ALLOW;
     }

@@ -21,3 +21,7 @@ Regions:
     canHurt: false
     canSpawnVehicles: false
     isStoneGeneratorRegion: false
+    allowFireSpread: false
+    canSpreadFire: false
+    allowMobSpawning: false
+    canEnterDuringFight: false

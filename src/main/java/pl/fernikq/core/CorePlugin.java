@@ -1,6 +1,5 @@
 package pl.fernikq.core;
 
-import com.comphenix.protocol.ProtocolLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.automessage.AutoMessageManager;
@@ -13,10 +12,9 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
-import pl.fernikq.core.listener.block.BlockBreakListener;
-import pl.fernikq.core.listener.block.BlockPlaceListener;
-import pl.fernikq.core.listener.block.BucketListener;
+import pl.fernikq.core.listener.block.*;
 import pl.fernikq.core.listener.entity.EntityExplodeListener;
+import pl.fernikq.core.listener.entity.CreatureSpawnListener;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
 import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
@@ -160,6 +158,10 @@ public class CorePlugin extends JavaPlugin {
         new TeleportListener(this);
         new PlayerInteractListener(this);
         new EntityDamageByEntityListener(this);
+        new BlockBurnListener(this);
+        new BlockIgniteListener(this);
+        new BlockSpreadListener(this);
+        new CreatureSpawnListener(this);
     }
 
     public ConfigManager getConfigManager() {
