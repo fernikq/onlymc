@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
@@ -33,7 +34,7 @@ public class PlayerInteractListener implements Listener {
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
             return;
         }
-        if(block.getTypeId() == 60){
+        if(block.getTypeId() == 60 && event.getAction() == Action.PHYSICAL){
             regionFeedback = this.plugin.getRegionManager().canDestroyFarmlands(block.getLocation());
             if(!regionFeedback.isPermit()){
                 event.setCancelled(true);
