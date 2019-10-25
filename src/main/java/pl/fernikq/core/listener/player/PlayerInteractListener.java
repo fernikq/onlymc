@@ -29,7 +29,7 @@ public class PlayerInteractListener implements Listener {
         Block block = event.getClickedBlock();
         RegionFeedback regionFeedback;
         regionFeedback = this.plugin.getRegionManager().canSpawnVehicles(player, block.getLocation());
-        if(!regionFeedback.isPermit()){
+        if(!regionFeedback.isPermit() && event.getAction() == Action.RIGHT_CLICK_BLOCK){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
             return;
@@ -39,6 +39,15 @@ public class PlayerInteractListener implements Listener {
             if(!regionFeedback.isPermit()){
                 event.setCancelled(true);
                 return;
+            }
+        }
+        if(block.getType() == Material.TNT && event.getAction() == Action.RIGHT_CLICK_BLOCK){
+            if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.FLINT_AND_STEEL) {
+                regionFeedback = this.plugin.getRegionManager().canExplode(block.getLocation());
+                if(!regionFeedback.isPermit()) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
     }

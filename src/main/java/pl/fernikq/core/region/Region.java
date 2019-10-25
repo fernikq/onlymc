@@ -23,7 +23,6 @@ public class Region {
     private boolean canEnterDuringFight;
     private boolean canDestroyFarmland;
     private boolean canDestroyFrames;
-    private boolean canRotateItemInFrame;
     private boolean canDestroyPaintings;
 
 
@@ -99,15 +98,11 @@ public class Region {
         return canDestroyFarmland;
     }
 
-    public boolean isCanDestroyFrames() {
+    public boolean isCanChangeFrames() {
         return canDestroyFrames;
     }
 
-    public boolean isCanRotateItemInFrame() {
-        return canRotateItemInFrame;
-    }
-
-    public boolean isCanDestroyPaintings() {
+    public boolean isCanChangePaintings() {
         return canDestroyPaintings;
     }
 
@@ -198,11 +193,6 @@ public class Region {
 
     public Region setCanDestroyFrames(boolean canDestroyFrames) {
         this.canDestroyFrames = canDestroyFrames;
-        return this;
-    }
-
-    public Region setCanRotateItemInFrame(boolean canRotateItemInFrame) {
-        this.canRotateItemInFrame = canRotateItemInFrame;
         return this;
     }
 

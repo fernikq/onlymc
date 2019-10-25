@@ -9,9 +9,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.util.ChatUtil;
+
+import java.util.List;
+import java.util.Map;
 
 public class HangingBreakListener implements Listener {
 
@@ -25,44 +29,56 @@ public class HangingBreakListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onRemove(HangingBreakEvent event){
         Entity entity = event.getEntity();
-        if(event instanceof HangingBreakByEntityEvent) {
-            HangingBreakByEntityEvent entityEvent = (HangingBreakByEntityEvent) event;
-            Entity remover = entityEvent.getRemover();
+        if(event.getCause() == HangingBreakEvent.RemoveCause.ENTITY){
+            Entity remover = ((HangingBreakByEntityEvent)event).getRemover();
             if(remover.getType() == EntityType.PLAYER){
                 Player player = (Player)remover;
                 if(entity.getType() == EntityType.PAINTING){
-                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canDestroyPaintings(player, entity.getLocation());
+                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangePaintings(player, entity.getLocation());
                     if(!regionFeedback.isPermit()){
                         event.setCancelled(true);
                         return;
                     }
-                    return;
                 }
                 if(entity.getType() == EntityType.ITEM_FRAME){
-                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canDestroyFrames(player, entity.getLocation());
+                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(player, entity.getLocation());
                     if(!regionFeedback.isPermit()){
                         event.setCancelled(true);
                         return;
                     }
-                    return;
+                }
+            }else{
+                if(entity.getType() == EntityType.PAINTING){
+                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangePaintings(entity.getLocation());
+                    if(!regionFeedback.isPermit()){
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+                if(entity.getType() == EntityType.ITEM_FRAME){
+                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(entity.getLocation());
+                    if(!regionFeedback.isPermit()){
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
             }
         }
-        if(entity.getType() == EntityType.PAINTING){
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().canDestroyPaintings(entity.getLocation());
-            if(!regionFeedback.isPermit()){
-                event.setCancelled(true);
-                return;
+        if(event.getCause() == HangingBreakEvent.RemoveCause.EXPLOSION){
+            if(entity.getType() == EntityType.PAINTING){
+                RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangePaintings(entity.getLocation());
+                if(!regionFeedback.isPermit()){
+                    event.setCancelled(true);
+                    return;
+                }
             }
-            return;
-        }
-        if(entity.getType() == EntityType.ITEM_FRAME){
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().canDestroyFrames(entity.getLocation());
-            if(!regionFeedback.isPermit()){
-                event.setCancelled(true);
-                return;
+            if(entity.getType() == EntityType.ITEM_FRAME){
+                RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(entity.getLocation());
+                if(!regionFeedback.isPermit()){
+                    event.setCancelled(true);
+                    return;
+                }
             }
-            return;
         }
     }
 }

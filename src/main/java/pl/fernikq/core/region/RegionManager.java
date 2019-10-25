@@ -85,8 +85,8 @@ public class RegionManager {
                     setCanHurt(c.getBoolean("canHurt")).setCanSpawnVehicles(c.getBoolean("canSpawnVehicles")).
                     setStoneGeneratorRegion(c.getBoolean("isStoneGeneratorRegion")).setAllowFireSpread(c.getBoolean("allowFireSpread")).
                     setCanSpreadFire(c.getBoolean("canSpreadFire")).setAllowMobSpawning(c.getBoolean("allowMobSpawning")).
-                    setCanEnterDuringFight(c.getBoolean("canEnterDuringFight")).setCanDestroyPaintings(c.getBoolean("canDestroyPaintings")).
-                    setCanDestroyFrames(c.getBoolean("canDestroyFrames")).setCanDestroyFarmland(c.getBoolean("canDestroyFarmlands"));
+                    setCanEnterDuringFight(c.getBoolean("canEnterDuringFight")).setCanDestroyPaintings(c.getBoolean("canChangePaintings")).
+                    setCanDestroyFrames(c.getBoolean("canChangeFrames")).setCanDestroyFarmland(c.getBoolean("canDestroyFarmlands"));
             this.regions.add(region);
         }
     }
@@ -130,7 +130,7 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canDestroyPaintings(Player player, Location location){
+    public RegionFeedback canChangePaintings(Player player, Location location){
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
         }
@@ -142,7 +142,7 @@ public class RegionManager {
             return RegionFeedback.ALLOW;
         }
         for(Region region : getRegionsByLocation(location)){
-            if(region.isCanDestroyPaintings()){
+            if(region.isCanChangePaintings()){
                 return RegionFeedback.ALLOW;
             }else{
                 return RegionFeedback.DENY;
@@ -151,12 +151,12 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canDestroyPaintings(Location location){
+    public RegionFeedback canChangePaintings(Location location){
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
         }
         for(Region region : getRegionsByLocation(location)){
-            if(region.isCanDestroyPaintings()){
+            if(region.isCanChangePaintings()){
                 return RegionFeedback.ALLOW;
             }else{
                 return RegionFeedback.DENY;
@@ -165,7 +165,7 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canDestroyFrames(Player player, Location location){
+    public RegionFeedback canChangeFrames(Player player, Location location){
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
         }
@@ -177,7 +177,7 @@ public class RegionManager {
             return RegionFeedback.ALLOW;
         }
         for(Region region : getRegionsByLocation(location)){
-            if(region.isCanDestroyFrames()){
+            if(region.isCanChangeFrames()){
                 return RegionFeedback.ALLOW;
             }else{
                 return RegionFeedback.DENY;
@@ -186,12 +186,12 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canDestroyFrames(Location location){
+    public RegionFeedback canChangeFrames(Location location){
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
         }
         for(Region region : getRegionsByLocation(location)){
-            if(region.isCanDestroyFrames()){
+            if(region.isCanChangeFrames()){
                 return RegionFeedback.ALLOW;
             }else{
                 return RegionFeedback.DENY;

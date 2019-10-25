@@ -25,6 +25,6 @@ Regions:
     canSpreadFire: false
     allowMobSpawning: false
     canEnterDuringFight: false
-    canDestroyPaintings: false
-    canDestroyFrames: false
+    canChangePaintings: false
+    canChangeFrames: false
     canDestroyFarmlands: false
