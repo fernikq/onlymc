@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
+import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.PlayerUtil;
 
@@ -49,7 +50,7 @@ public class EntityDamageByEntityListener implements Listener {
         if(damager == null) {
             return;
         }
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(damager, event.getEntity().getLocation());
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(damager, event.getEntity().getLocation(), RegionProtectionType.FRAMES);
         if(!regionFeedback.isPermit()) {
             event.setCancelled(true);
             return;

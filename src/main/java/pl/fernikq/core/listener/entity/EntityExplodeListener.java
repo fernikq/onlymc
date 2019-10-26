@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
+import pl.fernikq.core.region.RegionProtectionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class EntityExplodeListener implements Listener {
         //TODO godziny
         List<Block> toRemove = new ArrayList<>();
         for(Block block : event.blockList()){
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().canExplode(block.getLocation());
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.EXPLOSION);
             if(!regionFeedback.isPermit()){
                 toRemove.add(block);
             }

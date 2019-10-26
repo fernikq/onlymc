@@ -10,6 +10,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
+import pl.fernikq.core.region.RegionProtectionType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,7 @@ public class CreatureSpawnListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event){
         Entity entity = event.getEntity();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().allowMobSpawning(entity.getLocation().getBlock().getLocation());
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(entity.getLocation().getBlock().getLocation(), RegionProtectionType.MOB_SPAWNING);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             return;

@@ -1,4 +1,4 @@
-package pl.fernikq.core.listener.block;
+package pl.fernikq.core.listener.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
+import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.util.ChatUtil;
 
 public class BucketListener implements Listener {
@@ -25,7 +26,7 @@ public class BucketListener implements Listener {
     public void onBucketFill(PlayerBucketFillEvent event){
         Player player = event.getPlayer();
         Block block = event.getBlockClicked();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canUseBuckets(player, block.getLocation());
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, block.getLocation(), RegionProtectionType.BUCKETS);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
@@ -37,7 +38,7 @@ public class BucketListener implements Listener {
     public void onEmptyBucket(PlayerBucketEmptyEvent event){
         Player player = event.getPlayer();
         Block block = event.getBlockClicked();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canUseBuckets(player, block.getLocation());
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, block.getLocation(), RegionProtectionType.BUCKETS);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());

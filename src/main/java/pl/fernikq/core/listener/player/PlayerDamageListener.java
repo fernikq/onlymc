@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
+import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.util.ChatUtil;
 
 public class PlayerDamageListener implements Listener {
@@ -25,7 +26,7 @@ public class PlayerDamageListener implements Listener {
             return;
         }
         Player player = (Player)event.getEntity();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canHurt(player);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player.getLocation().getBlock().getLocation(), RegionProtectionType.HURT);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             return;

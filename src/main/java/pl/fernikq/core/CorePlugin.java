@@ -165,6 +165,7 @@ public class CorePlugin extends JavaPlugin {
         new HangingPlaceListener(this);
         new EntityChangeBlockListener(this);
         new PlayerInteractEntityListener(this);
+        new LeavesDecayListener(this);
     }
 
     public ConfigManager getConfigManager() {

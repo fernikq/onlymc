@@ -1,33 +1,28 @@
 package pl.fernikq.core.listener.block;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockIgniteEvent;
-import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
-import pl.fernikq.core.util.ChatUtil;
 
-public class BlockBurnListener implements Listener {
+public class LeavesDecayListener implements Listener {
 
     private final CorePlugin plugin;
 
-    public BlockBurnListener(CorePlugin plugin){
+    public LeavesDecayListener(CorePlugin plugin){
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBurn(BlockBurnEvent event){
+    public void onRegion(LeavesDecayEvent event){
         Block block = event.getBlock();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.FIRE_SPREAD);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.LEAVES);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             return;

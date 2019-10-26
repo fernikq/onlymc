@@ -85,8 +85,9 @@ public class RegionManager {
                     setCanHurt(c.getBoolean("canHurt")).setCanSpawnVehicles(c.getBoolean("canSpawnVehicles")).
                     setStoneGeneratorRegion(c.getBoolean("isStoneGeneratorRegion")).setAllowFireSpread(c.getBoolean("allowFireSpread")).
                     setCanSpreadFire(c.getBoolean("canSpreadFire")).setAllowMobSpawning(c.getBoolean("allowMobSpawning")).
-                    setCanEnterDuringFight(c.getBoolean("canEnterDuringFight")).setCanDestroyPaintings(c.getBoolean("canChangePaintings")).
-                    setCanDestroyFrames(c.getBoolean("canChangeFrames")).setCanDestroyFarmland(c.getBoolean("canDestroyFarmlands"));
+                    setCanEnterDuringFight(c.getBoolean("canEnterDuringFight")).setCanChangePaintings(c.getBoolean("canChangePaintings")).
+                    setCanChangeFrames(c.getBoolean("canChangeFrames")).setCanDestroyFarmland(c.getBoolean("canDestroyFarmlands")).
+                    setAllowLeavesDecay(c.getBoolean("allowLeavesDecay"));
             this.regions.add(region);
         }
     }
@@ -116,21 +117,52 @@ public class RegionManager {
         return HashSet.ofAll(this.regions);
     }
 
-    public RegionFeedback canDestroyFarmlands(Location location){
+    public RegionFeedback can(Location location, RegionProtectionType type){
+        if(!this.regionsEnabled){
+            return RegionFeedback.ALLOW;
+        }
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
         }
         for(Region region : getRegionsByLocation(location)){
-            if(region.isCanDestroyFarmland()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
+            switch(type){
+                case EXPLOSION:{
+                    return region.isCanExplode() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case FIRE_SPREAD:{
+                    return region.isAllowFireSpread() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case MOB_SPAWNING:{
+                    return region.isAllowMobSpawning() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case FRAMES:{
+                    return region.isCanChangeFrames() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case PAINTINGS:{
+                    return region.isCanChangePaintings() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case LEAVES:{
+                    return region.isAllowLeavesDecay() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case FARMLANDS:{
+                    return region.isCanDestroyFarmland() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case HURT:{
+                    return region.isCanHurt() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case CAN_FIRE_SPREAD:{
+                    return region.isCanSpreadFire() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
             }
+            System.out.println("can without player switch failed");
         }
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canChangePaintings(Player player, Location location){
+    public RegionFeedback can(Player player, Location location, RegionProtectionType type){
+        if(!this.regionsEnabled){
+            return RegionFeedback.ALLOW;
+        }
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
         }
@@ -142,79 +174,49 @@ public class RegionManager {
             return RegionFeedback.ALLOW;
         }
         for(Region region : getRegionsByLocation(location)){
-            if(region.isCanChangePaintings()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
+            switch(type){
+                case CAN_FIRE_SPREAD:{
+                    return region.isCanSpreadFire() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case FRAMES:{
+                    return region.isCanChangeFrames() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case PAINTINGS:{
+                    return region.isCanChangePaintings() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                case BUILD:{
+                    return region.isCanBuild() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUILD_SPAWN;
+                }
+                case DESTROY:{
+                    if(region.isCanDestroy()){
+                        if(region.isStoneGeneratorRegion()){
+                            if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.GOLD_PICKAXE){
+                                return RegionFeedback.DENY_DESTROY_GOLD_PICKAXE;
+                            }
+                        }
+                        return RegionFeedback.ALLOW;
+                    }
+                    return RegionFeedback.DENY_DESTROY_SPAWN;
+                }
+                case BUCKETS:{
+                    return region.isCanUseBuckets() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUCKETS;
+                }
+                case PEARLS:{
+                    return region.isCanThrowPearls() ? RegionFeedback.ALLOW : RegionFeedback.DENY_PEARLS;
+                }
+                case VEHICLES:{
+                    return region.isCanSpawnVehicles() ? RegionFeedback.ALLOW : RegionFeedback.DENY_SPAWN_VEHICLES;
+                }
             }
-        }
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canChangePaintings(Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanChangePaintings()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
-            }
-        }
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canChangeFrames(Player player, Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        if(user == null){
-            return RegionFeedback.DENY_ERROR;
-        }
-        if(user.canByGroup(UserGroup.ADMIN)){
-            return RegionFeedback.ALLOW;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanChangeFrames()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
-            }
-        }
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canChangeFrames(Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanChangeFrames()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
-            }
-        }
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canHurt(Player player){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        for(Region region : getRegionsByLocation(player.getLocation().getBlock().getLocation())){
-            if(region.isCanHurt()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
-            }
+            System.out.println("can with player switch failed");
         }
         return RegionFeedback.ALLOW;
     }
 
     public RegionFeedback canHurt(Player damager, Player victim){
+        if(!this.regionsEnabled){
+            return RegionFeedback.ALLOW;
+        }
         if(getRegions().isEmpty() && this.regionsEnabled){
             return RegionFeedback.DENY_ERROR;
         }
@@ -246,189 +248,7 @@ public class RegionManager {
         if(!damagerRegion.isCanHurt() && victimRegion.isCanHurt()){
             return RegionFeedback.DENY_PVP_OTHER_REGION;
         }
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback allowFireSpread(Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isAllowFireSpread()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
-            }
-        }
-        //TODO Gildie
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canSpreadFire(Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanSpreadFire()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
-            }
-        }
-        //TODO Gildie
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback allowMobSpawning(Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isAllowMobSpawning()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
-            }
-        }
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canExplode(Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        //TODO poziom Y
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanExplode()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY;
-            }
-        }
-        //TODO Gildie
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canThrowPearl(Player player, Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        if(user == null){
-            return RegionFeedback.DENY_ERROR;
-        }
-        if(user.canByGroup(UserGroup.ADMIN)){
-            return RegionFeedback.ALLOW;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanThrowPearls()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY_PEARLS;
-            }
-        }
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canSpawnVehicles(Player player, Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        List<Material> materials = Arrays.asList(Material.BOAT, Material.MINECART, Material.COMMAND_MINECART, Material.EXPLOSIVE_MINECART,
-                Material.HOPPER_MINECART, Material.POWERED_MINECART, Material.STORAGE_MINECART);
-        if(player.getItemInHand() == null){
-            return RegionFeedback.ALLOW;
-        }
-        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        if(user == null){
-            return RegionFeedback.DENY_ERROR;
-        }
-        if(user.canByGroup(UserGroup.ADMIN)){
-            return RegionFeedback.ALLOW;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanSpawnVehicles()){
-                return RegionFeedback.ALLOW;
-            }else{
-                for(Material material : materials){
-                    if(player.getItemInHand().getType() == material){
-                        return RegionFeedback.DENY_SPAWN_VEHICLES;
-                    }
-                }
-                return RegionFeedback.ALLOW;
-            }
-        }
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canUseBuckets(Player player, Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        if(user == null){
-            return RegionFeedback.DENY_ERROR;
-        }
-        if(user.canByGroup(UserGroup.ADMIN)){
-            return RegionFeedback.ALLOW;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanUseBuckets()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY_BUCKETS;
-            }
-        }
-        //TODO Gildie
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canBuild(Player player, Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        if(user == null){
-            return RegionFeedback.DENY_ERROR;
-        }
-        if(user.canByGroup(UserGroup.ADMIN)){
-            return RegionFeedback.ALLOW;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanBuild()){
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY_BUILD_SPAWN;
-            }
-        }
-        //TODO Gildie, walka etc
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback canDestroy(Player player, Location location){
-        if(getRegions().isEmpty() && this.regionsEnabled){
-            return RegionFeedback.DENY_ERROR;
-        }
-        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        if(user == null){
-            return RegionFeedback.DENY_ERROR;
-        }
-        if(user.canByGroup(UserGroup.ADMIN)){
-            return RegionFeedback.ALLOW;
-        }
-        for(Region region : getRegionsByLocation(location)){
-            if(region.isCanDestroy()){
-                if(region.isStoneGeneratorRegion()){
-                    if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.GOLD_PICKAXE){
-                        return RegionFeedback.DENY_DESTROY_GOLD_PICKAXE;
-                    }
-                }
-                return RegionFeedback.ALLOW;
-            }else{
-                return RegionFeedback.DENY_DESTROY_SPAWN;
-            }
-        }
-        //TODO Gildie, walka etc
+        //TODO Relations
         return RegionFeedback.ALLOW;
     }
 }

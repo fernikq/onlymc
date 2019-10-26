@@ -28,3 +28,4 @@ Regions:
     canChangePaintings: false
     canChangeFrames: false
     canDestroyFarmlands: false
+    allowLeavesDecay: false

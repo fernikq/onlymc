@@ -1,4 +1,4 @@
-package pl.fernikq.core.listener.entity;
+package pl.fernikq.core.listener.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
+import pl.fernikq.core.region.RegionProtectionType;
 
 public class PlayerInteractEntityListener implements Listener {
 
@@ -27,7 +28,7 @@ public class PlayerInteractEntityListener implements Listener {
         if(entity.getType() != EntityType.ITEM_FRAME){
             return;
         }
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(player, entity.getLocation());
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, entity.getLocation(), RegionProtectionType.FRAMES);
         if(!regionFeedback.isPermit()) {
             event.setCancelled(true);
             return;

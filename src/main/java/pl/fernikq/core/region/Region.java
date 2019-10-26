@@ -22,8 +22,9 @@ public class Region {
     private boolean allowMobSpawning;
     private boolean canEnterDuringFight;
     private boolean canDestroyFarmland;
-    private boolean canDestroyFrames;
-    private boolean canDestroyPaintings;
+    private boolean canChangeFrames;
+    private boolean canChangePaintings;
+    private boolean allowLeavesDecay;
 
 
     public boolean isIn(Location location){
@@ -99,11 +100,15 @@ public class Region {
     }
 
     public boolean isCanChangeFrames() {
-        return canDestroyFrames;
+        return canChangeFrames;
     }
 
     public boolean isCanChangePaintings() {
-        return canDestroyPaintings;
+        return canChangePaintings;
+    }
+
+    public boolean isAllowLeavesDecay() {
+        return allowLeavesDecay;
     }
 
     public Region setRegionName(String regionName) {
@@ -191,13 +196,18 @@ public class Region {
         return this;
     }
 
-    public Region setCanDestroyFrames(boolean canDestroyFrames) {
-        this.canDestroyFrames = canDestroyFrames;
+    public Region setCanChangeFrames(boolean canDestroyFrames) {
+        this.canChangeFrames = canDestroyFrames;
         return this;
     }
 
-    public Region setCanDestroyPaintings(boolean canDestroyPaintings) {
-        this.canDestroyPaintings = canDestroyPaintings;
+    public Region setCanChangePaintings(boolean canDestroyPaintings) {
+        this.canChangePaintings = canDestroyPaintings;
+        return this;
+    }
+
+    public Region setAllowLeavesDecay(boolean allowLeavesDecay) {
+        this.allowLeavesDecay = allowLeavesDecay;
         return this;
     }
 }
