@@ -1,10 +1,14 @@
 package pl.fernikq.core.config;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.util.LocationUtil;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 
 public class ConfigManager {
 
@@ -26,6 +30,8 @@ public class ConfigManager {
     public static int teleportWarpTime;
     public static int autoMessageTime;
     public static boolean chatEnabled;
+    public static String spawnLocation;
+    public static List<String> blockedCommands;
 
     public void load(){
         try{
@@ -69,5 +75,7 @@ public class ConfigManager {
         teleportWarpTime = 10;
         autoMessageTime = 60;
         chatEnabled = true;
+        spawnLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
+        blockedCommands = Arrays.asList("/bukkit:me", "/minecraft:me", "/me");
     }
 }

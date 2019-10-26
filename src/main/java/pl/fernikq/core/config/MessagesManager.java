@@ -32,6 +32,7 @@ public class MessagesManager {
     public static String helpopFormat;
     public static String playerJoinMessage;
     public static String playerQuitMessage;
+    public static String commandHelpMessage;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -99,5 +100,6 @@ public class MessagesManager {
         helpopFormat = "&8[ &4&lHELPOP&8 ] &c{NICK}&8: &f";
         playerJoinMessage = "&8>> &8[&a+&8] &f{PLAYER}";
         playerQuitMessage = "&8>> &8[&c-&8] &f{PLAYER}";
+        commandHelpMessage = "&8>> {n}Podana komenda nie istnieje&8! {n}Sprawdz dostepne komendy pod {c}/pomoc";
     }
 }

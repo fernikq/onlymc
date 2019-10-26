@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.yaml.snakeyaml.Yaml;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 
@@ -270,11 +271,12 @@ public class RegionManager {
         for(Region region : getRegionsByLocation(location)){
             java.util.Set<String> blockedCommands = new java.util.HashSet<>();
             region.getBlockedCommands().forEach(blocked -> blockedCommands.add(blocked.toLowerCase()));
-            if(blockedCommands.contains(command.toLowerCase())){
-                return RegionFeedback.DENY_PROCCESS_COMMAND;
-            }else{
-                return RegionFeedback.ALLOW;
+            if(blockedCommands.contains(command.toLowerCase())) {
+                return RegionFeedback.DENY_PROCCESS_COMMAND_REGION;
             }
+        }
+        if(ConfigManager.blockedCommands.contains(command.toLowerCase())){
+            return RegionFeedback.DENY_PROCCESS_COMMAND;
         }
         return RegionFeedback.ALLOW;
     }
