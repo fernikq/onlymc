@@ -71,6 +71,9 @@ public class KitManager {
                     itemBuilder.setEnchant(ItemUtil.getEnchantsFromString(itemCfg.getString("enchant")));
                 }
                 KitItem kitItem = new KitItem(itemBuilder.toItemStack(), itemCfg.getBoolean("separate"));
+                if(itemCfg.getString("nameInGUI") != null){
+                    kitItem.setName(itemCfg.getString("nameInGUI"));
+                }
                 kitItemList.add(kitItem);
                 kit.setItems(kitItemList);
             }

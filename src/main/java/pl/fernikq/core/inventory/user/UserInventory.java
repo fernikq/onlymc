@@ -42,6 +42,9 @@ public class UserInventory {
         user.addInventory(gui);
         for(KitItem kitItem : kit.getItems()){
             ItemBuilder builder = new ItemBuilder(kitItem.getItemStack().clone()).setAmount(1).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ilosc&8: {c}"+kitItem.getItemStack().getAmount())));
+            if(kitItem.getName() != null){
+                builder.setName(ChatUtil.fixColor("{c}&l"+kitItem.getName()));
+            }
             gui.addItem(builder.toItemStack());
         }
         ItemBuilder take = new ItemBuilder(Material.WOOL).setDurability((short)5).setName(ChatUtil.fixColor("&a&lOdbierz zestaw"));

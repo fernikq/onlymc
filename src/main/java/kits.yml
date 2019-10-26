@@ -1,3 +1,4 @@
+#Dostepne zmienne: nameInGUI, enchant, lore, name
 Kits:
   Jedzenie:
     time: '1m'
