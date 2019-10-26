@@ -78,6 +78,7 @@ public class RegionManager {
             ConfigurationSection c = configurationSection.getConfigurationSection(s);
             Location lowerCorner = new Location(Bukkit.getWorld(c.getString("location.world")), c.getInt("location.lower.x"),  c.getInt("location.lower.y"), c.getInt("location.lower.z"));
             Location upperCorner = new Location(Bukkit.getWorld(c.getString("location.world")), c.getInt("location.upper.x"),  c.getInt("location.upper.y"), c.getInt("location.upper.z"));
+            List<String> blockedCommands = c.getStringList("blockedCommands");
             Region region = new Region().setRegionName(c.getString("name")).setLowerCorner(lowerCorner).setUpperCorner(upperCorner).
                     setPriority(c.getInt("priority")).setCanBuild(c.getBoolean("canBuild")).
                     setCanDestroy(c.getBoolean("canDestroy")).setCanThrowPearls(c.getBoolean("canThrowPearls")).
@@ -87,7 +88,7 @@ public class RegionManager {
                     setCanSpreadFire(c.getBoolean("canSpreadFire")).setAllowMobSpawning(c.getBoolean("allowMobSpawning")).
                     setCanEnterDuringFight(c.getBoolean("canEnterDuringFight")).setCanChangePaintings(c.getBoolean("canChangePaintings")).
                     setCanChangeFrames(c.getBoolean("canChangeFrames")).setCanDestroyFarmland(c.getBoolean("canDestroyFarmlands")).
-                    setAllowLeavesDecay(c.getBoolean("allowLeavesDecay"));
+                    setAllowLeavesDecay(c.getBoolean("allowLeavesDecay")).setBlockedCommands(blockedCommands);
             this.regions.add(region);
         }
     }
@@ -249,6 +250,32 @@ public class RegionManager {
             return RegionFeedback.DENY_PVP_OTHER_REGION;
         }
         //TODO Relations
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canProccessCommand(Player player, Location location, String command){
+        if(!this.regionsEnabled){
+            return RegionFeedback.ALLOW;
+        }
+        if(getRegions().isEmpty() && this.regionsEnabled){
+            return RegionFeedback.DENY_ERROR;
+        }
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(user == null){
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)){
+            return RegionFeedback.ALLOW;
+        }
+        for(Region region : getRegionsByLocation(location)){
+            java.util.Set<String> blockedCommands = new java.util.HashSet<>();
+            region.getBlockedCommands().forEach(blocked -> blockedCommands.add(blocked.toLowerCase()));
+            if(blockedCommands.contains(command.toLowerCase())){
+                return RegionFeedback.DENY_PROCCESS_COMMAND;
+            }else{
+                return RegionFeedback.ALLOW;
+            }
+        }
         return RegionFeedback.ALLOW;
     }
 }

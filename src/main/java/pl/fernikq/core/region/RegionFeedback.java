@@ -11,6 +11,7 @@ public enum RegionFeedback {
     DENY_PEARLS(false, "&8>> &fNie mozesz zostac przeteleportowany na ten region za pomoca perelki!"),
     DENY_SPAWN_VEHICLES(false, "&8>> &fNie mozesz tutaj spawnowac pojazdow!"),
     DENY_PVP_OTHER_REGION(false, "&8>> &fNie mozesz atakowac graczy ze spawnu!"),
+    DENY_PROCCESS_COMMAND(false, "&8>> &fPodana komenda zostala zablokowana na tym terenie!"),
     DENY_ERROR(false, "&8>> &fWystapil blad, zglos sie do administracji&8!");
 
     private String feedbackMessage;

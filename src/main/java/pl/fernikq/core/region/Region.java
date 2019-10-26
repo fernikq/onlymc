@@ -3,6 +3,9 @@ package pl.fernikq.core.region;
 import org.bukkit.Location;
 import pl.fernikq.core.user.UserGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Region {
 
     private String regionName;
@@ -25,7 +28,7 @@ public class Region {
     private boolean canChangeFrames;
     private boolean canChangePaintings;
     private boolean allowLeavesDecay;
-
+    private List<String> blockedCommands;
 
     public boolean isIn(Location location){
         return location.toVector().isInAABB(this.lowerCorner.toVector(), this.upperCorner.toVector());
@@ -109,6 +112,10 @@ public class Region {
 
     public boolean isAllowLeavesDecay() {
         return allowLeavesDecay;
+    }
+
+    public List<String> getBlockedCommands() {
+        return new ArrayList<>(this.blockedCommands);
     }
 
     public Region setRegionName(String regionName) {
@@ -208,6 +215,11 @@ public class Region {
 
     public Region setAllowLeavesDecay(boolean allowLeavesDecay) {
         this.allowLeavesDecay = allowLeavesDecay;
+        return this;
+    }
+
+    public Region setBlockedCommands(List<String> blockedCommands) {
+        this.blockedCommands = blockedCommands;
         return this;
     }
 }

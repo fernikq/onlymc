@@ -29,3 +29,4 @@ Regions:
     canChangeFrames: false
     canDestroyFarmlands: false
     allowLeavesDecay: false
+    blockedCommands: []

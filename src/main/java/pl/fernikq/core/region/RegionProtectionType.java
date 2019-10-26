@@ -16,5 +16,6 @@ public enum RegionProtectionType {
     PAINTINGS,
     FRAMES,
     FARMLANDS,
-    LEAVES;
+    LEAVES,
+    COMMANDS;
 }
