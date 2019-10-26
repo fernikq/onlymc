@@ -1,0 +1,93 @@
+Generators:
+  sandfarmer:
+    item:
+      item: 'ender_portal_frame:0'
+      amount: 1
+      name: '&e&lSandFarmer'
+      lore:
+        - ' '
+        - '&8>> &fPostaw na ziemi, aby uzyc'
+    guiName: '&8[ &fCrafting &eSandFarmera &8]'
+    ingredients:
+      - 'sand:0'
+      - 'sand:0'
+      - 'sand:0'
+      - 'sand:0'
+      - 'diamond:0'
+      - 'sand:0'
+      - 'sand:0'
+      - 'sand:0'
+      - 'sand:0'
+  boyfarmer:
+    item:
+      item: 'ender_portal_frame:0'
+      amount: 1
+      name: '&5&lBoyFarmer'
+      lore:
+        - ' '
+        - '&8>> &fPostaw na ziemi, aby uzyc'
+    guiName: '&8[ &fCrafting &5BoyFarmera &8]'
+    ingredients:
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'emerald:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+  kopacz:
+    item:
+      item: 'ender_portal_frame:0'
+      amount: 1
+      name: '&b&lKopacz Fosy'
+      lore:
+        - ' '
+        - '&8>> &fPostaw na ziemi, aby uzyc'
+    guiName: '&8[ &fCrafting &bKopacza Fosy &8]'
+    ingredients:
+      - 'stone:0'
+      - 'stone:0'
+      - 'stone:0'
+      - 'stone:0'
+      - 'diamond_pickaxe:0'
+      - 'stone:0'
+      - 'stone:0'
+      - 'stone:0'
+      - 'stone:0'
+  enderchest:
+    item:
+      item: 'ender_chest:0'
+      amount: 1
+    guiName: '&8[ &fCrafting &5Enderchesta &8]'
+    ingredients:
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'ender_pearl:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+      - 'obsidian:0'
+  stoniarka:
+    item:
+      item: 'emerald_ore:0'
+      amount: 1
+      name: '&aGenerator kamienia'
+      lore:
+        - ' '
+        - '&8>> &fZniszczyc mozna jedynie &ezlotym &fkilofem!'
+      enchant: 'efficiency:5'
+    guiName: '&8[ &fCrafting &aStoniarki &8]'
+    ingredients:
+      - 'stone:0'
+      - 'stone:0'
+      - 'stone:0'
+      - 'stone:0'
+      - 'diamond:0'
+      - 'stone:0'
+      - 'stone:0'
+      - 'stone:0'
+      - 'stone:0'

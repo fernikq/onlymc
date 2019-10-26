@@ -10,6 +10,7 @@ import pl.fernikq.core.command.premium.RepairCommand;
 import pl.fernikq.core.command.simpleCommand.SimpleCommandManager;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.crafting.GeneratorManager;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.block.*;
@@ -44,6 +45,7 @@ public class CorePlugin extends JavaPlugin {
     private VanishManager vanishManager;
     private SimpleCommandManager simpleCommandManager;
     private RegionManager regionManager;
+    private GeneratorManager generatorManager;
 
     @Override
     public void onEnable() {
@@ -87,6 +89,7 @@ public class CorePlugin extends JavaPlugin {
         this.vanishManager = new VanishManager(this);
         this.simpleCommandManager = new SimpleCommandManager(this);
         this.regionManager = new RegionManager(this);
+        this.generatorManager = new GeneratorManager(this);
     }
 
     private void initData(){
@@ -143,6 +146,7 @@ public class CorePlugin extends JavaPlugin {
         new WarpCommand("warp", new String[0], UserGroup.PLAYER, this).register();
         new KitCommand("kit", new String[0], UserGroup.PLAYER, this).register();
         new SpawnCommand("spawn", new String[0], UserGroup.PLAYER, this).register();
+        new CraftingsCommand("craftingi", new String[]{"craft"}, UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){
@@ -229,5 +233,9 @@ public class CorePlugin extends JavaPlugin {
 
     public RegionManager getRegionManager() {
         return regionManager;
+    }
+
+    public GeneratorManager getGeneratorManager() {
+        return generatorManager;
     }
 }

@@ -69,6 +69,15 @@ public class InventoryGUI {
         }
     }
 
+    public void setEmptyItem(ItemStack is, InventoryAction action){
+        for (int i = 0; i < this.inventory.getSize(); i++) {
+            if(this.inventory.getItem(i) == null || this.inventory.getItem(i).getType() == Material.AIR){
+                this.inventory.setItem(i, is);
+                this.actions.put(i, action);
+            }
+        }
+    }
+
     public void openInventory(Player player){
         player.openInventory(this.inventory);
     }

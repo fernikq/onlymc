@@ -13,10 +13,12 @@ import java.util.Map;
 public class ItemUtil {
 
     public static Material getMaterial(String string){
+        Material material;
         if(NumberUtil.isInt(string)){
-            return Material.getMaterial(Integer.parseInt(string));
+            material = Material.getMaterial(Integer.parseInt(string));
         }
-        return Material.getMaterial(string.toUpperCase());
+        material = Material.getMaterial(string.toUpperCase());
+        return material == null ? Material.AIR : material;
     }
 
     public static void giveItems(Player p, ItemStack... items) {
