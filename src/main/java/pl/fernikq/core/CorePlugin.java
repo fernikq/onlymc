@@ -129,6 +129,7 @@ public class CorePlugin extends JavaPlugin {
         new TphereCommand("tphere", new String[]{"s"}, UserGroup.HELPER, this).register();
         new TeleportCommand("teleport", new String[]{"tp"}, UserGroup.HELPER, this).register();
         new VanishCommand("vanish", new String[]{"v"}, UserGroup.HELPER, this).register();
+        new SetSpawnCommand("setspawn", new String[0], UserGroup.ADMIN, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -141,6 +142,7 @@ public class CorePlugin extends JavaPlugin {
         new HelpopCommand("helpop", new String[0], UserGroup.PLAYER, this).register();
         new WarpCommand("warp", new String[0], UserGroup.PLAYER, this).register();
         new KitCommand("kit", new String[0], UserGroup.PLAYER, this).register();
+        new SpawnCommand("spawn", new String[0], UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){

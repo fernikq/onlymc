@@ -28,6 +28,7 @@ public class ConfigManager {
 
     public static int teleportHomeTime;
     public static int teleportWarpTime;
+    public static int teleportSpawnTime;
     public static int autoMessageTime;
     public static boolean chatEnabled;
     public static String spawnLocation;
@@ -73,6 +74,7 @@ public class ConfigManager {
         mysqlPort = 3306;
         teleportHomeTime = 10;
         teleportWarpTime = 10;
+        teleportSpawnTime = 10;
         autoMessageTime = 60;
         chatEnabled = true;
         spawnLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
