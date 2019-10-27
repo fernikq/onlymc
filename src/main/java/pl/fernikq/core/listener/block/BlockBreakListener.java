@@ -1,6 +1,7 @@
 package pl.fernikq.core.listener.block;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,9 +9,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.crafting.Generator;
+import pl.fernikq.core.crafting.GeneratorType;
+import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.ItemUtil;
 
 public class BlockBreakListener implements Listener {
 
@@ -29,6 +34,20 @@ public class BlockBreakListener implements Listener {
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
+            return;
+        }
+        StoneGenerator stoneGenerator = this.plugin.getStoneGeneratorManager().getStoneGenerator(block.getLocation());
+        if(stoneGenerator != null){
+            if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.GOLD_PICKAXE){
+                ChatUtil.sendMessage(player, "&8>> {n}Zniszczyles stoniarke&8!");
+                this.plugin.getStoneGeneratorManager().deleteGenerator(stoneGenerator);
+                Generator generator = this.plugin.getGeneratorManager().getGenerator(GeneratorType.STONE_GENERATOR);
+                ItemUtil.giveItems(player, generator.getItemStack().clone());
+                event.setCancelled(true);
+                block.setType(Material.AIR);
+                return;
+            }
+            this.plugin.getStoneGeneratorManager().regenGenerator(stoneGenerator);
             return;
         }
     }

@@ -104,6 +104,10 @@ public class GeneratorManager {
         return HashSet.ofAll(getGenerators()).find(generator -> generator.getItemStack().isSimilar(itemStack)).getOrNull();
     }
 
+    public Generator getGenerator(GeneratorType type){
+        return HashSet.ofAll(getGenerators()).find(generator -> generator.getGeneratorType().equals(type)).getOrNull();
+    }
+
     public YamlConfiguration getGeneratorFile() {
         return YamlConfiguration.loadConfiguration(this.generatorFile);
     }

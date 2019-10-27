@@ -11,7 +11,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
+import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.util.ChatUtil;
@@ -84,6 +86,20 @@ public class BlockPlaceListener implements Listener {
                             toChange.setType(Material.AIR);
                         }
                     }.runTaskTimer(this.plugin, 0, 0);
+                    return;
+                }
+                case STONE_GENERATOR:{
+                    StoneGenerator stoneGenerator = this.plugin.getStoneGeneratorManager().getStoneGenerator(block.getLocation());
+                    if(stoneGenerator != null){
+                        ChatUtil.sendMessage(player, MessagesManager.error("W tym miejscu znajduje sie juz stoniarka!"));
+                        event.setCancelled(true);
+                        return;
+                    }
+                    stoneGenerator = new StoneGenerator(block.getLocation());
+                    this.plugin.getStoneGeneratorManager().saveGenerator(stoneGenerator);
+                    this.plugin.getStoneGeneratorManager().registerGenerator(stoneGenerator);
+                    block.setType(Material.STONE);
+                    ChatUtil.sendMessage(player, "&8>> {n}Utworzyles stoniarke&8!");
                     return;
                 }
             }

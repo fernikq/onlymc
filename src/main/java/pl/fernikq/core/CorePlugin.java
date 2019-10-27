@@ -11,6 +11,7 @@ import pl.fernikq.core.command.simpleCommand.SimpleCommandManager;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.GeneratorManager;
+import pl.fernikq.core.crafting.stoneGenerator.StoneGeneratorManager;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.block.*;
@@ -20,6 +21,8 @@ import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
 import pl.fernikq.core.region.RegionManager;
 import pl.fernikq.core.tag.TagManager;
+import pl.fernikq.core.task.SimpleTask;
+import pl.fernikq.core.task.StoneGeneratorTask;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.home.HomeManager;
@@ -27,6 +30,11 @@ import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.TeleportManager;
 import pl.fernikq.core.vanish.VanishManager;
 import pl.fernikq.core.warp.WarpManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class CorePlugin extends JavaPlugin {
 
@@ -46,6 +54,8 @@ public class CorePlugin extends JavaPlugin {
     private SimpleCommandManager simpleCommandManager;
     private RegionManager regionManager;
     private GeneratorManager generatorManager;
+    private StoneGeneratorManager stoneGeneratorManager;
+    private List<SimpleTask> simpleTasks;
 
     @Override
     public void onEnable() {
@@ -56,6 +66,8 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this));
+        simpleTasks.forEach(SimpleTask::start);
     }
 
     @Override
@@ -67,6 +79,7 @@ public class CorePlugin extends JavaPlugin {
             player.kickPlayer(ChatUtil.fixColor("&c&lRestart serwera!"));
         });
         Bukkit.getWorlds().forEach(world -> world.save());
+        simpleTasks.forEach(SimpleTask::stop);
         this.mySQL.closeConnection();
     }
 
@@ -90,6 +103,7 @@ public class CorePlugin extends JavaPlugin {
         this.simpleCommandManager = new SimpleCommandManager(this);
         this.regionManager = new RegionManager(this);
         this.generatorManager = new GeneratorManager(this);
+        this.stoneGeneratorManager = new StoneGeneratorManager(this);
     }
 
     private void initData(){
@@ -237,5 +251,9 @@ public class CorePlugin extends JavaPlugin {
 
     public GeneratorManager getGeneratorManager() {
         return generatorManager;
+    }
+
+    public StoneGeneratorManager getStoneGeneratorManager() {
+        return stoneGeneratorManager;
     }
 }

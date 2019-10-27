@@ -33,6 +33,7 @@ public class ConfigManager {
     public static boolean chatEnabled;
     public static String spawnLocation;
     public static boolean limitInventoryClicks;
+    public static long stoneGeneratorRegenerationTime;
 
     public void load(){
         try{
@@ -79,5 +80,6 @@ public class ConfigManager {
         chatEnabled = true;
         spawnLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
         limitInventoryClicks = false;
+        stoneGeneratorRegenerationTime = 2000;
     }
 }
