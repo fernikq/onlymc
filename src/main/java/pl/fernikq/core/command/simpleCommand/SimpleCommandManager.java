@@ -17,12 +17,14 @@ public class SimpleCommandManager {
     private final CorePlugin plugin;
     private File commandFile;
     private Set<CustomCommand> customCommands;
+    private Set<String> blockedCommands;
 
     public SimpleCommandManager(CorePlugin plugin){
         this.plugin = plugin;
         this.customCommands = new HashSet<>();
         checkFile();
         loadCommands();
+        loadBlockedCommands();
     }
 
     public void checkFile(){
@@ -37,7 +39,12 @@ public class SimpleCommandManager {
 
     public void reload(){
         checkFile();
-        //TODO blocked cmds etc
+        loadBlockedCommands();
+    }
+
+    public void loadBlockedCommands(){
+        this.blockedCommands = new HashSet<>();
+        this.blockedCommands = new HashSet<>(getCommandFile().getStringList("BlockedCommands"));
     }
 
     public void loadCommands(){
@@ -59,5 +66,9 @@ public class SimpleCommandManager {
 
     public YamlConfiguration getCommandFile() {
         return YamlConfiguration.loadConfiguration(commandFile);
+    }
+
+    public Set<String> getBlockedCommands() {
+        return new HashSet<>(this.blockedCommands);
     }
 }

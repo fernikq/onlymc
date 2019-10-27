@@ -1,3 +1,7 @@
+BlockedCommands:
+ - '/bukkit:me'
+ - '/minecraft:me'
+ - '/me'
 Commands:
   1:
     name: 'help'

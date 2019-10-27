@@ -275,7 +275,7 @@ public class RegionManager {
                 return RegionFeedback.DENY_PROCCESS_COMMAND_REGION;
             }
         }
-        if(ConfigManager.blockedCommands.contains(command.toLowerCase())){
+        if(this.plugin.getSimpleCommandManager().getBlockedCommands().contains(command.toLowerCase())){
             return RegionFeedback.DENY_PROCCESS_COMMAND;
         }
         return RegionFeedback.ALLOW;
