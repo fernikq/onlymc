@@ -32,6 +32,7 @@ public class ConfigManager {
     public static int autoMessageTime;
     public static boolean chatEnabled;
     public static String spawnLocation;
+    public static boolean limitInventoryClicks;
     public static List<String> blockedCommands;
 
     public void load(){
@@ -79,5 +80,6 @@ public class ConfigManager {
         chatEnabled = true;
         spawnLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
         blockedCommands = Arrays.asList("/bukkit:me", "/minecraft:me", "/me");
+        limitInventoryClicks = false;
     }
 }
