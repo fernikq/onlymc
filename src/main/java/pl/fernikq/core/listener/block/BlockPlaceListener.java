@@ -1,6 +1,7 @@
 package pl.fernikq.core.listener.block;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,7 +9,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.util.ChatUtil;
@@ -31,6 +34,59 @@ public class BlockPlaceListener implements Listener {
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
             return;
+        }
+        Generator generator = this.plugin.getGeneratorManager().getGenerator(player.getItemInHand());
+        if(generator != null){
+            switch(generator.getGeneratorType()){
+                case SAND_GENERATOR:{
+                    new BukkitRunnable(){
+                        int subtract = 0;
+                        @Override
+                        public void run() {
+                            Block toChange = block.getLocation().subtract(0, subtract++, 0).getBlock();
+                            if(toChange.getType() == Material.BEDROCK){
+                                cancel();
+                                return;
+                            }
+                            //TODO Guild region check
+                            toChange.setType(Material.SAND);
+                        }
+                    }.runTaskTimer(this.plugin, 0, 0);
+                    return;
+                }
+                case OBSIDIAN_GENERATOR:{
+                    new BukkitRunnable(){
+                        int subtract = 0;
+                        @Override
+                        public void run() {
+                            Block toChange = block.getLocation().subtract(0, subtract++, 0).getBlock();
+                            if(toChange.getType() == Material.BEDROCK){
+                                cancel();
+                                return;
+                            }
+                            //TODO Guild region check
+                            toChange.setType(Material.OBSIDIAN);
+                        }
+                    }.runTaskTimer(this.plugin, 0, 0);
+                    return;
+                }
+                case BLOCK_BREAKER:{
+                    new BukkitRunnable(){
+                        int subtract = 0;
+                        @Override
+                        public void run() {
+                            Block toChange = block.getLocation().subtract(0, subtract++, 0).getBlock();
+                            if(toChange.getType() == Material.BEDROCK){
+                                cancel();
+                                return;
+                            }
+                            //TODO Guild region check
+                            toChange.setType(Material.AIR);
+                        }
+                    }.runTaskTimer(this.plugin, 0, 0);
+                    return;
+                }
+            }
         }
     }
 }

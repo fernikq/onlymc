@@ -1,5 +1,6 @@
 package pl.fernikq.core.crafting;
 
+import io.vavr.collection.HashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -97,6 +98,10 @@ public class GeneratorManager {
             }
             Bukkit.addRecipe(shapedRecipe);
         }
+    }
+
+    public Generator getGenerator(ItemStack itemStack){
+        return HashSet.ofAll(getGenerators()).find(generator -> generator.getItemStack().isSimilar(itemStack)).getOrNull();
     }
 
     public YamlConfiguration getGeneratorFile() {
