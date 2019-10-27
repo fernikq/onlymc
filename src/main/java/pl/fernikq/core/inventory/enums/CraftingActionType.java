@@ -1,6 +1,6 @@
 package pl.fernikq.core.inventory.enums;
 
-public enum CraftingsActionType {
+public enum CraftingActionType {
 
     BACK,
     CHOOSE,

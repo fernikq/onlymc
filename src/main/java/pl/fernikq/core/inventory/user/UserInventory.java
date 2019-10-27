@@ -5,9 +5,9 @@ import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.inventory.InventoryGUI;
-import pl.fernikq.core.inventory.actions.CraftingsAction;
+import pl.fernikq.core.inventory.actions.CraftingAction;
 import pl.fernikq.core.inventory.actions.KitAction;
-import pl.fernikq.core.inventory.enums.CraftingsActionType;
+import pl.fernikq.core.inventory.enums.CraftingActionType;
 import pl.fernikq.core.inventory.enums.KitActionType;
 import pl.fernikq.core.kit.Kit;
 import pl.fernikq.core.kit.KitItem;
@@ -18,15 +18,22 @@ import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public class UserInventory {
 
     private final CorePlugin plugin;
     private ItemStack blank;
+    private ItemStack color;
+    private ItemStack backGlass;
+    private ItemStack backBarrier;
 
     public UserInventory(CorePlugin plugin){
         this.plugin = plugin;
-        blank = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+        blank = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7)).setName("").toItemStack();
+        color = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 3)).setName("").toItemStack();
+        backGlass = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14)).setName(ChatUtil.fixColor("&c&lPowrot")).toItemStack();
+        backBarrier = new ItemBuilder(new ItemStack(Material.BARRIER, 1)).setName(ChatUtil.fixColor("&c&lPowrot")).toItemStack();
     }
 
     public InventoryGUI kitMenu(User user){
@@ -65,32 +72,43 @@ public class UserInventory {
         for(Generator generator : this.plugin.getGeneratorManager().getGenerators()){
             ItemBuilder builder = new ItemBuilder(generator.getItemStack().clone()).setAmount(1);
             builder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zobaczyc crafting")));
-            gui.addItem(builder.toItemStack(), new CraftingsAction(plugin, CraftingsActionType.CHOOSE, generator));
+            gui.addItem(builder.toItemStack(), new CraftingAction(plugin, CraftingActionType.CHOOSE, generator));
         }
         return gui;
     }
 
     public InventoryGUI craftings(User user, Generator generator){
-        InventoryGUI gui = new InventoryGUI(generator.getInventoryName(), 6, true);
+        InventoryGUI gui = new InventoryGUI(generator.getInventoryName(), 5, true);
         user.addInventory(gui);
         int index = 0;
         for(int i = 10; i < 13; i++){
-            String[] ingredientInfo = generator.getIngredients().get(index).split(":");
-            gui.setItem(i, new ItemStack(ItemUtil.getMaterial(ingredientInfo[0]), 1, (short) Short.parseShort(ingredientInfo[1])));
+            String ingredientInfo = generator.getIngredients().get(index);
+            gui.setItem(i, new ItemStack(ItemUtil.getMaterial(ingredientInfo), 1, (short) 0));
             index++;
         }
         for(int i = 19; i < 22; i++){
-            String[] ingredientInfo = generator.getIngredients().get(index).split(":");
-            gui.setItem(i, new ItemStack(ItemUtil.getMaterial(ingredientInfo[0]), 1, (short) Short.parseShort(ingredientInfo[1])));
+            String ingredientInfo = generator.getIngredients().get(index);
+            gui.setItem(i, new ItemStack(ItemUtil.getMaterial(ingredientInfo), 1, (short) 0));
             index++;
         }
         for(int i = 28; i < 31; i++){
-            String[] ingredientInfo = generator.getIngredients().get(index).split(":");
-            gui.setItem(i, new ItemStack(ItemUtil.getMaterial(ingredientInfo[0]), 1, (short) Short.parseShort(ingredientInfo[1])));
+            String ingredientInfo = generator.getIngredients().get(index);
+            gui.setItem(i, new ItemStack(ItemUtil.getMaterial(ingredientInfo), 1, (short) 0));
             index++;
         }
         gui.setItem(24, generator.getItemStack().clone());
-        gui.setEmptyItem(this.blank, new CraftingsAction(plugin, CraftingsActionType.BACK));
+        gui.setItem(43, backBarrier, new CraftingAction(plugin, CraftingActionType.BACK));
+        ItemBuilder autoCraft = new ItemBuilder(Material.WORKBENCH).setName(ChatUtil.fixColor("&a&lAutomatyczny crafting"));
+        if(generator.hasItems(user.asPlayer())){
+            autoCraft.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&aPosiadasz przedmioty!")));
+        }else {
+            autoCraft.addLore(" ");
+            for(Map.Entry<Material, Integer> item : generator.getAmounts().entrySet()) {
+                autoCraft.addLore(ChatUtil.fixColor("&8>> {n}" + item.getKey().name().toLowerCase() + "&8: {c}" + ItemUtil.getAmountOfItem(user.asPlayer().getInventory(), item.getKey(), (short) 0) + "&8/{c}" + item.getValue()));
+            }
+        }
+        gui.setItem(44, autoCraft.toItemStack(), new CraftingAction(plugin, CraftingActionType.CRAFT, generator));
+        gui.setEmptyItem(this.blank);
         return gui;
     }
 }

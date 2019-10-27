@@ -92,8 +92,7 @@ public class GeneratorManager {
             char c1 = 'a';
             ShapedRecipe shapedRecipe = new ShapedRecipe(generator.getItemStack()).shape("abc", "def", "ghi");
             for(String ingredient : ingredients){
-                String[] ingredientInfo = ingredient.split(":");
-                shapedRecipe.setIngredient(c1, ItemUtil.getMaterial(ingredientInfo[0]).getNewData((byte)Byte.parseByte(ingredientInfo[1])));
+                shapedRecipe.setIngredient(c1, ItemUtil.getMaterial(ingredient));
                 c1++;
             }
             Bukkit.addRecipe(shapedRecipe);
