@@ -1,5 +1,6 @@
 package pl.fernikq.core.region;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import pl.fernikq.core.user.UserGroup;
 
@@ -31,6 +32,9 @@ public class Region {
     private List<String> blockedCommands;
 
     public boolean isIn(Location location){
+        if(!StringUtils.equals(location.getWorld().getName(), this.lowerCorner.getWorld().getName())){
+            return false;
+        }
         return location.toVector().isInAABB(this.lowerCorner.toVector(), this.upperCorner.toVector());
     }
 

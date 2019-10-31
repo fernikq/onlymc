@@ -34,6 +34,8 @@ public class ConfigManager {
     public static String spawnLocation;
     public static boolean limitInventoryClicks;
     public static long stoneGeneratorRegenerationTime;
+    public static int tntExplodeBelow;
+    public static String tntHours;
 
     public void load(){
         try{
@@ -81,5 +83,7 @@ public class ConfigManager {
         spawnLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
         limitInventoryClicks = false;
         stoneGeneratorRegenerationTime = 2000;
+        tntExplodeBelow = 50;
+        tntHours = "10-24";
     }
 }

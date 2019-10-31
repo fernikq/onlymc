@@ -7,10 +7,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class EntityExplodeListener implements Listener {
@@ -24,7 +26,15 @@ public class EntityExplodeListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplode(EntityExplodeEvent event){
-        //TODO godziny
+        String[] tntHours = ConfigManager.tntHours.split("-");
+        int minHour = Integer.parseInt(tntHours[0]);
+        int maxHour = Integer.parseInt(tntHours[1]);
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        if(currentHour < minHour || currentHour > maxHour){
+            event.setCancelled(true);
+            return;
+        }
         List<Block> toRemove = new ArrayList<>();
         for(Block block : event.blockList()){
             RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.EXPLOSION);

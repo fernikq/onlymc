@@ -52,7 +52,7 @@ public class PlayerInteractListener implements Listener {
             return;
         }
         if(block != null && block.getType() == Material.TNT && event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand() != null && player.getItemInHand().getType() == Material.FLINT_AND_STEEL){
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.EXPLOSION);
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.IGNITE_TNT);
             if(!regionFeedback.isPermit()) {
                 event.setCancelled(true);
                 return;

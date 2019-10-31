@@ -17,5 +17,6 @@ public enum RegionProtectionType {
     FRAMES,
     FARMLANDS,
     LEAVES,
-    COMMANDS;
+    COMMANDS,
+    IGNITE_TNT;
 }
