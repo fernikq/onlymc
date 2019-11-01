@@ -31,10 +31,8 @@ import pl.fernikq.core.util.TeleportManager;
 import pl.fernikq.core.vanish.VanishManager;
 import pl.fernikq.core.warp.WarpManager;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class CorePlugin extends JavaPlugin {
 
@@ -160,6 +158,8 @@ public class CorePlugin extends JavaPlugin {
         new WarpCommand("warp", new String[0], UserGroup.PLAYER, this).register();
         new KitCommand("kit", new String[0], UserGroup.PLAYER, this).register();
         new SpawnCommand("spawn", new String[0], UserGroup.PLAYER, this).register();
+        new TeleportRequestCommand("tpa", new String[0], UserGroup.PLAYER, this).register();
+        new TeleportAcceptCommand("tpaccept", new String[0], UserGroup.PLAYER, this).register();
         new CraftingsCommand("craftingi", new String[]{"craft"}, UserGroup.PLAYER, this).register();
     }
 

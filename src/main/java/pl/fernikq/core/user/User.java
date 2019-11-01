@@ -163,4 +163,8 @@ public class User {
     public Cache<User, Long> getTpaRequests() {
         return tpaRequests;
     }
+
+    public List<User> getTpaRequestsList(){
+        return new ArrayList<>(this.tpaRequests.asMap().keySet());
+    }
 }

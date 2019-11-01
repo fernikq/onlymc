@@ -41,7 +41,11 @@ public class MessageCommand extends CustomCommand {
                 ChatUtil.sendMessage(sender, Lang.playerOffline);
                 return;
             }
-            User targetUser = this.plugin.getUserManager().getUser(target.getUniqueId()).get();
+            User targetUser = this.plugin.getUserManager().getUser(target.getUniqueId()).getOrNull();
+            if(targetUser == null){
+                ChatUtil.sendMessage(player, Lang.userNotExists);
+                return;
+            }
             user.setPrivateMessageSender(targetUser);
             targetUser.setPrivateMessageSender(user);
             player.sendMessage(ChatUtil.fixColor(MessagesManager.playerPrivateMessageFormat.replace("{SENDER}", "Ja")

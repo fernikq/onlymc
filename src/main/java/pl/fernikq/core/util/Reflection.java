@@ -240,4 +240,8 @@ public class Reflection {
 
         public boolean hasField(Object target);
     }
+
+    public static String getVersion() {
+        return VERSION;
+    }
 }
