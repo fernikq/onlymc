@@ -19,6 +19,7 @@ public class User {
     private String firstAddress;
     private String lastAddress;
     private UserGroup group;
+    private UserStat userStat;
 
     private Map<String, Home> homes;
     private boolean godMode;
@@ -39,6 +40,7 @@ public class User {
         this.godMode = false;
         this.privateMessageSender = null;
         this.kitTimes = new HashMap<>();
+        this.userStat = new UserStat(this);
         this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
     }
 
@@ -54,6 +56,7 @@ public class User {
             this.godMode = false;
             this.privateMessageSender = null;
             this.kitTimes = new HashMap<>();
+            //TODO User Stat
             this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -166,5 +169,13 @@ public class User {
 
     public List<User> getTpaRequestsList(){
         return new ArrayList<>(this.tpaRequests.asMap().keySet());
+    }
+
+    public UserStat getUserStat() {
+        return userStat;
+    }
+
+    public void setUserStat(UserStat userStat) {
+        this.userStat = userStat;
     }
 }

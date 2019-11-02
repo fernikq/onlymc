@@ -34,7 +34,7 @@ public class AsyncPlayerChatListener implements Listener {
            if(user.canByGroup(UserGroup.HELPER)){
                event.setMessage(ChatUtil.fixColor(event.getMessage()));
            }
-           format = StringUtil.replace(format, "{LVL}", "TODO");
+           format = StringUtil.replace(format, "{LVL}", user.getUserStat().getLevel());
            format = StringUtil.replace(format, "{GUILD}", "TODO");
            format = StringUtil.replace(format, "{RANK}", user.getGroup().getPrefix());
            format = StringUtil.replace(format, "{NAME}", player.getName());

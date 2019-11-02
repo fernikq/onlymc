@@ -75,7 +75,7 @@ public class CorePlugin extends JavaPlugin {
         this.mySQL.closeConnection();
         this.mySQL.openWithoutTask();
         Bukkit.getOnlinePlayers().forEach(player -> {
-            this.userManager.getUser(player.getUniqueId()).peek(user -> this.userManager.getUserData().updateUser(user));
+            this.userManager.getUser(player.getUniqueId()).peek(user -> this.userManager.updateUser(user));
             player.kickPlayer(ChatUtil.fixColor("&c&lRestart serwera!"));
         });
         Bukkit.getWorlds().forEach(world -> world.save());

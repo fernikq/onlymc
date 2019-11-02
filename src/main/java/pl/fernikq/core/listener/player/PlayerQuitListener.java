@@ -25,7 +25,7 @@ public class PlayerQuitListener implements Listener {
         event.setQuitMessage(ChatUtil.fixColor(MessagesManager.playerQuitMessage.replace("{PLAYER}", player.getName())));
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
             this.plugin.getMySQL().openConnection();
-            this.plugin.getUserManager().getUserData().updateUser(user);
+            this.plugin.getUserManager().updateUser(user);
         });
         this.plugin.getTagManager().removeTag(player);
         this.plugin.getVanishManager().removeVanished(player);

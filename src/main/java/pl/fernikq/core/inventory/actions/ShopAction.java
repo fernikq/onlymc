@@ -88,20 +88,28 @@ public class ShopAction implements InventoryAction {
             return;
         }
         if(shopActionType.equals(ShopActionType.BUY_ITEM)) {
-            //TODO coins
-            ItemUtil.giveItems(player, new ItemBuilder(shopItem.getItemStack().clone()).setAmount(shopItem.getAmount()).toItemStack());
-            ChatUtil.sendMessage(player, MessagesManager.shopBuyItem);
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+                if(user.getUserStat().getCoins() < shopItem.getPrice()){
+                    ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz wystarczajacej ilosci monet!"));
+                    return;
+                }
+                ItemUtil.giveItems(player, new ItemBuilder(shopItem.getItemStack().clone()).setAmount(shopItem.getAmount()).toItemStack());
+                ChatUtil.sendMessage(player, MessagesManager.shopBuyItem);
+                user.getUserStat().removeCoins(shopItem.getPrice());
+            });
             return;
         }
         if(shopActionType.equals(ShopActionType.SELL_ITEM)) {
-            //TODO coins
-            int amount = ItemUtil.getAmountOfItem(player.getInventory(), shopItem.getItemStack().clone());
-            if(amount < shopItem.getAmount()){
-                ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz odpowiedniej ilosci tego przedmiotu!"));
-                return;
-            }
-            ItemUtil.remove(shopItem.getItemStack().clone(), player, shopItem.getAmount());
-            ChatUtil.sendMessage(player, MessagesManager.shopSellItem);
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+                int amount = ItemUtil.getAmountOfItem(player.getInventory(), shopItem.getItemStack().clone());
+                if(amount < shopItem.getAmount()){
+                    ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz odpowiedniej ilosci tego przedmiotu!"));
+                    return;
+                }
+                ItemUtil.remove(shopItem.getItemStack().clone(), player, shopItem.getAmount());
+                ChatUtil.sendMessage(player, MessagesManager.shopSellItem);
+                user.getUserStat().addCoins(shopItem.getPrice());
+            });
             return;
         }
     }

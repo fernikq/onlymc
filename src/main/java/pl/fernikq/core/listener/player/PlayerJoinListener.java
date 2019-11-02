@@ -26,11 +26,11 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatUtil.fixColor(MessagesManager.playerJoinMessage.replace("{PLAYER}", player.getName())));
         User user = this.plugin.getUserManager().getUser(player);
+        user.setLastAddress(player.getAddress().getAddress().getHostAddress());
         if(!user.getName().equals(player.getName())){
             user.setName(player.getName());
-            this.plugin.getUserManager().getUserData().updateUser(user);
+            this.plugin.getUserManager().updateUserInfo(user);
         }
-        user.setLastAddress(player.getAddress().getAddress().getHostAddress());
         this.plugin.getTagManager().createTag(player);
         for(Player vanished : this.plugin.getVanishManager().getVanished()){
             if(user.canByGroup(UserGroup.HELPER)){

@@ -15,6 +15,7 @@ public class UserManager {
     private final CorePlugin plugin;
     private ConcurrentMap<UUID, User> users;
     private UserData userData;
+    private UserStatData userStatData;
 
     public UserManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -23,6 +24,7 @@ public class UserManager {
 
     public void init(){
         this.userData = new UserData(this.plugin);
+        this.userStatData = new UserStatData(this.plugin);
     }
 
     public boolean isCorrect(String name){
@@ -36,9 +38,28 @@ public class UserManager {
     public User getUser(Player player){
         return this.users.computeIfAbsent(player.getUniqueId(), uuid -> {
            User user = new User(player);
-           this.userData.insertUser(user);
+           insertUser(user);
            return user;
         });
+    }
+
+    public void insertUser(User user){
+        this.userData.insertUser(user);
+        this.userStatData.insertStats(user);
+    }
+
+    public void updateUser(User user){
+        this.userData.updateUser(user);
+        this.userStatData.updateStats(user);
+    }
+
+    public void updateUserInfo(User user){
+        this.userData.updateUser(user);
+    }
+
+    private void removeUser(User user){
+        this.userData.deleteUser(user);
+        this.userStatData.deleteUser(user);
     }
 
     public Option<User> getUser(String name){
@@ -54,15 +75,11 @@ public class UserManager {
     }
 
     public void deleteUser(User user){
+        removeUser(user);
         this.users.remove(user.getUuid());
-        this.userData.deleteUser(user);
     }
 
     public Set<User> getUsers(){
         return HashSet.ofAll(new ConcurrentHashMap<UUID, User>(this.users).values());
-    }
-
-    public UserData getUserData() {
-        return userData;
     }
 }
