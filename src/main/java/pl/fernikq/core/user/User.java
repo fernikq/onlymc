@@ -56,7 +56,6 @@ public class User {
             this.godMode = false;
             this.privateMessageSender = null;
             this.kitTimes = new HashMap<>();
-            //TODO User Stat
             this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
         } catch(SQLException e) {
             e.printStackTrace();
