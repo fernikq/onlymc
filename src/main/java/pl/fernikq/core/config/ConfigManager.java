@@ -37,6 +37,9 @@ public class ConfigManager {
     public static long stoneGeneratorRegenerationTime;
     public static int tntExplodeBelow;
     public static String tntHours;
+    public static int maxGoldenApplesInInventory;
+    public static int maxEnchantedGoldenApplesInInventory;
+    public static int maxPearlsInInventory;
 
     public void load(){
         try{
@@ -87,5 +90,8 @@ public class ConfigManager {
         stoneGeneratorRegenerationTime = 2000;
         tntExplodeBelow = 50;
         tntHours = "10-24";
+        maxGoldenApplesInInventory = 8;
+        maxEnchantedGoldenApplesInInventory = 2;
+        maxPearlsInInventory = 4;
     }
 }

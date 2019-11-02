@@ -1,7 +1,5 @@
 package pl.fernikq.core.shop;
 
-import io.vavr.collection.HashSet;
-import io.vavr.collection.Set;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -136,10 +134,6 @@ public class ShopManager {
     }
 
     public List<Shop> getShops(ShopType type) {
-        return getShops().filter(shop -> shop.getShopType().equals(type)).collect(Collectors.toList());
-    }
-
-    public Set<Shop> getShops(){
-        return HashSet.ofAll(new ArrayList<>(this.shops));
+        return new ArrayList<>(this.shops).stream().filter(shop -> shop.getShopType().equals(type)).collect(Collectors.toList());
     }
 }

@@ -14,6 +14,7 @@ import pl.fernikq.core.shop.ShopItem;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
+import pl.fernikq.core.util.StringUtil;
 
 public class ShopAction implements InventoryAction {
 
@@ -94,7 +95,7 @@ public class ShopAction implements InventoryAction {
                     return;
                 }
                 ItemUtil.giveItems(player, new ItemBuilder(shopItem.getItemStack().clone()).setAmount(shopItem.getAmount()).toItemStack());
-                ChatUtil.sendMessage(player, MessagesManager.shopBuyItem);
+                ChatUtil.sendMessage(player, StringUtil.replace(MessagesManager.shopBuyItem, "{AMOUNT}", shopItem.getPrice()));
                 user.getUserStat().removeCoins(shopItem.getPrice());
             });
             return;
@@ -107,7 +108,7 @@ public class ShopAction implements InventoryAction {
                     return;
                 }
                 ItemUtil.remove(shopItem.getItemStack().clone(), player, shopItem.getAmount());
-                ChatUtil.sendMessage(player, MessagesManager.shopSellItem);
+                ChatUtil.sendMessage(player, StringUtil.replace(MessagesManager.shopSellItem, "{AMOUNT}", shopItem.getPrice()));
                 user.getUserStat().addCoins(shopItem.getPrice());
             });
             return;

@@ -35,6 +35,9 @@ public class MessagesManager {
     public static String commandHelpMessage;
     public static String shopBuyItem;
     public static String shopSellItem;
+    public static String depositeApplesMessage;
+    public static String depositeEnchantedApplesMessage;
+    public static String depositePearlsMessage;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -103,7 +106,10 @@ public class MessagesManager {
         playerJoinMessage = "&8>> &8[&a+&8] &f{PLAYER}";
         playerQuitMessage = "&8>> &8[&c-&8] &f{PLAYER}";
         commandHelpMessage = "&8>> {n}Podana komenda nie istnieje&8! {n}Sprawdz dostepne komendy pod {c}/pomoc";
-        shopBuyItem = "&8>> &aPomyslnie {n}kupiles przedmiot&8!";
-        shopSellItem = "&8>> &cPomyslnie {n}sprzedales przedmiot&8!";
+        shopBuyItem = "&8>> &aPomyslnie {n}kupiles przedmiot za &a{AMOUNT} {n}monet&8!";
+        shopSellItem = "&8>> &cPomyslnie {n}sprzedales przedmiot za &c{AMOUNT} {n}monet&8!";
+        depositeApplesMessage = "&8>> {n}Posiadales przy sobie za duzo {c}refili&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
+        depositeEnchantedApplesMessage = "&8>> {n}Posiadales przy sobie za duzo {c}koxow&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
+        depositePearlsMessage = "&8>> {n}Posiadales przy sobie za duzo {c}perel&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
     }
 }

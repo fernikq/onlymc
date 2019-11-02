@@ -30,11 +30,11 @@ public class StoneGeneratorTask extends BukkitRunnable implements SimpleTask {
 
     @Override
     public void run(){
-        for(StoneGenerator stoneGenerator : this.plugin.getStoneGeneratorManager().getGeneratorsToRegen()){
-            if(stoneGenerator.getRegenerationTime() < System.currentTimeMillis()){
-                stoneGenerator.getLocation().getBlock().setType(Material.STONE);
-                this.plugin.getStoneGeneratorManager().successfulRegen(stoneGenerator);
-            }
-        }
+        this.plugin.getStoneGeneratorManager().getGeneratorsToRegen().stream()
+                .filter(generator -> generator.getRegenerationTime() < System.currentTimeMillis())
+                .forEach(generator -> {
+            generator.getLocation().getBlock().setType(Material.STONE);
+            this.plugin.getStoneGeneratorManager().successfulRegen(generator);
+        });
     }
 }
