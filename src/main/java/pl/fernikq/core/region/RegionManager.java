@@ -269,7 +269,7 @@ public class RegionManager {
                     return checkRegions();
                 }
                 for(Region region : getRegionsByLocation(location)){
-                    return region.isCanBuild() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                    return region.isCanBuild() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUILD_SPAWN;
                 }
                 return RegionFeedback.ALLOW;
             }
@@ -297,7 +297,7 @@ public class RegionManager {
                     return checkRegions();
                 }
                 for(Region region : getRegionsByLocation(location)){
-                    return region.isCanUseBuckets() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                    return region.isCanUseBuckets() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUCKETS;
                 }
                 return RegionFeedback.ALLOW;
             }
@@ -307,7 +307,7 @@ public class RegionManager {
                     return checkRegions();
                 }
                 for(Region region : getRegionsByLocation(location)){
-                    return region.isCanThrowPearls() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                    return region.isCanThrowPearls() ? RegionFeedback.ALLOW : RegionFeedback.DENY_PEARLS;
                 }
                 return RegionFeedback.ALLOW;
             }
@@ -317,7 +317,7 @@ public class RegionManager {
                     return checkRegions();
                 }
                 for(Region region : getRegionsByLocation(location)){
-                    return region.isCanSpawnVehicles() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                    return region.isCanSpawnVehicles() ? RegionFeedback.ALLOW : RegionFeedback.DENY_SPAWN_VEHICLES;
                 }
                 return RegionFeedback.ALLOW;
             }

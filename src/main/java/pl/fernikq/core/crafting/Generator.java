@@ -59,7 +59,7 @@ public class Generator {
 
     public boolean hasItems(Player player){
         for(Map.Entry<Material, Integer> item : getAmounts().entrySet()){
-            int amount = ItemUtil.getAmountOfItem(player.getInventory(), item.getKey(), (short) 0);
+            int amount = ItemUtil.getAmountOfMaterial(player.getInventory(), item.getKey(), (short) 0);
             if(amount < item.getValue()){
                 return false;
             }

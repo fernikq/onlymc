@@ -14,14 +14,11 @@ public class ItemUtil {
 
     public static Material getMaterial(String string){
         Material material;
-        if(NumberUtil.isInt(string)){
-            material = Material.getMaterial(Integer.parseInt(string));
-        }
-        material = Material.getMaterial(string.toUpperCase());
+        material = NumberUtil.isInt(string) ? Material.getMaterial(Integer.parseInt(string)) : Material.getMaterial(string.toUpperCase());
         return material == null ? Material.AIR : material;
     }
 
-    public static int getAmountOfItem(Inventory inv, Material material, Short durability){
+    public static int getAmountOfMaterial(Inventory inv, Material material, Short durability){
         int amount = 0;
         for(ItemStack itemStack : inv.getContents()){
             if(itemStack != null && itemStack.getType() == material && itemStack.getDurability() == durability){
@@ -31,10 +28,20 @@ public class ItemUtil {
         return amount;
     }
 
-    public static int getAmountOfItem(Inventory inv, Material material){
+    public static int getAmountOfMaterial(Inventory inv, Material material){
         int amount = 0;
         for(ItemStack itemStack : inv.getContents()){
             if(itemStack != null && itemStack.getType() == material){
+                amount += itemStack.getAmount();
+            }
+        }
+        return amount;
+    }
+
+    public static int getAmountOfItem(Inventory inv, ItemStack item){
+        int amount = 0;
+        for(ItemStack itemStack : inv.getContents()){
+            if(item.isSimilar(itemStack) && item != null){
                 amount += itemStack.getAmount();
             }
         }

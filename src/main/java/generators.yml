@@ -45,7 +45,7 @@ Generators:
       lore:
         - ' '
         - '&8>> &fPostaw na ziemi, aby uzyc'
-    guiName: '&8[ &fCrafting &bKopacza Fosy &8]'
+    guiName: '&8[ &fCrafting &bKopacza &8]'
     ingredients:
       - 'stone'
       - 'stone'

@@ -20,6 +20,7 @@ import pl.fernikq.core.listener.inventory.InventoryClickListener;
 import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
 import pl.fernikq.core.region.RegionManager;
+import pl.fernikq.core.shop.ShopManager;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.task.SimpleTask;
 import pl.fernikq.core.task.StoneGeneratorTask;
@@ -54,6 +55,7 @@ public class CorePlugin extends JavaPlugin {
     private GeneratorManager generatorManager;
     private StoneGeneratorManager stoneGeneratorManager;
     private List<SimpleTask> simpleTasks;
+    private ShopManager shopManager;
 
     @Override
     public void onEnable() {
@@ -102,6 +104,7 @@ public class CorePlugin extends JavaPlugin {
         this.regionManager = new RegionManager(this);
         this.generatorManager = new GeneratorManager(this);
         this.stoneGeneratorManager = new StoneGeneratorManager(this);
+        this.shopManager = new ShopManager(this);
     }
 
     private void initData(){
@@ -157,6 +160,7 @@ public class CorePlugin extends JavaPlugin {
         new HelpopCommand("helpop", new String[0], UserGroup.PLAYER, this).register();
         new WarpCommand("warp", new String[0], UserGroup.PLAYER, this).register();
         new KitCommand("kit", new String[0], UserGroup.PLAYER, this).register();
+        new ShopCommand("sklep", new String[0], UserGroup.PLAYER, this).register();
         new SpawnCommand("spawn", new String[0], UserGroup.PLAYER, this).register();
         new TeleportRequestCommand("tpa", new String[0], UserGroup.PLAYER, this).register();
         new TeleportAcceptCommand("tpaccept", new String[0], UserGroup.PLAYER, this).register();
@@ -255,5 +259,9 @@ public class CorePlugin extends JavaPlugin {
 
     public StoneGeneratorManager getStoneGeneratorManager() {
         return stoneGeneratorManager;
+    }
+
+    public ShopManager getShopManager() {
+        return shopManager;
     }
 }

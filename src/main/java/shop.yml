@@ -1,0 +1,412 @@
+#Dostepne zmienne: nameInGUI, enchant, lore, name
+Shops:
+  Buy:
+    Glina:
+      item: 'stained_clay:0'
+      name: '{c}&lGlina'
+      lore:
+        - ' '
+        - '&8>> {n}Rozne rodzaje gliny'
+      items:
+        Glina1:
+          item: 'stained_clay:0'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina2:
+          item: 'stained_clay:1'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina3:
+          item: 'stained_clay:2'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina4:
+          item: 'stained_clay:3'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina5:
+          item: 'stained_clay:4'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina6:
+          item: 'stained_clay:5'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina7:
+          item: 'stained_clay:6'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina8:
+          item: 'stained_clay:7'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina9:
+          item: 'stained_clay:8'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina10:
+          item: 'stained_clay:9'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina11:
+          item: 'stained_clay:10'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina12:
+          item: 'stained_clay:11'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina13:
+          item: 'stained_clay:12'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina14:
+          item: 'stained_clay:13'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+        Glina15:
+          item: 'stained_clay:14'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Glina'
+    Szklo:
+      item: 'stained_glass:0'
+      name: '{c}&lSzklo'
+      lore:
+        - ' '
+        - '&8>> {n}Rozne rodzaje szkla'
+      items:
+        Szklo1:
+          item: 'glass:0'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo2:
+          item: 'stained_glass:1'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo3:
+          item: 'stained_glass:2'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo4:
+          item: 'stained_glass:3'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo5:
+          item: 'stained_glass:4'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo6:
+          item: 'stained_glass:5'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo7:
+          item: 'stained_glass:6'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo8:
+          item: 'stained_glass:7'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo9:
+          item: 'stained_glass:8'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo10:
+          item: 'stained_glass:9'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo11:
+          item: 'stained_glass:10'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo12:
+          item: 'stained_glass:11'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo13:
+          item: 'stained_glass:12'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo14:
+          item: 'stained_glass:13'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo15:
+          item: 'stained_glass:14'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+        Szklo16:
+          item: 'stained_glass:15'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Szklo'
+    Welna:
+      item: 'wool:0'
+      name: '{c}&lWelna'
+      lore:
+        - ' '
+        - '&8>> {n}Rozne rodzaje welny'
+      items:
+        Welna1:
+          item: 'wool:0'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna2:
+          item: 'wool:1'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna3:
+          item: 'wool:2'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna4:
+          item: 'wool:3'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna5:
+          item: 'wool:4'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna6:
+          item: 'wool:5'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna7:
+          item: 'wool:6'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna8:
+          item: 'wool:7'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna9:
+          item: 'wool:8'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna10:
+          item: 'wool:9'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna11:
+          item: 'wool:10'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna12:
+          item: 'wool:11'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna13:
+          item: 'wool:12'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna14:
+          item: 'wool:13'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+        Welna15:
+          item: 'wool:14'
+          amount: 32
+          price: 50
+          nameInGUI: '{c}Welna'
+    Walka:
+      item: 'diamond_sword:0'
+      name: '{c}&lWalka'
+      lore:
+        - ' '
+        - '&8>> {n}Przedmioty zwiazane z walka'
+      items:
+        Miecz:
+          item: 'diamond_sword:0'
+          amount: 1
+          price: 250
+          nameInGUI: '{c}Miecz'
+          enchant: 'sharpness:5;fire_aspect:2'
+        Miecz2:
+          item: 'diamond_sword:0'
+          amount: 1
+          price: 250
+          nameInGUI: '{c}Miecz'
+          enchant: 'sharpness:5;knockback:2'
+        Helm:
+          item: 'diamond_helmet:0'
+          amount: 1
+          price: 250
+          nameInGUI: '{c}Helm'
+          enchant: 'protection:4;durability:3'
+        Zbroja:
+          item: 'diamond_chestplate:0'
+          amount: 1
+          price: 250
+          nameInGUI: '{c}Zbroja'
+          enchant: 'protection:4;durability:3'
+        Spodnie:
+          item: 'diamond_leggings:0'
+          amount: 1
+          price: 250
+          nameInGUI: '{c}Spodnie'
+          enchant: 'protection:4;durability:3'
+        Buty:
+          item: 'diamond_boots:0'
+          amount: 1
+          price: 250
+          nameInGUI: '{c}Buty'
+          enchant: 'protection:4;durability:3'
+        Luk:
+          item: 'bow:0'
+          amount: 1
+          price: 350
+          nameInGUI: '{c}Luk'
+          enchant: 'infinite:1;punch:2'
+        Luk2:
+          item: 'bow:0'
+          amount: 1
+          price: 400
+          nameInGUI: '{c}Luk'
+          enchant: 'infinite:1;power:5;flame:1'
+        Strzaly:
+          item: 'arrow:0'
+          amount: 16
+          price: 150
+          nameInGUI: '{c}Strzaly'
+        Koxy:
+          item: 'golden_apple:1'
+          amount: 4
+          price: 450
+          nameInGUI: '{c}Koxy'
+        Refile:
+          item: 'golden_apple:0'
+          amount: 8
+          price: 250
+          nameInGUI: '{c}Refile'
+    Przebita:
+      item: 'tnt:0'
+      name: '{c}&lPrzebita'
+      lore:
+        - ' '
+        - '&8>> {n}Itemy na przebite'
+      items:
+        Tnt:
+          item: 'tnt:0'
+          amount: 16
+          price: 150
+          nameInGUI: '{c}TNT'
+        Krzesiwo:
+          item: 'flint_and_steel:0'
+          amount: 1
+          price: 125
+          nameInGUI: '{c}Krzesiwo'
+        Wagonik TNT:
+          item: 'explosive_minecart:0'
+          amount: 1
+          price: 260
+          nameInGUI: '{c}Wagonik TNT'
+        Rzucane TNT:
+          item: 'tnt:0'
+          amount: 1
+          price: 2500
+          name: '&c&lRzucane TNT'
+          nameInGUI: '{c}Rzucane TNT'
+          enchant: 'efficiency:10'
+  Sell:
+    Surowce:
+      item: 'coal:0'
+      name: '{c}&lSurowce'
+      lore:
+        - ' '
+        - '&8>> {n}Surowce'
+      items:
+        Diament:
+          item: 'diamond:0'
+          amount: 16
+          price: 30
+          nameInGUI: '{c}Diamenty'
+        Emerald:
+          item: 'emerald:0'
+          amount: 8
+          price: 40
+          nameInGUI: '{c}Emeraldy'
+        Wegiel:
+          item: 'coal:0'
+          amount: 32
+          price: 15
+          nameInGUI: '{c}Wegiel'
+        Bruk:
+          item: 'cobblestone:0'
+          amount: 64
+          price: 5
+          nameInGUI: '{c}Bruk'
+        Kamien:
+          item: 'stone:0'
+          amount: 64
+          price: 6
+          nameInGUI: '{c}Kamien'
+        Tnt:
+          item: 'tnt:0'
+          amount: 16
+          price: 100
+          nameInGUI: '{c}TNT'
+        Zloto:
+          item: 'gold_ingot:0'
+          amount: 16
+          price: 25
+          nameInGUI: '{c}Zloto'
+        Zelazo:
+          item: 'iron_ingot:0'
+          amount: 16
+          price: 15
+          nameInGUI: '{c}Zelazo'
+        Krzemien:
+          item: 'flint:0'
+          amount: 8
+          price: 16
+          nameInGUI: '{c}Krzemien'
+        Lazuryt:
+          item: 'ink_sack:4'
+          amount: 16
+          price: 25
+          nameInGUI: '{c}Lazuryt'
+  Level:

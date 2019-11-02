@@ -7,10 +7,15 @@ import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.inventory.actions.CraftingAction;
 import pl.fernikq.core.inventory.actions.KitAction;
+import pl.fernikq.core.inventory.actions.ShopAction;
 import pl.fernikq.core.inventory.enums.CraftingActionType;
 import pl.fernikq.core.inventory.enums.KitActionType;
+import pl.fernikq.core.inventory.enums.ShopActionType;
 import pl.fernikq.core.kit.Kit;
 import pl.fernikq.core.kit.KitItem;
+import pl.fernikq.core.shop.Shop;
+import pl.fernikq.core.shop.ShopItem;
+import pl.fernikq.core.shop.ShopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
@@ -104,11 +109,74 @@ public class UserInventory {
         }else {
             autoCraft.addLore(" ");
             for(Map.Entry<Material, Integer> item : generator.getAmounts().entrySet()) {
-                autoCraft.addLore(ChatUtil.fixColor("&8>> {n}" + item.getKey().name().toLowerCase() + "&8: {c}" + ItemUtil.getAmountOfItem(user.asPlayer().getInventory(), item.getKey(), (short) 0) + "&8/{c}" + item.getValue()));
+                autoCraft.addLore(ChatUtil.fixColor("&8>> {n}" + item.getKey().name().toLowerCase() + "&8: {c}" + ItemUtil.getAmountOfMaterial(user.asPlayer().getInventory(), item.getKey(), (short) 0) + "&8/{c}" + item.getValue()));
             }
         }
         gui.setItem(44, autoCraft.toItemStack(), new CraftingAction(plugin, CraftingActionType.CRAFT, generator));
         gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI shopMenu(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lSKLEP &8]", 1, true);
+        user.addInventory(gui);
+        gui.setItem(2, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 5).setName(ChatUtil.fixColor("&a&lKupno"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby kupic przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_BUY));
+        gui.setItem(6, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 14).setName(ChatUtil.fixColor("&c&lSprzedaz"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby sprzedac przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_SELL));
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI shopBuyMenu(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lKUPNO - RODZAJ &8]", 2, true);
+        user.addInventory(gui);
+        for(Shop shop : this.plugin.getShopManager().getShops(ShopType.BUY)){
+            gui.addItem(shop.getItem().clone(), new ShopAction(this.plugin, shop, ShopActionType.CHOOSE_BUY_TYPE));
+        }
+        gui.setItem(17, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_MENU));
+        return gui;
+    }
+
+    public InventoryGUI shopBuy(User user, Shop shop){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lKUPOWANIE &8]", 6, true);
+        user.addInventory(gui);
+        for(ShopItem shopItem : shop.getItems()){
+            ItemBuilder itemBuilder = new ItemBuilder(shopItem.getItemStack().clone());
+            if(shopItem.getName() != null){
+                itemBuilder.setName(ChatUtil.fixColor(shopItem.getName()));
+            }
+            itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ilosc&8: {c}"+shopItem.getAmount(),
+                    "&8>> {n}Cena&8: {c}"+shopItem.getPrice())));
+            gui.addItem(itemBuilder.toItemStack(), new ShopAction(this.plugin, shopItem, ShopActionType.BUY_ITEM));
+        }
+        gui.setItem(53, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_BUY_MENU));
+        return gui;
+    }
+
+    public InventoryGUI shopSellMenu(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lSPRZEDAZ - RODZAJ &8]", 2, true);
+        user.addInventory(gui);
+        for(Shop shop : this.plugin.getShopManager().getShops(ShopType.SELL)){
+            gui.addItem(shop.getItem().clone(), new ShopAction(this.plugin, shop, ShopActionType.CHOOSE_SELL_TYPE));
+        }
+        gui.setItem(17, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_MENU));
+        return gui;
+    }
+
+    public InventoryGUI shopSell(User user, Shop shop){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lSPRZEDAWANIE&8]", 6, true);
+        user.addInventory(gui);
+        for(ShopItem shopItem : shop.getItems()){
+            ItemBuilder itemBuilder = new ItemBuilder(shopItem.getItemStack().clone());
+            if(shopItem.getName() != null){
+                itemBuilder.setName(ChatUtil.fixColor(shopItem.getName()));
+            }
+            itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ilosc&8: {c}"+shopItem.getAmount(),
+                    "&8>> {n}Cena&8: {c}"+shopItem.getPrice())));
+            gui.addItem(itemBuilder.toItemStack(), new ShopAction(this.plugin, shopItem, ShopActionType.SELL_ITEM));
+        }
+        gui.setItem(53, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_SELL_MENU));
         return gui;
     }
 }
