@@ -3,12 +3,15 @@ package pl.fernikq.core.inventory.user;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.inventory.actions.CraftingAction;
+import pl.fernikq.core.inventory.actions.DepositeAction;
 import pl.fernikq.core.inventory.actions.KitAction;
 import pl.fernikq.core.inventory.actions.ShopAction;
 import pl.fernikq.core.inventory.enums.CraftingActionType;
+import pl.fernikq.core.inventory.enums.DepositeActionType;
 import pl.fernikq.core.inventory.enums.KitActionType;
 import pl.fernikq.core.inventory.enums.ShopActionType;
 import pl.fernikq.core.kit.Kit;
@@ -35,8 +38,8 @@ public class UserInventory {
 
     public UserInventory(CorePlugin plugin){
         this.plugin = plugin;
-        blank = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7)).setName("").toItemStack();
-        color = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 3)).setName("").toItemStack();
+        blank = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7)).setName(" ").toItemStack();
+        color = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 3)).setName(" ").toItemStack();
         backGlass = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14)).setName(ChatUtil.fixColor("&c&lPowrot")).toItemStack();
         backBarrier = new ItemBuilder(new ItemStack(Material.BARRIER, 1)).setName(ChatUtil.fixColor("&c&lPowrot")).toItemStack();
     }
@@ -179,6 +182,28 @@ public class UserInventory {
         }
         gui.setItem(53, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_SELL_MENU, user));
         gui.setEmptyItem(new ItemBuilder(this.blank.clone()).setName(ChatUtil.fixColor("&8>> {n}Posiadasz {c}"+user.getUserStat().getCoins()+" {n}monet")).toItemStack());
+        return gui;
+    }
+
+    public InventoryGUI deposite(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lSCHOWEK &8]", 1, true);
+        user.addInventory(gui);
+        ItemBuilder apples = new ItemBuilder(Material.GOLDEN_APPLE).setName(ChatUtil.fixColor("&8[ {c}&lRefile &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Limit&8: {c}" + ConfigManager.maxGoldenApplesInInventory,
+                        "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getDepositeApples())));
+        ItemBuilder enchantedApples = new ItemBuilder(Material.GOLDEN_APPLE).setDurability((short) 1).setName(ChatUtil.fixColor("&8[ {c}&lKoxy &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Limit&8: {c}" + ConfigManager.maxEnchantedGoldenApplesInInventory,
+                        "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getDepositeEnchantedApples())));
+        ItemBuilder pearls = new ItemBuilder(Material.ENDER_PEARL).setName(ChatUtil.fixColor("&8[ {c}&lPerly &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Limit&8: {c}" + ConfigManager.maxPearlsInInventory,
+                        "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getDepositePearls())));
+        ItemBuilder all = new ItemBuilder(Material.HOPPER).setName(ChatUtil.fixColor("&8[ {c}&lWszystko &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby wyplacic wszystko&8!")));
+        gui.setItem(1, enchantedApples.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_ENCHANTED_APPLES, user));
+        gui.setItem(3, apples.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_APPLES, user));
+        gui.setItem(5, pearls.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_PEARLS, user));
+        gui.setItem(7, all.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_ALL, user));
+        gui.setEmptyItem(this.blank);
         return gui;
     }
 }

@@ -159,13 +159,14 @@ public class CorePlugin extends JavaPlugin {
         new ReplyCommand("reply", new String[]{"r"}, UserGroup.PLAYER, this).register();
         new RepairCommand("repair", new String[0], UserGroup.VIP, this).register();
         new HelpopCommand("helpop", new String[0], UserGroup.PLAYER, this).register();
-        new WarpCommand("warp", new String[0], UserGroup.PLAYER, this).register();
-        new KitCommand("kit", new String[0], UserGroup.PLAYER, this).register();
+        new WarpCommand("warp", new String[]{"warpy"}, UserGroup.PLAYER, this).register();
+        new KitCommand("kit", new String[]{"kity"}, UserGroup.PLAYER, this).register();
         new ShopCommand("sklep", new String[0], UserGroup.PLAYER, this).register();
         new SpawnCommand("spawn", new String[0], UserGroup.PLAYER, this).register();
         new TeleportRequestCommand("tpa", new String[0], UserGroup.PLAYER, this).register();
         new TeleportAcceptCommand("tpaccept", new String[0], UserGroup.PLAYER, this).register();
-        new CraftingsCommand("craftingi", new String[]{"craft"}, UserGroup.PLAYER, this).register();
+        new CraftingsCommand("craftingi", new String[]{"crafting"}, UserGroup.PLAYER, this).register();
+        new DepositeCommand("schowek", new String[]{"depozyt"}, UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){

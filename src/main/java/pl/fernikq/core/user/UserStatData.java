@@ -69,7 +69,6 @@ public class UserStatData {
     public void updateStats(User user){
         try {
             UserStat stat = user.getUserStat();
-            this.plugin.getMySQL().openConnection();
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_user_stats` SET "+
                     "`coins` = ?, `level` = ?, `depositePearls` = ?, `depositeApples` = ?, `depositeEnchantedApples` = ? "+
                     "WHERE `uuid` = '"+user.getUuid().toString()+"';");
