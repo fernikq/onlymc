@@ -149,6 +149,8 @@ public class CorePlugin extends JavaPlugin {
         new TeleportCommand("teleport", new String[]{"tp"}, UserGroup.HELPER, this).register();
         new VanishCommand("vanish", new String[]{"v"}, UserGroup.HELPER, this).register();
         new SetSpawnCommand("setspawn", new String[0], UserGroup.ADMIN, this).register();
+        new TitleBroadcastCommand("tbc", new String[0], UserGroup.MOD, this).register();
+        new BroadcastCommand("bc", new String[0], UserGroup.MOD, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();

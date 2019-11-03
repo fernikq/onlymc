@@ -43,7 +43,7 @@ public class DepositeAction implements InventoryAction {
             }
             ItemUtil.giveItems(player, new ItemStack(Material.GOLDEN_APPLE, toGive));
             user.getUserStat().removeDepositeApples(toGive);
-            ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+toGive+" {n}"+itemName(toGive, DepositeActionType.TAKE_APPLES)+" ze schowka&8!");
+            ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+toGive+" {n}"+correctName(toGive, DepositeActionType.TAKE_APPLES)+" ze schowka&8!");
             this.plugin.getUserInventory().deposite(user).openInventory(player);
             return;
         }
@@ -63,7 +63,7 @@ public class DepositeAction implements InventoryAction {
             }
             ItemUtil.giveItems(player, new ItemStack(Material.GOLDEN_APPLE, toGive, (short) 1));
             user.getUserStat().removeDepositeEnchantedApples(toGive);
-            ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+toGive+" {n}"+itemName(toGive, DepositeActionType.TAKE_ENCHANTED_APPLES)+" ze schowka&8!");
+            ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+toGive+" {n}"+correctName(toGive, DepositeActionType.TAKE_ENCHANTED_APPLES)+" ze schowka&8!");
             this.plugin.getUserInventory().deposite(user).openInventory(player);
             return;
         }
@@ -83,7 +83,7 @@ public class DepositeAction implements InventoryAction {
             }
             ItemUtil.giveItems(player, new ItemStack(Material.ENDER_PEARL, toGive));
             user.getUserStat().removeDepositePearls(toGive);
-            ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+toGive+" {n}"+itemName(toGive, DepositeActionType.TAKE_PEARLS)+" ze schowka&8!");
+            ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+toGive+" {n}"+correctName(toGive, DepositeActionType.TAKE_PEARLS)+" ze schowka&8!");
             this.plugin.getUserInventory().deposite(user).openInventory(player);
             return;
         }
@@ -130,24 +130,24 @@ public class DepositeAction implements InventoryAction {
             if(applesToGive > 0){
                 ItemUtil.giveItems(player, new ItemStack(Material.GOLDEN_APPLE, applesToGive));
                 user.getUserStat().removeDepositeApples(applesToGive);
-                ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+applesToGive+" {n}"+itemName(applesToGive, DepositeActionType.TAKE_APPLES)+" ze schowka&8!");
+                ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+applesToGive+" {n}"+correctName(applesToGive, DepositeActionType.TAKE_APPLES)+" ze schowka&8!");
             }
             if(enchantedApplesToGive > 0){
                 ItemUtil.giveItems(player, new ItemStack(Material.GOLDEN_APPLE, enchantedApplesToGive, (short) 1));
                 user.getUserStat().removeDepositeEnchantedApples(enchantedApplesToGive);
-                ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+enchantedApplesToGive+" {n}"+itemName(enchantedApplesToGive, DepositeActionType.TAKE_ENCHANTED_APPLES)+" ze schowka&8!");
+                ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+enchantedApplesToGive+" {n}"+correctName(enchantedApplesToGive, DepositeActionType.TAKE_ENCHANTED_APPLES)+" ze schowka&8!");
             }
             if(pearlsToGive > 0){
                 ItemUtil.giveItems(player, new ItemStack(Material.ENDER_PEARL, pearlsToGive));
                 user.getUserStat().removeDepositePearls(pearlsToGive);
-                ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+pearlsToGive+" {n}"+itemName(pearlsToGive, DepositeActionType.TAKE_PEARLS)+" ze schowka&8!");
+                ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+pearlsToGive+" {n}"+correctName(pearlsToGive, DepositeActionType.TAKE_PEARLS)+" ze schowka&8!");
             }
             this.plugin.getUserInventory().deposite(user).openInventory(player);
             return;
         }
     }
 
-    public String itemName(int amount, DepositeActionType type){
+    public String correctName(int amount, DepositeActionType type){
         if(type.equals(DepositeActionType.TAKE_PEARLS)) {
             if(amount == 1){
                 return "perle";

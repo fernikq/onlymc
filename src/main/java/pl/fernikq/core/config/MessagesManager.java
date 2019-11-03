@@ -38,6 +38,8 @@ public class MessagesManager {
     public static String depositeApplesMessage;
     public static String depositeEnchantedApplesMessage;
     public static String depositePearlsMessage;
+    public static String broadcastMessage;
+    public static String titleBroadcastPrefix;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -111,5 +113,7 @@ public class MessagesManager {
         depositeApplesMessage = "&8>> {n}Posiadales przy sobie za duzo {c}refili&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
         depositeEnchantedApplesMessage = "&8>> {n}Posiadales przy sobie za duzo {c}koxow&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
         depositePearlsMessage = "&8>> {n}Posiadales przy sobie za duzo {c}perel&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
+        broadcastMessage = "&8[&e&lOgloszenie&8]: &f{MESSAGE}";
+        titleBroadcastPrefix = "&c&lAlert";
     }
 }
