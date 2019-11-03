@@ -8,6 +8,7 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.inventory.InventoryAction;
 import pl.fernikq.core.inventory.enums.CraftingActionType;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemUtil;
 
@@ -16,31 +17,30 @@ public class CraftingAction implements InventoryAction {
     private final CorePlugin plugin;
     private final Generator generator;
     private final CraftingActionType actionType;
+    private final User user;
 
-    public CraftingAction(CorePlugin plugin, CraftingActionType actionType, Generator generator){
+    public CraftingAction(CorePlugin plugin, CraftingActionType actionType, Generator generator, User user){
         this.plugin = plugin;
         this.actionType = actionType;
         this.generator = generator;
+        this.user = user;
     }
 
-    public CraftingAction(CorePlugin plugin, CraftingActionType actionType){
+    public CraftingAction(CorePlugin plugin, CraftingActionType actionType, User user){
         this.plugin = plugin;
         this.actionType = actionType;
         this.generator = null;
+        this.user = user;
     }
 
     @Override
     public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack) {
         if(actionType.equals(CraftingActionType.BACK)){
-            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
-                this.plugin.getUserInventory().craftingsMenu(user).openInventory(player);
-            });
+            this.plugin.getUserInventory().craftingsMenu(user).openInventory(player);
             return;
         }
         if(actionType.equals(CraftingActionType.CHOOSE)) {
-            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
-                this.plugin.getUserInventory().craftings(user, generator).openInventory(player);
-            });
+            this.plugin.getUserInventory().craftings(user, generator).openInventory(player);
             return;
         }
         if(actionType.equals(CraftingActionType.CRAFT)) {

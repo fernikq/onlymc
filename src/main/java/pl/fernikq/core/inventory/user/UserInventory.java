@@ -47,7 +47,7 @@ public class UserInventory {
         for(Kit kit : this.plugin.getKitManager().getKits()){
             ItemBuilder builder = new ItemBuilder(kit.getItem().clone()).setAmount(1).setName(ChatUtil.fixColor(kit.getName()));
             builder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Zestaw dostepny dla "+(kit.getGroup().equals(UserGroup.PLAYER) ? "&7Gracza" : kit.getGroup().getPrefix()), "&8>> {n}Kliknij aby obejrzec")));
-            gui.addItem(builder.toItemStack(), new KitAction(this.plugin, kit, KitActionType.CHOOSE));
+            gui.addItem(builder.toItemStack(), new KitAction(this.plugin, kit, KitActionType.CHOOSE, user));
         }
         gui.setEmptyItem(blank);
         return gui;
@@ -66,8 +66,8 @@ public class UserInventory {
         ItemBuilder take = new ItemBuilder(Material.WOOL).setDurability((short)5).setName(ChatUtil.fixColor("&a&lOdbierz zestaw"));
         take.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Czas&8: "+(this.plugin.getKitManager().canTakeByTime(user, kit) ? "&aTak" : "&cNie"), "&8>> {n}Ranga&8: "+(this.plugin.getKitManager().canTakeByGroup(user, kit) ? "&aTak" : "&cNie"))));
         ItemBuilder back = new ItemBuilder(Material.WOOL).setDurability((short)14).setName(ChatUtil.fixColor("&c&lPowrot"));
-        gui.setItem(52, back.toItemStack(), new KitAction(this.plugin, KitActionType.BACK));
-        gui.setItem(53, take.toItemStack(), new KitAction(this.plugin, kit, KitActionType.TAKE));
+        gui.setItem(52, back.toItemStack(), new KitAction(this.plugin, KitActionType.BACK, user));
+        gui.setItem(53, take.toItemStack(), new KitAction(this.plugin, kit, KitActionType.TAKE, user));
         return gui;
     }
 
@@ -77,7 +77,7 @@ public class UserInventory {
         for(Generator generator : this.plugin.getGeneratorManager().getGenerators()){
             ItemBuilder builder = new ItemBuilder(generator.getItemStack().clone()).setAmount(1);
             builder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zobaczyc crafting")));
-            gui.addItem(builder.toItemStack(), new CraftingAction(plugin, CraftingActionType.CHOOSE, generator));
+            gui.addItem(builder.toItemStack(), new CraftingAction(plugin, CraftingActionType.CHOOSE, generator, user));
         }
         return gui;
     }
@@ -102,7 +102,7 @@ public class UserInventory {
             index++;
         }
         gui.setItem(24, generator.getItemStack().clone());
-        gui.setItem(43, backBarrier, new CraftingAction(plugin, CraftingActionType.BACK));
+        gui.setItem(43, backBarrier, new CraftingAction(plugin, CraftingActionType.BACK, user));
         ItemBuilder autoCraft = new ItemBuilder(Material.WORKBENCH).setName(ChatUtil.fixColor("&a&lAutomatyczny crafting"));
         if(generator.hasItems(user.asPlayer())){
             autoCraft.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&aPosiadasz przedmioty!")));
@@ -112,7 +112,7 @@ public class UserInventory {
                 autoCraft.addLore(ChatUtil.fixColor("&8>> {n}" + item.getKey().name().toLowerCase() + "&8: {c}" + ItemUtil.getAmountOfMaterial(user.asPlayer().getInventory(), item.getKey(), (short) 0) + "&8/{c}" + item.getValue()));
             }
         }
-        gui.setItem(44, autoCraft.toItemStack(), new CraftingAction(plugin, CraftingActionType.CRAFT, generator));
+        gui.setItem(44, autoCraft.toItemStack(), new CraftingAction(plugin, CraftingActionType.CRAFT, generator, user));
         gui.setEmptyItem(this.blank);
         return gui;
     }
@@ -121,9 +121,9 @@ public class UserInventory {
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lSKLEP &8]", 1, true);
         user.addInventory(gui);
         gui.setItem(2, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 5).setName(ChatUtil.fixColor("&a&lKupno"))
-                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby kupic przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_BUY));
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby kupic przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_BUY, user));
         gui.setItem(6, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 14).setName(ChatUtil.fixColor("&c&lSprzedaz"))
-                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby sprzedac przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_SELL));
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby sprzedac przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_SELL, user));
         gui.setEmptyItem(this.blank);
         return gui;
     }
@@ -132,9 +132,9 @@ public class UserInventory {
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lKUPNO - RODZAJ &8]", 2, true);
         user.addInventory(gui);
         for(Shop shop : this.plugin.getShopManager().getShops(ShopType.BUY)){
-            gui.addItem(shop.getItem().clone(), new ShopAction(this.plugin, shop, ShopActionType.CHOOSE_BUY_TYPE));
+            gui.addItem(shop.getItem().clone(), new ShopAction(this.plugin, shop, ShopActionType.CHOOSE_BUY_TYPE, user));
         }
-        gui.setItem(17, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_MENU));
+        gui.setItem(17, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_MENU, user));
         return gui;
     }
 
@@ -148,9 +148,10 @@ public class UserInventory {
             }
             itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ilosc&8: {c}"+shopItem.getAmount(),
                     "&8>> {n}Cena&8: {c}"+shopItem.getPrice())));
-            gui.addItem(itemBuilder.toItemStack(), new ShopAction(this.plugin, shopItem, ShopActionType.BUY_ITEM));
+            gui.addItem(itemBuilder.toItemStack(), new ShopAction(this.plugin, shopItem, shop, ShopActionType.BUY_ITEM, user));
         }
-        gui.setItem(53, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_BUY_MENU));
+        gui.setItem(53, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_BUY_MENU, user));
+        gui.setEmptyItem(new ItemBuilder(this.blank.clone()).setName(ChatUtil.fixColor("&8>> {n}Posiadasz {c}"+user.getUserStat().getCoins()+" {n}monet")).toItemStack());
         return gui;
     }
 
@@ -158,9 +159,9 @@ public class UserInventory {
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lSPRZEDAZ - RODZAJ &8]", 2, true);
         user.addInventory(gui);
         for(Shop shop : this.plugin.getShopManager().getShops(ShopType.SELL)){
-            gui.addItem(shop.getItem().clone(), new ShopAction(this.plugin, shop, ShopActionType.CHOOSE_SELL_TYPE));
+            gui.addItem(shop.getItem().clone(), new ShopAction(this.plugin, shop, ShopActionType.CHOOSE_SELL_TYPE, user));
         }
-        gui.setItem(17, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_MENU));
+        gui.setItem(17, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_MENU, user));
         return gui;
     }
 
@@ -174,9 +175,10 @@ public class UserInventory {
             }
             itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ilosc&8: {c}"+shopItem.getAmount(),
                     "&8>> {n}Cena&8: {c}"+shopItem.getPrice())));
-            gui.addItem(itemBuilder.toItemStack(), new ShopAction(this.plugin, shopItem, ShopActionType.SELL_ITEM));
+            gui.addItem(itemBuilder.toItemStack(), new ShopAction(this.plugin, shopItem, shop, ShopActionType.SELL_ITEM, user));
         }
-        gui.setItem(53, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_SELL_MENU));
+        gui.setItem(53, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_SELL_MENU, user));
+        gui.setEmptyItem(new ItemBuilder(this.blank.clone()).setName(ChatUtil.fixColor("&8>> {n}Posiadasz {c}"+user.getUserStat().getCoins()+" {n}monet")).toItemStack());
         return gui;
     }
 }
