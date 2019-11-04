@@ -15,6 +15,7 @@
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/regions.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/generators.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/shop.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/drop.yml" />
     </root>
   </artifact>
 </component>

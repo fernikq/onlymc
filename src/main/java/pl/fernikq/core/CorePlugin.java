@@ -12,6 +12,7 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.GeneratorManager;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGeneratorManager;
+import pl.fernikq.core.drop.DropManager;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.block.*;
@@ -57,6 +58,7 @@ public class CorePlugin extends JavaPlugin {
     private StoneGeneratorManager stoneGeneratorManager;
     private List<SimpleTask> simpleTasks;
     private ShopManager shopManager;
+    private DropManager dropManager;
 
     @Override
     public void onEnable() {
@@ -106,6 +108,7 @@ public class CorePlugin extends JavaPlugin {
         this.generatorManager = new GeneratorManager(this);
         this.stoneGeneratorManager = new StoneGeneratorManager(this);
         this.shopManager = new ShopManager(this);
+        this.dropManager = new DropManager(this);
     }
 
     private void initData(){

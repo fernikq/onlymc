@@ -1,0 +1,56 @@
+#Dostepne zmienne: nameInGUI, enchant, lore, name
+Cobblex:
+  item: 'mossy_cobblestone:0'
+  name: '&a&lCobbleX'
+  nameInGUI: 'CobbleX'
+  lore:
+    - ' '
+    - '&8>> &fKliknij aby otworzyc&8!'
+  enchant: 'fortune:10'
+PremiumCase:
+  maxItemsInOneCase: 6
+  item: 'chest:0'
+  name: '&3&lChampionChest'
+  nameInGUI: 'ChampionChest'
+  lore:
+    - ' '
+    - '&8>> &fKliknij aby otworzyc&8!'
+  enchant: 'fortune:10'
+StoneDrop:
+  Diament:
+    item: 'diamond:0'
+    amount:
+      min: 1
+      max: 3
+    minY: 256
+    chance: 3.2
+    fortune: true
+    nameInGUI: '{c}&lDiament'
+    message: '&8>> &fTrafiles na diament&8!'
+  Emerald:
+    item: 'emerald:0'
+    amount:
+      min: 1
+      max: 4
+    minY: 256
+    chance: 2.3
+    fortune: true
+    nameInGUI: '{c}&lEmerald'
+    message: '&8>> &fTrafiles na emerald w ilosci {c}{AMOUNT}'
+CobblexDrop:
+  TNT:
+    item: 'tnt:0'
+    amount:
+      min: 4
+      max: 8
+    nameInGUI: '{c}&lTNT'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lTNT {n}w ilosci {c}{AMOUNT}'
+PremiumCaseDrop:
+  TNT:
+    item: 'tnt:0'
+    amount:
+      min: 4
+      max: 8
+    chance: 25.0
+    nameInGUI: '{c}&lTNT'
+    OpenCaseItemName: '&fTNT'
