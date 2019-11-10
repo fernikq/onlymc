@@ -3,6 +3,7 @@ package pl.fernikq.core.listener.block;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,11 +13,15 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.GeneratorType;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
+import pl.fernikq.core.drop.Drop;
+import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
+import pl.fernikq.core.util.RandomUtil;
 
 public class BlockBreakListener implements Listener {
 
@@ -50,7 +55,46 @@ public class BlockBreakListener implements Listener {
                 return;
             }
             this.plugin.getStoneGeneratorManager().regenGenerator(stoneGenerator);
-            return;
         }
+        if(block.getType() == Material.STONE){
+            for(Drop drop : this.plugin.getDropManager().getDrops(DropType.STONE)){
+                if(drop.getDisabled().contains(user)){
+                    continue;
+                }
+                if(!RandomUtil.getChance(drop.getChance())){
+                    continue;
+                }
+                if(block.getLocation().getBlockY() >= drop.getMinY()){
+                    continue;
+                }
+                int amount = getAmountOfDrop(drop, player);
+                ItemBuilder itemBuilder = new ItemBuilder(drop.getItemStack().clone()).setAmount(amount);
+                if(user.getUserChat().isDropMessages()){
+                    ChatUtil.sendMessage(player, drop.getMessage().replace("{AMOUNT}", Integer.toString(amount)));
+                }
+                ItemUtil.giveItems(player, itemBuilder.toItemStack());
+            }
+            //TODO xp + turbo + add stone do lvl
+            if(this.plugin.getDropManager().getDisabledCobblestone().contains(user)){
+                event.setCancelled(true);
+                block.setType(Material.AIR);
+            }
+        }
+    }
+
+    private int getAmountOfDrop(Drop drop, Player player){
+        int amount = drop.getMinAmount() == drop.getMaxAmount() ? drop.getMaxAmount() : RandomUtil.getRandInt(drop.getMinAmount(), drop.getMaxAmount());
+        if(player.getItemInHand() != null && player.getItemInHand().containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS) && drop.isFortune()){
+            int enchantLevel = player.getItemInHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+            if(enchantLevel == 1){
+                amount = RandomUtil.getRandInt(drop.getMinAmount(), drop.getMaxAmount() + 1);
+            }
+            if(enchantLevel == 2){
+                amount = RandomUtil.getRandInt(drop.getMinAmount(), drop.getMaxAmount() + 2);
+            }else{
+                amount = RandomUtil.getRandInt(drop.getMinAmount(), drop.getMaxAmount() + 3);
+            }
+        }
+        return amount;
     }
 }

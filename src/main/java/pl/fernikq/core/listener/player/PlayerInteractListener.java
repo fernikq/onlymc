@@ -10,11 +10,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.drop.Drop;
+import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
-import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,6 +62,45 @@ public class PlayerInteractListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+            return;
+        }
+        if(this.plugin.getDropManager().getCobblexItem().isSimilar(player.getItemInHand())){
+            Drop drop = (Drop)this.plugin.getDropManager().getDrops(DropType.COBBLEX).get(RandomUtil.getRandInt(0, this.plugin.getDropManager().getDrops(DropType.COBBLEX).size() - 1));
+            int amount = drop.getMinAmount() == drop.getMaxAmount() ? drop.getMaxAmount() : RandomUtil.getRandInt(drop.getMinAmount(), drop.getMaxAmount());
+            ItemBuilder itemBuilder = new ItemBuilder(drop.getItemStack().clone()).setAmount(amount);
+            ItemUtil.giveItems(player, itemBuilder.toItemStack());
+            ChatUtil.sendMessage(player, drop.getMessage().replace("{AMOUNT}", Integer.toString(amount)));
+            event.setCancelled(true);
+            ItemUtil.removeFromHand(player, 1);
+            return;
+        }
+        if(this.plugin.getDropManager().getPremiumCaseItem().isSimilar(player.getItemInHand())){
+            int items = 0;
+            List<String> dropMessages = new ArrayList<>();
+            for(Drop drop : this.plugin.getDropManager().getDrops(DropType.PREMIUMCASE)){
+                if(items >= this.plugin.getDropManager().getMaxItemsInOneCase()){
+                    break;
+                }
+                if(!RandomUtil.getChance(drop.getChance())){
+                    continue;
+                }
+                int amount = drop.getMinAmount() == drop.getMaxAmount() ? drop.getMaxAmount() : RandomUtil.getRandInt(drop.getMinAmount(), drop.getMaxAmount());
+                ItemBuilder itemBuilder = new ItemBuilder(drop.getItemStack().clone()).setAmount(amount);
+                ItemUtil.giveItems(player, itemBuilder.toItemStack());
+                dropMessages.add(" &8- {n}"+drop.getMessage().replace("{AMOUNT}", Integer.toString(amount)).replace("{CHANCE}", NumberUtil.formatDouble(drop.getChance())));
+                items++;
+            }
+            Bukkit.getOnlinePlayers().forEach(online -> {
+                this.plugin.getUserManager().getUser(online.getUniqueId()).filter(user -> user.getUserChat().isPremiumCaseMessages()).peek(user -> {
+                    ChatUtil.sendMessage(online, "{n}Gracz {c}"+player.getName()+" {n}otworzyl "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}i otrzymal&8:", " ");
+                    for(String string : dropMessages){
+                        ChatUtil.sendMessage(online, string);
+                    }
+                    ChatUtil.sendMessage(online, " ");
+                });
+            });
+            event.setCancelled(true);
+            ItemUtil.removeFromHand(player, 1);
             return;
         }
     }

@@ -26,7 +26,7 @@ StoneDrop:
     chance: 3.2
     fortune: true
     nameInGUI: '{c}&lDiament'
-    message: '&8>> &fTrafiles na diament&8!'
+    message: '&8>> &fTrafiles na diament w ilosci {c}{AMOUNT}'
   Emerald:
     item: 'emerald:0'
     amount:
@@ -53,4 +53,4 @@ PremiumCaseDrop:
       max: 8
     chance: 25.0
     nameInGUI: '{c}&lTNT'
-    OpenCaseItemName: '&fTNT'
+    OpenCaseItemName: '&fTNT &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
