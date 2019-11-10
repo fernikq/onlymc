@@ -1,6 +1,10 @@
 package pl.fernikq.core.drop;
 
 import org.bukkit.inventory.ItemStack;
+import pl.fernikq.core.user.User;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Drop {
 
@@ -13,6 +17,11 @@ public class Drop {
     private int minY;
     private boolean fortune;
     private String message;
+    private Set<User> disabled;
+
+    public Drop(){
+        this.disabled = new HashSet<>();
+    }
 
     public String getName() {
         return name;
@@ -84,5 +93,25 @@ public class Drop {
 
     public void setDropType(DropType dropType) {
         this.dropType = dropType;
+    }
+
+    public Set<User> getDisabled() {
+        return new HashSet<>(this.disabled);
+    }
+
+    public void addToDisabled(User user){
+        this.disabled.add(user);
+    }
+
+    public void removeFromDisabled(User user){
+        this.disabled.remove(user);
+    }
+
+    public void changeDropStatus(User user){
+        if(this.disabled.contains(user)){
+            this.disabled.remove(user);
+            return;
+        }
+        this.disabled.add(user);
     }
 }

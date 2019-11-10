@@ -1,4 +1,4 @@
-package pl.fernikq.core.inventory.actions;
+package pl.fernikq.core.inventory.actions.user;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -7,7 +7,7 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.inventory.InventoryAction;
-import pl.fernikq.core.inventory.enums.CraftingActionType;
+import pl.fernikq.core.inventory.enums.user.CraftingActionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemUtil;

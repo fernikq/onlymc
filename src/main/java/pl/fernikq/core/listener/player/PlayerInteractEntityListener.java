@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
+import pl.fernikq.core.user.User;
 
 public class PlayerInteractEntityListener implements Listener {
 
@@ -28,7 +29,8 @@ public class PlayerInteractEntityListener implements Listener {
         if(entity.getType() != EntityType.ITEM_FRAME){
             return;
         }
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, entity.getLocation(), RegionProtectionType.FRAMES);
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, entity.getLocation(), RegionProtectionType.FRAMES);
         if(!regionFeedback.isPermit()) {
             event.setCancelled(true);
             return;

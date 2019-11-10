@@ -20,6 +20,7 @@ public class User {
     private String lastAddress;
     private UserGroup group;
     private UserStat userStat;
+    private UserChat userChat;
 
     private Map<String, Home> homes;
     private boolean godMode;
@@ -41,6 +42,7 @@ public class User {
         this.privateMessageSender = null;
         this.kitTimes = new HashMap<>();
         this.userStat = new UserStat(this);
+        this.userChat = new UserChat(this);
         this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
     }
 
@@ -56,6 +58,7 @@ public class User {
             this.godMode = false;
             this.privateMessageSender = null;
             this.kitTimes = new HashMap<>();
+            this.userChat = new UserChat(this);
             this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -176,5 +179,13 @@ public class User {
 
     public void setUserStat(UserStat userStat) {
         this.userStat = userStat;
+    }
+
+    public UserChat getUserChat() {
+        return userChat;
+    }
+
+    public void setUserChat(UserChat userChat) {
+        this.userChat = userChat;
     }
 }

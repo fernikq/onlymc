@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.PlayerUtil;
 
@@ -33,7 +34,9 @@ public class EntityDamageByEntityListener implements Listener {
             return;
         }
         Player victim = (Player)event.getEntity();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canHurt(damager, victim);
+        User damagerUser = this.plugin.getUserManager().getUser(damager.getUniqueId()).getOrNull();
+        User victimUser = this.plugin.getUserManager().getUser(victim.getUniqueId()).getOrNull();
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canHurt(damagerUser, victimUser);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(damager, regionFeedback.getFeedbackMessage());
@@ -50,7 +53,8 @@ public class EntityDamageByEntityListener implements Listener {
         if(damager == null) {
             return;
         }
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(damager, event.getEntity().getLocation(), RegionProtectionType.FRAMES);
+        User damagerUser = this.plugin.getUserManager().getUser(damager.getUniqueId()).getOrNull();
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(damagerUser, event.getEntity().getLocation(), RegionProtectionType.FRAMES);
         if(!regionFeedback.isPermit()) {
             event.setCancelled(true);
             return;

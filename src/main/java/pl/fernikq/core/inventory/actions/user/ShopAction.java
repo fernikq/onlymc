@@ -1,4 +1,4 @@
-package pl.fernikq.core.inventory.actions;
+package pl.fernikq.core.inventory.actions.user;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -6,9 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.inventory.InventoryAction;
-import pl.fernikq.core.inventory.enums.KitActionType;
-import pl.fernikq.core.inventory.enums.ShopActionType;
-import pl.fernikq.core.kit.Kit;
+import pl.fernikq.core.inventory.enums.user.ShopActionType;
 import pl.fernikq.core.shop.Shop;
 import pl.fernikq.core.shop.ShopItem;
 import pl.fernikq.core.user.User;

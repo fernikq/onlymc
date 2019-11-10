@@ -224,8 +224,7 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback can(Player player, Location location, RegionProtectionType type){
-        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+    public RegionFeedback can(User user, Location location, RegionProtectionType type){
         if(user == null){
             return RegionFeedback.DENY_ERROR;
         }
@@ -281,7 +280,7 @@ public class RegionManager {
                 for(Region region : getRegionsByLocation(location)){
                     if(region.isCanDestroy()){
                         if(region.isStoneGeneratorRegion()){
-                            if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.GOLD_PICKAXE){
+                            if(user.asPlayer().getItemInHand() != null && user.asPlayer().getItemInHand().getType() == Material.GOLD_PICKAXE){
                                 return RegionFeedback.DENY_DESTROY_GOLD_PICKAXE;
                             }
                         }
@@ -326,13 +325,13 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canHurt(Player damager, Player victim){
+    public RegionFeedback canHurt(User damager, User victim){
         //TODO Relations
         if(checkRegions() != null){
             return checkRegions();
         }
-        Region damagerRegion = getRegionByLocation(damager.getLocation().getBlock().getLocation());
-        Region victimRegion = getRegionByLocation(victim.getLocation().getBlock().getLocation());
+        Region damagerRegion = getRegionByLocation(damager.asPlayer().getLocation().getBlock().getLocation());
+        Region victimRegion = getRegionByLocation(victim.asPlayer().getLocation().getBlock().getLocation());
         if(damagerRegion == null && victimRegion == null){
             return RegionFeedback.ALLOW;
         }
@@ -362,8 +361,7 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canProccessCommand(Player player, Location location, String command){
-        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+    public RegionFeedback canProccessCommand(User user, Location location, String command){
         if(user == null){
             return RegionFeedback.DENY_ERROR;
         }

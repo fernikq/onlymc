@@ -13,6 +13,7 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
+import pl.fernikq.core.user.User;
 
 public class HangingPlaceListener implements Listener {
 
@@ -28,7 +29,8 @@ public class HangingPlaceListener implements Listener {
         Entity entity = event.getEntity();
         Player player = event.getPlayer();
         if(entity.getType() == EntityType.PAINTING) {
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, entity.getLocation(), RegionProtectionType.PAINTINGS);
+            User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, entity.getLocation(), RegionProtectionType.PAINTINGS);
             if(!regionFeedback.isPermit()) {
                 event.setCancelled(true);
                 return;
@@ -36,7 +38,8 @@ public class HangingPlaceListener implements Listener {
             return;
         }
         if(entity.getType() == EntityType.ITEM_FRAME) {
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, entity.getLocation(), RegionProtectionType.FRAMES);
+            User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, entity.getLocation(), RegionProtectionType.FRAMES);
             if(!regionFeedback.isPermit()) {
                 event.setCancelled(true);
                 return;

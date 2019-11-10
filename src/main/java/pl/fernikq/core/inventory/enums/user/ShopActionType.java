@@ -1,4 +1,4 @@
-package pl.fernikq.core.inventory.enums;
+package pl.fernikq.core.inventory.enums.user;
 
 public enum ShopActionType {
 

@@ -26,7 +26,13 @@ public class ChatUtil {
     }
 
     public static boolean sendMessage(CommandSender sender, String... messages){
+        if(sender == null || messages == null){
+            return true;
+        }
         if(sender instanceof Player){
+            if(!((Player)sender).isOnline()){
+                return true;
+            }
             for(String message : messages){
                 sender.sendMessage(fixColor(message));
             }

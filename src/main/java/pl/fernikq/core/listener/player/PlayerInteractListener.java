@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
 import java.util.Arrays;
@@ -35,7 +36,8 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
         if(player.getItemInHand() != null && event.getAction() == Action.RIGHT_CLICK_BLOCK && this.vehicles.contains(player.getItemInHand().getType())){
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, block.getLocation(), RegionProtectionType.VEHICLES);
+            User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.VEHICLES);
             if(!regionFeedback.isPermit()){
                 event.setCancelled(true);
                 ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());

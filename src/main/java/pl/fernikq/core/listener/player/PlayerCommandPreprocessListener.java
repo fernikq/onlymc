@@ -12,6 +12,7 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
 public class PlayerCommandPreprocessListener implements Listener {
@@ -26,8 +27,9 @@ public class PlayerCommandPreprocessListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onRegion(PlayerCommandPreprocessEvent event){
         Player player = event.getPlayer();
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
         String command = event.getMessage().split(" ")[0];
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canProccessCommand(player, player.getLocation().getBlock().getLocation(), command);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canProccessCommand(user, player.getLocation().getBlock().getLocation(), command);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());

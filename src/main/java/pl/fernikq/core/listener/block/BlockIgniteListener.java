@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
+import pl.fernikq.core.user.User;
 
 public class BlockIgniteListener implements Listener {
 
@@ -27,7 +28,8 @@ public class BlockIgniteListener implements Listener {
         Block block = event.getBlock();
         Player player = event.getPlayer();
         if(player != null){
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, block.getLocation(), RegionProtectionType.CAN_FIRE_SPREAD);
+            User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.CAN_FIRE_SPREAD);
             if(!regionFeedback.isPermit()){
                 event.setCancelled(true);
                 return;

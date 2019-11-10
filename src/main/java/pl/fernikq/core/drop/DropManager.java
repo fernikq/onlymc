@@ -4,6 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.EnchantManager;
 import pl.fernikq.core.util.ItemBuilder;
@@ -11,7 +12,9 @@ import pl.fernikq.core.util.ItemUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DropManager {
@@ -20,17 +23,20 @@ public class DropManager {
     private File dropFile;
     private List<Drop> drops;
 
-    private ItemStack premiumCaseItem;
-    private ItemStack cobblexItem;
+    public ItemStack premiumCaseItem;
+    public ItemStack cobblexItem;
 
-    private String premiumCaseNameInGUI;
-    private String cobblexNameInGUI;
+    public String premiumCaseNameInGUI;
+    public String cobblexNameInGUI;
 
-    private int maxItemsInOneCase;
+    public int maxItemsInOneCase;
+
+    public Set<User> disabledCobblestone;
 
     public DropManager(CorePlugin plugin){
         this.plugin = plugin;
         this.drops = new ArrayList<>();
+        this.disabledCobblestone = new HashSet<>();
         checkFile();
         loadDrops();
     }
@@ -45,7 +51,13 @@ public class DropManager {
         }
     }
 
+    public void reload(){
+        checkFile();
+        loadDrops();
+    }
+
     public void loadDrops(){
+        this.drops.clear();
         YamlConfiguration configuration = getDropFile();
         ItemBuilder premiumCase = new ItemBuilder(ItemUtil.getMaterial(configuration.getString("PremiumCase.item").split(":")[0]))
                 .setDurability((short) Short.parseShort(configuration.getString("PremiumCase.item").split(":")[1]))
@@ -77,12 +89,12 @@ public class DropManager {
             ConfigurationSection section = configurationSection.getConfigurationSection(s);
             Drop drop = new Drop();
             drop.setDropType(DropType.STONE);
-            drop.setChance(configuration.getDouble("chance"));
-            drop.setFortune(configuration.getBoolean("fortune"));
-            drop.setMinAmount(configuration.getInt("amount.min"));
-            drop.setMaxAmount(configuration.getInt("amount.max"));
-            drop.setMinY(configuration.getInt("minY"));
-            drop.setMessage(configuration.getString("message"));
+            drop.setChance(section.getDouble("chance"));
+            drop.setFortune(section.getBoolean("fortune"));
+            drop.setMinAmount(section.getInt("amount.min"));
+            drop.setMaxAmount(section.getInt("amount.max"));
+            drop.setMinY(section.getInt("minY"));
+            drop.setMessage(section.getString("message"));
             String[] itemData = section.getString("item").split(":");
             ItemStack item = new ItemStack(ItemUtil.getMaterial(itemData[0]), 1, (short) Short.parseShort(itemData[1]));
             ItemBuilder itemBuilder = new ItemBuilder(item);
@@ -98,6 +110,7 @@ public class DropManager {
             if(section.getString("nameInGUI") != null){
                 drop.setName(section.getString("nameInGUI"));
             }
+            drop.setItemStack(itemBuilder.toItemStack());
             this.drops.add(drop);
         }
         configurationSection = configuration.getConfigurationSection("CobblexDrop");
@@ -105,9 +118,9 @@ public class DropManager {
             ConfigurationSection section = configurationSection.getConfigurationSection(s);
             Drop drop = new Drop();
             drop.setDropType(DropType.COBBLEX);
-            drop.setMinAmount(configuration.getInt("amount.min"));
-            drop.setMaxAmount(configuration.getInt("amount.max"));
-            drop.setMessage(configuration.getString("message"));
+            drop.setMinAmount(section.getInt("amount.min"));
+            drop.setMaxAmount(section.getInt("amount.max"));
+            drop.setMessage(section.getString("message"));
             String[] itemData = section.getString("item").split(":");
             ItemStack item = new ItemStack(ItemUtil.getMaterial(itemData[0]), 1, (short) Short.parseShort(itemData[1]));
             ItemBuilder itemBuilder = new ItemBuilder(item);
@@ -123,6 +136,7 @@ public class DropManager {
             if(section.getString("nameInGUI") != null){
                 drop.setName(section.getString("nameInGUI"));
             }
+            drop.setItemStack(itemBuilder.toItemStack());
             this.drops.add(drop);
         }
         configurationSection = configuration.getConfigurationSection("PremiumCaseDrop");
@@ -130,10 +144,10 @@ public class DropManager {
             ConfigurationSection section = configurationSection.getConfigurationSection(s);
             Drop drop = new Drop();
             drop.setDropType(DropType.PREMIUMCASE);
-            drop.setMinAmount(configuration.getInt("amount.min"));
-            drop.setMaxAmount(configuration.getInt("amount.max"));
-            drop.setChance(configuration.getDouble("chance"));
-            drop.setMessage(configuration.getString("OpenCaseItemName"));
+            drop.setMinAmount(section.getInt("amount.min"));
+            drop.setMaxAmount(section.getInt("amount.max"));
+            drop.setChance(section.getDouble("chance"));
+            drop.setMessage(section.getString("OpenCaseItemName"));
             String[] itemData = section.getString("item").split(":");
             ItemStack item = new ItemStack(ItemUtil.getMaterial(itemData[0]), 1, (short) Short.parseShort(itemData[1]));
             ItemBuilder itemBuilder = new ItemBuilder(item);
@@ -149,6 +163,7 @@ public class DropManager {
             if(section.getString("nameInGUI") != null){
                 drop.setName(section.getString("nameInGUI"));
             }
+            drop.setItemStack(itemBuilder.toItemStack());
             this.drops.add(drop);
         }
     }
@@ -159,5 +174,37 @@ public class DropManager {
 
     public YamlConfiguration getDropFile() {
         return YamlConfiguration.loadConfiguration(this.dropFile);
+    }
+
+    public ItemStack getPremiumCaseItem() {
+        return premiumCaseItem;
+    }
+
+    public ItemStack getCobblexItem() {
+        return cobblexItem;
+    }
+
+    public String getPremiumCaseNameInGUI() {
+        return premiumCaseNameInGUI;
+    }
+
+    public String getCobblexNameInGUI() {
+        return cobblexNameInGUI;
+    }
+
+    public int getMaxItemsInOneCase() {
+        return maxItemsInOneCase;
+    }
+
+    public Set<User> getDisabledCobblestone() {
+        return new HashSet<>(this.disabledCobblestone);
+    }
+
+    public void changeDropStatus(User user){
+        if(this.disabledCobblestone.contains(user)){
+            this.disabledCobblestone.remove(user);
+            return;
+        }
+        this.disabledCobblestone.add(user);
     }
 }

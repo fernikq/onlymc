@@ -1,19 +1,17 @@
 package pl.fernikq.core.inventory.user;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.crafting.Generator;
+import pl.fernikq.core.drop.Drop;
+import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.inventory.InventoryGUI;
-import pl.fernikq.core.inventory.actions.CraftingAction;
-import pl.fernikq.core.inventory.actions.DepositeAction;
-import pl.fernikq.core.inventory.actions.KitAction;
-import pl.fernikq.core.inventory.actions.ShopAction;
-import pl.fernikq.core.inventory.enums.CraftingActionType;
-import pl.fernikq.core.inventory.enums.DepositeActionType;
-import pl.fernikq.core.inventory.enums.KitActionType;
-import pl.fernikq.core.inventory.enums.ShopActionType;
+import pl.fernikq.core.inventory.actions.user.*;
+import pl.fernikq.core.inventory.enums.user.*;
 import pl.fernikq.core.kit.Kit;
 import pl.fernikq.core.kit.KitItem;
 import pl.fernikq.core.shop.Shop;
@@ -24,6 +22,7 @@ import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
+import pl.fernikq.core.util.NumberUtil;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -39,7 +38,7 @@ public class UserInventory {
     public UserInventory(CorePlugin plugin){
         this.plugin = plugin;
         blank = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7)).setName(" ").toItemStack();
-        color = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 3)).setName(" ").toItemStack();
+        color = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14)).setName(" ").toItemStack();
         backGlass = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14)).setName(ChatUtil.fixColor("&c&lPowrot")).toItemStack();
         backBarrier = new ItemBuilder(new ItemStack(Material.BARRIER, 1)).setName(ChatUtil.fixColor("&c&lPowrot")).toItemStack();
     }
@@ -204,6 +203,110 @@ public class UserInventory {
         gui.setItem(5, pearls.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_PEARLS, user));
         gui.setItem(7, all.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_ALL, user));
         gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI dropMenu(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lMenu dropu &8]", 5, true);
+        user.addInventory(gui);
+        ItemBuilder stoneDrop = new ItemBuilder(Material.STONE).setName(ChatUtil.fixColor("{c}&lDrop z kamienia")).setLore(ChatUtil.fixColor(Arrays.asList(
+                " ", "&8>> {n}Kliknij aby zobaczyc"
+        )));
+        ItemBuilder caseDrop = new ItemBuilder(this.plugin.getDropManager().getPremiumCaseItem().clone().getType()).setName(ChatUtil.fixColor("{c}&lDrop z "+this.plugin.getDropManager().getPremiumCaseNameInGUI())).setLore(ChatUtil.fixColor(Arrays.asList(
+                " ", "&8>> {n}Kliknij aby zobaczyc"
+        )));
+        ItemBuilder cobblexDrop = new ItemBuilder(this.plugin.getDropManager().getCobblexItem().clone().getType()).setName(ChatUtil.fixColor("{c}&lDrop z "+this.plugin.getDropManager().getCobblexNameInGUI())).setLore(ChatUtil.fixColor(Arrays.asList(
+                " ", "&8>> {n}Kliknij aby zobaczyc"
+        )));
+        ItemBuilder turboSystem = new ItemBuilder(Material.GOLD_PICKAXE).setName(ChatUtil.fixColor("{c}&lSystem Turbo")).setLore(ChatUtil.fixColor(Arrays.asList(
+                " ", "&8>> {n}Kliknij aby zobaczyc"
+        )));
+        ItemBuilder statistics = new ItemBuilder(Material.PAPER).setName(ChatUtil.fixColor("{c}&lStatystyki")).setLore(ChatUtil.fixColor(Arrays.asList(
+                " ", "&8>> {n}Kliknij aby zobaczyc"
+        )));
+        ItemBuilder levelShop = new ItemBuilder(Material.DOUBLE_PLANT).setName(ChatUtil.fixColor("{c}&lSklep za poziom")).setLore(ChatUtil.fixColor(Arrays.asList(
+                " ", "&8>> {n}Kliknij aby zobaczyc"
+        )));
+        gui.setItem(10, stoneDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_STONE_DROP, user));
+        gui.setItem(13, caseDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_PREMIUMCASE_DROP, user));
+        gui.setItem(16, cobblexDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_COBBLEX_DROP, user));
+        gui.setItem(29, turboSystem.toItemStack());
+        gui.setItem(31, levelShop.toItemStack());
+        gui.setItem(33, statistics.toItemStack());
+        gui.setItem(1, this.color);
+        gui.setItem(4, this.color);
+        gui.setItem(7, this.color);
+        gui.setItem(19, this.color);
+        gui.setItem(22, this.color);
+        gui.setItem(25, this.color);
+        gui.setItem(38, this.color);
+        gui.setItem(40, this.color);
+        gui.setItem(42, this.color);
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI dropStone(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lDrop z kamienia &8]", 5, true);
+        user.addInventory(gui);
+        for(Drop drop : this.plugin.getDropManager().getDrops(DropType.STONE)){
+            ItemBuilder dropItem = new ItemBuilder(drop.getItemStack().clone());
+            if(drop.getName() != null){
+                dropItem.setName(ChatUtil.fixColor(drop.getName()));
+            }
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+ NumberUtil.formatDouble(drop.getChance())+"%", "&8>> {n}Wypada w ilosci&8: {c}"+drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount(),
+                    "&8>> {n}Wypada ponizej {c}"+drop.getMinY()+" {n}kratki", "&8>> {n}Fortuna&8: "+(drop.isFortune() ? "&aTak" : "&cNie"), " ", "&8>> {n}Aktywny&8: "+(drop.getDisabled().contains(user) ? "&cNie" : "&aTak"))));
+            if(!drop.getDisabled().contains(user)){
+                dropItem.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 10);
+                dropItem.addItemFlag(ItemFlag.HIDE_ENCHANTS);
+            }
+            gui.addItem(dropItem.toItemStack(), new DropAction(this.plugin, drop, DropActionType.CHANGE_ONE_DROP, user));
+        }
+        gui.setItem(36, new ItemBuilder(Material.WOOL).setDurability((short) 5).setName(ChatUtil.fixColor("&a&lWlacz drop")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+                "&8>> {n}Kliknij aby wszystko &awlaczyc&8!"))).toItemStack(), new DropAction(this.plugin, DropActionType.ON_ALL_DROPS, user));
+        gui.setItem(37, new ItemBuilder(Material.WOOL).setDurability((short) 14).setName(ChatUtil.fixColor("&c&lWylacz drop")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+                "&8>> {n}Kliknij aby wszystko &cwylaczyc&8!"))).toItemStack(), new DropAction(this.plugin, DropActionType.OFF_ALL_DROPS, user));
+        gui.setItem(43, new ItemBuilder(Material.COBBLESTONE).setName(ChatUtil.fixColor("&f&lDrop Cobblestone'a")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+                "&8>> {n}Kliknij aby "+(this.plugin.getDropManager().getDisabledCobblestone().contains(user) ? "&awlaczyc" : "&cwylaczyc")))).toItemStack(), new DropAction(this.plugin, DropActionType.CHANGE_COBBLESTONE_STATUS, user));
+        gui.setItem(44, new ItemBuilder(Material.PAPER).setName(ChatUtil.fixColor("&f&lWiadomosci")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+                "&8>> {n}Kliknij aby "+(user.getUserChat().isDropMessages() ? "&cwylaczyc" : "&awlaczyc")))).toItemStack(), new DropAction(this.plugin, DropActionType.CHANGE_MESSAGES_STATUS, user));
+        gui.setItem(40, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
+        gui.setItem(41, this.blank);
+        gui.setItem(42, this.blank);
+        gui.setItem(39, this.blank);
+        gui.setItem(38, this.blank);
+        return gui;
+    }
+
+    public InventoryGUI dropPremiumCase(User user) {
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lDrop z "+this.plugin.getDropManager().getPremiumCaseNameInGUI()+" &8]", 5, true);
+        user.addInventory(gui);
+        for(Drop drop : this.plugin.getDropManager().getDrops(DropType.PREMIUMCASE)){
+            ItemBuilder dropItem = new ItemBuilder(drop.getItemStack().clone());
+            if(drop.getName() != null){
+                dropItem.setName(ChatUtil.fixColor(drop.getName()));
+            }
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+NumberUtil.formatDouble(drop.getChance()), "&8>> {n}Wypada w ilosci&8: {c}"+drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount())));
+            gui.addItem(dropItem.toItemStack());
+        }
+        gui.setEmptyItem(this.blank);
+        gui.setItem(44, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
+        return gui;
+    }
+
+    public InventoryGUI dropCobblex(User user) {
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lDrop z "+this.plugin.getDropManager().getCobblexNameInGUI()+" &8]", 5, true);
+        user.addInventory(gui);
+        for(Drop drop : this.plugin.getDropManager().getDrops(DropType.COBBLEX)){
+            ItemBuilder dropItem = new ItemBuilder(drop.getItemStack().clone());
+            if(drop.getName() != null){
+                dropItem.setName(ChatUtil.fixColor(drop.getName()));
+            }
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Wypada w ilosci&8: {c}"+drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount())));
+            gui.addItem(dropItem.toItemStack());
+        }
+        gui.setEmptyItem(this.blank);
+        gui.setItem(44, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
         return gui;
     }
 }

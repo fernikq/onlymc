@@ -172,6 +172,7 @@ public class CorePlugin extends JavaPlugin {
         new TeleportAcceptCommand("tpaccept", new String[0], UserGroup.PLAYER, this).register();
         new CraftingsCommand("craftingi", new String[]{"crafting"}, UserGroup.PLAYER, this).register();
         new DepositeCommand("schowek", new String[]{"depozyt"}, UserGroup.PLAYER, this).register();
+        new DropCommand("drop", new String[0], UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){
@@ -270,5 +271,9 @@ public class CorePlugin extends JavaPlugin {
 
     public ShopManager getShopManager() {
         return shopManager;
+    }
+
+    public DropManager getDropManager() {
+        return dropManager;
     }
 }

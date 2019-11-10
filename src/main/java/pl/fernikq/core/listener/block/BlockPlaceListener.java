@@ -16,6 +16,7 @@ import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
 public class BlockPlaceListener implements Listener {
@@ -31,7 +32,8 @@ public class BlockPlaceListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event){
         Player player = event.getPlayer();
         Block block = event.getBlock();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(player, block.getLocation(), RegionProtectionType.BUILD);
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.BUILD);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());

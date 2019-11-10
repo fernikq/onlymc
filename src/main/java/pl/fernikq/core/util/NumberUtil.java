@@ -5,8 +5,7 @@ import java.text.DecimalFormat;
 public class NumberUtil {
 
     public static String formatDouble(double d) {
-        DecimalFormat df2 = new DecimalFormat(".##");
-        return df2.format(d);
+        return String.format("%.2f", d);
     }
     public static boolean isInt(String string){
         try{

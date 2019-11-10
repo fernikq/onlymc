@@ -3,6 +3,7 @@ package pl.fernikq.core.util;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -58,6 +59,20 @@ public class ItemBuilder {
     public ItemBuilder setLore(List<String> list){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.setLore(list);
+        this.itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
+    public ItemBuilder addItemFlag(ItemFlag itemFlag){
+        ItemMeta itemMeta = this.itemStack.getItemMeta();
+        itemMeta.addItemFlags(itemFlag);
+        this.itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
+    public ItemBuilder removeItemFlag(ItemFlag itemFlag){
+        ItemMeta itemMeta = this.itemStack.getItemMeta();
+        itemMeta.removeItemFlags(itemFlag);
         this.itemStack.setItemMeta(itemMeta);
         return this;
     }
