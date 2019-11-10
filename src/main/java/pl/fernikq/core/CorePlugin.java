@@ -24,6 +24,7 @@ import pl.fernikq.core.region.RegionManager;
 import pl.fernikq.core.shop.ShopManager;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.task.DepositeTask;
+import pl.fernikq.core.task.RemoveItemsTask;
 import pl.fernikq.core.task.SimpleTask;
 import pl.fernikq.core.task.StoneGeneratorTask;
 import pl.fernikq.core.user.UserGroup;
@@ -69,7 +70,7 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
-        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this));
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this));
         simpleTasks.forEach(SimpleTask::start);
     }
 
