@@ -154,6 +154,8 @@ public class CorePlugin extends JavaPlugin {
         new SetSpawnCommand("setspawn", new String[0], UserGroup.ADMIN, this).register();
         new TitleBroadcastCommand("tbc", new String[0], UserGroup.MOD, this).register();
         new BroadcastCommand("bc", new String[0], UserGroup.MOD, this).register();
+        new CaseCommand("case", new String[0], UserGroup.MOD, this).register();
+        new CaseAllCommand("caseall", new String[0], UserGroup.MOD, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -173,6 +175,7 @@ public class CorePlugin extends JavaPlugin {
         new CraftingsCommand("craftingi", new String[]{"crafting"}, UserGroup.PLAYER, this).register();
         new DepositeCommand("schowek", new String[]{"depozyt"}, UserGroup.PLAYER, this).register();
         new DropCommand("drop", new String[0], UserGroup.PLAYER, this).register();
+        new CobblexCommand("cobblex", new String[]{"cx"}, UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){

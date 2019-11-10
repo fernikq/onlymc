@@ -90,6 +90,12 @@ public class PlayerInteractListener implements Listener {
                 dropMessages.add(" &8- {n}"+drop.getMessage().replace("{AMOUNT}", Integer.toString(amount)).replace("{CHANCE}", NumberUtil.formatDouble(drop.getChance())));
                 items++;
             }
+            event.setCancelled(true);
+            ItemUtil.removeFromHand(player, 1);
+            if(items == 0){
+                ChatUtil.sendMessage(player, "&8>> {n}Otworzyles "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}ale niestety nic nie wypadlo :(");
+                return;
+            }
             Bukkit.getOnlinePlayers().forEach(online -> {
                 this.plugin.getUserManager().getUser(online.getUniqueId()).filter(user -> user.getUserChat().isPremiumCaseMessages()).peek(user -> {
                     ChatUtil.sendMessage(online, "{n}Gracz {c}"+player.getName()+" {n}otworzyl "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}i otrzymal&8:", " ");
@@ -99,8 +105,6 @@ public class PlayerInteractListener implements Listener {
                     ChatUtil.sendMessage(online, " ");
                 });
             });
-            event.setCancelled(true);
-            ItemUtil.removeFromHand(player, 1);
             return;
         }
     }
