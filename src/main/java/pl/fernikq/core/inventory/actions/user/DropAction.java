@@ -45,6 +45,10 @@ public class DropAction implements InventoryAction {
             this.plugin.getUserInventory().dropPremiumCase(user).openInventory(player);
             return;
         }
+        if(dropActionType.equals(DropActionType.OPEN_LEVEL_SHOP)){
+            this.plugin.getUserInventory().levelShopBuy(user).openInventory(player);
+            return;
+        }
         if(dropActionType.equals(DropActionType.OPEN_COBBLEX_DROP)){
             this.plugin.getUserInventory().dropCobblex(user).openInventory(player);
             return;

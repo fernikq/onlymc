@@ -10,5 +10,7 @@ public enum ShopActionType {
     CHOOSE_BUY_TYPE,
     CHOOSE_SELL_TYPE,
     BUY_ITEM,
-    SELL_ITEM;
+    SELL_ITEM,
+    BUY_FROM_LEVEL_SHOP;
+
 }

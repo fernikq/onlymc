@@ -34,12 +34,14 @@ public class MessagesManager {
     public static String playerQuitMessage;
     public static String commandHelpMessage;
     public static String shopBuyItem;
+    public static String levelShopBuyItem;
     public static String shopSellItem;
     public static String depositeApplesMessage;
     public static String depositeEnchantedApplesMessage;
     public static String depositePearlsMessage;
     public static String broadcastMessage;
     public static String titleBroadcastPrefix;
+    public static String dropLevelupMessage;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -109,11 +111,13 @@ public class MessagesManager {
         playerQuitMessage = "&8>> &8[&c-&8] &f{PLAYER}";
         commandHelpMessage = "&8>> {n}Podana komenda nie istnieje&8! {n}Sprawdz dostepne komendy pod {c}/pomoc";
         shopBuyItem = "&8>> &aPomyslnie {n}kupiles przedmiot za &a{AMOUNT} {n}monet&8!";
+        levelShopBuyItem = "&8>> &aPomyslnie {n}kupiles przedmiot za poziom gornictwa&8!";
         shopSellItem = "&8>> &cPomyslnie {n}sprzedales przedmiot za &c{AMOUNT} {n}monet&8!";
         depositeApplesMessage = "&8>> {n}Posiadales przy sobie za duzo {c}refili&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
         depositeEnchantedApplesMessage = "&8>> {n}Posiadales przy sobie za duzo {c}koxow&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
         depositePearlsMessage = "&8>> {n}Posiadales przy sobie za duzo {c}perel&8, {n}nadmiar &8[{c}{AMOUNT}&8] {n}zostal przeniesiony do {c}/schowek";
         broadcastMessage = "&8[&e&lOgloszenie&8]: &f{MESSAGE}";
         titleBroadcastPrefix = "&c&lAlert";
+        dropLevelupMessage = "&8>> &eGratulacje, osiagnales &6{LVL} &epoziom gornictwa!";
     }
 }

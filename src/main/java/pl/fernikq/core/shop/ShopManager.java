@@ -1,5 +1,6 @@
 package pl.fernikq.core.shop;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -82,8 +83,8 @@ public class ShopManager {
                     shopItem.setName(itemCfg.getString("nameInGUI"));
                 }
                 shopItemList.add(shopItem);
-                shop.setItems(shopItemList);
             }
+            shop.setItems(shopItemList);
             this.shops.add(shop);
         }
 
@@ -121,12 +122,37 @@ public class ShopManager {
                     shopItem.setName(itemCfg.getString("nameInGUI"));
                 }
                 shopItemList.add(shopItem);
-                shop.setItems(shopItemList);
             }
+            shop.setItems(shopItemList);
             this.shops.add(shop);
         }
 
-        //TODO level shop
+        //LEVEL
+        configurationSection = getShopFile().getConfigurationSection("Shops.Level");
+        Shop shop = new Shop(new ItemStack(Material.AIR), ShopType.LEVEL);
+        List<ShopItem> shopItemList = new ArrayList<>();
+        for(String s : configurationSection.getKeys(false)){
+            ConfigurationSection configuration = configurationSection.getConfigurationSection(s);
+            String[] itemData = configuration.getString("item").split(":");
+            ItemStack item = new ItemStack(ItemUtil.getMaterial(itemData[0]), 1, (short) Short.parseShort(itemData[1]));
+            ItemBuilder itemBuilder = new ItemBuilder(item);
+            if(configuration.getString("name") != null){
+                itemBuilder.setName(ChatUtil.fixColor(configuration.getString("name")));
+            }
+            if(configuration.getString("lore") != null){
+                itemBuilder.setLore(ChatUtil.fixColor(configuration.getStringList("lore")));
+            }
+            if(configuration.getString("enchant") != null){
+                itemBuilder.setEnchant(ItemUtil.getEnchantsFromString(configuration.getString("enchant")));
+            }
+            ShopItem shopItem = new ShopItem(itemBuilder.toItemStack(), configuration.getInt("amount"), configuration.getInt("levelCost"));
+            if(configuration.getString("nameInGUI") != null){
+                shopItem.setName(configuration.getString("nameInGUI"));
+            }
+            shopItemList.add(shopItem);
+        }
+        shop.setItems(shopItemList);
+        this.shops.add(shop);
     }
 
     public YamlConfiguration getShopFile() {

@@ -10,6 +10,8 @@ public class UserStat {
     private int depositePearls;
     private int depositeApples;
     private int depositeEnchantedApples;
+    private int miningExperience;
+    private int minedStone;
 
     public UserStat(User user){
         this.coins = 0;
@@ -17,6 +19,8 @@ public class UserStat {
         this.depositeApples = 0;
         this.depositeEnchantedApples = 0;
         this.depositePearls = 0;
+        this.miningExperience = 0;
+        this.minedStone = 0;
         user.setUserStat(this);
     }
 
@@ -27,10 +31,24 @@ public class UserStat {
             this.depositePearls = rs.getInt("depositePearls");
             this.depositeApples = rs.getInt("depositeApples");
             this.depositeEnchantedApples = rs.getInt("depositeEnchantedApples");
+            this.miningExperience = rs.getInt("miningExperience");
+            this.minedStone = rs.getInt("minedStone");
             user.setUserStat(this);
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addMinedStone(int amount){
+        this.minedStone += amount;
+    }
+
+    public void removeMinedStone(int amount){
+        this.minedStone -= amount;
+    }
+
+    public void addMiningExperience(int amount){
+        this.miningExperience += amount;
     }
 
     public void addCoins(int amount) {
@@ -47,6 +65,10 @@ public class UserStat {
 
     public void removeLevel(int amount) {
         this.level -= amount;
+    }
+
+    public void recalculateMiningExperience(){
+        this.miningExperience = (this.level - 1) * 260;
     }
 
     public void addDepositeApples(int amount) {
@@ -91,5 +113,13 @@ public class UserStat {
 
     public int getDepositeEnchantedApples() {
         return depositeEnchantedApples;
+    }
+
+    public int getMiningExperience() {
+        return miningExperience;
+    }
+
+    public int getMinedStone() {
+        return minedStone;
     }
 }

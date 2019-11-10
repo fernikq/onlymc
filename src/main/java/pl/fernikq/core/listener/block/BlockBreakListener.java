@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.GeneratorType;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
@@ -74,10 +75,15 @@ public class BlockBreakListener implements Listener {
                 }
                 ItemUtil.giveItems(player, itemBuilder.toItemStack());
             }
-            //TODO xp + turbo + add stone do lvl
             if(this.plugin.getDropManager().getDisabledCobblestone().contains(user)){
                 event.setCancelled(true);
                 block.setType(Material.AIR);
+                ItemUtil.recalculateDurability(player, player.getItemInHand());
+            }
+            user.getUserStat().addMiningExperience(1);
+            if(user.getUserStat().getMiningExperience() == user.getUserStat().getLevel() * 260){
+                user.getUserStat().addLevel(1);
+                ChatUtil.sendMessage(player, MessagesManager.dropLevelupMessage.replace("{LVL}", Integer.toString(user.getUserStat().getLevel())));
             }
         }
     }

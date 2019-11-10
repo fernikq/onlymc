@@ -5,7 +5,7 @@ Cobblex:
   nameInGUI: 'CobbleX'
   lore:
     - ' '
-    - '&8>> &fKliknij aby otworzyc&8!'
+    - '&8>> &fPostaw aby otworzyc&8!'
   enchant: 'fortune:10'
 PremiumCase:
   maxItemsInOneCase: 6
@@ -14,7 +14,7 @@ PremiumCase:
   nameInGUI: 'ChampionChest'
   lore:
     - ' '
-    - '&8>> &fKliknij aby otworzyc&8!'
+    - '&8>> &fPostaw aby otworzyc&8!'
   enchant: 'fortune:10'
 StoneDrop:
   Diament:
@@ -37,7 +37,128 @@ StoneDrop:
     fortune: true
     nameInGUI: '{c}&lEmerald'
     message: '&8>> &fTrafiles na emerald w ilosci {c}{AMOUNT}'
+  Zloto:
+    item: 'gold_ingot:0'
+    amount:
+      min: 1
+      max: 3
+    minY: 256
+    chance: 1.8
+    fortune: true
+    nameInGUI: '{c}&lZloto'
+    message: '&8>> &fTrafiles na zloto w ilosci {c}{AMOUNT}'
+  Zelazo:
+    item: 'iron_ingot:0'
+    amount:
+      min: 1
+      max: 5
+    minY: 256
+    chance: 3.5
+    fortune: true
+    nameInGUI: '{c}&lZelazo'
+    message: '&8>> &fTrafiles na zelazo w ilosci {c}{AMOUNT}'
+  Wegiel:
+    item: 'coal:0'
+    amount:
+      min: 1
+      max: 6
+    minY: 256
+    chance: 2.7
+    fortune: true
+    nameInGUI: '{c}&lWegiel'
+    message: '&8>> &fTrafiles na wegiel w ilosci {c}{AMOUNT}'
+  Perla:
+    item: 'ender_pearl:0'
+    amount:
+      min: 1
+      max: 3
+    minY: 256
+    chance: 1.6
+    fortune: false
+    nameInGUI: '{c}&lPerla'
+    message: '&8>> &fTrafiles na perle w ilosci {c}{AMOUNT}'
+  TNT:
+    item: 'tnt:0'
+    amount:
+      min: 1
+      max: 4
+    minY: 256
+    chance: 1.7
+    fortune: false
+    nameInGUI: '{c}&lTNT'
+    message: '&8>> &fTrafiles na tnt w ilosci {c}{AMOUNT}'
+  Lazuryt:
+    item: 'ink_sack:4'
+    amount:
+      min: 1
+      max: 5
+    minY: 256
+    chance: 2.5
+    fortune: true
+    nameInGUI: '{c}&lLazuryt'
+    message: '&8>> &fTrafiles na lazuryt w ilosci {c}{AMOUNT}'
+  Biblioteczki:
+    item: 'bookshelf:0'
+    amount:
+      min: 1
+      max: 3
+    minY: 256
+    chance: 1.4
+    fortune: true
+    nameInGUI: '{c}&lBiblioteczki'
+    message: '&8>> &fTrafiles na biblioteczki w ilosci {c}{AMOUNT}'
+  Emerald:
+    item: 'emerald:0'
+    amount:
+      min: 1
+      max: 4
+    minY: 256
+    chance: 2.3
+    fortune: true
+    nameInGUI: '{c}&lEmerald'
+    message: '&8>> &fTrafiles na emerald w ilosci {c}{AMOUNT}'
+  Redstone:
+    item: 'redstone:0'
+    amount:
+      min: 1
+      max: 5
+    minY: 256
+    chance: 3.1
+    fortune: true
+    nameInGUI: '{c}&lRedstone'
+    message: '&8>> &fTrafiles na redstone w ilosci {c}{AMOUNT}'
+  Slimeball:
+    item: 'slime_ball:0'
+    amount:
+      min: 1
+      max: 2
+    minY: 256
+    chance: 1.4
+    fortune: true
+    nameInGUI: '{c}&lSlimeball'
+    message: '&8>> &fTrafiles na slimeball w ilosci {c}{AMOUNT}'
 CobblexDrop:
+  Emerald:
+    item: 'emerald:0'
+    amount:
+      min: 5
+      max: 15
+    nameInGUI: '{c}&lEmerald'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lEmeraldy {n}w ilosci {c}{AMOUNT}'
+  Zelazo:
+    item: 'iron_ingot:0'
+    amount:
+      min: 6
+      max: 20
+    nameInGUI: '{c}&lZelazo'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lZelazo {n}w ilosci {c}{AMOUNT}'
+  Zloto:
+    item: 'gold_ingot:0'
+    amount:
+      min: 4
+      max: 24
+    nameInGUI: '{c}&lZloto'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lZloto {n}w ilosci {c}{AMOUNT}'
   TNT:
     item: 'tnt:0'
     amount:
@@ -45,12 +166,166 @@ CobblexDrop:
       max: 8
     nameInGUI: '{c}&lTNT'
     message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lTNT {n}w ilosci {c}{AMOUNT}'
+  Perla:
+    item: 'ender_pearl:0'
+    amount:
+      min: 3
+      max: 6
+    nameInGUI: '{c}&lPerla'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lPerly {n}w ilosci {c}{AMOUNT}'
+  Kowadlo:
+    item: 'anvil:0'
+    amount:
+      min: 1
+      max: 4
+    nameInGUI: '{c}&lKowadlo'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lKowadlo {n}w ilosci {c}{AMOUNT}'
+  Biblioteczki:
+    item: 'bookshelf:0'
+    amount:
+      min: 4
+      max: 16
+    nameInGUI: '{c}&lBiblioteczki'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lBiblioteczki {n}w ilosci {c}{AMOUNT}'
+  Siodlo:
+    item: 'saddle:0'
+    amount:
+      min: 1
+      max: 1
+    nameInGUI: '{c}&lSiodlo'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lSiodlo'
+  Exp bottle:
+    item: 'exp_bottle:0'
+    amount:
+      min: 2
+      max: 8
+    nameInGUI: '{c}&lButelka z XP'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lButelke z XP {n}w ilosci {c}{AMOUNT}'
+  Koxy:
+    item: 'golden_apple:1'
+    amount:
+      min: 4
+      max: 12
+    nameInGUI: '{c}&lKoxy'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lKoxy {n}w ilosci {c}{AMOUNT}'
+  Refile:
+    item: 'golden_apple:0'
+    amount:
+      min: 6
+      max: 18
+    nameInGUI: '{c}&lRefile'
+    message: '&8>> {n}Otworzyles &a&lCobbleX {n}i otrzymales {c}&lRefile {n}w ilosci {c}{AMOUNT}'
 PremiumCaseDrop:
   TNT:
     item: 'tnt:0'
     amount:
       min: 4
       max: 8
-    chance: 25.0
+    chance: 12.5
     nameInGUI: '{c}&lTNT'
     OpenCaseItemName: '&fTNT &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Beacon:
+    item: 'beacon:0'
+    amount:
+      min: 1
+      max: 1
+    chance: 0.01
+    nameInGUI: '&6B&eE&2A&aC&3O&bN'
+    OpenCaseItemName: '&6B&eE&2A&aC&3O&bN - {c}{CHANCE}%'
+  Helm:
+    item: 'diamond_helmet:0'
+    enchant: 'durability:3;protection:4'
+    amount:
+      min: 1
+      max: 1
+    chance: 15.5
+    nameInGUI: '{c}&lHelm'
+    OpenCaseItemName: '&fHelm &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Zbroja:
+    item: 'diamond_chestplate:0'
+    enchant: 'durability:3;protection:4'
+    amount:
+      min: 1
+      max: 1
+    chance: 15.5
+    nameInGUI: '{c}&lZbroja'
+    OpenCaseItemName: '&fZbroja &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Spodnie:
+    item: 'diamond_leggings:0'
+    enchant: 'durability:3;protection:4'
+    amount:
+      min: 1
+      max: 1
+    chance: 15.5
+    nameInGUI: '{c}&lSpodnie'
+    OpenCaseItemName: '&fSpodnie &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Buty:
+    item: 'diamond_boots:0'
+    enchant: 'durability:3;protection:4'
+    amount:
+      min: 1
+      max: 1
+    chance: 15.5
+    nameInGUI: '{c}&lButy'
+    OpenCaseItemName: '&fButy &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Miecz:
+    item: 'diamond_sword:0'
+    enchant: 'sharpness:5;fire_aspect:2'
+    amount:
+      min: 1
+      max: 1
+    chance: 16.5
+    nameInGUI: '{c}&lMiecz'
+    OpenCaseItemName: '&fMiecz &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Miecz Knock:
+    item: 'diamond_sword:0'
+    enchant: 'sharpness:5;knockback:2'
+    amount:
+      min: 1
+      max: 1
+    chance: 16.5
+    nameInGUI: '{c}&lMiecz'
+    OpenCaseItemName: '&fMiecz &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Koxy:
+    item: 'golden_apple:1'
+    amount:
+      min: 4
+      max: 8
+    chance: 24.5
+    nameInGUI: '{c}&lKoxy'
+    OpenCaseItemName: '&fKoxy &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Refile:
+    item: 'golden_apple:0'
+    amount:
+      min: 12
+      max: 24
+    chance: 32.6
+    nameInGUI: '{c}&lRefile'
+    OpenCaseItemName: '&fRefile &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Luk:
+    item: 'bow:0'
+    enchant: 'power:5;punch:2'
+    amount:
+      min: 1
+      max: 1
+    chance: 15.4
+    nameInGUI: '{c}&lLuk'
+    OpenCaseItemName: '&fLuk &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Luk Punch:
+    item: 'bow:0'
+    enchant: 'power:5;flame:1'
+    amount:
+      min: 1
+      max: 1
+    chance: 15.4
+    nameInGUI: '{c}&lLuk'
+    OpenCaseItemName: '&fLuk &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+  Perly:
+    item: 'ender_pearl:0'
+    amount:
+      min: 4
+      max: 12
+    chance: 17.6
+    nameInGUI: '{c}&lPerly'
+    OpenCaseItemName: '&fPerly &8[&7{AMOUNT}&8] - {c}{CHANCE}%'
+

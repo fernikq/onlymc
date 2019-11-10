@@ -100,5 +100,21 @@ public class ShopAction implements InventoryAction {
             this.plugin.getUserInventory().shopSell(user, shop).openInventory(player);
             return;
         }
+        if(shopActionType.equals(ShopActionType.BUY_FROM_LEVEL_SHOP)) {
+            if(user.getUserStat().getLevel() < shopItem.getPrice()){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz wymaganego poziomu!"));
+                return;
+            }
+            if(user.getUserStat().getLevel() < shopItem.getPrice()+1){
+                ChatUtil.sendMessage(player, MessagesManager.error("Aby kupic przedmiot musisz posiadac jeden poziom wiecej!"));
+                return;
+            }
+            user.getUserStat().removeLevel(shopItem.getPrice());
+            user.getUserStat().recalculateMiningExperience();
+            ItemUtil.giveItems(player, new ItemBuilder(shopItem.getItemStack().clone()).setAmount(shopItem.getAmount()).toItemStack());
+            ChatUtil.sendMessage(player, MessagesManager.levelShopBuyItem);
+            this.plugin.getUserInventory().levelShopBuy(user).openInventory(player);
+            return;
+        }
     }
 }

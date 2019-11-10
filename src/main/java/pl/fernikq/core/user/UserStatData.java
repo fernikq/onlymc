@@ -27,7 +27,9 @@ public class UserStatData {
                     "`level` INT NOT NULL,"+
                     "`depositePearls` INT NOT NULL,"+
                     "`depositeApples` INT NOT NULL,"+
-                    "`depositeEnchantedApples` INT NOT NULL);");
+                    "`depositeEnchantedApples` INT NOT NULL,"+
+                    "`minedStone` INT NOT NULL,"+
+                    "`miningExperience` INT NOT NULL);");
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -52,7 +54,7 @@ public class UserStatData {
             UserStat stat = user.getUserStat();
             this.plugin.getMySQL().openConnection();
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_user_stats` "+
-                    "(id, uuid, coins, level, depositePearls, depositeApples, depositeEnchantedApples) VALUES (?, ?, ?, ?, ?, ?, ?);");
+                    "(id, uuid, coins, level, depositePearls, depositeApples, depositeEnchantedApples, minedStone, miningExperience) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, user.getUuid().toString());
             statement.setInt(3, stat.getCoins());
@@ -60,6 +62,8 @@ public class UserStatData {
             statement.setInt(5, stat.getDepositePearls());
             statement.setInt(6, stat.getDepositeApples());
             statement.setInt(7, stat.getDepositeEnchantedApples());
+            statement.setInt(8, stat.getMinedStone());
+            statement.setInt(9, stat.getMiningExperience());
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -70,13 +74,16 @@ public class UserStatData {
         try {
             UserStat stat = user.getUserStat();
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_user_stats` SET "+
-                    "`coins` = ?, `level` = ?, `depositePearls` = ?, `depositeApples` = ?, `depositeEnchantedApples` = ? "+
+                    "`coins` = ?, `level` = ?, `depositePearls` = ?, `depositeApples` = ?, `depositeEnchantedApples` = ?, "+
+                    "`minedStone` = ?, `miningExperience` = ? "+
                     "WHERE `uuid` = '"+user.getUuid().toString()+"';");
             statement.setInt(1, stat.getCoins());
             statement.setInt(2, stat.getLevel());
             statement.setInt(3, stat.getDepositePearls());
             statement.setInt(4, stat.getDepositeApples());
             statement.setInt(5, stat.getDepositeEnchantedApples());
+            statement.setInt(6, stat.getMinedStone());
+            statement.setInt(7, stat.getMiningExperience());
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

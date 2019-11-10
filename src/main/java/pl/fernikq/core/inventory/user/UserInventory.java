@@ -157,6 +157,24 @@ public class UserInventory {
         return gui;
     }
 
+    public InventoryGUI levelShopBuy(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lSKLEP ZA LEVEL &8]", 5, true);
+        user.addInventory(gui);
+        for(Shop shop : this.plugin.getShopManager().getShops(ShopType.LEVEL)) {
+            for(ShopItem shopItem : shop.getItems()) {
+                ItemBuilder itemBuilder = new ItemBuilder(shopItem.getItemStack().clone());
+                if(shopItem.getName() != null) {
+                    itemBuilder.setName(ChatUtil.fixColor(shopItem.getName()));
+                }
+                itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ilosc&8: {c}" + shopItem.getAmount(), "&8>> {n}Cena&8: {c}" + shopItem.getPrice() + " {n}LVL", "&8>> {n}Wymagany poziom&8: {c}" + (shopItem.getPrice() + 1))));
+                gui.addItem(itemBuilder.toItemStack(), new ShopAction(this.plugin, shopItem, shop, ShopActionType.BUY_FROM_LEVEL_SHOP, user));
+            }
+        }
+        gui.setItem(44, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
+        gui.setEmptyItem(new ItemBuilder(this.blank.clone()).setName(ChatUtil.fixColor("&8>> {n}Posiadasz {c}"+user.getUserStat().getLevel()+" {n}poziom gornictwa")).toItemStack());
+        return gui;
+    }
+
     public InventoryGUI shopSellMenu(User user){
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lSPRZEDAZ - RODZAJ &8]", 2, true);
         user.addInventory(gui);
@@ -231,7 +249,7 @@ public class UserInventory {
         gui.setItem(13, caseDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_PREMIUMCASE_DROP, user));
         gui.setItem(16, cobblexDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_COBBLEX_DROP, user));
         gui.setItem(29, turboSystem.toItemStack());
-        gui.setItem(31, levelShop.toItemStack());
+        gui.setItem(31, levelShop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_LEVEL_SHOP, user));
         gui.setItem(33, statistics.toItemStack());
         gui.setItem(1, this.color);
         gui.setItem(4, this.color);
@@ -254,7 +272,7 @@ public class UserInventory {
             if(drop.getName() != null){
                 dropItem.setName(ChatUtil.fixColor(drop.getName()));
             }
-            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+ NumberUtil.formatDouble(drop.getChance())+"%", "&8>> {n}Wypada w ilosci&8: {c}"+drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount(),
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+ NumberUtil.formatDouble(drop.getChance())+"%", "&8>> {n}Wypada w ilosci&8: {c}"+(drop.getMinAmount() == drop.getMaxAmount() ? drop.getMinAmount() : drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount()),
                     "&8>> {n}Wypada ponizej {c}"+drop.getMinY()+" {n}kratki", "&8>> {n}Fortuna&8: "+(drop.isFortune() ? "&aTak" : "&cNie"), " ", "&8>> {n}Aktywny&8: "+(drop.getDisabled().contains(user) ? "&cNie" : "&aTak"))));
             if(!drop.getDisabled().contains(user)){
                 dropItem.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 10);
@@ -286,7 +304,7 @@ public class UserInventory {
             if(drop.getName() != null){
                 dropItem.setName(ChatUtil.fixColor(drop.getName()));
             }
-            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+NumberUtil.formatDouble(drop.getChance()), "&8>> {n}Wypada w ilosci&8: {c}"+drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount())));
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+drop.getChance()+"%", "&8>> {n}Wypada w ilosci&8: {c}"+(drop.getMinAmount() == drop.getMaxAmount() ? drop.getMinAmount() : drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount()))));
             gui.addItem(dropItem.toItemStack());
         }
         gui.setEmptyItem(this.blank);
@@ -302,7 +320,7 @@ public class UserInventory {
             if(drop.getName() != null){
                 dropItem.setName(ChatUtil.fixColor(drop.getName()));
             }
-            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Wypada w ilosci&8: {c}"+drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount())));
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Wypada w ilosci&8: {c}"+(drop.getMinAmount() == drop.getMaxAmount() ? drop.getMinAmount() : drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount()))));
             gui.addItem(dropItem.toItemStack());
         }
         gui.setEmptyItem(this.blank);
