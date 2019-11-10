@@ -17,7 +17,7 @@ public class RemoveItemsTask extends BukkitRunnable implements SimpleTask {
 
     @Override
     public void start() {
-        runTaskTimer(plugin, 20, 6000);
+        runTaskTimer(plugin, 20, 3600);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class RemoveItemsTask extends BukkitRunnable implements SimpleTask {
     public void run() {
         amount = 0;
         Bukkit.getWorlds().forEach(world -> {
-            world.getEntities().stream().filter(entity -> entity.getType() == EntityType.DROPPED_ITEM).forEach(entity -> {
+            world.getEntities().stream().filter(entity -> entity.getType() == EntityType.DROPPED_ITEM).filter(entity -> entity.getTicksLived() >= 3600).forEach(entity -> {
                 entity.remove();
                 amount++;
             });
