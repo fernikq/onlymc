@@ -12,6 +12,9 @@ public class UserStat {
     private int depositeEnchantedApples;
     private int miningExperience;
     private int minedStone;
+    private int openedCobblex;
+    private int openedPremiumCase;
+    private int coinsFromStone;
 
     public UserStat(User user){
         this.coins = 0;
@@ -21,6 +24,9 @@ public class UserStat {
         this.depositePearls = 0;
         this.miningExperience = 0;
         this.minedStone = 0;
+        this.openedCobblex = 0;
+        this.openedPremiumCase = 0;
+        this.coinsFromStone = 0;
         user.setUserStat(this);
     }
 
@@ -33,18 +39,29 @@ public class UserStat {
             this.depositeEnchantedApples = rs.getInt("depositeEnchantedApples");
             this.miningExperience = rs.getInt("miningExperience");
             this.minedStone = rs.getInt("minedStone");
+            this.openedCobblex = rs.getInt("openedCobblex");
+            this.openedPremiumCase = rs.getInt("openedPremiumCase");
+            this.coinsFromStone = rs.getInt("coinsFromStone");
             user.setUserStat(this);
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void addMinedStone(int amount){
-        this.minedStone += amount;
+    public void addCoinsFromStone(int amount){
+        this.coinsFromStone += amount;
     }
 
-    public void removeMinedStone(int amount){
-        this.minedStone -= amount;
+    public void addOpenedPremiumCase(int amount){
+        this.openedPremiumCase += amount;
+    }
+
+    public void addOpenedCobblex(int amount){
+        this.openedCobblex += amount;
+    }
+
+    public void addMinedStone(int amount){
+        this.minedStone += amount;
     }
 
     public void addMiningExperience(int amount){
@@ -121,5 +138,17 @@ public class UserStat {
 
     public int getMinedStone() {
         return minedStone;
+    }
+
+    public int getOpenedCobblex() {
+        return openedCobblex;
+    }
+
+    public int getOpenedPremiumCase() {
+        return openedPremiumCase;
+    }
+
+    public int getCoinsFromStone() {
+        return coinsFromStone;
     }
 }

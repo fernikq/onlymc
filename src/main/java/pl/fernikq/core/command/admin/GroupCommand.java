@@ -32,6 +32,7 @@ public class GroupCommand extends CustomCommand {
                 .peek(user -> {
                     ChatUtil.sendMessage(sender, "&8>> {n}Nadales range {c}"+group.name()+" {n}graczowi {c}"+user.getName());
                     user.setGroup(group);
+                    this.plugin.getUserManager().updateUserInfo(user);
                     if(user.isOnline()){
                         this.plugin.getTagManager().updateTag(user.asPlayer());
                     }

@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.GeneratorType;
@@ -80,11 +81,22 @@ public class BlockBreakListener implements Listener {
                 block.setType(Material.AIR);
                 ItemUtil.recalculateDurability(player, player.getItemInHand());
             }
+            user.getUserStat().addMinedStone(1);
             user.getUserStat().addMiningExperience(1);
+            player.giveExp(ConfigManager.dropStoneExp);
             if(user.getUserStat().getMiningExperience() == user.getUserStat().getLevel() * 260){
                 user.getUserStat().addLevel(1);
                 ChatUtil.sendMessage(player, MessagesManager.dropLevelupMessage.replace("{LVL}", Integer.toString(user.getUserStat().getLevel())));
             }
+            if(RandomUtil.getChance(ConfigManager.coinsDropFromStoneChance)){
+                int amount = RandomUtil.getRandInt(Integer.parseInt(ConfigManager.coinsDropFromStoneAmount.split("-")[0]), Integer.parseInt(ConfigManager.coinsDropFromStoneAmount.split("-")[1]));
+                user.getUserStat().addCoinsFromStone(amount);
+                user.getUserStat().addCoins(amount);
+                ChatUtil.sendMessage(player, MessagesManager.coinsDropFromStoneMessage.replace("{AMOUNT}", Integer.toString(amount)));
+            }
+        }
+        if(block.getType() == Material.OBSIDIAN){
+            player.giveExp(ConfigManager.dropObsidianExp);
         }
     }
 

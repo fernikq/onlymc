@@ -29,7 +29,6 @@ public class PlayerJoinListener implements Listener {
         user.setLastAddress(player.getAddress().getAddress().getHostAddress());
         if(!user.getName().equals(player.getName())){
             user.setName(player.getName());
-            this.plugin.getMySQL().openConnection();
             this.plugin.getUserManager().updateUserInfo(user);
         }
         this.plugin.getTagManager().createTag(player);

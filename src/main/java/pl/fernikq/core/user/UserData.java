@@ -67,6 +67,9 @@ public class UserData {
 
     public void updateUser(User user){
         try {
+            if(!this.plugin.getMySQL().isConnected()){
+                this.plugin.getMySQL().openConnection();
+            }
             final PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_users` SET `name` = ?, `lastAddress` = ?, "+
                     "`groupName` = ?, `kitTimes` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
             statement.setString(1, user.getName());

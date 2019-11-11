@@ -22,7 +22,7 @@ public class MySQL {
 
     public void openConnection(){
         try {
-            if(this.connection != null && !this.connection.isClosed()){
+            if(isConnected()){
                 if(this.connectionTask != null){
                     this.connectionTask.cancel();
                 }
@@ -43,6 +43,9 @@ public class MySQL {
 
     public void openWithoutTask(){
         try{
+            if(isConnected()){
+                return;
+            }
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             this.connection = DriverManager.getConnection("jdbc:mysql://" + ConfigManager.mysqlHost + ":" + ConfigManager.mysqlPort + "/" + ConfigManager.mysqlBase, ConfigManager.mysqlUser, ConfigManager.mysqlPassword);
         }catch(SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
@@ -69,6 +72,14 @@ public class MySQL {
         }
     }
 
+    public boolean isConnected(){
+        try {
+            return this.connection != null && !this.connection.isClosed();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public ResultSet query(String string) throws SQLException {
         return this.connection.prepareStatement(string).executeQuery();

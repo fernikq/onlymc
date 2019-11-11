@@ -71,6 +71,7 @@ public class PlayerInteractListener implements Listener {
             ItemUtil.giveItems(player, itemBuilder.toItemStack());
             ChatUtil.sendMessage(player, drop.getMessage().replace("{AMOUNT}", Integer.toString(amount)));
             event.setCancelled(true);
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> user.getUserStat().addOpenedCobblex(1));
             ItemUtil.removeFromHand(player, 1);
             return;
         }
@@ -91,6 +92,7 @@ public class PlayerInteractListener implements Listener {
                 items++;
             }
             event.setCancelled(true);
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> user.getUserStat().addOpenedPremiumCase(1));
             ItemUtil.removeFromHand(player, 1);
             if(items == 0){
                 ChatUtil.sendMessage(player, "&8>> {n}Otworzyles "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}ale niestety nic nie wypadlo :(");

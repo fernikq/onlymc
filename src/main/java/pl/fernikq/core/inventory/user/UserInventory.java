@@ -250,7 +250,7 @@ public class UserInventory {
         gui.setItem(16, cobblexDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_COBBLEX_DROP, user));
         gui.setItem(29, turboSystem.toItemStack());
         gui.setItem(31, levelShop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_LEVEL_SHOP, user));
-        gui.setItem(33, statistics.toItemStack());
+        gui.setItem(33, statistics.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_STATISTICS, user));
         gui.setItem(1, this.color);
         gui.setItem(4, this.color);
         gui.setItem(7, this.color);
@@ -325,6 +325,26 @@ public class UserInventory {
         }
         gui.setEmptyItem(this.blank);
         gui.setItem(44, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
+        return gui;
+    }
+
+    public InventoryGUI dropStatistics(User user) {
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lStatystyki &8]", 1, true);
+        ItemBuilder premiumCaseItem = new ItemBuilder(this.plugin.getDropManager().getPremiumCaseItem().clone().getType()).setName(ChatUtil.fixColor("{c}&lOtworzone "+this.plugin.getDropManager().getPremiumCaseNameInGUI())).
+                setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Otworzyles&8: {c}"+user.getUserStat().getOpenedPremiumCase())));
+        ItemBuilder cobblexItem = new ItemBuilder(this.plugin.getDropManager().getCobblexItem().clone().getType()).setName(ChatUtil.fixColor("{c}&lOtworzone "+this.plugin.getDropManager().getCobblexNameInGUI())).
+                setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Otworzyles&8: {c}"+user.getUserStat().getOpenedCobblex())));
+        ItemBuilder stoneItem = new ItemBuilder(Material.STONE).setName(ChatUtil.fixColor("{c}&lWykopany kamien")).
+                setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getLevel()+" {n}poziom","&8>> {n}Wykopales&8: {c}"+user.getUserStat().getMinedStone())));
+        ItemBuilder coinsFromStoneItem = new ItemBuilder(Material.DOUBLE_PLANT).setName(ChatUtil.fixColor("{c}&lMonety za kopanie")).
+                setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Otrzymales&8: {c}"+user.getUserStat().getCoinsFromStone())));
+        gui.setItem(0, stoneItem.toItemStack());
+        gui.setItem(2, premiumCaseItem.toItemStack());
+        gui.setItem(6, cobblexItem.toItemStack());
+        gui.setItem(8, coinsFromStoneItem.toItemStack());
+        gui.setItem(4, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
+        gui.setEmptyItem(this.blank);
+        user.addInventory(gui);
         return gui;
     }
 }

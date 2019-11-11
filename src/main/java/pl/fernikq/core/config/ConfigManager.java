@@ -40,6 +40,10 @@ public class ConfigManager {
     public static int maxGoldenApplesInInventory;
     public static int maxEnchantedGoldenApplesInInventory;
     public static int maxPearlsInInventory;
+    public static int dropStoneExp;
+    public static int dropObsidianExp;
+    public static double coinsDropFromStoneChance;
+    public static String coinsDropFromStoneAmount;
 
     public void load(){
         try{
@@ -93,5 +97,9 @@ public class ConfigManager {
         maxGoldenApplesInInventory = 8;
         maxEnchantedGoldenApplesInInventory = 2;
         maxPearlsInInventory = 4;
+        coinsDropFromStoneChance = 0.4;
+        coinsDropFromStoneAmount = "1-5";
+        dropStoneExp = 10;
+        dropObsidianExp = 20;
     }
 }
