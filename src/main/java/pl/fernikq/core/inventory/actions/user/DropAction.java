@@ -57,6 +57,10 @@ public class DropAction implements InventoryAction {
             this.plugin.getUserInventory().dropStatistics(user).openInventory(player);
             return;
         }
+        if(dropActionType.equals(DropActionType.OPEN_TURBO_SYSTEM)){
+            this.plugin.getUserInventory().dropTurboSystem(user).openInventory(player);
+            return;
+        }
         if(dropActionType.equals(DropActionType.CHANGE_ONE_DROP)){
             this.drop.changeDropStatus(user);
             this.plugin.getUserInventory().dropStone(user).openInventory(player);

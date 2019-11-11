@@ -7,6 +7,7 @@ public class Lang {
     public static String playerOffline;
     public static String badIntegerFormat;
     public static String integerLessThanOne;
+    public static String badTimeFormat;
 
     static {
         userNotExists = MessagesManager.error("Gracz nie istnieje w bazie danych!");
@@ -14,5 +15,6 @@ public class Lang {
         mustBePlayer = "Musisz byc graczem aby uzyc tej komendy";
         badIntegerFormat = MessagesManager.error("Format liczby jest niepoprawny!");
         integerLessThanOne = MessagesManager.error("Liczba nie moze byc mniejsza niz 1!");
+        badTimeFormat = MessagesManager.error("Podales bledny format czasu!");
     }
 }

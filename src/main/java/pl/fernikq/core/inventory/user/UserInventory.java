@@ -19,10 +19,7 @@ import pl.fernikq.core.shop.ShopItem;
 import pl.fernikq.core.shop.ShopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
-import pl.fernikq.core.util.ChatUtil;
-import pl.fernikq.core.util.ItemBuilder;
-import pl.fernikq.core.util.ItemUtil;
-import pl.fernikq.core.util.NumberUtil;
+import pl.fernikq.core.util.*;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -248,7 +245,7 @@ public class UserInventory {
         gui.setItem(10, stoneDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_STONE_DROP, user));
         gui.setItem(13, caseDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_PREMIUMCASE_DROP, user));
         gui.setItem(16, cobblexDrop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_COBBLEX_DROP, user));
-        gui.setItem(29, turboSystem.toItemStack());
+        gui.setItem(29, turboSystem.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_TURBO_SYSTEM, user));
         gui.setItem(31, levelShop.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_LEVEL_SHOP, user));
         gui.setItem(33, statistics.toItemStack(), new DropAction(this.plugin, DropActionType.OPEN_STATISTICS, user));
         gui.setItem(1, this.color);
@@ -272,7 +269,7 @@ public class UserInventory {
             if(drop.getName() != null){
                 dropItem.setName(ChatUtil.fixColor(drop.getName()));
             }
-            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+ NumberUtil.formatDouble(drop.getChance())+"%", "&8>> {n}Wypada w ilosci&8: {c}"+(drop.getMinAmount() == drop.getMaxAmount() ? drop.getMinAmount() : drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount()),
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+(user.getUserStat().isTurboDrop() ? (NumberUtil.formatDouble(drop.getChance() * ConfigManager.turboDropMultiplier)+"% &8[{c}&lTURBO&8]") : drop.getChance()+"%"), "&8>> {n}Wypada w ilosci&8: {c}"+(drop.getMinAmount() == drop.getMaxAmount() ? drop.getMinAmount() : drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount()),
                     "&8>> {n}Wypada ponizej {c}"+drop.getMinY()+" {n}kratki", "&8>> {n}Fortuna&8: "+(drop.isFortune() ? "&aTak" : "&cNie"), " ", "&8>> {n}Aktywny&8: "+(drop.getDisabled().contains(user) ? "&cNie" : "&aTak"))));
             if(!drop.getDisabled().contains(user)){
                 dropItem.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 10);
@@ -330,12 +327,13 @@ public class UserInventory {
 
     public InventoryGUI dropStatistics(User user) {
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lStatystyki &8]", 1, true);
+        user.addInventory(gui);
         ItemBuilder premiumCaseItem = new ItemBuilder(this.plugin.getDropManager().getPremiumCaseItem().clone().getType()).setName(ChatUtil.fixColor("{c}&lOtworzone "+this.plugin.getDropManager().getPremiumCaseNameInGUI())).
                 setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Otworzyles&8: {c}"+user.getUserStat().getOpenedPremiumCase())));
         ItemBuilder cobblexItem = new ItemBuilder(this.plugin.getDropManager().getCobblexItem().clone().getType()).setName(ChatUtil.fixColor("{c}&lOtworzone "+this.plugin.getDropManager().getCobblexNameInGUI())).
                 setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Otworzyles&8: {c}"+user.getUserStat().getOpenedCobblex())));
         ItemBuilder stoneItem = new ItemBuilder(Material.STONE).setName(ChatUtil.fixColor("{c}&lWykopany kamien")).
-                setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getLevel()+" {n}poziom","&8>> {n}Wykopales&8: {c}"+user.getUserStat().getMinedStone())));
+                setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getLevel()+" {n}poziom","&8>> {n}Wykopales&8: {c}"+user.getUserStat().getMinedStone()+" {n}kamienia")));
         ItemBuilder coinsFromStoneItem = new ItemBuilder(Material.DOUBLE_PLANT).setName(ChatUtil.fixColor("{c}&lMonety za kopanie")).
                 setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Otrzymales&8: {c}"+user.getUserStat().getCoinsFromStone())));
         gui.setItem(0, stoneItem.toItemStack());
@@ -343,6 +341,40 @@ public class UserInventory {
         gui.setItem(6, cobblexItem.toItemStack());
         gui.setItem(8, coinsFromStoneItem.toItemStack());
         gui.setItem(4, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI dropTurboSystem(User user) {
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lSystem Turbo &8]", 1, true);
+        ItemBuilder turboDrop = new ItemBuilder(Material.GOLD_PICKAXE).setName(ChatUtil.fixColor("{c}&lTurboDrop")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {c}&lSerwer &8<<", " ")));
+        turboDrop.addLore(ChatUtil.fixColor("&8>> {n}Aktywny&8: "+(ConfigManager.turboDropTime > System.currentTimeMillis() ? "&aTak" : "&cNie")));
+        if(ConfigManager.turboDropTime > System.currentTimeMillis()){
+            turboDrop.addLore(ChatUtil.fixColor("&8>> {n}Wygasa za&8: {c}"+ TimeUtil.getTimeToString(ConfigManager.turboDropTime - System.currentTimeMillis())));
+        }
+        turboDrop.addLore(" ");
+        turboDrop.addLore(ChatUtil.fixColor("&8>> {c}&lGracz &8<<"));
+        turboDrop.addLore(" ");
+        turboDrop.addLore(ChatUtil.fixColor("&8>> {n}Aktywny&8: "+(user.getUserStat().getTurboDropTime() > System.currentTimeMillis() ? "&aTak" : "&cNie")));
+        if(user.getUserStat().getTurboDropTime() > System.currentTimeMillis()){
+            turboDrop.addLore(ChatUtil.fixColor("&8>> {n}Wygasa za&8: {c}"+ TimeUtil.getTimeToString(user.getUserStat().getTurboDropTime() - System.currentTimeMillis())));
+        }
+
+        ItemBuilder turboExp = new ItemBuilder(Material.EXP_BOTTLE).setName(ChatUtil.fixColor("{c}&lTurboExp")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {c}&lSerwer &8<<", " ")));
+        turboExp.addLore(ChatUtil.fixColor("&8>> {n}Aktywny&8: "+(ConfigManager.turboExpTime > System.currentTimeMillis() ? "&aTak" : "&cNie")));
+        if(ConfigManager.turboExpTime > System.currentTimeMillis()){
+            turboExp.addLore(ChatUtil.fixColor("&8>> {n}Wygasa za&8: {c}"+ TimeUtil.getTimeToString(ConfigManager.turboExpTime - System.currentTimeMillis())));
+        }
+        turboExp.addLore(" ");
+        turboExp.addLore(ChatUtil.fixColor("&8>> {c}&lGracz &8<<"));
+        turboExp.addLore(" ");
+        turboExp.addLore(ChatUtil.fixColor("&8>> {n}Aktywny&8: "+(user.getUserStat().getTurboExpTime() > System.currentTimeMillis() ? "&aTak" : "&cNie")));
+        if(user.getUserStat().getTurboExpTime() > System.currentTimeMillis()){
+            turboExp.addLore(ChatUtil.fixColor("&8>> {n}Wygasa za&8: {c}"+ TimeUtil.getTimeToString(user.getUserStat().getTurboExpTime() - System.currentTimeMillis())));
+        }
+        gui.setItem(4, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
+        gui.setItem(1, turboDrop.toItemStack());
+        gui.setItem(7, turboExp.toItemStack());
         gui.setEmptyItem(this.blank);
         user.addInventory(gui);
         return gui;

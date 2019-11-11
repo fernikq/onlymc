@@ -63,7 +63,7 @@ public class BlockBreakListener implements Listener {
                 if(drop.getDisabled().contains(user)){
                     continue;
                 }
-                if(!RandomUtil.getChance(drop.getChance())){
+                if(!RandomUtil.getChance(user.getUserStat().isTurboDrop() ? (drop.getChance() * ConfigManager.turboDropMultiplier) : drop.getChance())){
                     continue;
                 }
                 if(block.getLocation().getBlockY() >= drop.getMinY()){
@@ -83,12 +83,12 @@ public class BlockBreakListener implements Listener {
             }
             user.getUserStat().addMinedStone(1);
             user.getUserStat().addMiningExperience(1);
-            player.giveExp(ConfigManager.dropStoneExp);
+            player.giveExp(user.getUserStat().isTurboExp() ? (ConfigManager.dropStoneExp * (int)ConfigManager.turboExpMultiplier) : ConfigManager.dropStoneExp);
             if(user.getUserStat().getMiningExperience() == user.getUserStat().getLevel() * 260){
                 user.getUserStat().addLevel(1);
                 ChatUtil.sendMessage(player, MessagesManager.dropLevelupMessage.replace("{LVL}", Integer.toString(user.getUserStat().getLevel())));
             }
-            if(RandomUtil.getChance(ConfigManager.coinsDropFromStoneChance)){
+            if(RandomUtil.getChance(user.getUserStat().isTurboDrop() ? (ConfigManager.coinsDropFromStoneChance * ConfigManager.turboDropMultiplier) : ConfigManager.coinsDropFromStoneChance)){
                 int amount = RandomUtil.getRandInt(Integer.parseInt(ConfigManager.coinsDropFromStoneAmount.split("-")[0]), Integer.parseInt(ConfigManager.coinsDropFromStoneAmount.split("-")[1]));
                 user.getUserStat().addCoinsFromStone(amount);
                 user.getUserStat().addCoins(amount);
@@ -96,7 +96,7 @@ public class BlockBreakListener implements Listener {
             }
         }
         if(block.getType() == Material.OBSIDIAN){
-            player.giveExp(ConfigManager.dropObsidianExp);
+            player.giveExp(user.getUserStat().isTurboExp() ? (ConfigManager.dropObsidianExp * (int)ConfigManager.turboExpMultiplier) : ConfigManager.dropObsidianExp);
         }
     }
 

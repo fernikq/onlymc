@@ -1,5 +1,7 @@
 package pl.fernikq.core.user;
 
+import pl.fernikq.core.config.ConfigManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -15,6 +17,8 @@ public class UserStat {
     private int openedCobblex;
     private int openedPremiumCase;
     private int coinsFromStone;
+    private long turboDropTime;
+    private long turboExpTime;
 
     public UserStat(User user){
         this.coins = 0;
@@ -27,6 +31,8 @@ public class UserStat {
         this.openedCobblex = 0;
         this.openedPremiumCase = 0;
         this.coinsFromStone = 0;
+        this.turboDropTime = 0L;
+        this.turboExpTime = 0L;
         user.setUserStat(this);
     }
 
@@ -42,10 +48,20 @@ public class UserStat {
             this.openedCobblex = rs.getInt("openedCobblex");
             this.openedPremiumCase = rs.getInt("openedPremiumCase");
             this.coinsFromStone = rs.getInt("coinsFromStone");
+            this.turboDropTime = rs.getLong("turboDropTime");
+            this.turboExpTime = rs.getLong("turboExpTime");
             user.setUserStat(this);
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setTurboDropTime(long turboDropTime) {
+        this.turboDropTime = turboDropTime;
+    }
+
+    public void setTurboExpTime(long turboExpTime) {
+        this.turboExpTime = turboExpTime;
     }
 
     public void addCoinsFromStone(int amount){
@@ -150,5 +166,21 @@ public class UserStat {
 
     public int getCoinsFromStone() {
         return coinsFromStone;
+    }
+
+    public boolean isTurboDrop(){
+        return this.turboDropTime > System.currentTimeMillis() || ConfigManager.turboDropTime > System.currentTimeMillis();
+    }
+
+    public boolean isTurboExp(){
+        return this.turboExpTime > System.currentTimeMillis() || ConfigManager.turboExpTime > System.currentTimeMillis();
+    }
+
+    public long getTurboDropTime() {
+        return turboDropTime;
+    }
+
+    public long getTurboExpTime() {
+        return turboExpTime;
     }
 }

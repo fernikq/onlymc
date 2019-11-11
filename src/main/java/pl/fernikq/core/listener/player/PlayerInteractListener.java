@@ -88,7 +88,7 @@ public class PlayerInteractListener implements Listener {
                 int amount = drop.getMinAmount() == drop.getMaxAmount() ? drop.getMaxAmount() : RandomUtil.getRandInt(drop.getMinAmount(), drop.getMaxAmount());
                 ItemBuilder itemBuilder = new ItemBuilder(drop.getItemStack().clone()).setAmount(amount);
                 ItemUtil.giveItems(player, itemBuilder.toItemStack());
-                dropMessages.add(" &8- {n}"+drop.getMessage().replace("{AMOUNT}", Integer.toString(amount)).replace("{CHANCE}", NumberUtil.formatDouble(drop.getChance())));
+                dropMessages.add(" &8- {n}"+drop.getMessage().replace("{AMOUNT}", Integer.toString(amount)).replace("{CHANCE}", Double.toString(drop.getChance())));
                 items++;
             }
             event.setCancelled(true);

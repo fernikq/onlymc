@@ -35,6 +35,10 @@ public class ConfigManager {
     public static String spawnLocation;
     public static boolean limitInventoryClicks;
     public static long stoneGeneratorRegenerationTime;
+    public static long turboDropTime;
+    public static long turboExpTime;
+    public static double turboDropMultiplier;
+    public static double turboExpMultiplier;
     public static int tntExplodeBelow;
     public static String tntHours;
     public static int maxGoldenApplesInInventory;
@@ -101,5 +105,9 @@ public class ConfigManager {
         coinsDropFromStoneAmount = "1-5";
         dropStoneExp = 10;
         dropObsidianExp = 20;
+        turboDropTime = 0L;
+        turboExpTime = 0L;
+        turboDropMultiplier = 1.5;
+        turboExpMultiplier = 2.0;
     }
 }
