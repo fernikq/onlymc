@@ -1,0 +1,13 @@
+Permissions:
+  ADMIN:
+    permissions:
+      - 'bungee.bans.ban'
+      - 'bungee.bans.tempban'
+  ROOT:
+    permissions:
+      - 'bungee.bans.ban'
+      - 'bungee.bans.tempban'
+  DEV:
+    permissions:
+      - 'bungee.bans.ban'
+      - 'bungee.bans.tempban'

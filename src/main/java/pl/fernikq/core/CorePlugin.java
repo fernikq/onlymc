@@ -29,6 +29,7 @@ import pl.fernikq.core.task.SimpleTask;
 import pl.fernikq.core.task.StoneGeneratorTask;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
+import pl.fernikq.core.user.UserPermissionsManager;
 import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.TeleportManager;
@@ -60,6 +61,7 @@ public class CorePlugin extends JavaPlugin {
     private List<SimpleTask> simpleTasks;
     private ShopManager shopManager;
     private DropManager dropManager;
+    private UserPermissionsManager userPermissionsManager;
 
     @Override
     public void onEnable() {
@@ -110,6 +112,7 @@ public class CorePlugin extends JavaPlugin {
         this.stoneGeneratorManager = new StoneGeneratorManager(this);
         this.shopManager = new ShopManager(this);
         this.dropManager = new DropManager(this);
+        this.userPermissionsManager = new UserPermissionsManager(this);
     }
 
     private void initData(){
@@ -282,5 +285,9 @@ public class CorePlugin extends JavaPlugin {
 
     public DropManager getDropManager() {
         return dropManager;
+    }
+
+    public UserPermissionsManager getUserPermissionsManager() {
+        return userPermissionsManager;
     }
 }

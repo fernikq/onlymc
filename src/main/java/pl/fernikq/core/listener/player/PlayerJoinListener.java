@@ -6,11 +6,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
+
+import java.util.Arrays;
 
 public class PlayerJoinListener implements Listener {
 
@@ -26,6 +30,9 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatUtil.fixColor(MessagesManager.playerJoinMessage.replace("{PLAYER}", player.getName())));
         User user = this.plugin.getUserManager().getUser(player);
+        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
+            this.plugin.getUserPermissionsManager().reloadPermissions(user);
+        },60);
         user.setLastAddress(player.getAddress().getAddress().getHostAddress());
         if(!user.getName().equals(player.getName())){
             user.setName(player.getName());
