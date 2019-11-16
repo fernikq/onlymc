@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 
@@ -41,7 +42,17 @@ public class EntityExplodeListener implements Listener {
             if(!regionFeedback.isPermit()){
                 toRemove.add(block);
             }
+            StoneGenerator stoneGenerator = this.plugin.getStoneGeneratorManager().getStoneGenerator(block.getLocation());
+            if(stoneGenerator != null){
+
+            }
         }
         toRemove.forEach(block -> event.blockList().remove(block));
+        event.blockList().forEach(block -> {
+            StoneGenerator stoneGenerator = this.plugin.getStoneGeneratorManager().getStoneGenerator(block.getLocation());
+            if(stoneGenerator != null){
+                this.plugin.getStoneGeneratorManager().deleteGenerator(stoneGenerator);
+            }
+        });
     }
 }

@@ -2,6 +2,7 @@ package pl.fernikq.core.task;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.util.ChatUtil;
@@ -30,9 +31,9 @@ public class RemoveItemsTask extends BukkitRunnable implements SimpleTask {
     public void run() {
         amount = 0;
         Bukkit.getWorlds().forEach(world -> {
-            world.getEntities().stream().filter(entity -> entity.getType() == EntityType.DROPPED_ITEM).filter(entity -> entity.getTicksLived() >= 3600).forEach(entity -> {
+            world.getEntities().stream().filter(entity -> entity.getType() == EntityType.DROPPED_ITEM).filter(entity -> entity.getTicksLived() >= 1200).forEach(entity -> {
                 entity.remove();
-                amount++;
+                amount += ((Item)entity).getItemStack().getAmount();
             });
         });
         Bukkit.getOnlinePlayers().forEach(online -> {
