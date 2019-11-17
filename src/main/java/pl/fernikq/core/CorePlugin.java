@@ -13,6 +13,7 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.GeneratorManager;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGeneratorManager;
 import pl.fernikq.core.drop.DropManager;
+import pl.fernikq.core.dummy.DummyManager;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.block.*;
@@ -62,6 +63,7 @@ public class CorePlugin extends JavaPlugin {
     private ShopManager shopManager;
     private DropManager dropManager;
     private UserPermissionsManager userPermissionsManager;
+    private DummyManager dummyManager;
 
     @Override
     public void onEnable() {
@@ -113,6 +115,7 @@ public class CorePlugin extends JavaPlugin {
         this.shopManager = new ShopManager(this);
         this.dropManager = new DropManager(this);
         this.userPermissionsManager = new UserPermissionsManager(this);
+        this.dummyManager = new DummyManager(this);
     }
 
     private void initData(){
@@ -291,5 +294,9 @@ public class CorePlugin extends JavaPlugin {
 
     public UserPermissionsManager getUserPermissionsManager() {
         return userPermissionsManager;
+    }
+
+    public DummyManager getDummyManager() {
+        return dummyManager;
     }
 }

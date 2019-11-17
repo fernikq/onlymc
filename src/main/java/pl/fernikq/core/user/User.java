@@ -4,6 +4,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+import pl.fernikq.core.dummy.Dummy;
 import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.user.home.Home;
 
@@ -28,7 +30,8 @@ public class User {
     private Map<String, Long> kitTimes;
     private Cache<User, Long> tpaRequests;
     private User privateMessageSender;
-
+    private Scoreboard scoreboard;
+    private Dummy dummy;
 
     public User(Player player){
         this.uuid = player.getUniqueId();
@@ -43,6 +46,7 @@ public class User {
         this.kitTimes = new HashMap<>();
         this.userStat = new UserStat(this);
         this.userChat = new UserChat(this);
+        this.dummy = new Dummy(this);
         this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
     }
 
@@ -59,6 +63,7 @@ public class User {
             this.privateMessageSender = null;
             this.kitTimes = new HashMap<>();
             this.userChat = new UserChat(this);
+            this.dummy = new Dummy(this);
             this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -187,5 +192,21 @@ public class User {
 
     public void setUserChat(UserChat userChat) {
         this.userChat = userChat;
+    }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
+
+    public void setScoreboard(Scoreboard scoreboard) {
+        this.scoreboard = scoreboard;
+    }
+
+    public Dummy getDummy() {
+        return dummy;
+    }
+
+    public void setDummy(Dummy dummy) {
+        this.dummy = dummy;
     }
 }

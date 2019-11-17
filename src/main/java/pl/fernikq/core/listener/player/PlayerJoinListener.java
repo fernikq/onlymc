@@ -38,6 +38,12 @@ public class PlayerJoinListener implements Listener {
             user.setName(player.getName());
             this.plugin.getUserManager().updateUserInfo(user);
         }
+        if(user.getScoreboard() == null){
+            user.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        }
+        player.setScoreboard(user.getScoreboard());
+        this.plugin.getDummyManager().createScore(user);
+        this.plugin.getDummyManager().updateScore(user);
         this.plugin.getTagManager().createTag(player);
         for(Player vanished : this.plugin.getVanishManager().getVanished()){
             if(user.canByGroup(UserGroup.HELPER)){

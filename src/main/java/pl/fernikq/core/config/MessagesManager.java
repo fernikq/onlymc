@@ -43,6 +43,7 @@ public class MessagesManager {
     public static String titleBroadcastPrefix;
     public static String dropLevelupMessage;
     public static String coinsDropFromStoneMessage;
+    public static String pointsBelowNameSuffix;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -121,5 +122,6 @@ public class MessagesManager {
         titleBroadcastPrefix = "&c&lAlert";
         dropLevelupMessage = "&8>> &eGratulacje, osiagnales &6{LVL} &epoziom gornictwa!";
         coinsDropFromStoneMessage = "&8>> {c}Gratulacje, {n}trafiles na monety w ilosci&8: {c}{AMOUNT}";
+        pointsBelowNameSuffix = "&epkt";
     }
 }
