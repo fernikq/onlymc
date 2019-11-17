@@ -22,7 +22,7 @@ public class TagManager {
     }
 
     public void createTag(Player player){
-        if(player == null){
+        if(player == null || !player.isOnline()){
             return;
         }
         try{
@@ -61,7 +61,7 @@ public class TagManager {
     }
 
     public void updateTag(Player player) {
-        if(player == null){
+        if(player == null || !player.isOnline()){
             return;
         }
         try {
@@ -102,7 +102,7 @@ public class TagManager {
     }
 
     public void removeTag(Player player) {
-        if(player == null){
+        if(player == null || !player.isOnline()){
             return;
         }
         try {

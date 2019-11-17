@@ -122,6 +122,6 @@ public class MessagesManager {
         titleBroadcastPrefix = "&c&lAlert";
         dropLevelupMessage = "&8>> &eGratulacje, osiagnales &6{LVL} &epoziom gornictwa!";
         coinsDropFromStoneMessage = "&8>> {c}Gratulacje, {n}trafiles na monety w ilosci&8: {c}{AMOUNT}";
-        pointsBelowNameSuffix = "&epkt";
+        pointsBelowNameSuffix = "&bpkt";
     }
 }
