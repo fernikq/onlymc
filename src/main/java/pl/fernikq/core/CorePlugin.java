@@ -163,6 +163,8 @@ public class CorePlugin extends JavaPlugin {
         new TurboAllCommand("turboall", new String[0], UserGroup.MOD, this).register();
         new TurboCommand("turbo", new String[0], UserGroup.MOD, this).register();
         new HeadCommand("head", new String[0], UserGroup.HELPER, this).register();
+        new WhoisCommand("whois", new String[0], UserGroup.HELPER, this).register();
+        new ReloadPermissionsCommand("reloadpermissions", new String[0], UserGroup.ROOT, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
