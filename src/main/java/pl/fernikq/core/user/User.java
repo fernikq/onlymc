@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import pl.fernikq.core.dummy.Dummy;
+import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.user.home.Home;
 
@@ -32,6 +33,7 @@ public class User {
     private User privateMessageSender;
     private Scoreboard scoreboard;
     private Dummy dummy;
+    private Guild guild;
 
     public User(Player player){
         this.uuid = player.getUniqueId();
@@ -47,6 +49,7 @@ public class User {
         this.userStat = new UserStat(this);
         this.userChat = new UserChat(this);
         this.dummy = new Dummy(this);
+        this.guild = null;
         this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
     }
 
@@ -64,6 +67,7 @@ public class User {
             this.kitTimes = new HashMap<>();
             this.userChat = new UserChat(this);
             this.dummy = new Dummy(this);
+            this.guild = null;
             this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -208,5 +212,17 @@ public class User {
 
     public void setDummy(Dummy dummy) {
         this.dummy = dummy;
+    }
+
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public boolean hasGuild(){
+        return this.guild != null;
+    }
+
+    public void setGuild(Guild guild) {
+        this.guild = guild;
     }
 }

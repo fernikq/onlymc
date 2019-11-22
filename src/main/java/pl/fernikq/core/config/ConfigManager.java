@@ -48,6 +48,24 @@ public class ConfigManager {
     public static int dropObsidianExp;
     public static double coinsDropFromStoneChance;
     public static String coinsDropFromStoneAmount;
+    public static int playerStartPoints;
+    public static int maxAmountOfPointsByKilling;
+    public static String guildAttackProtectionAfterCreate;
+    public static String guildExplosionProtectionAfterCreate;
+    public static String guildExpireAfterCreateTime;
+    public static int guildMaxStartMembersSize;
+    public static int guildMaxStartAlliesSize;
+    public static int guildStartHealth;
+    public static int guildStartCuboidSize;
+    public static int guildCuboidSizeAddByEnlarge;
+    public static int minimalDistanceBetweenGuilds;
+    public static int guildCenterY;
+    public static List<Integer> guildAlliesSizeEnlargeCost;
+    public static List<Integer> guildMembersSizeEnlargeCost;
+    public static List<Integer> guildCuboidSizeEnlargeCost;
+    public static int guildTreasureSizeFirstLevelCost;
+    public static int guildTreasureSizeSecondLevelCost;
+    public static int guildTreasureSizeThirdLevelCost;
 
     public void load(){
         try{
@@ -109,5 +127,23 @@ public class ConfigManager {
         turboExpTime = 0L;
         turboDropMultiplier = 1.5;
         turboExpMultiplier = 2.0;
+        playerStartPoints = 500;
+        maxAmountOfPointsByKilling = 300;
+        guildExplosionProtectionAfterCreate = "1d";
+        guildAttackProtectionAfterCreate = "1d";
+        guildExpireAfterCreateTime = "7d";
+        guildMaxStartAlliesSize = 4;
+        guildMaxStartMembersSize = 12;
+        guildMembersSizeEnlargeCost = Arrays.asList(150, 300, 450, 600, 750, 900, 1050, 1300);
+        guildAlliesSizeEnlargeCost = Arrays.asList(800, 1600, 2400, 3200);
+        guildTreasureSizeFirstLevelCost = 1000;
+        guildTreasureSizeSecondLevelCost = 2000;
+        guildTreasureSizeThirdLevelCost = 3000;
+        guildStartHealth = 3;
+        guildCuboidSizeAddByEnlarge = 5;
+        guildStartCuboidSize = 50;
+        guildCuboidSizeEnlargeCost = Arrays.asList(200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000);
+        minimalDistanceBetweenGuilds = 50;
+        guildCenterY = 40;
     }
 }

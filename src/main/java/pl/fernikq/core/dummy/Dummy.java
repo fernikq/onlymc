@@ -27,7 +27,7 @@ public class Dummy {
         if(objective == null){
             createScore(plugin);
         }else{
-            objective.getScore(user.getName()).setScore(user.getUserStat().getCoins());
+            objective.getScore(user.getName()).setScore(user.getUserStat().getPoints());
         }
     }
 
@@ -45,7 +45,7 @@ public class Dummy {
         Objective finalObjective = objective;
         Bukkit.getOnlinePlayers().forEach(online -> {
             plugin.getUserManager().getUser(online.getUniqueId()).peek(onlineUser -> {
-                finalObjective.getScore(onlineUser.getName()).setScore(onlineUser.getUserStat().getCoins());
+                finalObjective.getScore(onlineUser.getName()).setScore(onlineUser.getUserStat().getPoints());
             });
         });
     }

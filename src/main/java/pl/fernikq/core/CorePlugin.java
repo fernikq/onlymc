@@ -14,6 +14,8 @@ import pl.fernikq.core.crafting.GeneratorManager;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGeneratorManager;
 import pl.fernikq.core.drop.DropManager;
 import pl.fernikq.core.dummy.DummyManager;
+import pl.fernikq.core.guild.GuildManager;
+import pl.fernikq.core.guild.alliances.AllianceManager;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.block.*;
@@ -33,6 +35,7 @@ import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.UserPermissionsManager;
 import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.RankingUtil;
 import pl.fernikq.core.util.TeleportManager;
 import pl.fernikq.core.vanish.VanishManager;
 import pl.fernikq.core.warp.WarpManager;
@@ -64,6 +67,8 @@ public class CorePlugin extends JavaPlugin {
     private DropManager dropManager;
     private UserPermissionsManager userPermissionsManager;
     private DummyManager dummyManager;
+    private GuildManager guildManager;
+    private AllianceManager allianceManager;
 
     @Override
     public void onEnable() {
@@ -116,12 +121,16 @@ public class CorePlugin extends JavaPlugin {
         this.dropManager = new DropManager(this);
         this.userPermissionsManager = new UserPermissionsManager(this);
         this.dummyManager = new DummyManager(this);
+        this.guildManager = new GuildManager(this);
+        this.allianceManager = new AllianceManager(this);
     }
 
     private void initData(){
         this.userManager.init();
         this.homeManager.init();
         this.warpManager.init();
+        this.guildManager.init();
+        this.allianceManager.init();
     }
 
     private void initDatabase(){
@@ -298,5 +307,13 @@ public class CorePlugin extends JavaPlugin {
 
     public DummyManager getDummyManager() {
         return dummyManager;
+    }
+
+    public GuildManager getGuildManager() {
+        return guildManager;
+    }
+
+    public AllianceManager getAllianceManager() {
+        return allianceManager;
     }
 }

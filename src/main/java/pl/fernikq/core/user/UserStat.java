@@ -19,6 +19,10 @@ public class UserStat {
     private int coinsFromStone;
     private long turboDropTime;
     private long turboExpTime;
+    private int points;
+    private int kills;
+    private int deaths;
+    private int assists;
 
     public UserStat(User user){
         this.coins = 0;
@@ -33,6 +37,10 @@ public class UserStat {
         this.coinsFromStone = 0;
         this.turboDropTime = 0L;
         this.turboExpTime = 0L;
+        this.points = ConfigManager.playerStartPoints;
+        this.kills = 0;
+        this.deaths = 0;
+        this.assists = 0;
         user.setUserStat(this);
     }
 
@@ -50,6 +58,10 @@ public class UserStat {
             this.coinsFromStone = rs.getInt("coinsFromStone");
             this.turboDropTime = rs.getLong("turboDropTime");
             this.turboExpTime = rs.getLong("turboExpTime");
+            this.points = rs.getInt("points");
+            this.kills = rs.getInt("kills");
+            this.deaths = rs.getInt("deaths");
+            this.assists = rs.getInt("assists");
             user.setUserStat(this);
         } catch(SQLException e) {
             e.printStackTrace();
@@ -126,6 +138,38 @@ public class UserStat {
 
     public void removeDepositeEnchantedApples(int amount) {
         this.depositeEnchantedApples -= amount;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public int getAssists() {
+        return assists;
     }
 
     public int getCoins() {
