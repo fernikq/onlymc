@@ -10,15 +10,15 @@ import java.util.List;
 public enum UserGroup {
 
     PLAYER(0, 1, "", "", new ArrayList<>()),
-    VIP(1, 2, "&8[&eVIP&8]", "&8[&eVIP&8]", new ArrayList<>()),
-    SV(2, 3, "&8[&6SV&8]", "&8[&6SV&8]", new ArrayList<>()),
-    MVP(3, 4, "&8[&3MVP&8]", "&8[&3MVP&8]", new ArrayList<>()),
-    YT(4, 4, "&8[&4Y&fT&8]", "&8[&4Y&fT&8]", new ArrayList<>()),
-    HELPER(5, 5, "&8[&bHelper&8]", "&8[&bHelper&8]", new ArrayList<>()),
-    MOD(6, 10, "&8[&aMod&8]", "&8[&aMod&8]", new ArrayList<>()),
-    ADMIN(7, 100, "&8[&cAdmin&8]", "&8[&cAdmin&8]", new ArrayList<>()),
-    ROOT(8, 100, "&8[&4ROOT&8]", "&8[&4ROOT&8]", new ArrayList<>()),
-    DEV(9, 100, "&8[&9DEV&8]", "&8[&9DEV&8]", new ArrayList<>());
+    VIP(1, 2, "&8[&eVIP&8] ", "&8[&eVIP&8]", new ArrayList<>()),
+    SV(2, 3, "&8[&6SV&8] ", "&8[&6SV&8]", new ArrayList<>()),
+    MVP(3, 4, "&8[&3MVP&8] ", "&8[&3MVP&8]", new ArrayList<>()),
+    YT(4, 4, "&8[&4Y&fT&8] ", "&8[&4Y&fT&8]", new ArrayList<>()),
+    HELPER(5, 5, "&8[&bHelper&8] ", "&8[&bHelper&8]", new ArrayList<>()),
+    MOD(6, 10, "&8[&aMod&8] ", "&8[&aMod&8]", new ArrayList<>()),
+    ADMIN(7, 100, "&8[&cAdmin&8] ", "&8[&cAdmin&8]", new ArrayList<>()),
+    ROOT(8, 100, "&8[&4ROOT&8] ", "&8[&4ROOT&8]", new ArrayList<>()),
+    DEV(9, 100, "&8[&9DEV&8] ", "&8[&9DEV&8]", new ArrayList<>());
 
     private int level;
     private int homes;

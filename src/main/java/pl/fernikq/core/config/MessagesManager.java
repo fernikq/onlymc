@@ -26,6 +26,7 @@ public class MessagesManager {
     public static String playerNametagGuildEnemyFormat;
     public static String playerNametagGuildOwnFormat;
     public static String playerChatGuildFormat;
+    public static String playerChatPointsFormat;
     public static String playerChatFormat;
     public static String playerChatAdminFormat;
     public static String playerPrivateMessageFormat;
@@ -105,8 +106,9 @@ public class MessagesManager {
         playerNametagGuildAllyFormat = "&8[&e{GUILD}&8] ";
         playerNametagGuildEnemyFormat = "&8[&c{GUILD}&8] ";
         playerChatGuildFormat = "&8[&c{GUILD}&8] ";
-        playerChatFormat = "&8[&7{LVL}&8] {GUILD}{RANK} &f{NAME}&8: &f{MESSAGE}";
-        playerChatAdminFormat = "{RANK} &f{NAME}&8: &f{MESSAGE}";
+        playerChatPointsFormat = "&8[&c{POINTS}&8] ";
+        playerChatFormat = "&8[&7{LVL}&8] {GUILD}{POINTS}{RANK}&f{NAME}&8: &f{MESSAGE}";
+        playerChatAdminFormat = "{RANK}&f{NAME}&8: &f{MESSAGE}";
         playerPrivateMessageFormat = "&3{SENDER} &8>> &3{RECEIVER}&8: &f";
         helpopFormat = "&8[ &4&lHELPOP&8 ] &c{NICK}&8: &f";
         playerJoinMessage = "&8>> &8[&a+&8] &f{PLAYER}";
