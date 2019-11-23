@@ -57,19 +57,19 @@ public class GuildRegion {
     }
 
     public void setRegionCorners(){
-        this.lowerCorner = new Vector(this.center.getBlockX() - size, 256, this.center.getBlockZ() - size).toLocation(this.center.getWorld());
-        this.upperCorner = new Vector(this.center.getBlockX() + size, 0, this.center.getBlockZ() + size).toLocation(this.center.getWorld());
+        this.lowerCorner = new Vector(this.center.getBlockX() - size, 0, this.center.getBlockZ() - size).toLocation(this.center.getWorld());
+        this.upperCorner = new Vector(this.center.getBlockX() + size, 256, this.center.getBlockZ() + size).toLocation(this.center.getWorld());
     }
 
     public boolean isIn(Location location){
-        if(!location.getWorld().equals(this.lowerCorner.getWorld())){
+        if(!location.getWorld().equals(this.center.getWorld())){
             return false;
         }
         return location.toVector().isInAABB(this.lowerCorner.toVector(), this.upperCorner.toVector());
     }
 
     public boolean isInCenter(Location location){
-        if(!location.getWorld().equals(this.lowerCorner.getWorld())){
+        if(!location.getWorld().equals(this.center.getWorld())){
             return false;
         }
         if(!isIn(location)){
