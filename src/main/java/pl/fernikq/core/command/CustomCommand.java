@@ -63,6 +63,10 @@ public abstract class CustomCommand implements CommandExecutor {
         return group;
     }
 
+    public List<String> getAliases() {
+        return aliases;
+    }
+
     public void register(){
         this.plugin.getCommandManager().register(this);
     }

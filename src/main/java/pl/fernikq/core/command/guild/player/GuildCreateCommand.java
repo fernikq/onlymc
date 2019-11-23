@@ -1,0 +1,93 @@
+package pl.fernikq.core.command.guild.player;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.command.CustomCommand;
+import pl.fernikq.core.config.Lang;
+import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.user.UserGroup;
+import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.StringUtil;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class GuildCreateCommand extends CustomCommand {
+
+    private final CorePlugin plugin;
+
+    public GuildCreateCommand(String name, String[] aliases, UserGroup group, CorePlugin plugin){
+        super(name, aliases, group, plugin);
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if(!(sender instanceof Player)){
+            return ChatUtil.sendMessage(sender, Lang.mustBePlayer);
+        }
+        if(args.length < 3){
+            return ChatUtil.sendMessage(sender, MessagesManager.usage("/g zaloz <tag> <nazwa>"));
+        }
+        String tag = args[1];
+        String name = args[2];
+        Player player = (Player)sender;
+        this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+            if(user.hasGuild()){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Posiadasz juz gildie!"));
+                return;
+            }
+            if(!StringUtil.isAlphaNumeric(tag) || !StringUtil.isAlphaNumeric(name)){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Nazwa lub tag przez ciebie podany posiada niedozwolone znaki!"));
+                return;
+            }
+            if(tag.length() > 5 || tag.length() < 2){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Tag musi posiadac od 2 do 5 znakow!"));
+                return;
+            }
+            if(name.length() < 6 || name.length() > 26){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Nazwa musi posiadac od 6 do 26 znakow!"));
+                return;
+            }
+            if(this.plugin.getGuildManager().getGuildByTag(tag).isDefined()){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Gildia o podanym tagu juz istnieje!"));
+                return;
+            }
+            if(this.plugin.getGuildManager().getGuildByName(name).isDefined()){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Gildia o podanej nazwie juz istnieje!"));
+                return;
+            }
+            if(!player.getWorld().equals(Bukkit.getWorlds().get(0))){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Nie mozesz stworzyc gildii w tym swiecie!"));
+                return;
+            }
+            if(this.plugin.getGuildManager().getGuildByLocation(player.getLocation().getBlock().getLocation()).isDefined()){
+                ChatUtil.sendMessage(sender, MessagesManager.error("W tym miejscu jest juz gildia!"));
+                return;
+            }
+            if(this.plugin.getGuildManager().isNear(player.getLocation().getBlock().getLocation())){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Jestes zbyt blisko innej gildii!"));
+                return;
+            }
+            if(!this.plugin.getGuildManager().hasItems(player) && !user.canByGroup(UserGroup.ADMIN)){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Nie posiadasz przedmiotow potrzebnych do zalozenia gildii, sprawdzisz je pod /g itemy!"));
+                return;
+            }
+            this.plugin.getGuildManager().removeItems(player);
+            this.plugin.getGuildManager().createGuild(player, tag, name);
+            this.plugin.getTagManager().updateTag(player);
+            player.getWorld().save();
+            String message = MessagesManager.guildCreateMessage;
+            message = message.replace("{TAG}", tag);
+            message = message.replace("{NAME}", name);
+            message = message.replace("{OWNER}", player.getName());
+            String finalMessage = message;
+            Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, finalMessage));
+        });
+        return true;
+    }
+}

@@ -8,6 +8,8 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.guild.alliances.RelationType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
@@ -19,6 +21,21 @@ public class TagManager {
     public TagManager(CorePlugin plugin){
         this.plugin = plugin;
         this.scoreboard = new Scoreboard();
+    }
+
+    private String getTagFormat(User user1, User user2){
+        RelationType relationType = this.plugin.getAllianceManager().getRelation(user1, user2);
+        Guild guild = user1.getGuild();
+        if(guild != null){
+            if(relationType.equals(RelationType.TEAM)){
+                return MessagesManager.playerNametagGuildOwnFormat.replace("{GUILD}", guild.getTag())+"&f";
+            }
+            if(relationType.equals(RelationType.ALLY)){
+                return MessagesManager.playerNametagGuildAllyFormat.replace("{GUILD}", guild.getTag())+"&f";
+            }
+            return MessagesManager.playerNametagGuildEnemyFormat.replace("{GUILD}", guild.getTag())+"&f";
+        }
+        return "";
     }
 
     public void createTag(Player player){
@@ -34,24 +51,29 @@ public class TagManager {
                 scoreboard.addPlayerToTeam(user.getName(), scoreboardTeam.getName());
                 scoreboardTeam.setDisplayName("");
                 String prefix;
-                prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8] " : "";
+                prefix = getTagFormat(user, user);
+                prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8] " : prefix;
                 scoreboardTeam.setPrefix(ChatUtil.fixColor(prefix));
                 scoreboardTeam.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
-                PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(scoreboardTeam, 0);
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardTeam, 0));
                 for(Player online : Bukkit.getOnlinePlayers()){
                     if(!online.equals(player)){
-                        prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : "";
+                        User onlineUser = this.plugin.getUserManager().getUser(online.getUniqueId()).getOrNull();
+                        if(onlineUser == null){
+                            continue;
+                        }
+                        prefix = getTagFormat(user, onlineUser);
+                        prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : prefix;
                         scoreboardTeam.setPrefix(ChatUtil.fixColor(prefix));
-                        ((CraftPlayer)online).getHandle().playerConnection.sendPacket(packet);
+                        ((CraftPlayer)online).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardTeam, 0));
                         ScoreboardTeam team = scoreboard.getTeam(online.getName());
                         if(team == null){
                             continue;
                         }
-                        prefix = this.plugin.getVanishManager().isVanished(online) ? "&8[&bV&8]&f " : "";
+                        prefix = getTagFormat(onlineUser, user);
+                        prefix = this.plugin.getVanishManager().isVanished(online) ? "&8[&bV&8]&f " : prefix;
                         team.setPrefix(ChatUtil.fixColor(prefix));
-                        PacketPlayOutScoreboardTeam packetShow = new PacketPlayOutScoreboardTeam(team, 0);
-                        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packetShow);
+                        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(team, 0));
                     }
                 }
             });
@@ -73,19 +95,23 @@ public class TagManager {
                 team.setDisplayName("");
                 team.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
                 for(Player online : Bukkit.getServer().getOnlinePlayers()) {
+                    User onlineUser = this.plugin.getUserManager().getUser(online.getUniqueId()).getOrNull();
+                    if(onlineUser == null){
+                        continue;
+                    }
                     String prefix;
-                    prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : "";
+                    prefix = getTagFormat(user, onlineUser);
+                    prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : prefix;
                     team.setPrefix(ChatUtil.fixColor(prefix));
-                    PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 2);
-                    ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
+                    ((CraftPlayer) online).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(team, 2));
                     ScoreboardTeam scoreboardTeam = scoreboard.getTeam(online.getName());
                     if(scoreboardTeam == null){
                         continue;
                     }
-                    prefix = this.plugin.getVanishManager().isVanished(online) ? "&8[&bV&8]&f " : "";
+                    prefix = getTagFormat(onlineUser, user);
+                    prefix = this.plugin.getVanishManager().isVanished(online) ? "&8[&bV&8]&f " : prefix;
                     scoreboardTeam.setPrefix(ChatUtil.fixColor(prefix));
-                    PacketPlayOutScoreboardTeam packetTeam = new PacketPlayOutScoreboardTeam(team, 2);
-                    ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packetTeam);
+                    ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardTeam, 2));
                 }
             });
         }catch(Exception e) {
@@ -112,14 +138,12 @@ public class TagManager {
             }
             team = scoreboard.getTeam(player.getName());
             scoreboard.removePlayerFromTeam(player.getName(), team);
-            PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 1);
-            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(team, 1));
             for (Player online : Bukkit.getServer().getOnlinePlayers()) {
                 if (!online.equals(player)) {
-                    ((CraftPlayer)online).getHandle().playerConnection.sendPacket(packet);
+                    ((CraftPlayer)online).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(team, 1));
                     ScoreboardTeam t = scoreboard.getTeam(online.getName());
-                    PacketPlayOutScoreboardTeam packetHide = new PacketPlayOutScoreboardTeam(t, 1);
-                    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packetHide);
+                    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(t, 1));
                 }
             }
             scoreboard.removeTeam(team);

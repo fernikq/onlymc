@@ -44,4 +44,8 @@ public class StringUtil {
         sb.append(text.substring(start));
         return sb.toString();
     }
+
+    public static boolean isAlphaNumeric(String s) {
+        return s.matches("^[a-zA-Z0-9_]*$");
+    }
 }

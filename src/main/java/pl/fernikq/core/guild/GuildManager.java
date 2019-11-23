@@ -6,6 +6,7 @@ import io.vavr.control.Option;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.member.GuildMember;
@@ -15,6 +16,8 @@ import pl.fernikq.core.guild.region.GuildRegion;
 import pl.fernikq.core.guild.region.GuildRegionData;
 import pl.fernikq.core.guild.treasure.GuildTreasureData;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
+import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.SpaceUtil;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,6 +82,7 @@ public class GuildManager {
             this.guildData.insertGuild(guild);
             this.guildRegionData.insertRegion(region);
             this.guildTreasureData.insertTreasure(guild.getTreasure());
+            owner.teleport(region.getHome());
         });
     }
 
@@ -86,11 +90,12 @@ public class GuildManager {
         this.guildData.deleteGuild(guild);
         this.guildTreasureData.deleteTreasure(guild.getTreasure());
         this.guildRegionData.deleteRegion(guild.getRegion());
-        guild.getMembers().forEach(member -> this.guildMemberData.deleteMember(member));
+        guild.getMembers().forEach(member -> removeMember(member));
         this.plugin.getAllianceManager().getAllies(guild).forEach(ally -> {
             this.plugin.getAllianceManager().removeAlliance(ally, guild);
         });
         this.guilds.remove(guild.getTag().toUpperCase());
+        deleteGuild(guild);
     }
 
     private void deleteGuildRoom(Guild guild){
@@ -140,6 +145,55 @@ public class GuildManager {
             }
         }
         return false;
+    }
+
+    public boolean hasItems(Player player){
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(user != null && user.canByGroup(UserGroup.VIP)){
+            for(String item : ConfigManager.guildVipItemsToCreate) {
+                String[] itemInfo = item.split(":");
+                Material material = ItemUtil.getMaterial(itemInfo[0]);
+                int amount = Integer.parseInt(itemInfo[2]);
+                short data = Short.parseShort(itemInfo[1]);
+                int have = ItemUtil.getAmountOfMaterial(player.getInventory(), material, data);
+                if(have < amount) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        for(String item : ConfigManager.guildPlayerItemsToCreate) {
+            String[] itemInfo = item.split(":");
+            Material material = ItemUtil.getMaterial(itemInfo[0]);
+            int amount = Integer.parseInt(itemInfo[2]);
+            short data = Short.parseShort(itemInfo[1]);
+            int have = ItemUtil.getAmountOfMaterial(player.getInventory(), material, data);
+            if(have < amount) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void removeItems(Player player){
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(user != null && user.canByGroup(UserGroup.VIP)){
+            for(String item : ConfigManager.guildVipItemsToCreate) {
+                String[] itemInfo = item.split(":");
+                Material material = ItemUtil.getMaterial(itemInfo[0]);
+                int amount = Integer.parseInt(itemInfo[2]);
+                short data = Short.parseShort(itemInfo[1]);
+                ItemUtil.remove(new ItemStack(material, 1, data), player, amount);
+            }
+            return;
+        }
+        for(String item : ConfigManager.guildPlayerItemsToCreate) {
+            String[] itemInfo = item.split(":");
+            Material material = ItemUtil.getMaterial(itemInfo[0]);
+            int amount = Integer.parseInt(itemInfo[2]);
+            short data = Short.parseShort(itemInfo[1]);
+            ItemUtil.remove(new ItemStack(material, 1, data), player, amount);
+        }
     }
 
     public Set<Guild> getGuilds(){

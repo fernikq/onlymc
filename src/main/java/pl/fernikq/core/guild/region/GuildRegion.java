@@ -62,14 +62,14 @@ public class GuildRegion {
     }
 
     public boolean isIn(Location location){
-        if(!location.getWorld().equals(this.lowerCorner)){
+        if(!location.getWorld().equals(this.lowerCorner.getWorld())){
             return false;
         }
         return location.toVector().isInAABB(this.lowerCorner.toVector(), this.upperCorner.toVector());
     }
 
     public boolean isInCenter(Location location){
-        if(!location.getWorld().equals(this.lowerCorner)){
+        if(!location.getWorld().equals(this.lowerCorner.getWorld())){
             return false;
         }
         if(!isIn(location)){

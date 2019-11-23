@@ -1,13 +1,10 @@
 Permissions:
   ADMIN:
     permissions:
-      - 'bungee.bans.ban'
-      - 'bungee.bans.tempban'
+      - 'customPermission'
   ROOT:
     permissions:
-      - 'bungee.bans.ban'
-      - 'bungee.bans.tempban'
+      - 'customPermission'
   DEV:
     permissions:
-      - 'bungee.bans.ban'
-      - 'bungee.bans.tempban'
+      - 'customPermission'

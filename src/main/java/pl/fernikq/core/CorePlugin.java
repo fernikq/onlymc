@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.automessage.AutoMessageManager;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
+import pl.fernikq.core.command.guild.GuildCommand;
 import pl.fernikq.core.command.player.*;
 import pl.fernikq.core.command.premium.RepairCommand;
 import pl.fernikq.core.command.simpleCommand.SimpleCommandManager;
@@ -197,6 +198,8 @@ public class CorePlugin extends JavaPlugin {
         new DepositeCommand("schowek", new String[]{"depozyt"}, UserGroup.PLAYER, this).register();
         new DropCommand("drop", new String[0], UserGroup.PLAYER, this).register();
         new CobblexCommand("cobblex", new String[]{"cx"}, UserGroup.PLAYER, this).register();
+
+        new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
     }
 
     private void registerListeners(){

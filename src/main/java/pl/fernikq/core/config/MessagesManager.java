@@ -6,6 +6,8 @@ import pl.fernikq.core.CorePlugin;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 
 public class MessagesManager {
 
@@ -45,6 +47,8 @@ public class MessagesManager {
     public static String dropLevelupMessage;
     public static String coinsDropFromStoneMessage;
     public static String pointsBelowNameSuffix;
+    public static String guildCreateMessage;
+    public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -125,5 +129,27 @@ public class MessagesManager {
         dropLevelupMessage = "&8>> &eGratulacje, osiagnales &6{LVL} &epoziom gornictwa!";
         coinsDropFromStoneMessage = "&8>> {c}Gratulacje, {n}trafiles na monety w ilosci&8: {c}{AMOUNT}";
         pointsBelowNameSuffix = "&bpkt";
+        guildMainCommandHelp = Arrays.asList("&8&m--------&8[ {c}&lGildie &8]&m--------",
+                " ",
+                "&8>> {c}/g zaloz <tag> <nazwa> &8- {n}Zakladanie gildii",
+                "&8>> {c}/g usun &8- {n}Usuwanie gildii",
+                "&8>> {c}/g baza &8- {n}Teleportacja na baze gildii",
+                "&8>> {c}/g info <tag> &8- {n}Informacje o podanej gildii",
+                "&8>> {c}/g sojusz <tag> &8- {n}Prosba o sojusz z podana gildia",
+                "&8>> {c}/g rozwiaz <tag> &8- {n}Zerwanie sojuszu z dana gildia",
+                "&8>> {c}/g pvp &8- {n}Wlaczenie/Wylaczenie walki w gildii",
+                "&8>> {c}/g setbaza &8- {n}Ustawienie bazy gildii",
+                "&8>> {c}/g panel &8- {n}Zarzadzanie gildia",
+                "&8>> {c}/g zapros <nick> &8- {n}Zapraszanie gracza do gildii",
+                "&8>> {c}/g wyrzuc <nick> &8- {n}Wyrzucanie gracza z gildii",
+                "&8>> {c}/g skarbiec <nick> &8- {n}Skarbiec gildii",
+                "&8>> {c}/g itemy &8- {n}Przedmioty potrzebne do zalozenia gildii",
+                "&8>> {c}/g opusc &8- {n}Opuszczenie gildii",
+                "&8>> {c}/g dolacz <tag> &8- {n}Dolaczanie do gildii",
+                "&8>> {c}/g lider <nick> &8- {n}Przekazanie lidera gildii",
+                "&8>> {c}/g lider <nick> &8- {n}Przekazanie lidera gildii",
+                " ",
+                "&8&m--------&8[ {c}&lGildie &8]&m--------");
+        guildCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] &b{NAME} {n}zostala zalozona przez {c}{OWNER}";
     }
 }

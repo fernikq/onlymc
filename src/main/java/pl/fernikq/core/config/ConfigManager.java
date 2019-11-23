@@ -66,6 +66,8 @@ public class ConfigManager {
     public static int guildTreasureSizeFirstLevelCost;
     public static int guildTreasureSizeSecondLevelCost;
     public static int guildTreasureSizeThirdLevelCost;
+    public static List<String> guildPlayerItemsToCreate;
+    public static List<String> guildVipItemsToCreate;
 
     public void load(){
         try{
@@ -145,5 +147,23 @@ public class ConfigManager {
         guildCuboidSizeEnlargeCost = Arrays.asList(200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000);
         minimalDistanceBetweenGuilds = 50;
         guildCenterY = 40;
+        guildPlayerItemsToCreate = Arrays.asList("diamond:0:64:Diamenty",
+                "emerald:0:64:Emeraldy",
+                "gold_ingot:0:64:Zloto",
+                "obsidian:0:64:Obsydian",
+                "raw_fish:0:32:Ryby",
+                "bread:0:32:Chleb",
+                "anvil:0:32:Kowadla",
+                "book:0:32:Ksiazki",
+                "bookshelf:0:64:Biblioteczki");
+        guildVipItemsToCreate = Arrays.asList("diamond:0:32:Diamenty",
+                "emerald:0:32:Emeraldy",
+                "gold_ingot:0:32:Zloto",
+                "obsidian:0:32:Obsydian",
+                "raw_fish:0:16:Ryby",
+                "bread:0:16:Chleb",
+                "anvil:0:16:Kowadla",
+                "book:0:16:Ksiazki",
+                "bookshelf:0:32:Biblioteczki");
     }
 }
