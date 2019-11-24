@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -120,6 +121,19 @@ public class Reflection {
 
     public static MethodInvoker getMethod(Class<?> clazz, String methodName, Class<?>... params) {
         return getTypedMethod(clazz, methodName, null, params);
+    }
+
+    public static Object invokeMethod(Class<?> clazz, Object obj, String method) throws Exception {
+        return Objects.requireNonNull(getMethod(clazz, method)).invoke(obj);
+    }
+
+    public static Object invokeMethod(Object obj, String method) throws Exception {
+        return Objects.requireNonNull(getMethod(obj.getClass(), method)).invoke(obj);
+    }
+
+    public static Object invokeMethod(Class<?> clazz, Object obj, String method, Class<?>[] args, Object... initargs)
+            throws Exception {
+        return Objects.requireNonNull(getMethod(clazz, method, args)).invoke(obj, initargs);
     }
 
     public static MethodInvoker getTypedMethod(Class<?> clazz, String methodName, Class<?> returnType, Class<?>... params) {

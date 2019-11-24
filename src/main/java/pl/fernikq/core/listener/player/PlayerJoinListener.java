@@ -1,12 +1,18 @@
 package pl.fernikq.core.listener.player;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_8_R3.PacketPlayOutNamedEntitySpawn;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
@@ -14,7 +20,7 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
-import java.util.Arrays;
+import java.lang.reflect.Field;
 
 public class PlayerJoinListener implements Listener {
 
@@ -47,7 +53,7 @@ public class PlayerJoinListener implements Listener {
         this.plugin.getTagManager().createTag(player);
         for(Player vanished : this.plugin.getVanishManager().getVanished()){
             if(user.canByGroup(UserGroup.HELPER)){
-                return;
+                break;
             }
             player.hidePlayer(vanished);
         }
