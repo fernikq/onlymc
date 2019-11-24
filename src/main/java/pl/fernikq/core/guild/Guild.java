@@ -13,7 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class Guild {
 
@@ -118,6 +120,10 @@ public class Guild {
         member.getUser().setGuild(null);
     }
 
+    public Optional<GuildMember> getMemberByName(String name){
+        return getMembers().stream().filter(member -> member.getUser().getName().equalsIgnoreCase(name)).findFirst();
+    }
+
     public void setMembers(List<GuildMember> members) {
         this.members = members;
     }
@@ -220,5 +226,9 @@ public class Guild {
 
     public void setEnlargeAlliesLevel(int enlargeAlliesLevel) {
         this.enlargeAlliesLevel = enlargeAlliesLevel;
+    }
+
+    public List<GuildMember> getOnlineMembers(){
+        return this.members.stream().filter(member -> member.getUser().asPlayer() != null).collect(Collectors.toList());
     }
 }

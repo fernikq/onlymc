@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.command.CustomCommand;
-import pl.fernikq.core.command.guild.player.GuildCreateCommand;
+import pl.fernikq.core.command.guild.player.*;
 import pl.fernikq.core.config.Lang;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.UserGroup;
@@ -24,6 +24,12 @@ public class GuildCommand extends CustomCommand {
         this.plugin = plugin;
         this.customCommands = new HashSet<>();
         this.customCommands.add(new GuildCreateCommand("zaloz", new String[0], UserGroup.PLAYER, this.plugin));
+        this.customCommands.add(new GuildDeleteCommand("usun", new String[0], UserGroup.PLAYER, this.plugin));
+        this.customCommands.add(new GuildInviteCommand("zapros", new String[0], UserGroup.PLAYER, this.plugin));
+        this.customCommands.add(new GuildJoinCommand("dolacz", new String[0], UserGroup.PLAYER, this.plugin));
+        this.customCommands.add(new GuildQuitCommand("opusc", new String[0], UserGroup.PLAYER, this.plugin));
+        this.customCommands.add(new GuildKickCommand("wyrzuc", new String[0], UserGroup.PLAYER, this.plugin));
+        this.customCommands.add(new GuildItemsCommand("itemy", new String[0], UserGroup.PLAYER, this.plugin));
     }
 
     @Override

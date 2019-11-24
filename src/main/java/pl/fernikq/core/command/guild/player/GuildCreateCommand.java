@@ -33,7 +33,7 @@ public class GuildCreateCommand extends CustomCommand {
         if(args.length < 3){
             return ChatUtil.sendMessage(sender, MessagesManager.usage("/g zaloz <tag> <nazwa>"));
         }
-        String tag = args[1];
+        String tag = args[1].toUpperCase();
         String name = args[2];
         Player player = (Player)sender;
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
@@ -69,7 +69,11 @@ public class GuildCreateCommand extends CustomCommand {
                 ChatUtil.sendMessage(sender, MessagesManager.error("W tym miejscu jest juz gildia!"));
                 return;
             }
-            if(this.plugin.getGuildManager().isNear(player.getLocation().getBlock().getLocation())){
+            if(this.plugin.getGuildManager().isNearSpawn(player.getLocation().getBlock().getLocation())){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Jestes zbyt blisko spawnu!"));
+                return;
+            }
+            if(this.plugin.getGuildManager().isNearGuild(player.getLocation().getBlock().getLocation())){
                 ChatUtil.sendMessage(sender, MessagesManager.error("Jestes zbyt blisko innej gildii!"));
                 return;
             }
@@ -79,8 +83,6 @@ public class GuildCreateCommand extends CustomCommand {
             }
             this.plugin.getGuildManager().removeItems(player);
             this.plugin.getGuildManager().createGuild(player, tag, name);
-            this.plugin.getTagManager().updateTag(player);
-            player.getWorld().save();
             String message = MessagesManager.guildCreateMessage;
             message = message.replace("{TAG}", tag);
             message = message.replace("{NAME}", name);

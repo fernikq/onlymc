@@ -18,6 +18,7 @@ import pl.fernikq.core.guild.treasure.GuildTreasureData;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ItemUtil;
+import pl.fernikq.core.util.LocationUtil;
 import pl.fernikq.core.util.SpaceUtil;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,11 +64,13 @@ public class GuildManager {
     public void addMember(User user, Guild guild, GuildPermission... guildPermissions){
         GuildMember member = new GuildMember(user, guild, guildPermissions);
         this.guildMemberData.insertMember(member);
+        this.plugin.getTagManager().updateTag(member.getUser().asPlayer());
     }
 
     public void removeMember(GuildMember member){
         member.getGuild().removeMember(member);
         this.guildMemberData.deleteMember(member);
+        this.plugin.getTagManager().updateTag(member.getUser().asPlayer());
     }
 
     public void createGuild(Player owner, String tag, String name){
@@ -91,11 +94,9 @@ public class GuildManager {
         this.guildTreasureData.deleteTreasure(guild.getTreasure());
         this.guildRegionData.deleteRegion(guild.getRegion());
         guild.getMembers().forEach(member -> removeMember(member));
-        this.plugin.getAllianceManager().getAllies(guild).forEach(ally -> {
-            this.plugin.getAllianceManager().removeAlliance(ally, guild);
-        });
+        this.plugin.getAllianceManager().getAllies(guild).forEach(ally -> this.plugin.getAllianceManager().removeAlliance(ally, guild));
         this.guilds.remove(guild.getTag().toUpperCase());
-        deleteGuild(guild);
+        deleteGuildRoom(guild);
     }
 
     private void deleteGuildRoom(Guild guild){
@@ -104,6 +105,7 @@ public class GuildManager {
         center.getBlock().setType(Material.AIR);
         center.setY(ConfigManager.guildCenterY - 1);
         center.getBlock().setType(Material.AIR);
+        guild.getRegion().getCenter().getWorld().save();
     }
 
     private void createGuildRoom(Guild guild){
@@ -128,13 +130,14 @@ public class GuildManager {
         for (final Location loc : SpaceUtil.getSquare(center, 3, 0)) {
             loc.getBlock().setType(Material.OBSIDIAN);
         }
+        guild.getRegion().getCenter().getWorld().save();
     }
 
     public boolean isInCenter(Location location){
         return getGuilds().find(guild -> guild.getRegion().isInCenter(location)).isDefined();
     }
 
-    public boolean isNear(Location location){
+    public boolean isNearGuild(Location location){
         int minimalDistance = ConfigManager.minimalDistanceBetweenGuilds;
         for(Integer integer : ConfigManager.guildCuboidSizeEnlargeCost){
             minimalDistance += ConfigManager.guildCuboidSizeAddByEnlarge;
@@ -143,6 +146,15 @@ public class GuildManager {
             if((Math.abs(guild.getRegion().getCenter().getBlockX() - location.getBlockX()) <= minimalDistance) || (Math.abs(guild.getRegion().getCenter().getBlockZ() - location.getBlockZ()) <= minimalDistance)){
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean isNearSpawn(Location location){
+        int minimalDistance = ConfigManager.minimalDistanceFromSpawn;
+        Location spawn = LocationUtil.locationFromString(ConfigManager.spawnLocation);
+        if((Math.abs(spawn.getBlockX() - location.getBlockX()) <= minimalDistance) || (Math.abs(spawn.getBlockZ() - location.getBlockZ()) <= minimalDistance)) {
+            return true;
         }
         return false;
     }

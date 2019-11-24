@@ -59,6 +59,7 @@ public class ConfigManager {
     public static int guildStartCuboidSize;
     public static int guildCuboidSizeAddByEnlarge;
     public static int minimalDistanceBetweenGuilds;
+    public static int minimalDistanceFromSpawn;
     public static int guildCenterY;
     public static List<Integer> guildAlliesSizeEnlargeCost;
     public static List<Integer> guildMembersSizeEnlargeCost;
@@ -146,6 +147,7 @@ public class ConfigManager {
         guildStartCuboidSize = 50;
         guildCuboidSizeEnlargeCost = Arrays.asList(200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000);
         minimalDistanceBetweenGuilds = 50;
+        minimalDistanceFromSpawn = 400;
         guildCenterY = 40;
         guildPlayerItemsToCreate = Arrays.asList("diamond:0:64:Diamenty",
                 "emerald:0:64:Emeraldy",

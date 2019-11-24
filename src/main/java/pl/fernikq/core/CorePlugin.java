@@ -17,6 +17,7 @@ import pl.fernikq.core.drop.DropManager;
 import pl.fernikq.core.dummy.DummyManager;
 import pl.fernikq.core.guild.GuildManager;
 import pl.fernikq.core.guild.alliances.AllianceManager;
+import pl.fernikq.core.inventory.guild.GuildInventory;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.block.*;
@@ -70,6 +71,7 @@ public class CorePlugin extends JavaPlugin {
     private DummyManager dummyManager;
     private GuildManager guildManager;
     private AllianceManager allianceManager;
+    private GuildInventory guildInventory;
 
     @Override
     public void onEnable() {
@@ -124,6 +126,7 @@ public class CorePlugin extends JavaPlugin {
         this.dummyManager = new DummyManager(this);
         this.guildManager = new GuildManager(this);
         this.allianceManager = new AllianceManager(this);
+        this.guildInventory = new GuildInventory(this);
     }
 
     private void initData(){
@@ -318,5 +321,9 @@ public class CorePlugin extends JavaPlugin {
 
     public AllianceManager getAllianceManager() {
         return allianceManager;
+    }
+
+    public GuildInventory getGuildInventory() {
+        return guildInventory;
     }
 }

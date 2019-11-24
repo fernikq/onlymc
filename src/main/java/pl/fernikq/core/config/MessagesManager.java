@@ -48,6 +48,11 @@ public class MessagesManager {
     public static String coinsDropFromStoneMessage;
     public static String pointsBelowNameSuffix;
     public static String guildCreateMessage;
+    public static String guildDeleteMessage;
+    public static String guildInviteMessage;
+    public static String guildJoinMessage;
+    public static String guildQuitMessage;
+    public static String guildKickMessage;
     public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
@@ -142,14 +147,18 @@ public class MessagesManager {
                 "&8>> {c}/g panel &8- {n}Zarzadzanie gildia",
                 "&8>> {c}/g zapros <nick> &8- {n}Zapraszanie gracza do gildii",
                 "&8>> {c}/g wyrzuc <nick> &8- {n}Wyrzucanie gracza z gildii",
-                "&8>> {c}/g skarbiec <nick> &8- {n}Skarbiec gildii",
+                "&8>> {c}/g skarbiec &8- {n}Skarbiec gildii",
                 "&8>> {c}/g itemy &8- {n}Przedmioty potrzebne do zalozenia gildii",
                 "&8>> {c}/g opusc &8- {n}Opuszczenie gildii",
                 "&8>> {c}/g dolacz <tag> &8- {n}Dolaczanie do gildii",
                 "&8>> {c}/g lider <nick> &8- {n}Przekazanie lidera gildii",
-                "&8>> {c}/g lider <nick> &8- {n}Przekazanie lidera gildii",
                 " ",
                 "&8&m--------&8[ {c}&lGildie &8]&m--------");
         guildCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] &b{NAME} {n}zostala zalozona przez {c}{OWNER}";
+        guildDeleteMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] {n}zostala usunieta przez {c}{OWNER}";
+        guildInviteMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] {n}wyslala ci zaproszenie, aby zaakceptowac wpisz {c}/g dolacz {TAG}";
+        guildJoinMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}dolaczyl do gildii &8[{c}{TAG}&8]";
+        guildQuitMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}opuscil gildie &8[{c}{TAG}&8]";
+        guildKickMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}zostal wyrzucony z gildii &8[{c}{TAG}&8]";
     }
 }
