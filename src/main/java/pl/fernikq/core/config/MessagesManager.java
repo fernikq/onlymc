@@ -53,6 +53,8 @@ public class MessagesManager {
     public static String guildJoinMessage;
     public static String guildQuitMessage;
     public static String guildKickMessage;
+    public static String guildAllianceCreateMessage;
+    public static String guildAllianceBreakMessage;
     public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
@@ -160,5 +162,7 @@ public class MessagesManager {
         guildJoinMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}dolaczyl do gildii &8[{c}{TAG}&8]";
         guildQuitMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}opuscil gildie &8[{c}{TAG}&8]";
         guildKickMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}zostal wyrzucony z gildii &8[{c}{TAG}&8]";
+        guildAllianceCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zawarla sojusz z gildia &8[{c}{TAG2}&8]";
+        guildAllianceBreakMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zerwala sojusz z gildia &8[{c}{TAG2}&8]";
     }
 }

@@ -139,11 +139,12 @@ public class GuildManager {
 
     public boolean isNearGuild(Location location){
         int minimalDistance = ConfigManager.minimalDistanceBetweenGuilds;
+        minimalDistance += ConfigManager.guildStartCuboidSize+2;
         for(Integer integer : ConfigManager.guildCuboidSizeEnlargeCost){
             minimalDistance += ConfigManager.guildCuboidSizeAddByEnlarge;
         }
         for(Guild guild : getGuilds()){
-            if((Math.abs(guild.getRegion().getCenter().getBlockX() - location.getBlockX()) <= minimalDistance) || (Math.abs(guild.getRegion().getCenter().getBlockZ() - location.getBlockZ()) <= minimalDistance)){
+            if((Math.abs(guild.getRegion().getCenter().getBlockX() - location.getBlockX()) <= minimalDistance) && (Math.abs(guild.getRegion().getCenter().getBlockZ() - location.getBlockZ()) <= minimalDistance)){
                 return true;
             }
         }
@@ -153,7 +154,7 @@ public class GuildManager {
     public boolean isNearSpawn(Location location){
         int minimalDistance = ConfigManager.minimalDistanceFromSpawn;
         Location spawn = LocationUtil.locationFromString(ConfigManager.spawnLocation);
-        if((Math.abs(spawn.getBlockX() - location.getBlockX()) <= minimalDistance) || (Math.abs(spawn.getBlockZ() - location.getBlockZ()) <= minimalDistance)) {
+        if((Math.abs(spawn.getBlockX() - location.getBlockX()) <= minimalDistance) && (Math.abs(spawn.getBlockZ() - location.getBlockZ()) <= minimalDistance)) {
             return true;
         }
         return false;

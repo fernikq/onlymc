@@ -38,7 +38,7 @@ public class GuildQuitCommand extends CustomCommand {
            }
            Guild guild = user.getGuild();
            if(guild.getOwner().equals(user)){
-               ChatUtil.sendMessage(sender, MessagesManager.error("Nie mozesz opuscic gildii jako lider!"));
+               ChatUtil.sendMessage(sender, MessagesManager.error("Nie mozesz opuscic gildii bedac liderem!"));
                return;
            }
            GuildMember member = guild.getMemberByName(user.getName()).orElse(null);

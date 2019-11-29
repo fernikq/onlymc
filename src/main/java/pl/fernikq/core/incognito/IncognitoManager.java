@@ -1,5 +1,6 @@
 package pl.fernikq.core.incognito;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutNamedEntitySpawn;
@@ -20,17 +21,11 @@ public class IncognitoManager {
     }
 
     public void setSkin(Player player){
-        String skin = "eyJ0aW1lc3RhbXAiOjE1MjY4MDczNDc1MjgsInByb2ZpbGVJZCI6Ijg2NjdiYTcxYjg1YTQwMDRhZjU0NDU3YTk3MzRlZWQ3IiwicHJvZmlsZU5hbWUiOiJTdGV2ZSIsInNpZ25hdHVyZVJlcXVpcmVkIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGMxYzc3Y2U4ZTU0OTI1YWI1ODEyNTQ0NmVjNTNiMGNkZDNkMGNhM2RiMjczZWI5MDhkNTQ4Mjc4N2VmNDAxNiJ9LCJDQVBFIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjc2N2Q0ODMyNWVhNTMyNDU2MTQwNmI4YzgyYWJiZDRlMjc1NWYxMTE1M2NkODVhYjA1NDVjYzIifX19";
-        String signature = "fzBEi4s/C8nj18tVHIWBlWQEObm65IfATc4P83iB3PEHE44M0wGQjpyT+ZQGXcbgNeVFQ0FPyEwA8/SC3iGrZ5eKy8s5LCfI5LvOPWYQLHPlwEmRgix9dhpf+vKVrirUEkzDuY/oM3cRfLBbNk1afl+df36oixeG4cqsbLEnSJRu/kOMtA5Fcic2NQf7g402pNeqD2D8cq4Hbe47g2UcfIRVsGt0fLif2qsojbha5m6dYYUEfJOmNcGqPiubznxgGS3vpQ8GHRZrntMJbmywrDAOZjgxNmi+Bdq476nJ84NZycBe3BqgtmKFp+WF6z6jxPeQ1ZcUnlEzmsRJwhfS7zHb4Ujyvzn5BxzMegTmsP33cplCydcd/2oXhKnMj4xtmQtrHS10aUs4oa2M7Ak60SVm11qAOR1KwGvMcDY37shvzjK/4cwuspfsgSBIlVC6MJGBgqmc571LWixSJYBRl2HvW/ao43XbN8k9/oegh7SBJMusdO3ADtbOmt84GmzoEbLfWTi4uEkJpYkPfK4UiqvTnB0Uw+KyRJCdoRwpDNRVMZFTb/eJO4Cr2tAIVTM1JR1E5hWaQ7IQBH+Bwj39JjBpK7MLpx0jjZV+y09+u3BrUIVgrLYFQP0WZxypw45+SAuk/P35hG10ERGjwYRZ6PMWnevq13fYUHlc0Crbn3I=";
-        try {
-            Object entityPlayer = Reflection.invokeMethod(player.getClass(), player, "getHandle");
-            Object profile = Reflection.invokeMethod(entityPlayer.getClass(), entityPlayer, "getProfile");
-            Object properties = Reflection.invokeMethod(profile.getClass(), profile, "getProperties");
-            Reflection.invokeMethod(properties, "clear");
-            Reflection.invokeMethod(properties.getClass(), properties, "put", new Class[]{Object.class, Object.class}, "textures", new Property("textures", skin, signature));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        String skin = "eyJ0aW1lc3RhbXAiOjE1NDg0Mzg3NDU3MDQsInByb2ZpbGVJZCI6IjY0MGE1MzcyNzgwYjRjMmFiN2U3ODM1OWQyZjlhNmE4IiwicHJvZmlsZU5hbWUiOiJBbm9ueW1vdXMiLCJzaWduYXR1cmVSZXF1aXJlZCI6dHJ1ZSwidGV4dHVyZXMiOnsiU0tJTiI6eyJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2YxYzQ3NjQzZGQ0Zjk1OTVhZjJmOWJmNTgzYTdmMjY4M2ZhNTM3YTcyMDJjODNlM2NmNjQzOTE2MDc4OWY3NWEifX19";
+        String signature = "R5kTg7wD99FyI6NusT2hSbFtY4kn+TvRkCZKhwJJM0hRCntXx3bJYbujwPU1rGH22Dsw0C3IsV+g+WnJ1VqyqRR7jYDHB4O6KZbgSUOFaZTKqGdzQJRCAluMxEpaSN1yaEyYAQ4INwr9l0ixQTwo/O7ysf++7XiPD/vJTzPD52GcEINwnMbw3p/RJTl3jla5OBSOpePD7OOSGL8UkcpPdPiU8KrLO4OTFliI0vzwWa5GrFEBCPqPg2tTWzt8GDkaSYvGY64W8EWhrJFJAAXxs359o/+KP4/Tn7SgtUP22TFznAwWpXlyzVMN13iqBv+fuPbMUeTUPW1QOHholsuLLHm4cUf38dfPOpNbKW3Dg+R9+Thqy6KXr6B5kR3suAXd58nBmASWJKvZp7JQIiIhHki6zVRDVreQQEQvnTsV4EKSjH1Cw9iT3XdkO9YV7MqEwpXXFky01GFt0/8w39E/0Mf9J6S9lkumeK1cldA7CAv4iaoxSCPswc8glNgxOC4YAfBoOK/0A1uAUQQAxla/AaJJ6RVrkkny42d6DBFGsDwGS5YeCfDRMUKMQPePsGWB2soDY/orXuXH05xZwu7FvjY8TTOllrvgjB1pnfwi4AdZJ6+IuLz0uz6DhAQhKx7tHfw9x38cB+krOSP4eecARX7LXwPHCrtBEUe73aIhox0=";
+        GameProfile gameProfile = ((CraftPlayer)player).getProfile();
+        gameProfile.getProperties().get("textures").clear();
+        gameProfile.getProperties().put("textures", new Property("textures", skin, signature));
         new BukkitRunnable(){
             @Override
             public void run() {

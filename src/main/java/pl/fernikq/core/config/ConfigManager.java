@@ -69,6 +69,7 @@ public class ConfigManager {
     public static int guildTreasureSizeThirdLevelCost;
     public static List<String> guildPlayerItemsToCreate;
     public static List<String> guildVipItemsToCreate;
+    public static boolean isServerRunningInOnlineModeOrHasPremiumLogin;
 
     public void load(){
         try{
@@ -167,5 +168,6 @@ public class ConfigManager {
                 "anvil:0:16:Kowadla",
                 "book:0:16:Ksiazki",
                 "bookshelf:0:32:Biblioteczki");
+        isServerRunningInOnlineModeOrHasPremiumLogin = false;
     }
 }

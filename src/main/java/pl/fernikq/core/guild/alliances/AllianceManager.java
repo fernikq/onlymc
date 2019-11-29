@@ -34,6 +34,12 @@ public class AllianceManager {
             Alliance alliance = new Alliance(guild1, guild2);
             this.alliances.add(alliance);
             this.allianceData.insertAlliance(alliance);
+            guild1.getOnlineMembers().forEach(onlineMember -> {
+                this.plugin.getTagManager().updateTag(onlineMember.getUser().asPlayer());
+            });
+            guild2.getOnlineMembers().forEach(onlineMember -> {
+                this.plugin.getTagManager().updateTag(onlineMember.getUser().asPlayer());
+            });
         }
     }
 
@@ -41,6 +47,12 @@ public class AllianceManager {
         getAlliance(guild1, guild2).ifPresent(alliance -> {
             this.alliances.remove(alliance);
             this.allianceData.deleteAlliance(alliance);
+            guild1.getOnlineMembers().forEach(onlineMember -> {
+                this.plugin.getTagManager().updateTag(onlineMember.getUser().asPlayer());
+            });
+            guild2.getOnlineMembers().forEach(onlineMember -> {
+                this.plugin.getTagManager().updateTag(onlineMember.getUser().asPlayer());
+            });
         });
     }
 
