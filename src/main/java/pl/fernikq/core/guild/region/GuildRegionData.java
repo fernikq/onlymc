@@ -67,7 +67,9 @@ public class GuildRegionData {
 
     public void updateRegion(GuildRegion region){
         try {
-            this.plugin.getMySQL().openConnection();
+            if(!this.plugin.getMySQL().isConnected()){
+                this.plugin.getMySQL().openConnection();
+            }
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_guild_regions` SET `size` = ?, `explodeProtectionTime` = ?, "+
                     "`home` = ?, `center` = ?, `enlargeRegionLevel` = ? WHERE `guild` = '"+region.getGuild().getTag()+"';");
             statement.setInt(1, region.getSize());

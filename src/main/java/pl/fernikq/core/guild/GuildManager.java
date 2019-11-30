@@ -57,6 +57,13 @@ public class GuildManager {
         return getGuilds().find(guild -> guild.getRegion().isIn(location));
     }
 
+    public void updateGuild(Guild guild){
+        this.guildData.updateGuild(guild);
+        this.guildRegionData.updateRegion(guild.getRegion());
+        this.guildTreasureData.updateTreasure(guild.getTreasure());
+        guild.getMembers().forEach(member -> this.guildMemberData.updateMember(member));
+    }
+
     public void registerGuild(Guild guild){
         this.guilds.putIfAbsent(guild.getTag().toUpperCase(), guild);
     }
@@ -139,7 +146,7 @@ public class GuildManager {
 
     public boolean isNearGuild(Location location){
         int minimalDistance = ConfigManager.minimalDistanceBetweenGuilds;
-        minimalDistance += ConfigManager.guildStartCuboidSize+2;
+        minimalDistance += (ConfigManager.guildStartCuboidSize + 2);
         for(Integer integer : ConfigManager.guildCuboidSizeEnlargeCost){
             minimalDistance += ConfigManager.guildCuboidSizeAddByEnlarge;
         }

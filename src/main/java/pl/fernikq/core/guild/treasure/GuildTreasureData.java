@@ -63,7 +63,9 @@ public class GuildTreasureData {
 
     public void updateTreasure(GuildTreasure treasure){
         try {
-            this.plugin.getMySQL().openConnection();
+            if(!this.plugin.getMySQL().isConnected()){
+                this.plugin.getMySQL().openConnection();
+            }
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_guild_treasures` SET `level` = ?, "+
                     "`coins` = ?, `items` = ? WHERE `guild` = '"+treasure.getGuild().getTag()+"';");
             statement.setInt(1, treasure.getLevel());

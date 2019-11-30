@@ -80,7 +80,9 @@ public class GuildData {
 
     public void updateGuild(Guild guild){
         try {
-            this.plugin.getMySQL().openConnection();
+            if(!this.plugin.getMySQL().isConnected()){
+                this.plugin.getMySQL().openConnection();
+            }
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_guilds` SET `owner` = ?, `lastAttackTime` = ?, "+
                     "`maxMembers` = ?, `maxAllies` = ?, `expireTime` = ?, `health` = ?, `enlargeAlliesLevel` = ?, `enlargeMembersLevel` = ? "+
                     "WHERE `tag` = '"+guild.getTag()+"';");

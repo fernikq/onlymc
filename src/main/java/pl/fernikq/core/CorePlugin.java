@@ -94,6 +94,7 @@ public class CorePlugin extends JavaPlugin {
             this.userManager.getUser(player.getUniqueId()).peek(user -> this.userManager.updateUser(user));
             player.kickPlayer(ChatUtil.fixColor("&c&lRestart serwera!"));
         });
+        this.guildManager.getGuilds().forEach(guild -> this.guildManager.updateGuild(guild));
         Bukkit.getWorlds().forEach(world -> world.save());
         simpleTasks.forEach(SimpleTask::stop);
         this.mySQL.closeConnection();

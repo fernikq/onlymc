@@ -22,12 +22,12 @@ import java.util.concurrent.TimeUnit;
 public class HelpopCommand extends CustomCommand {
 
     private final CorePlugin plugin;
-    private Cache<UUID, Long> cooldowns;
+    private Cache<UUID, Long> cooldown;
 
     public HelpopCommand(String name, String[] aliases, UserGroup group, CorePlugin plugin){
         super(name, aliases, group, plugin);
         this.plugin = plugin;
-        this.cooldowns = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
+        this.cooldown = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
     }
 
     @Override
@@ -40,10 +40,10 @@ public class HelpopCommand extends CustomCommand {
             return ChatUtil.sendMessage(sender, MessagesManager.usage("/helpop <wiadomosc>"));
         }
         String message = StringUtils.join(args, " ", 0, args.length);
-        if(cooldowns.asMap().containsKey(player.getUniqueId())){
-            return ChatUtil.sendMessage(sender, MessagesManager.error("Poczekaj chwile przed ponownym napisaniem &8[&7"+ TimeUtil.getTimeToString(cooldowns.asMap().get(player.getUniqueId()) - System.currentTimeMillis())+"&8]"));
+        if(cooldown.asMap().containsKey(player.getUniqueId())){
+            return ChatUtil.sendMessage(sender, MessagesManager.error("Poczekaj chwile przed ponownym napisaniem &8[&7"+ TimeUtil.getTimeToString(cooldown.asMap().get(player.getUniqueId()) - System.currentTimeMillis())+"&8]"));
         }
-        cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + 60000);
+        cooldown.put(player.getUniqueId(), System.currentTimeMillis() + 60000);
         ChatUtil.sendMessage(sender, "&8>> {n}Wyslales wiadomosc do {c}administracji&8!");
         Bukkit.getOnlinePlayers().forEach(online -> {
             this.plugin.getUserManager().getUser(online.getUniqueId()).filter(user -> user.canByGroup(UserGroup.HELPER))
