@@ -56,6 +56,9 @@ public class MessagesManager {
     public static String guildAllianceCreateMessage;
     public static String guildAllianceBreakMessage;
     public static String guildLeaderMessage;
+    public static String guildJoinCuboidMessage;
+    public static String guildQuitCuboidMessage;
+    public static String guildIntruderMessage;
     public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
@@ -166,5 +169,8 @@ public class MessagesManager {
         guildAllianceCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zawarla sojusz z gildia &8[{c}{TAG2}&8]";
         guildAllianceBreakMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zerwala sojusz z gildia &8[{c}{TAG2}&8]";
         guildLeaderMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}zostal nowym liderem gildii &8[{c}{TAG}&8]";
+        guildQuitCuboidMessage = "&8>> &cOpusciles {n}teren gildii &8[&c{TAG}&8]";
+        guildJoinCuboidMessage = "&8>> &aWkroczyles {n}na teren gildii &8[&a{TAG}&8]";
+        guildIntruderMessage = "&8[&c&lINTRUZ&8] {n}Gracz &c{PLAYER} {n}wszedl na teren twojej gildii!";
     }
 }

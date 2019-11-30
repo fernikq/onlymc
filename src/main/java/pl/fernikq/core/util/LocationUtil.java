@@ -21,6 +21,10 @@ public class LocationUtil {
     }
 
     public static boolean move(Location l, Location x) {
-        return l.getBlockX() != x.getBlockX() && l.getBlockY() != x.getBlockY() && l.getBlockZ() != x.getBlockZ();
+        return l.getBlockX() != x.getBlockX() || l.getBlockY() != x.getBlockY() || l.getBlockZ() != x.getBlockZ();
+    }
+
+    public static boolean moveXZ(Location l, Location x){
+        return l.getBlockX() != x.getBlockX() || l.getBlockZ() != x.getBlockZ();
     }
 }

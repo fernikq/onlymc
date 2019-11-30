@@ -230,6 +230,7 @@ public class CorePlugin extends JavaPlugin {
         new PlayerInteractEntityListener(this);
         new LeavesDecayListener(this);
         new PlayerCommandPreprocessListener(this);
+        new PlayerMoveListener(this);
     }
 
     public ConfigManager getConfigManager() {
