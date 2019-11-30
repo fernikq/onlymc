@@ -37,7 +37,7 @@ public class PlayerCommandPreprocessListener implements Listener {
         }
         HelpTopic helpTopic = Bukkit.getHelpMap().getHelpTopic(command);
         if(helpTopic == null){
-            ChatUtil.sendMessage(player, MessagesManager.commandHelpMessage);
+            ChatUtil.sendMessage(player, this.plugin.getSimpleCommandManager().getHelpCommandMessage());
             event.setCancelled(true);
             return;
         }

@@ -35,7 +35,6 @@ public class MessagesManager {
     public static String helpopFormat;
     public static String playerJoinMessage;
     public static String playerQuitMessage;
-    public static String commandHelpMessage;
     public static String shopBuyItem;
     public static String levelShopBuyItem;
     public static String shopSellItem;
@@ -128,7 +127,6 @@ public class MessagesManager {
         helpopFormat = "&8[ &4&lHELPOP&8 ] &c{NICK}&8: &f";
         playerJoinMessage = "&8>> &8[&a+&8] &f{PLAYER}";
         playerQuitMessage = "&8>> &8[&c-&8] &f{PLAYER}";
-        commandHelpMessage = "&8>> {n}Podana komenda nie istnieje&8! {n}Sprawdz dostepne komendy pod {c}/pomoc";
         shopBuyItem = "&8>> &aPomyslnie {n}kupiles przedmiot za &a{AMOUNT} {n}monet&8!";
         levelShopBuyItem = "&8>> &aPomyslnie {n}kupiles przedmiot za poziom gornictwa&8!";
         shopSellItem = "&8>> &cPomyslnie {n}sprzedales przedmiot za &c{AMOUNT} {n}monet&8!";

@@ -1,7 +1,16 @@
+HelpCommandMessage: '&8>> {n}Podana komenda nie istnieje&8! {n}Sprawdz dostepne komendy pod {c}/pomoc'
 BlockedCommands:
- - '/bukkit:me'
- - '/minecraft:me'
- - '/me'
+  - '/bukkit:me'
+  - '/minecraft:me'
+  - '/me'
+BlockedCommandsInGuild:
+  - '/sethome'
+  - '/tpaccept'
+AllowedDuringPVP:
+  - '/helpop'
+  - '/msg'
+  - '/reply'
+  - '/r'
 Commands:
   1:
     name: 'help'

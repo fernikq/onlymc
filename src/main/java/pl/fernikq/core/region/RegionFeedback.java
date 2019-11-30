@@ -13,6 +13,15 @@ public enum RegionFeedback {
     DENY_PVP_OTHER_REGION(false, "&8>> &fNie mozesz atakowac graczy ze spawnu!"),
     DENY_PROCCESS_COMMAND(false, "&8>> &fPodana komenda zostala zablokowana!"),
     DENY_PROCCESS_COMMAND_REGION(false, "&8>> &fPodana komenda zostala zablokowana na tym terenie!"),
+    DENY_PROCCESS_COMMAND_GUILD(false, "&8>> &fNie mozesz uzyc podanej komendy na terenie wrogiej gildii!"),
+    DENY_BUILD_GUILD(false, "&8>> &fNie mozesz budowac na terenie wrogiej gildii!"),
+    DENY_BUILD_GUILD_PERMISSION(false, "&8>> &fNie posiadasz uprawnienia do budowania na terenie swojej gildii!"),
+    DENY_DESTROY_GUILD(false, "&8>> &fNie mozesz niszczyc na terenie wrogiej gildii!"),
+    DENY_DESTROY_GUILD_PERMISSION(false, "&8>> &fNie posiadasz uprawnienia do niszczenia na terenie swojej gildii!"),
+    DENY_BUCKETS_GUILD(false, "&8>> &fNie mozesz uzywac wiaderek na terenie wrogiej gildii!"),
+    DENY_SPAWN_VEHICLES_GUILD(false, "&8>> &fNie mozesz spawnowac pojazdow na terenie wrogiej gildii!"),
+    DENY_PVP_OWN_GUILD(false, "&8>> &fPVP w gildii jest wylaczone!"),
+    DENY_PVP_ALLIANCE(false, "&8>> &fNie mozesz zaatakowac swojego sojusznika!"),
     DENY_ERROR(false, "&8>> &fWystapil blad, zglos sie do administracji&8!");
 
     private String feedbackMessage;

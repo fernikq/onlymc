@@ -18,6 +18,9 @@ public class SimpleCommandManager {
     private File commandFile;
     private Set<CustomCommand> customCommands;
     private Set<String> blockedCommands;
+    private Set<String> blockedCommandsInGuild;
+    private Set<String> allowedDuringPVP;
+    private String helpCommandMessage;
 
     public SimpleCommandManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -43,8 +46,10 @@ public class SimpleCommandManager {
     }
 
     public void loadBlockedCommands(){
-        this.blockedCommands = new HashSet<>();
         this.blockedCommands = new HashSet<>(getCommandFile().getStringList("BlockedCommands"));
+        this.blockedCommandsInGuild = new HashSet<>(getCommandFile().getStringList("BlockedCommandsInGuild"));
+        this.allowedDuringPVP = new HashSet<>(getCommandFile().getStringList("AllowedDuringPVP"));
+        this.helpCommandMessage = getCommandFile().getString("HelpCommandMessage");
     }
 
     public void loadCommands(){
@@ -70,5 +75,17 @@ public class SimpleCommandManager {
 
     public Set<String> getBlockedCommands() {
         return new HashSet<>(this.blockedCommands);
+    }
+
+    public Set<String> getBlockedCommandsInGuild() {
+        return new HashSet<>(this.blockedCommandsInGuild);
+    }
+
+    public Set<String> getAllowedDuringPVP() {
+        return new HashSet<>(this.allowedDuringPVP);
+    }
+
+    public String getHelpCommandMessage() {
+        return helpCommandMessage;
     }
 }

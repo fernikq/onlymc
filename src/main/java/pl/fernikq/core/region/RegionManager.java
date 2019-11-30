@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 import org.yaml.snakeyaml.Yaml;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.guild.member.GuildMember;
+import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 
@@ -125,17 +128,15 @@ public class RegionManager {
                 if(location.getBlockY() >= ConfigManager.tntExplodeBelow){
                     return RegionFeedback.DENY;
                 }
-                //TODO Guilds
-                if(checkRegions() != null){
-                    return checkRegions();
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(guild.getRegion().getExplodeProtectionTime() > System.currentTimeMillis()){
+                        return RegionFeedback.DENY;
+                    }
+                    if(guild.getRegion().isInCenter(location)){
+                        return RegionFeedback.DENY;
+                    }
                 }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanExplode() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case IGNITE_TNT:{
-                //TODO Guilds
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -145,6 +146,10 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case FIRE_SPREAD:{
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    return RegionFeedback.DENY;
+                }
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -163,7 +168,6 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case FRAMES:{
-                //TODO Guilds
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -173,7 +177,6 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case PAINTINGS:{
-                //TODO Guilds
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -192,7 +195,6 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case FARMLANDS:{
-                //TODO Guilds
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -220,7 +222,7 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
         }
-        System.out.println("can without player switch failed");
+        System.out.println("can without player switch failed" + type.name());
         return RegionFeedback.ALLOW;
     }
 
@@ -232,8 +234,46 @@ public class RegionManager {
             return RegionFeedback.ALLOW;
         }
         switch(type){
+            case FARMLANDS:{
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY;
+                    }
+                }
+                return RegionFeedback.ALLOW;
+            }
+            case IGNITE_TNT:{
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY;
+                    }
+                }
+                if(checkRegions() != null){
+                    return checkRegions();
+                }
+                for(Region region : getRegionsByLocation(location)){
+                    return region.isCanExplode() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                }
+                return RegionFeedback.ALLOW;
+            }
             case CAN_FIRE_SPREAD:{
-                //TODO Guilds
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY;
+                    }
+                }
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -243,7 +283,15 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case FRAMES:{
-                //TODO Guilds
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY;
+                    }
+                }
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -253,7 +301,15 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case PAINTINGS:{
-                //TODO Guilds
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY;
+                    }
+                }
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -263,7 +319,22 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case BUILD:{
-                //TODO Guilds
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY_BUILD_GUILD;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY_BUILD_GUILD;
+                    }
+                    GuildMember member = user.getGuild().getMemberByName(user.getName()).orElse(null);
+                    if(member == null){
+                        return RegionFeedback.DENY_ERROR;
+                    }
+                    if(!member.hasPermission(GuildPermission.PLACE)){
+                        return RegionFeedback.DENY_BUILD_GUILD_PERMISSION;
+                    }
+                }
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -273,7 +344,22 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case DESTROY:{
-                //TODO Guilds
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY_DESTROY_GUILD;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY_DESTROY_GUILD;
+                    }
+                    GuildMember member = user.getGuild().getMemberByName(user.getName()).orElse(null);
+                    if(member == null){
+                        return RegionFeedback.DENY_ERROR;
+                    }
+                    if(!member.hasPermission(GuildPermission.BREAK)){
+                        return RegionFeedback.DENY_DESTROY_GUILD_PERMISSION;
+                    }
+                }
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -291,7 +377,15 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case BUCKETS:{
-                //TODO Guilds
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY_BUCKETS_GUILD;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY_BUCKETS_GUILD;
+                    }
+                }
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -301,7 +395,6 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case PEARLS:{
-                //TODO Guilds
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -311,7 +404,15 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             case VEHICLES:{
-                //TODO Guilds
+                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+                if(guild != null){
+                    if(!user.hasGuild()){
+                        return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD;
+                    }
+                    if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD;
+                    }
+                }
                 if(checkRegions() != null){
                     return checkRegions();
                 }
@@ -321,12 +422,21 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
         }
-        System.out.println("can with player switch failed");
+        System.out.println("can with player switch failed" + type.name() + user.getName());
         return RegionFeedback.ALLOW;
     }
 
     public RegionFeedback canHurt(User damager, User victim){
-        //TODO Relations
+        if(damager.hasGuild() && victim.hasGuild()){
+            if(damager.getGuild().equals(victim.getGuild())){
+                if(!damager.getGuild().isFriendlyFire()){
+                    return RegionFeedback.DENY_PVP_OWN_GUILD;
+                }
+            }
+            if(this.plugin.getAllianceManager().hasAlliance(damager.getGuild(), victim.getGuild())){
+                return RegionFeedback.DENY_PVP_ALLIANCE;
+            }
+        }
         if(checkRegions() != null){
             return checkRegions();
         }
@@ -370,6 +480,14 @@ public class RegionManager {
         }
         if(this.plugin.getSimpleCommandManager().getBlockedCommands().contains(command.toLowerCase())){
             return RegionFeedback.DENY_PROCCESS_COMMAND;
+        }
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(guild != null){
+            if(!user.hasGuild() || (user.hasGuild() && !user.getGuild().equals(guild))){
+                if(this.plugin.getSimpleCommandManager().getBlockedCommandsInGuild().contains(command.toLowerCase())) {
+                    return RegionFeedback.DENY_PROCCESS_COMMAND_GUILD;
+                }
+            }
         }
         if(checkRegions() != null){
             return checkRegions();
