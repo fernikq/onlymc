@@ -55,6 +55,7 @@ public class MessagesManager {
     public static String guildKickMessage;
     public static String guildAllianceCreateMessage;
     public static String guildAllianceBreakMessage;
+    public static String guildLeaderMessage;
     public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
@@ -141,15 +142,15 @@ public class MessagesManager {
                 "&8>> {c}/g zaloz <tag> <nazwa> &8- {n}Zakladanie gildii",
                 "&8>> {c}/g usun &8- {n}Usuwanie gildii",
                 "&8>> {c}/g baza &8- {n}Teleportacja na baze gildii",
-                "&8>> {c}/g info <tag> &8- {n}Informacje o podanej gildii",
+                "&8>> {c}/g info <tag> &8- {n}Informacje o podanej gildii",//TODO
                 "&8>> {c}/g sojusz <tag> &8- {n}Prosba o sojusz z podana gildia",
                 "&8>> {c}/g rozwiaz <tag> &8- {n}Zerwanie sojuszu z dana gildia",
                 "&8>> {c}/g pvp &8- {n}Wlaczenie/Wylaczenie walki w gildii",
                 "&8>> {c}/g setbaza &8- {n}Ustawienie bazy gildii",
-                "&8>> {c}/g panel &8- {n}Zarzadzanie gildia",
+                "&8>> {c}/g panel &8- {n}Zarzadzanie gildia",//TODO
                 "&8>> {c}/g zapros <nick> &8- {n}Zapraszanie gracza do gildii",
                 "&8>> {c}/g wyrzuc <nick> &8- {n}Wyrzucanie gracza z gildii",
-                "&8>> {c}/g skarbiec &8- {n}Skarbiec gildii",
+                "&8>> {c}/g skarbiec &8- {n}Skarbiec gildii",//TODO
                 "&8>> {c}/g itemy &8- {n}Przedmioty potrzebne do zalozenia gildii",
                 "&8>> {c}/g opusc &8- {n}Opuszczenie gildii",
                 "&8>> {c}/g dolacz <tag> &8- {n}Dolaczanie do gildii",
@@ -164,5 +165,6 @@ public class MessagesManager {
         guildKickMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}zostal wyrzucony z gildii &8[{c}{TAG}&8]";
         guildAllianceCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zawarla sojusz z gildia &8[{c}{TAG2}&8]";
         guildAllianceBreakMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zerwala sojusz z gildia &8[{c}{TAG2}&8]";
+        guildLeaderMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}zostal nowym liderem gildii &8[{c}{TAG}&8]";
     }
 }
