@@ -42,10 +42,6 @@ public class EntityExplodeListener implements Listener {
             if(!regionFeedback.isPermit()){
                 toRemove.add(block);
             }
-            StoneGenerator stoneGenerator = this.plugin.getStoneGeneratorManager().getStoneGenerator(block.getLocation());
-            if(stoneGenerator != null){
-
-            }
         }
         toRemove.forEach(block -> event.blockList().remove(block));
         event.blockList().forEach(block -> {
