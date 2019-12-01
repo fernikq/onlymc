@@ -56,7 +56,9 @@ public enum GuildPermission {
         }
         String[] permissionsInfo = string.split(";");
         for(String permission : permissionsInfo){
-            guildPermissions.add(getPermissionByName(permission).get());
+            if(getPermissionByName(permission).isDefined()){
+                guildPermissions.add(getPermissionByName(permission).get());
+            }
         }
         return guildPermissions;
     }
