@@ -183,6 +183,9 @@ public class User {
     }
 
     public UserStat getUserStat() {
+        if(userStat == null){
+            this.userStat = new UserStat(this);
+        }
         return userStat;
     }
 

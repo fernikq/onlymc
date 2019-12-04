@@ -23,10 +23,8 @@ public enum GuildPermission {
     CUBOID_ENLARGE,
     ALLIANCES_ENLARGE,
     MEMBERS_ENLARGE,
-    MEMBERS_PERMISSIONS,
     TREASURE_ENLARGE,
-    ENLARGE_REGION,
-    ENLARGE_MEMBERS;
+    MEMBER_PERMISSIONS;
 
     public static Option<GuildPermission> getPermissionByName(String name){
         return Stream.of(values()).find(guildPermission -> guildPermission.name().equalsIgnoreCase(name));

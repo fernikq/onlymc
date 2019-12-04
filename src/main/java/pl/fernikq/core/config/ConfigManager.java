@@ -68,8 +68,11 @@ public class ConfigManager {
     public static int guildTreasureSizeFirstLevelCost;
     public static int guildTreasureSizeSecondLevelCost;
     public static int guildTreasureSizeThirdLevelCost;
+    public static String guildMaxTimeRenew;
+    public static int guildTimeRenewCost;
     public static List<String> guildPlayerItemsToCreate;
     public static List<String> guildVipItemsToCreate;
+    public static boolean usePremiumHeadsInGUI;
     public static boolean isServerRunningInOnlineModeOrHasPremiumLogin;
 
     public void load(){
@@ -171,5 +174,8 @@ public class ConfigManager {
                 "book:0:16:Ksiazki",
                 "bookshelf:0:32:Biblioteczki");
         isServerRunningInOnlineModeOrHasPremiumLogin = false;
+        usePremiumHeadsInGUI = true;
+        guildMaxTimeRenew = "7d";
+        guildTimeRenewCost = 2500;
     }
 }

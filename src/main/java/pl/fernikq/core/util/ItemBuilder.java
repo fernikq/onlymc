@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import pl.fernikq.core.config.ConfigManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,6 +124,9 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setSkullOwner(String name){
+        if(!ConfigManager.usePremiumHeadsInGUI){
+            return this;
+        }
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if(!(itemMeta instanceof SkullMeta)){
             return this;

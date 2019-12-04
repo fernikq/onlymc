@@ -3,6 +3,7 @@ package pl.fernikq.core.guild.treasure;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.SerializationUtil;
@@ -78,6 +79,19 @@ public class GuildTreasure {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getCostByLevel(){
+        if(level == 0){
+            return ConfigManager.guildTreasureSizeFirstLevelCost;
+        }
+        else if(level == 1){
+            return ConfigManager.guildTreasureSizeSecondLevelCost;
+        }
+        else if(level == 2){
+            return ConfigManager.guildTreasureSizeThirdLevelCost;
+        }
+        return 1000000;
     }
 
     private int getSizeByLevel(){

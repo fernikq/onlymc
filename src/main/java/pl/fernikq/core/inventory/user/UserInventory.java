@@ -31,6 +31,7 @@ public class UserInventory {
     private ItemStack color;
     private ItemStack backGlass;
     private ItemStack backBarrier;
+    private String customHeadName;
 
     public UserInventory(CorePlugin plugin){
         this.plugin = plugin;
@@ -38,6 +39,7 @@ public class UserInventory {
         color = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14)).setName(" ").toItemStack();
         backGlass = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14)).setName(ChatUtil.fixColor("&c&lPowrot")).toItemStack();
         backBarrier = new ItemBuilder(new ItemStack(Material.BARRIER, 1)).setName(ChatUtil.fixColor("&c&lPowrot")).toItemStack();
+        customHeadName = "King";
     }
 
     public InventoryGUI kitMenu(User user){
@@ -281,9 +283,9 @@ public class UserInventory {
                 "&8>> {n}Kliknij aby wszystko &awlaczyc&8!"))).toItemStack(), new DropAction(this.plugin, DropActionType.ON_ALL_DROPS, user));
         gui.setItem(37, new ItemBuilder(Material.WOOL).setDurability((short) 14).setName(ChatUtil.fixColor("&c&lWylacz drop")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
                 "&8>> {n}Kliknij aby wszystko &cwylaczyc&8!"))).toItemStack(), new DropAction(this.plugin, DropActionType.OFF_ALL_DROPS, user));
-        gui.setItem(43, new ItemBuilder(Material.COBBLESTONE).setName(ChatUtil.fixColor("&f&lDrop Cobblestone'a")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+        gui.setItem(43, new ItemBuilder(Material.COBBLESTONE).setName(ChatUtil.fixColor("{n}&lDrop Cobblestone'a")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
                 "&8>> {n}Kliknij aby "+(this.plugin.getDropManager().getDisabledCobblestone().contains(user) ? "&awlaczyc" : "&cwylaczyc")))).toItemStack(), new DropAction(this.plugin, DropActionType.CHANGE_COBBLESTONE_STATUS, user));
-        gui.setItem(44, new ItemBuilder(Material.PAPER).setName(ChatUtil.fixColor("&f&lWiadomosci")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+        gui.setItem(44, new ItemBuilder(Material.PAPER).setName(ChatUtil.fixColor("{n}&lWiadomosci")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
                 "&8>> {n}Kliknij aby "+(user.getUserChat().isDropMessages() ? "&cwylaczyc" : "&awlaczyc")))).toItemStack(), new DropAction(this.plugin, DropActionType.CHANGE_MESSAGES_STATUS, user));
         gui.setItem(40, this.backGlass, new DropAction(this.plugin, DropActionType.BACK_TO_MENU, user));
         gui.setItem(41, this.blank);

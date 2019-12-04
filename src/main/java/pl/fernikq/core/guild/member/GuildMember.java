@@ -32,6 +32,9 @@ public class GuildMember {
     }
 
     public boolean hasPermission(GuildPermission guildPermission){
+        if(this.guild.getOwner().equals(this.user)){
+            return true;
+        }
         return this.guildPermissions.contains(guildPermission);
     }
 
