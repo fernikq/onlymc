@@ -136,6 +136,9 @@ public class RegionManager {
                     if(guild.getRegion().isInCenter(location)){
                         return RegionFeedback.DENY;
                     }
+                    if(guild.getRegion().isInCenter(location)){
+                        return RegionFeedback.DENY;
+                    }
                 }
                 if(checkRegions() != null){
                     return checkRegions();
@@ -255,6 +258,9 @@ public class RegionManager {
                     if(!user.getGuild().equals(guild)){
                         return RegionFeedback.DENY;
                     }
+                    if(guild.getRegion().isInCenter(location)){
+                        return RegionFeedback.DENY;
+                    }
                 }
                 if(checkRegions() != null){
                     return checkRegions();
@@ -271,6 +277,9 @@ public class RegionManager {
                         return RegionFeedback.DENY;
                     }
                     if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY;
+                    }
+                    if(guild.getRegion().isInCenter(location)){
                         return RegionFeedback.DENY;
                     }
                 }
@@ -291,6 +300,9 @@ public class RegionManager {
                     if(!user.getGuild().equals(guild)){
                         return RegionFeedback.DENY;
                     }
+                    if(guild.getRegion().isInCenter(location)){
+                        return RegionFeedback.DENY;
+                    }
                 }
                 if(checkRegions() != null){
                     return checkRegions();
@@ -307,6 +319,9 @@ public class RegionManager {
                         return RegionFeedback.DENY;
                     }
                     if(!user.getGuild().equals(guild)){
+                        return RegionFeedback.DENY;
+                    }
+                    if(guild.getRegion().isInCenter(location)){
                         return RegionFeedback.DENY;
                     }
                 }
@@ -334,6 +349,9 @@ public class RegionManager {
                     if(!member.hasPermission(GuildPermission.PLACE)){
                         return RegionFeedback.DENY_BUILD_GUILD_PERMISSION;
                     }
+                    if(guild.getRegion().isInCenter(location)){
+                        return RegionFeedback.DENY_BUILD_GUILD_CENTER;
+                    }
                 }
                 if(checkRegions() != null){
                     return checkRegions();
@@ -358,6 +376,9 @@ public class RegionManager {
                     }
                     if(!member.hasPermission(GuildPermission.BREAK)){
                         return RegionFeedback.DENY_DESTROY_GUILD_PERMISSION;
+                    }
+                    if(guild.getRegion().isInCenter(location)){
+                        return RegionFeedback.DENY_DESTROY_GUILD_CENTER;
                     }
                 }
                 if(checkRegions() != null){
@@ -385,6 +406,9 @@ public class RegionManager {
                     if(!user.getGuild().equals(guild)){
                         return RegionFeedback.DENY_BUCKETS_GUILD;
                     }
+                    if(guild.getRegion().isInCenter(location)){
+                        return RegionFeedback.DENY_BUCKETS_GUILD_CENTER;
+                    }
                 }
                 if(checkRegions() != null){
                     return checkRegions();
@@ -411,6 +435,9 @@ public class RegionManager {
                     }
                     if(!user.getGuild().equals(guild)){
                         return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD;
+                    }
+                    if(guild.getRegion().isInCenter(location)){
+                        return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD_CENTER;
                     }
                 }
                 if(checkRegions() != null){
