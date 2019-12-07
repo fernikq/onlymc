@@ -10,6 +10,8 @@ import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.inventory.actions.guild.GuildPanelAction;
+import pl.fernikq.core.inventory.enums.guild.GuildPanelActionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
@@ -18,6 +20,8 @@ import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.TimeUtil;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuildInventory {
 
@@ -87,10 +91,10 @@ public class GuildInventory {
         Guild guild = user.getGuild();
         GuildMember member = guild.getMemberByName(user.getName()).orElse(null);
         ItemBuilder memberManagement = new ItemBuilder(Material.SKULL_ITEM).setSkullOwner(customHeadName).setDurability((short)3).setName(ChatUtil.fixColor("{c}&lZarzadzanie czlonkami"));
-        if(member.hasPermission(GuildPermission.MEMBER_PERMISSIONS)){
+        if(guild.getOwner().equals(user)){
             memberManagement.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zarzadzac czlonkami gildii&8!")));
         }else{
-            memberManagement.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nie posiadasz uprawnienia&8!")));
+            memberManagement.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Opcja dla lidera gildii&8!")));
         }
         ItemBuilder guildResources = new ItemBuilder(Material.DOUBLE_PLANT).setName(ChatUtil.fixColor("{c}&lZasoby gildii"))
                 .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby sprawdzic&8!")));
@@ -130,23 +134,75 @@ public class GuildInventory {
         }
         ItemBuilder guildTreasureEnlarge = new ItemBuilder(Material.ENDER_CHEST).setName(ChatUtil.fixColor("{c}&lPowieksz skarbiec"));
         if(member.hasPermission(GuildPermission.TREASURE_ENLARGE)){
-            guildTreasureEnlarge.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Aktualny poziom&8: {c}"+(guild.getTreasure().getLevel()+1), " ", (guild.getTreasure().getLevel() < 2 ? "&8>> {n}Koszt&8: {c}"+guild.getTreasure().getCostByLevel() : "&8{n}Gildia posiada maksymalna poziom skarbca&8!"))));
+            guildTreasureEnlarge.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Aktualny poziom&8: {c}"+(guild.getTreasure().getLevel()+1), " ", (guild.getTreasure().getLevel() < 3 ? "&8>> {n}Koszt&8: {c}"+guild.getTreasure().getCostByLevel() : "&8{n}Gildia posiada maksymalna poziom skarbca&8!"))));
         }else{
             guildTreasureEnlarge.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Aktualny poziom&8: {c}"+(guild.getTreasure().getLevel()+1), " ", "&8>> {n}Nie posiadasz uprawnienia!")));
         }
-        gui.setItem(1, memberManagement.toItemStack());
-        gui.setItem(3, guildResources.toItemStack());
-        gui.setItem(5, guildTreasure.toItemStack());
-        gui.setItem(7, guildTimeRenew.toItemStack());
-        gui.setItem(19, guildRegionEnlarge.toItemStack());
-        gui.setItem(21, guildTreasureEnlarge.toItemStack());
-        gui.setItem(23, guildMembersEnlarge.toItemStack());
-        gui.setItem(25, guildAlliancesEnlarge.toItemStack());
+        gui.setItem(1, memberManagement.toItemStack(), new GuildPanelAction(this.plugin, guild, user, member, null, null, GuildPanelActionType.OPEN_MEMBER_CHOOSE, 0, 0));
+        gui.setItem(3, guildResources.toItemStack(), new GuildPanelAction(this.plugin, guild, user, member, null, null, GuildPanelActionType.OPEN_RESOURCES, 0, 0));
+        gui.setItem(5, guildTreasure.toItemStack(), new GuildPanelAction(this.plugin, guild, user, member, null, null, GuildPanelActionType.OPEN_TREASURE, 0, 0));
+        gui.setItem(7, guildTimeRenew.toItemStack(), new GuildPanelAction(this.plugin, guild, user, member, null, null, GuildPanelActionType.EXECUTE_TIME_RENEW, 0, 0));
+        gui.setItem(19, guildRegionEnlarge.toItemStack(), new GuildPanelAction(this.plugin, guild, user, member, null, null, GuildPanelActionType.EXECUTE_CUBOID_ENLARGE, 0, 0));
+        gui.setItem(21, guildTreasureEnlarge.toItemStack(), new GuildPanelAction(this.plugin, guild, user, member, null, null, GuildPanelActionType.EXECUTE_TREASURE_ENLARGE, 0, 0));
+        gui.setItem(23, guildMembersEnlarge.toItemStack(), new GuildPanelAction(this.plugin, guild, user, member, null, null, GuildPanelActionType.EXECUTE_MEMBERS_ENLARGE, 0, 0));
+        gui.setItem(25, guildAlliancesEnlarge.toItemStack(), new GuildPanelAction(this.plugin, guild, user, member, null, null, GuildPanelActionType.EXECUTE_ALLIANCES_ENLARGE, 0, 0));
         gui.setItem(10, color.clone());
         gui.setItem(12, color.clone());
         gui.setItem(14, color.clone());
         gui.setItem(16, color.clone());
         gui.setEmptyItem(blank.clone());
+        return gui;
+    }
+
+    public InventoryGUI guildMemberChooseMenu(User user, int page){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lWybor czlonka &8]", 6, true);
+        Guild guild = user.getGuild();
+        GuildMember userMember = guild.getMemberByName(user.getName()).orElse(null);
+        List<GuildMember> guildMemberList = guild.getMembers().stream().filter(guildMember -> !guildMember.getUser().equals(guild.getOwner())).collect(Collectors.toList());
+        for(int i = (page - 1) * 45; i < page * 45; i++) {
+            if(guildMemberList.size() >= 0 && i <= guildMemberList.size() - 1) {
+                GuildMember member = guildMemberList.get(i);
+                ItemBuilder head = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setName(ChatUtil.fixColor("{c}&l" + member.getUser().getName())).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zarzadzac&8!"))).setSkullOwner(member.getUser().getName());
+                gui.addItem(head.toItemStack(), new GuildPanelAction(this.plugin, guild, user, userMember, member, null, GuildPanelActionType.OPEN_MEMBER_PERMISSIONS, page, 0));
+            }
+        }
+        gui.setItem(50, new ItemBuilder(Material.SKULL_ITEM).setDurability((short)3).setSkullOwner("MHF_ArrowRight").setName(ChatUtil.fixColor("&a&lDalej")).toItemStack(),
+                new GuildPanelAction(this.plugin, guild, user, userMember, null, null, GuildPanelActionType.OPEN_MEMBER_PERMISSION_NEXT_PAGE, page, 0));
+        gui.setItem(49, backGlass.clone(), new GuildPanelAction(this.plugin, guild, user, userMember, null, null, GuildPanelActionType.OPEN_PANEL_MENU, page, 0));
+        gui.setItem(48, new ItemBuilder(Material.SKULL_ITEM).setDurability((short)3).setSkullOwner("MHF_ArrowLeft").setName(ChatUtil.fixColor("&c&lWstecz")).toItemStack(),
+                new GuildPanelAction(this.plugin, guild, user, userMember, null, null, GuildPanelActionType.OPEN_MEMBER_PERMISSION_PREVIOUS_PAGE, page, 0));
+        for(int i = 45; i < 54; i++){
+            gui.setItemIfEmpty(i, blank.clone());
+        }
+        return gui;
+    }
+
+    public InventoryGUI guildMemberPermission(User user, GuildMember member){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lUprawnienia czlonka &8]", 3, true);
+        user.addInventory(gui);
+        Guild guild = user.getGuild();
+        GuildMember userMember = guild.getMemberByName(user.getName()).orElse(null);
+        for(GuildPermission guildPermission : GuildPermission.values()) {
+            gui.addItem(new ItemBuilder(guildPermission.getMaterial()).setName(ChatUtil.fixColor(guildPermission.getName())).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiada&8: "+(member.hasPermission(guildPermission) ? "&aTak" : "&cNie")))).toItemStack(),
+                    new GuildPanelAction(this.plugin, guild, user, userMember, member, guildPermission, GuildPanelActionType.CHANGE_PERMISSION, 0, 0));
+        }
+        gui.setItem(26, backGlass.clone(), new GuildPanelAction(this.plugin, guild, user, userMember, member, null, GuildPanelActionType.OPEN_MEMBER_CHOOSE, 0, 0));
+        return gui;
+    }
+
+    public InventoryGUI guildResources(User user) {
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lZasoby gildii &8]", 1, true);
+        user.addInventory(gui);
+        Guild guild = user.getGuild();
+        gui.setItem(4, new ItemBuilder(Material.DOUBLE_PLANT).setName(ChatUtil.fixColor("{c}&lMonety")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Gildia posiada&8: {c}"+guild.getTreasure().getCoins()+" {n}monet"))).toItemStack());
+        gui.setItem(3, backGlass.clone(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.OPEN_PANEL_MENU, 0, 0));
+        gui.setItem(5, backGlass.clone(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.OPEN_PANEL_MENU, 0, 0));
+        gui.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("{n}Wplac {c}100 {n}monet")).toItemStack(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.GIVE_COINS_TO_RESOURCES, 0, 100));
+        gui.setItem(1, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("{n}Wplac {c}500 {n}monet")).toItemStack(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.GIVE_COINS_TO_RESOURCES, 0, 500));
+        gui.setItem(2, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("{n}Wplac {c}1000 {n}monet")).toItemStack(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.GIVE_COINS_TO_RESOURCES, 0, 1000));
+        gui.setItem(6, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("{n}Wplac {c}2000 {n}monet")).toItemStack(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.GIVE_COINS_TO_RESOURCES, 0, 2000));
+        gui.setItem(7, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("{n}Wplac {c}5000 {n}monet")).toItemStack(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.GIVE_COINS_TO_RESOURCES, 0, 5000));
+        gui.setItem(8, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("{n}Wplac {c}10000 {n}monet")).toItemStack(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.GIVE_COINS_TO_RESOURCES, 0, 10000));
         return gui;
     }
 }

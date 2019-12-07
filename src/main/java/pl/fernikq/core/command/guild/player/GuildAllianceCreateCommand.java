@@ -61,6 +61,14 @@ public class GuildAllianceCreateCommand extends CustomCommand {
                 ChatUtil.sendMessage(sender, MessagesManager.error("Twoja gildia posiada juz sojusz z podana gildia!"));
                 return;
             }
+            if(this.plugin.getAllianceManager().getAllies(guild).size() >= guild.getMaxAllies()){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Twoja gildia osiagnela maksymalna ilosc sojuszy!"));
+                return;
+            }
+            if(this.plugin.getAllianceManager().getAllies(targetGuild).size() >= targetGuild.getMaxAllies()){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Podana gildia osiagnela maksymalna ilosc sojuszy!"));
+                return;
+            }
             if(targetGuild.getAlliesRequest().asMap().containsKey(guild)){
                 targetGuild.getAlliesRequest().asMap().remove(guild);
                 this.plugin.getAllianceManager().createAlliance(guild, targetGuild);

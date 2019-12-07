@@ -32,6 +32,26 @@ public class InventoryGUI {
         this.actions.put(slot, null);
     }
 
+    public void setItemIfEmpty(int slot, ItemStack itemStack, InventoryAction action){
+        if(!isCorrectSlot(slot)){
+            return;
+        }
+        if(this.inventory.getItem(slot) == null || this.inventory.getItem(slot).getType() == Material.AIR) {
+            this.inventory.setItem(slot, itemStack);
+            this.actions.put(slot, action);
+        }
+    }
+
+    public void setItemIfEmpty(int slot, ItemStack itemStack){
+        if(!isCorrectSlot(slot)){
+            return;
+        }
+        if(this.inventory.getItem(slot) == null || this.inventory.getItem(slot).getType() == Material.AIR) {
+            this.inventory.setItem(slot, itemStack);
+            this.actions.put(slot, null);
+        }
+    }
+
     public void setItem(int slot, ItemStack itemStack, InventoryAction action){
         if(!isCorrectSlot(slot)){
             return;
@@ -84,6 +104,10 @@ public class InventoryGUI {
 
     public boolean isCorrectSlot(int slot){
         return slot <= this.slots;
+    }
+
+    public boolean isEmptyFirstSlot(){
+        return (this.inventory.getItem(0) == null || this.inventory.getItem(0).getType() == Material.AIR);
     }
 
     public Inventory getInventory() {

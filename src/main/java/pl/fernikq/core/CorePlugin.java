@@ -23,6 +23,7 @@ import pl.fernikq.core.kit.KitManager;
 import pl.fernikq.core.listener.block.*;
 import pl.fernikq.core.listener.entity.*;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
+import pl.fernikq.core.listener.inventory.InventoryCloseListener;
 import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
 import pl.fernikq.core.region.RegionManager;
@@ -231,6 +232,7 @@ public class CorePlugin extends JavaPlugin {
         new LeavesDecayListener(this);
         new PlayerCommandPreprocessListener(this);
         new PlayerMoveListener(this);
+        new InventoryCloseListener(this);
     }
 
     public ConfigManager getConfigManager() {

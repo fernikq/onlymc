@@ -1,6 +1,7 @@
 package pl.fernikq.core.guild.treasure;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.config.ConfigManager;
@@ -22,9 +23,11 @@ public class GuildTreasure {
     public GuildTreasure(Guild guild){
         this.guild = guild;
         this.coins = 0;
-        this.items = new ItemStack[27];
         this.level = 0;
         this.inventory = Bukkit.createInventory(null, getSizeByLevel(), ChatUtil.fixColor("&8[ {c}&lSkarbiec gildii &8]"));
+        if(this.inventory.getContents() != null){
+            this.items = this.inventory.getContents();
+        }
     }
 
     public GuildTreasure(Guild guild, ResultSet resultSet){
@@ -34,10 +37,26 @@ public class GuildTreasure {
             this.items = SerializationUtil.itemStackFromString(resultSet.getString("items"));
             this.level = resultSet.getInt("level");
             this.inventory = Bukkit.createInventory(null, getSizeByLevel(), ChatUtil.fixColor("&8[ {c}&lSkarbiec gildii &8]"));
-            this.inventory.setContents(this.items);
+            if(this.items != null){
+                this.inventory.setContents(this.items);
+            }
             this.guild.setTreasure(this);
         } catch(SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void recalculateTreasure(){
+        this.guild.getOnlineMembers().forEach(member -> {
+            Player player = member.getUser().asPlayer();
+            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName().equalsIgnoreCase(ChatUtil.fixColor("&8[ {c}&lSkarbiec gildii &8]"))){
+                player.closeInventory();
+                ChatUtil.sendMessage(player, "&8>> {n}Skarbiec zostal zamkniety, poniewaz zostal powiekszony&8!");
+            }
+        });
+        this.inventory = Bukkit.createInventory(null, getSizeByLevel(), ChatUtil.fixColor("&8[ {c}&lSkarbiec gildii &8]"));
+        if(this.items != null){
+            this.inventory.setContents(this.items);
         }
     }
 

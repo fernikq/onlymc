@@ -143,15 +143,15 @@ public class MessagesManager {
                 "&8>> {c}/g zaloz <tag> <nazwa> &8- {n}Zakladanie gildii",
                 "&8>> {c}/g usun &8- {n}Usuwanie gildii",
                 "&8>> {c}/g baza &8- {n}Teleportacja na baze gildii",
-                "&8>> {c}/g info <tag> &8- {n}Informacje o podanej gildii",//TODO
+                "&8>> {c}/g info <tag> &8- {n}Informacje o podanej gildii",
                 "&8>> {c}/g sojusz <tag> &8- {n}Prosba o sojusz z podana gildia",
                 "&8>> {c}/g rozwiaz <tag> &8- {n}Zerwanie sojuszu z dana gildia",
                 "&8>> {c}/g pvp &8- {n}Wlaczenie/Wylaczenie walki w gildii",
                 "&8>> {c}/g setbaza &8- {n}Ustawienie bazy gildii",
-                "&8>> {c}/g panel &8- {n}Zarzadzanie gildia",//TODO
+                "&8>> {c}/g panel &8- {n}Zarzadzanie gildia",
                 "&8>> {c}/g zapros <nick> &8- {n}Zapraszanie gracza do gildii",
                 "&8>> {c}/g wyrzuc <nick> &8- {n}Wyrzucanie gracza z gildii",
-                "&8>> {c}/g skarbiec &8- {n}Skarbiec gildii",//TODO
+                "&8>> {c}/g skarbiec &8- {n}Skarbiec gildii",
                 "&8>> {c}/g itemy &8- {n}Przedmioty potrzebne do zalozenia gildii",
                 "&8>> {c}/g opusc &8- {n}Opuszczenie gildii",
                 "&8>> {c}/g dolacz <tag> &8- {n}Dolaczanie do gildii",

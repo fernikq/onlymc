@@ -37,6 +37,7 @@ public class GuildCommand extends CustomCommand {
         this.customCommands.add(new GuildHomeCommand("home", new String[]{"baza", "dom"}, UserGroup.PLAYER, this.plugin));
         this.customCommands.add(new GuildSetHomeCommand("sethome", new String[]{"setbaza", "setdom"}, UserGroup.PLAYER, this.plugin));
         this.customCommands.add(new GuildPanelCommand("panel", new String[0], UserGroup.PLAYER, this.plugin));
+        this.customCommands.add(new GuildTreasureCommand("skarbiec", new String[0], UserGroup.PLAYER, this.plugin));
     }
 
     @Override

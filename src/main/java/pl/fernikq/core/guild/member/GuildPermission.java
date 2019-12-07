@@ -2,6 +2,7 @@ package pl.fernikq.core.guild.member;
 
 import io.vavr.collection.Stream;
 import io.vavr.control.Option;
+import org.bukkit.Material;
 import pl.fernikq.core.guild.Guild;
 
 import java.util.ArrayList;
@@ -10,21 +11,36 @@ import java.util.List;
 
 public enum GuildPermission {
 
-    PVP,
-    INVITE,
-    KICK,
-    ALLIES,
-    PLACE,
-    BREAK,
-    TREASURE_OPEN,
-    SET_BASE,
-    BASE_TELEPORT,
-    TIME_RENEW,
-    CUBOID_ENLARGE,
-    ALLIANCES_ENLARGE,
-    MEMBERS_ENLARGE,
-    TREASURE_ENLARGE,
-    MEMBER_PERMISSIONS;
+    PVP("{c}&lZarzadzanie PVP", Material.DIAMOND_SWORD),
+    INVITE("{c}&lZapraszanie graczy", Material.WATER_BUCKET),
+    KICK("{c}&lWyrzucanie graczy", Material.LAVA_BUCKET),
+    ALLIES("{c}&lZarzadzanie sojuszami", Material.BOOK),
+    PLACE("{c}&lStawianie blokow", Material.OBSIDIAN),
+    BREAK("{c}&lNiszczenie blokow", Material.STONE),
+    TREASURE_OPEN("{c}&lDostep do skarbca", Material.CHEST),
+    SET_BASE("{c}&lUstawianie bazy", Material.ARMOR_STAND),
+    BASE_TELEPORT("{c}&lTeleporacja na bazea", Material.BED),
+    TIME_RENEW("{c}&lOdnawianie waznosci", Material.WATCH),
+    CUBOID_ENLARGE("{c}&lPowiekszanie terenu", Material.GRASS),
+    ALLIANCES_ENLARGE("{c}&lPowiekszanie ilosci sojuszy", Material.PAPER),
+    MEMBERS_ENLARGE("{c}&lPowiekszanie ilosci czlonkow", Material.BOOK_AND_QUILL),
+    TREASURE_ENLARGE("{c}&lPowiekszanie skarbca", Material.ENDER_CHEST);
+
+    private String name;
+    private Material material;
+
+    private GuildPermission(String name, Material material){
+        this.name = name;
+        this.material = material;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
 
     public static Option<GuildPermission> getPermissionByName(String name){
         return Stream.of(values()).find(guildPermission -> guildPermission.name().equalsIgnoreCase(name));

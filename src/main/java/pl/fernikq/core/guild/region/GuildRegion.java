@@ -108,6 +108,7 @@ public class GuildRegion {
 
     public void setSize(int size) {
         this.size = size;
+        setRegionCorners();
     }
 
     public long getLastExplodeTime() {

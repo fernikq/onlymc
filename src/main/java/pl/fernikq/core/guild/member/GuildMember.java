@@ -62,6 +62,15 @@ public class GuildMember {
         if(this.guildPermissions.contains(guildPermission)) this.guildPermissions.remove(guildPermission);
     }
 
+    public void changePermission(GuildPermission guildPermission){
+        if(hasPermission(guildPermission)){
+            this.guildPermissions.remove(guildPermission);
+            return;
+        }
+        this.guildPermissions.add(guildPermission);
+        return;
+    }
+
     public List<GuildPermission> getGuildPermissions() {
         return new ArrayList<>(this.guildPermissions);
     }
