@@ -70,12 +70,13 @@ public class UserData {
             if(!this.plugin.getMySQL().isConnected()){
                 this.plugin.getMySQL().openConnection();
             }
-            final PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_users` SET `name` = ?, `lastAddress` = ?, "+
-                    "`groupName` = ?, `kitTimes` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
-            statement.setString(1, user.getName());
-            statement.setString(2, user.getLastAddress());
-            statement.setString(3, user.getGroup().name());
-            statement.setString(4, this.plugin.getKitManager().kitsToString(user.getKitTimes()));
+            final PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_users` SET `uuid` = ?, `name` = ?, `lastAddress` = ?, "+
+                    "`groupName` = ?, `kitTimes` = ? WHERE `uuid` = '"+user.getUuid().toString()+"' OR `name` = '"+user.getName()+"';");
+            statement.setString(1, user.getUuid().toString());
+            statement.setString(2, user.getName());
+            statement.setString(3, user.getLastAddress());
+            statement.setString(4, user.getGroup().name());
+            statement.setString(5, this.plugin.getKitManager().kitsToString(user.getKitTimes()));
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

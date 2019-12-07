@@ -82,6 +82,10 @@ public class User {
         return uuid;
     }
 
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public String getName() {
         return name;
     }

@@ -36,10 +36,21 @@ public class UserManager {
     }
 
     public User getUser(Player player){
+        if(this.users.containsKey(player.getUniqueId())){
+            return this.users.get(player.getUniqueId());
+        }
+        User userByName = getUser(player.getName()).getOrNull();
+        if(userByName != null){
+            this.users.remove(userByName.getUuid());
+            userByName.setUuid(player.getUniqueId());
+            this.users.putIfAbsent(userByName.getUuid(), userByName);
+            updateUserInfo(userByName);
+            return userByName;
+        }
         return this.users.computeIfAbsent(player.getUniqueId(), uuid -> {
-           User user = new User(player);
-           insertUser(user);
-           return user;
+            User user = new User(player);
+            insertUser(user);
+            return user;
         });
     }
 
