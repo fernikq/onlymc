@@ -16,7 +16,7 @@ public class SimpleCommandManager {
 
     private final CorePlugin plugin;
     private File commandFile;
-    private Set<CustomCommand> customCommands;
+    private Set<SimpleCustomCommand> customCommands;
     private Set<String> blockedCommands;
     private Set<String> blockedCommandsInGuild;
     private Set<String> allowedDuringPVP;
@@ -43,6 +43,7 @@ public class SimpleCommandManager {
     public void reload(){
         checkFile();
         loadBlockedCommands();
+        reloadCommands();
     }
 
     public void loadBlockedCommands(){
@@ -50,6 +51,33 @@ public class SimpleCommandManager {
         this.blockedCommandsInGuild = new HashSet<>(getCommandFile().getStringList("BlockedCommandsInGuild"));
         this.allowedDuringPVP = new HashSet<>(getCommandFile().getStringList("AllowedDuringPVP"));
         this.helpCommandMessage = getCommandFile().getString("HelpCommandMessage");
+    }
+
+    private SimpleCommand getSimpleCommand(String name){
+        for(SimpleCustomCommand simpleCustomCommand : this.customCommands){
+            if(simpleCustomCommand.getName().equalsIgnoreCase(name)){
+                return simpleCustomCommand.getSimpleCommand();
+            }
+        }
+        return null;
+    }
+
+    private void reloadCommands(){
+        ConfigurationSection configurationSection = getCommandFile().getConfigurationSection("Commands");
+        for(String s : configurationSection.getKeys(false)){
+            ConfigurationSection c = configurationSection.getConfigurationSection(s);
+            String name = c.getString("name");
+            List<String> aliases = c.getStringList("aliases");
+            UserGroup group = UserGroup.getByName(c.getString("group"));
+            if(group == null){
+                group = UserGroup.PLAYER;
+            }
+            List<String> feedback = c.getStringList("feedback");
+            SimpleCommand simpleCommand = getSimpleCommand(name);
+            if(simpleCommand != null){
+                simpleCommand.setMessages(feedback);
+            }
+        }
     }
 
     public void loadCommands(){

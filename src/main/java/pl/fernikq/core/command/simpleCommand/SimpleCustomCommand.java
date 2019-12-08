@@ -27,4 +27,8 @@ public class SimpleCustomCommand extends CustomCommand {
         }
         return true;
     }
+
+    public SimpleCommand getSimpleCommand() {
+        return simpleCommand;
+    }
 }

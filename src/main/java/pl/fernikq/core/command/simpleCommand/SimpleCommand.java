@@ -18,6 +18,10 @@ public class SimpleCommand {
         this.messages = messages;
     }
 
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
+    }
+
     public String getName() {
         return name;
     }
