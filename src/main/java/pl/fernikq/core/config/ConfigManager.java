@@ -54,6 +54,7 @@ public class ConfigManager {
     public static String guildAttackProtectionAfterCreate;
     public static String guildExplosionProtectionAfterCreate;
     public static String guildExpireAfterCreateTime;
+    public static String guildNextAttackAfterAttack;
     public static int guildMaxStartMembersSize;
     public static int guildMaxStartAlliesSize;
     public static int guildStartHealth;
@@ -141,6 +142,7 @@ public class ConfigManager {
         guildExplosionProtectionAfterCreate = "1d";
         guildAttackProtectionAfterCreate = "1d";
         guildExpireAfterCreateTime = "7d";
+        guildNextAttackAfterAttack = "12h";
         guildMaxStartAlliesSize = 4;
         guildMaxStartMembersSize = 12;
         guildMembersSizeEnlargeCost = Arrays.asList(150, 300, 450, 600, 750, 900, 1050, 1300);

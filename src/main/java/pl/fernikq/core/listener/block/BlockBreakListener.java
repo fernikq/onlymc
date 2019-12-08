@@ -1,6 +1,7 @@
 package pl.fernikq.core.listener.block;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -60,6 +61,9 @@ public class BlockBreakListener implements Listener {
         }
         if(block.getType() == Material.STONE){
             for(Drop drop : this.plugin.getDropManager().getDrops(DropType.STONE)){
+                if(player.getGameMode() != GameMode.SURVIVAL){
+                    continue;
+                }
                 if(drop.getDisabled().contains(user)){
                     continue;
                 }

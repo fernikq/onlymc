@@ -20,7 +20,10 @@ import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.LocationUtil;
 import pl.fernikq.core.util.SpaceUtil;
+import pl.fernikq.core.util.TimeUtil;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -214,6 +217,54 @@ public class GuildManager {
             short data = Short.parseShort(itemInfo[1]);
             ItemUtil.remove(new ItemStack(material, 1, data), player, amount);
         }
+    }
+
+    public List<String> getGuildInfoMessages(Guild guild){
+        return Arrays.asList("&8&m--------&8[ {c}&lINFO &8]&m--------",
+                " ",
+                "&8>> {n}Tag&8: {c}"+guild.getTag(),
+                "&8>> {n}Nazwa&8: {c}"+guild.getName(),
+                "&8>> {n}Lider&8: {c}"+guild.getOwner().getName(),
+                "&8>> {n}Zycia&8: {c}"+guild.getHealth(),
+                "&8>> {n}Rozmiar&8: {c}"+guild.getRegion().getSize()+"&8x{c}"+guild.getRegion().getSize(),
+                "&8>> {n}Data zalozenia&8: {c}"+TimeUtil.getDate(guild.getCreationTime()),
+                "&8>> {n}Atak mozliwy"+(guild.getLastAttackTime() < System.currentTimeMillis() ? "&8: {c}teraz": " za&8: {c}"+TimeUtil.getTimeToString(guild.getLastAttackTime() - System.currentTimeMillis())),
+                "&8>> {n}Czlonkowie&8: "+getMembersToString(guild),
+                "&8>> {n}Sojusze&8: "+getAlliesToString(guild),
+                " ",
+                "&8&m--------&8[ {c}&lINFO &8]&m--------");
+    }
+
+    public String getMembersToString(Guild guild){
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 0;
+        for(GuildMember member : guild.getMembers()){
+            if(i == 0){
+                stringBuilder.append((member.getUser().asPlayer() == null ? "&7"+member.getUser().getName() : "&a"+member.getUser().getName()));
+            }else{
+                stringBuilder.append("&8, "+(member.getUser().asPlayer() == null ? "&7"+member.getUser().getName() : "&a"+member.getUser().getName()));
+            }
+            i++;
+        }
+        return stringBuilder.toString();
+    }
+
+    public String getAlliesToString(Guild guild){
+        StringBuilder stringBuilder = new StringBuilder();
+        List<Guild> allies = this.plugin.getAllianceManager().getAllies(guild);
+        if(allies.isEmpty()){
+            return "{c}Brak";
+        }
+        int i = 0;
+        for(Guild ally : allies){
+            if(i == 0){
+                stringBuilder.append("{c}"+ally.getTag());
+            }else{
+                stringBuilder.append("&8, {c}"+ally.getTag());
+            }
+            i++;
+        }
+        return stringBuilder.toString();
     }
 
     public Set<Guild> getGuilds(){

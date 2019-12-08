@@ -9,7 +9,7 @@ import java.util.List;
 public class ChatUtil {
 
     public static String fixColor(String message){
-        message = StringUtil.replace(message, "{c}", "&3");
+        message = StringUtil.replace(message, "{c}", "&c");
         message = StringUtil.replace(message, "{n}", "&f");
         message = StringUtil.replace(message, ">>", "»");
         message = StringUtil.replace(message, "<<", "«");

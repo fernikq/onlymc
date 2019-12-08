@@ -58,6 +58,8 @@ public class MessagesManager {
     public static String guildJoinCuboidMessage;
     public static String guildQuitCuboidMessage;
     public static String guildIntruderMessage;
+    public static String guildDestroyMessage;
+    public static String guildAttackMessage;
     public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
@@ -137,7 +139,7 @@ public class MessagesManager {
         titleBroadcastPrefix = "&c&lAlert";
         dropLevelupMessage = "&8>> &eGratulacje, osiagnales &6{LVL} &epoziom gornictwa!";
         coinsDropFromStoneMessage = "&8>> {c}Gratulacje, {n}trafiles na monety w ilosci&8: {c}{AMOUNT}";
-        pointsBelowNameSuffix = "&bpkt";
+        pointsBelowNameSuffix = "&cpkt";
         guildMainCommandHelp = Arrays.asList("&8&m--------&8[ {c}&lGildie &8]&m--------",
                 " ",
                 "&8>> {c}/g zaloz <tag> <nazwa> &8- {n}Zakladanie gildii",
@@ -158,12 +160,14 @@ public class MessagesManager {
                 "&8>> {c}/g lider <nick> &8- {n}Przekazanie lidera gildii",
                 " ",
                 "&8&m--------&8[ {c}&lGildie &8]&m--------");
-        guildCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] &b{NAME} {n}zostala zalozona przez {c}{OWNER}";
+        guildCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] &c{NAME} {n}zostala zalozona przez {c}{OWNER}";
         guildDeleteMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] {n}zostala usunieta przez {c}{OWNER}";
         guildInviteMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] {n}wyslala ci zaproszenie, aby zaakceptowac wpisz {c}/g dolacz {TAG}";
         guildJoinMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}dolaczyl do gildii &8[{c}{TAG}&8]";
         guildQuitMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}opuscil gildie &8[{c}{TAG}&8]";
         guildKickMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}zostal wyrzucony z gildii &8[{c}{TAG}&8]";
+        guildDestroyMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zostal podbita przez gildie &8[{c}{TAG2}&8]";
+        guildAttackMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zabrala zycie gildii &8[{c}{TAG2}&8]";
         guildAllianceCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zawarla sojusz z gildia &8[{c}{TAG2}&8]";
         guildAllianceBreakMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG1}&8] {n}zerwala sojusz z gildia &8[{c}{TAG2}&8]";
         guildLeaderMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}zostal nowym liderem gildii &8[{c}{TAG}&8]";

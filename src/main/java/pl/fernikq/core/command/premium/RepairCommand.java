@@ -1,5 +1,6 @@
 package pl.fernikq.core.command.premium;
 
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -33,6 +34,7 @@ public class RepairCommand extends CustomCommand {
                 return ChatUtil.sendMessage(sender, MessagesManager.error("Podany przedmiot nie moze zostac naprawiony!"));
             }
             player.getItemInHand().setDurability((short)0);
+            player.playSound(player.getLocation(), Sound.ANVIL_USE, 20.0F, 20.0F);
             return ChatUtil.sendMessage(sender, "&8>> &aPomyslnie {n}naprawiles przedmiot&8!");
         }
         if(!args[0].equalsIgnoreCase("all")){
@@ -48,6 +50,7 @@ public class RepairCommand extends CustomCommand {
                    itemStack.setDurability((short)0);
                }
            }
+           player.playSound(player.getLocation(), Sound.ANVIL_USE, 20.0F, 20.0F);
            ChatUtil.sendMessage(sender, "&8>> &aPomyslnie {n}naprawiles wszystkie przedmioty&8!");
            return;
         });
