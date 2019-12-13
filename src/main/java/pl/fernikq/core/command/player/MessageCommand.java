@@ -13,6 +13,9 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class MessageCommand extends CustomCommand {
 
     private final CorePlugin plugin;
@@ -44,6 +47,11 @@ public class MessageCommand extends CustomCommand {
             User targetUser = this.plugin.getUserManager().getUser(target.getUniqueId()).getOrNull();
             if(targetUser == null){
                 ChatUtil.sendMessage(player, Lang.userNotExists);
+                return;
+            }
+            Set<User> blockedMessage = new HashSet<>(targetUser.getUserChat().getBlockedMessage());
+            if(blockedMessage.contains(user) && !user.canByGroup(UserGroup.HELPER)){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Podany gracz ignoruje twoje wiadomosci!"));
                 return;
             }
             user.setPrivateMessageSender(targetUser);

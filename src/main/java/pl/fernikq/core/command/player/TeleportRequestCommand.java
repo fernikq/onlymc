@@ -15,6 +15,9 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TeleportRequestCommand extends CustomCommand {
 
     private final CorePlugin plugin;
@@ -44,6 +47,11 @@ public class TeleportRequestCommand extends CustomCommand {
             User targetUser = this.plugin.getUserManager().getUser(target.getUniqueId()).getOrNull();
             if(targetUser == null){
                 ChatUtil.sendMessage(player, Lang.userNotExists);
+                return;
+            }
+            Set<User> blockedTpa = new HashSet<>(targetUser.getUserChat().getBlockedTpa());
+            if(blockedTpa.contains(user) && !user.canByGroup(UserGroup.HELPER)){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Podany gracz ignoruje twoje prosby o teleportacja!"));
                 return;
             }
             if(targetUser.getTpaRequests().asMap().containsKey(user)){

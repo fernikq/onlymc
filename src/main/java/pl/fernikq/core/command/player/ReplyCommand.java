@@ -8,8 +8,12 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.command.CustomCommand;
 import pl.fernikq.core.config.Lang;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ReplyCommand extends CustomCommand {
 
@@ -40,6 +44,11 @@ public class ReplyCommand extends CustomCommand {
            }
            if(user.getPrivateMessageSender().asPlayer() == null){
                ChatUtil.sendMessage(sender, MessagesManager.error("Gracz jest offline!"));
+               return;
+           }
+           Set<User> blockedMessage = new HashSet<>(user.getPrivateMessageSender().getUserChat().getBlockedMessage());
+           if(blockedMessage.contains(user) && !user.canByGroup(UserGroup.HELPER)){
+               ChatUtil.sendMessage(sender, MessagesManager.error("Podany gracz ignoruje twoje wiadomosci!"));
                return;
            }
            user.getPrivateMessageSender().setPrivateMessageSender(user);
