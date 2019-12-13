@@ -36,6 +36,7 @@ public class TeleportAcceptCommand extends CustomCommand {
                User target = user.getTpaRequestsList().get(0);
                if(target.asPlayer() == null){
                    ChatUtil.sendMessage(player, Lang.playerOffline);
+                   user.getTpaRequests().asMap().remove(target);
                    return;
                }
                user.getTpaRequests().asMap().remove(target);
