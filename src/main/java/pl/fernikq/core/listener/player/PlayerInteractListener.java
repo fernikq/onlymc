@@ -55,13 +55,8 @@ public class PlayerInteractListener implements Listener {
             return;
         }
         if(block != null && block.getTypeId() == 60 && event.getAction() == Action.PHYSICAL){
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.FARMLANDS);
-            if(!regionFeedback.isPermit()){
-                event.setCancelled(true);
-                return;
-            }
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-            regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.FARMLANDS);
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().canDestroyFarmlands(user, block.getLocation());
             if(!regionFeedback.isPermit()){
                 event.setCancelled(true);
                 return;

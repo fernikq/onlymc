@@ -181,29 +181,70 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback can(Location location, RegionProtectionType type){
-        switch(type){
-            case EXPLOSION:{
-                if(location.getBlockY() >= ConfigManager.tntExplodeBelow){
-                    return RegionFeedback.DENY;
-                }
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(guild.getRegion().getExplodeProtectionTime() > System.currentTimeMillis()){
-                        return RegionFeedback.DENY;
+    public RegionFeedback canDestroy(User user, Location location){
+        if(user == null){
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)){
+            return RegionFeedback.ALLOW;
+        }
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(guild != null){
+            if(!user.hasGuild()){
+                return RegionFeedback.DENY_DESTROY_GUILD;
+            }
+            if(!user.getGuild().equals(guild)){
+                return RegionFeedback.DENY_DESTROY_GUILD;
+            }
+            GuildMember member = user.getGuild().getMemberByName(user.getName()).orElse(null);
+            if(member == null){
+                return RegionFeedback.DENY_ERROR;
+            }
+            if(!member.hasPermission(GuildPermission.BREAK)){
+                return RegionFeedback.DENY_DESTROY_GUILD_PERMISSION;
+            }
+            if(guild.getRegion().isInCenter(location)){
+                return RegionFeedback.DENY_DESTROY_GUILD_CENTER;
+            }
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            if(region.isCanDestroy()){
+                if(region.isStoneGeneratorRegion()){
+                    if(user.asPlayer().getItemInHand() != null && user.asPlayer().getItemInHand().getType() == Material.GOLD_PICKAXE){
+                        return RegionFeedback.DENY_DESTROY_GOLD_PICKAXE;
                     }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanExplode() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
                 }
                 return RegionFeedback.ALLOW;
             }
+            return RegionFeedback.DENY_DESTROY_SPAWN;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canDestroyFarmlands(User user, Location location){
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanDestroyFarmland() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(guild != null){
+            if(!user.hasGuild()){
+                return RegionFeedback.DENY;
+            }
+            if(!user.getGuild().equals(guild)){
+                return RegionFeedback.DENY;
+            }
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback can(Location location, RegionProtectionType type){
+        switch(type){
             case FIRE_SPREAD:{
                 Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
                 if(guild != null){
@@ -253,15 +294,6 @@ public class RegionManager {
                 }
                 return RegionFeedback.ALLOW;
             }
-            case FARMLANDS:{
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanDestroyFarmland() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
             case HURT:{
                 if(checkRegions() != null){
                     return checkRegions();
@@ -293,18 +325,6 @@ public class RegionManager {
             return RegionFeedback.ALLOW;
         }
         switch(type){
-            case FARMLANDS:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY;
-                    }
-                }
-                return RegionFeedback.ALLOW;
-            }
             case IGNITE_TNT:{
                 Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
                 if(guild != null){
@@ -386,70 +406,6 @@ public class RegionManager {
                 }
                 for(Region region : getRegionsByLocation(location)){
                     return region.isCanChangePaintings() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case BUILD:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY_BUILD_GUILD;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY_BUILD_GUILD;
-                    }
-                    GuildMember member = user.getGuild().getMemberByName(user.getName()).orElse(null);
-                    if(member == null){
-                        return RegionFeedback.DENY_ERROR;
-                    }
-                    if(!member.hasPermission(GuildPermission.PLACE)){
-                        return RegionFeedback.DENY_BUILD_GUILD_PERMISSION;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY_BUILD_GUILD_CENTER;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanBuild() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUILD_SPAWN;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case DESTROY:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY_DESTROY_GUILD;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY_DESTROY_GUILD;
-                    }
-                    GuildMember member = user.getGuild().getMemberByName(user.getName()).orElse(null);
-                    if(member == null){
-                        return RegionFeedback.DENY_ERROR;
-                    }
-                    if(!member.hasPermission(GuildPermission.BREAK)){
-                        return RegionFeedback.DENY_DESTROY_GUILD_PERMISSION;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY_DESTROY_GUILD_CENTER;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    if(region.isCanDestroy()){
-                        if(region.isStoneGeneratorRegion()){
-                            if(user.asPlayer().getItemInHand() != null && user.asPlayer().getItemInHand().getType() == Material.GOLD_PICKAXE){
-                                return RegionFeedback.DENY_DESTROY_GOLD_PICKAXE;
-                            }
-                        }
-                        return RegionFeedback.ALLOW;
-                    }
-                    return RegionFeedback.DENY_DESTROY_SPAWN;
                 }
                 return RegionFeedback.ALLOW;
             }
