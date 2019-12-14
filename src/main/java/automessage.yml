@@ -3,6 +3,6 @@ Automessage:
     list:
       - '&8&m--------&8[ &3&lOnly&fMc.pl &8]&m--------'
       - ' '
-      - '&8>> &fPotrzebujesz pomocy&8? &fSprawdz pod &3/pomoc &flub napisz na &3/helpop'
+      - '&8>> {n}Potrzebujesz pomocy&8? {n}Sprawdz pod {c}/pomoc {n}lub napisz na {c}/helpop'
       - ' '
       - '&8&m--------&8[ &3&lOnly&fMc.pl &8]&m--------'

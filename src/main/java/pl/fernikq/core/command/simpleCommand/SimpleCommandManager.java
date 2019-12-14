@@ -48,7 +48,7 @@ public class SimpleCommandManager {
 
     public void loadBlockedCommands(){
         this.blockedCommands = new HashSet<>(getCommandFile().getStringList("BlockedCommands"));
-        this.blockedCommandsInGuild = new HashSet<>(getCommandFile().getStringList("BlockedCommandsInGuild"));
+        this.blockedCommandsInGuild = new HashSet<>(getCommandFile().getStringList("BlockedCommandsInEnemyGuild"));
         this.allowedDuringPVP = new HashSet<>(getCommandFile().getStringList("AllowedDuringPVP"));
         this.helpCommandMessage = getCommandFile().getString("HelpCommandMessage");
     }

@@ -3,7 +3,7 @@ BlockedCommands:
   - '/bukkit:me'
   - '/minecraft:me'
   - '/me'
-BlockedCommandsInGuild:
+BlockedCommandsInEnemyGuild:
   - '/sethome'
   - '/tpaccept'
 AllowedDuringPVP:
@@ -18,7 +18,7 @@ Commands:
       - 'pomoc'
     group: 'PLAYER'
     feedback:
-      - '&8&m--------&8[ &c&lPomoc &8]&m--------'
+      - '&8&m--------&8[ {c}&lPomoc &8]&m--------'
       - ' '
       - '&8>> {c}/drop &8- {n}Drop dostepny na serwerze'
       - '&8>> {c}/kit &8- {n}Zestawy dostepne na serwerze'
@@ -37,7 +37,7 @@ Commands:
       - '&8>> {c}/resetuj &8- {n}Resetowanie punktow do poczatkowej wartosci'
       - '&8>> {c}/warp &8- {n}Warpy dostepne na serwerze'
       - ' '
-      - '&8&m--------&8[ &c&lPomoc &8]&m--------'
+      - '&8&m--------&8[ {c}&lPomoc &8]&m--------'
   2:
     name: 'vip'
     aliases: []
