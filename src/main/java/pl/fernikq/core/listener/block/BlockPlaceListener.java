@@ -14,6 +14,7 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
+import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
@@ -43,6 +44,7 @@ public class BlockPlaceListener implements Listener {
         if(generator != null){
             switch(generator.getGeneratorType()){
                 case SAND_GENERATOR:{
+                    Guild guild = this.plugin.getGuildManager().getGuildByLocation(block.getLocation()).getOrNull();
                     new BukkitRunnable(){
                         int subtract = 0;
                         @Override
@@ -52,13 +54,17 @@ public class BlockPlaceListener implements Listener {
                                 cancel();
                                 return;
                             }
-                            //TODO Guild region check
+                            if(guild != null && guild.getRegion().isInCenter(block.getLocation())){
+                                cancel();
+                                return;
+                            }
                             toChange.setType(Material.SAND);
                         }
                     }.runTaskTimer(this.plugin, 0, 0);
                     return;
                 }
                 case OBSIDIAN_GENERATOR:{
+                    Guild guild = this.plugin.getGuildManager().getGuildByLocation(block.getLocation()).getOrNull();
                     new BukkitRunnable(){
                         int subtract = 0;
                         @Override
@@ -68,13 +74,17 @@ public class BlockPlaceListener implements Listener {
                                 cancel();
                                 return;
                             }
-                            //TODO Guild region check
+                            if(guild != null && guild.getRegion().isInCenter(block.getLocation())){
+                                cancel();
+                                return;
+                            }
                             toChange.setType(Material.OBSIDIAN);
                         }
                     }.runTaskTimer(this.plugin, 0, 0);
                     return;
                 }
                 case BLOCK_BREAKER:{
+                    Guild guild = this.plugin.getGuildManager().getGuildByLocation(block.getLocation()).getOrNull();
                     new BukkitRunnable(){
                         int subtract = 0;
                         @Override
@@ -84,7 +94,10 @@ public class BlockPlaceListener implements Listener {
                                 cancel();
                                 return;
                             }
-                            //TODO Guild region check
+                            if(guild != null && guild.getRegion().isInCenter(block.getLocation())){
+                                cancel();
+                                return;
+                            }
                             toChange.setType(Material.AIR);
                         }
                     }.runTaskTimer(this.plugin, 0, 0);
