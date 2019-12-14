@@ -19,6 +19,7 @@ import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.TimeUtil;
 
 public class BlockPlaceListener implements Listener {
 
@@ -34,9 +35,13 @@ public class BlockPlaceListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.BUILD);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canBuild(user, block.getLocation());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
+            if(regionFeedback.equals(RegionFeedback.DENY_BUILD_GUILD_CAUSE_EXPLOSION)){
+                ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage().replace("{TIME}", TimeUtil.getTimeToString(user.getGuild().getRegion().getLastExplodeTime() - System.currentTimeMillis())));
+                return;
+            }
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
             return;
         }
@@ -54,7 +59,7 @@ public class BlockPlaceListener implements Listener {
                                 cancel();
                                 return;
                             }
-                            if(guild != null && guild.getRegion().isInCenter(block.getLocation())){
+                            if(guild != null && guild.getRegion().isInCenter(toChange.getLocation())){
                                 cancel();
                                 return;
                             }
@@ -74,7 +79,7 @@ public class BlockPlaceListener implements Listener {
                                 cancel();
                                 return;
                             }
-                            if(guild != null && guild.getRegion().isInCenter(block.getLocation())){
+                            if(guild != null && guild.getRegion().isInCenter(toChange.getLocation())){
                                 cancel();
                                 return;
                             }
@@ -94,7 +99,7 @@ public class BlockPlaceListener implements Listener {
                                 cancel();
                                 return;
                             }
-                            if(guild != null && guild.getRegion().isInCenter(block.getLocation())){
+                            if(guild != null && guild.getRegion().isInCenter(toChange.getLocation())){
                                 cancel();
                                 return;
                             }

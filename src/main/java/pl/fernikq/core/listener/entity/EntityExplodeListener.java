@@ -8,13 +8,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
+import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.region.RegionProtectionType;
+import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.TimeUtil;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class EntityExplodeListener implements Listener {
 
@@ -37,10 +39,16 @@ public class EntityExplodeListener implements Listener {
             return;
         }
         List<Block> toRemove = new ArrayList<>();
+        Set<Guild> guilds = new HashSet<>();
         for(Block block : event.blockList()){
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.EXPLOSION);
+            Guild guild = this.plugin.getGuildManager().getGuildByLocation(block.getLocation()).getOrNull();
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().canExplode(block.getLocation(), guild);
             if(!regionFeedback.isPermit()){
                 toRemove.add(block);
+            }else{
+                if(guild != null){
+                    guilds.add(guild);
+                }
             }
         }
         toRemove.forEach(block -> event.blockList().remove(block));
@@ -49,6 +57,12 @@ public class EntityExplodeListener implements Listener {
             if(stoneGenerator != null){
                 this.plugin.getStoneGeneratorManager().deleteGenerator(stoneGenerator);
             }
+        });
+        guilds.forEach(guild -> {
+            guild.getRegion().setLastExplodeTime(System.currentTimeMillis() + TimeUtil.getTime(ConfigManager.guildDenyBuildTimeAfterExplosion));
+            guild.getOnlineMembers().forEach(member -> {
+                ChatUtil.sendMessage(member.getUser().asPlayer(), MessagesManager.guildTNTMessage.replace("{TIME}", ConfigManager.guildDenyBuildTimeAfterExplosion));
+            });
         });
     }
 }

@@ -60,6 +60,7 @@ public class MessagesManager {
     public static String guildIntruderMessage;
     public static String guildDestroyMessage;
     public static String guildAttackMessage;
+    public static String guildTNTMessage;
     public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
@@ -160,7 +161,7 @@ public class MessagesManager {
                 "&8>> {c}/g lider <nick> &8- {n}Przekazanie lidera gildii",
                 " ",
                 "&8&m--------&8[ {c}&lGildie &8]&m--------");
-        guildCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] &c{NAME} {n}zostala zalozona przez {c}{OWNER}";
+        guildCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] {c}{NAME} {n}zostala zalozona przez {c}{OWNER}";
         guildDeleteMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] {n}zostala usunieta przez {c}{OWNER}";
         guildInviteMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] {n}wyslala ci zaproszenie, aby zaakceptowac wpisz {c}/g dolacz {TAG}";
         guildJoinMessage = "&8[{c}&lGILDIE&8] {n}Gracz {c}{PLAYER} {n}dolaczyl do gildii &8[{c}{TAG}&8]";
@@ -174,5 +175,6 @@ public class MessagesManager {
         guildQuitCuboidMessage = "&8>> &cOpusciles {n}teren gildii &8[&c{TAG}&8]";
         guildJoinCuboidMessage = "&8>> &aWkroczyles {n}na teren gildii &8[&a{TAG}&8]";
         guildIntruderMessage = "&8[&c&lINTRUZ&8] {n}Gracz &c{PLAYER} {n}wszedl na teren twojej gildii!";
+        guildTNTMessage = "&8[&c&lTNT&8] {n}Na terenie twojej gildii wybuchlo &cTNT {n}budowanie zostalo zablokowane na &c{TIME}!";
     }
 }

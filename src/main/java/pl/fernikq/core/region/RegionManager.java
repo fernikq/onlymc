@@ -122,6 +122,65 @@ public class RegionManager {
         return HashSet.ofAll(this.regions);
     }
 
+    public RegionFeedback canExplode(Location location, Guild guild){
+        if(location.getBlockY() >= ConfigManager.tntExplodeBelow){
+            return RegionFeedback.DENY;
+        }
+        if(guild != null){
+            if(guild.getRegion().getExplodeProtectionTime() > System.currentTimeMillis()){
+                return RegionFeedback.DENY;
+            }
+            if(guild.getRegion().isInCenter(location)){
+                return RegionFeedback.DENY;
+            }
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanExplode() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canBuild(User user, Location location){
+        if(user == null){
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)){
+            return RegionFeedback.ALLOW;
+        }
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(guild != null){
+            if(!user.hasGuild()){
+                return RegionFeedback.DENY_BUILD_GUILD;
+            }
+            if(!user.getGuild().equals(guild)){
+                return RegionFeedback.DENY_BUILD_GUILD;
+            }
+            GuildMember member = user.getGuild().getMemberByName(user.getName()).orElse(null);
+            if(member == null){
+                return RegionFeedback.DENY_ERROR;
+            }
+            if(!member.hasPermission(GuildPermission.PLACE)){
+                return RegionFeedback.DENY_BUILD_GUILD_PERMISSION;
+            }
+            if(guild.getRegion().isInCenter(location)){
+                return RegionFeedback.DENY_BUILD_GUILD_CENTER;
+            }
+            if(guild.getRegion().getLastExplodeTime() > System.currentTimeMillis()){
+                return RegionFeedback.DENY_BUILD_GUILD_CAUSE_EXPLOSION;
+            }
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanBuild() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUILD_SPAWN;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
     public RegionFeedback can(Location location, RegionProtectionType type){
         switch(type){
             case EXPLOSION:{
@@ -131,9 +190,6 @@ public class RegionManager {
                 Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
                 if(guild != null){
                     if(guild.getRegion().getExplodeProtectionTime() > System.currentTimeMillis()){
-                        return RegionFeedback.DENY;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
                         return RegionFeedback.DENY;
                     }
                     if(guild.getRegion().isInCenter(location)){

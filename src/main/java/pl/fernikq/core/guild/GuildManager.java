@@ -149,9 +149,9 @@ public class GuildManager {
 
     public boolean isNearGuild(Location location){
         int minimalDistance = ConfigManager.minimalDistanceBetweenGuilds;
-        minimalDistance += (ConfigManager.guildStartCuboidSize + 2);
+        minimalDistance += ((ConfigManager.guildStartCuboidSize * 2) + 2);
         for(Integer integer : ConfigManager.guildCuboidSizeEnlargeCost){
-            minimalDistance += ConfigManager.guildCuboidSizeAddByEnlarge;
+            minimalDistance += (ConfigManager.guildCuboidSizeAddByEnlarge * 2);
         }
         for(Guild guild : getGuilds()){
             if((Math.abs(guild.getRegion().getCenter().getBlockX() - location.getBlockX()) <= minimalDistance) && (Math.abs(guild.getRegion().getCenter().getBlockZ() - location.getBlockZ()) <= minimalDistance)){
@@ -229,6 +229,7 @@ public class GuildManager {
                 "&8>> {n}Rozmiar&8: {c}"+guild.getRegion().getSize()+"&8x{c}"+guild.getRegion().getSize(),
                 "&8>> {n}Data zalozenia&8: {c}"+TimeUtil.getDate(guild.getCreationTime()),
                 "&8>> {n}Atak mozliwy"+(guild.getLastAttackTime() < System.currentTimeMillis() ? "&8: {c}teraz": " za&8: {c}"+TimeUtil.getTimeToString(guild.getLastAttackTime() - System.currentTimeMillis())),
+                "&8>> {n}Ochrona przed wybuchem&8: "+(guild.getRegion().getExplodeProtectionTime() > System.currentTimeMillis() ? "&atak &8[{n}"+TimeUtil.getTimeToString(guild.getRegion().getExplodeProtectionTime() - System.currentTimeMillis())+"&8]" : "&cnie"),
                 "&8>> {n}Czlonkowie&8: "+getMembersToString(guild),
                 "&8>> {n}Sojusze&8: "+getAlliesToString(guild),
                 " ",

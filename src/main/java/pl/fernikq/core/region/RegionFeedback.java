@@ -15,6 +15,7 @@ public enum RegionFeedback {
     DENY_PROCCESS_COMMAND_REGION(false, "&8>> &fPodana komenda zostala zablokowana na tym terenie!"),
     DENY_PROCCESS_COMMAND_GUILD(false, "&8>> &fNie mozesz uzyc podanej komendy na terenie wrogiej gildii!"),
     DENY_BUILD_GUILD(false, "&8>> &fNie mozesz budowac na terenie wrogiej gildii!"),
+    DENY_BUILD_GUILD_CAUSE_EXPLOSION(false, "&8>> &fBudowanie zostalo zablokowane przez wybuch, blokada zakonczy sie za &c{TIME}!"),
     DENY_BUILD_GUILD_PERMISSION(false, "&8>> &fNie posiadasz uprawnienia do budowania na terenie swojej gildii!"),
     DENY_BUILD_GUILD_CENTER(false, "&8>> &fNie mozesz budowac w centrum gildii!"),
     DENY_DESTROY_GUILD(false, "&8>> &fNie mozesz niszczyc na terenie wrogiej gildii!"),
