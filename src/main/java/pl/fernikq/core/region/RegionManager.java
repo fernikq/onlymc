@@ -257,7 +257,7 @@ public class RegionManager {
             return checkRegions();
         }
         for(Region region : getRegionsByLocation(location)) {
-            return region.isCanPlayerThrowPearls() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+            return region.isCanPlayerThrowPearls() ? RegionFeedback.ALLOW : RegionFeedback.DENY_PEARLS;
         }
         return RegionFeedback.ALLOW;
     }
