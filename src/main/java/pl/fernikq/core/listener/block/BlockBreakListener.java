@@ -19,7 +19,6 @@ import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;

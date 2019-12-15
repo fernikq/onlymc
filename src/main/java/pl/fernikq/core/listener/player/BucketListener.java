@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
@@ -28,7 +27,7 @@ public class BucketListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlockClicked();
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.BUCKETS);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canUseBuckets(user, block.getLocation());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
@@ -41,7 +40,7 @@ public class BucketListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlockClicked();
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.BUCKETS);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canUseBuckets(user, block.getLocation());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());

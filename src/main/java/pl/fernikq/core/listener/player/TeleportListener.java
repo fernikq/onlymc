@@ -3,7 +3,6 @@ package pl.fernikq.core.listener.player;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,7 +11,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemUtil;
@@ -34,7 +32,7 @@ public class TeleportListener implements Listener {
             return;
         }
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, location, RegionProtectionType.PEARLS);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canThrowPearls(user, location);
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());

@@ -234,6 +234,9 @@ public class CorePlugin extends JavaPlugin {
         new PlayerCommandPreprocessListener(this);
         new PlayerMoveListener(this);
         new InventoryCloseListener(this);
+        new PlayerFoodLevelListener(this);
+        new PlayerPickupItemListener(this);
+        new PlayerDropItemListener(this);
     }
 
     public ConfigManager getConfigManager() {

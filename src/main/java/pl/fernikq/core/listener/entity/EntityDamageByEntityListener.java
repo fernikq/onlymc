@@ -1,7 +1,6 @@
 package pl.fernikq.core.listener.entity;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,7 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.PlayerUtil;
@@ -51,10 +49,15 @@ public class EntityDamageByEntityListener implements Listener {
         }
         Player damager = PlayerUtil.getDamager(event);
         if(damager == null) {
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(null, event.getEntity().getLocation(), false);
+            if(!regionFeedback.isPermit()) {
+                event.setCancelled(true);
+                return;
+            }
             return;
         }
         User damagerUser = this.plugin.getUserManager().getUser(damager.getUniqueId()).getOrNull();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(damagerUser, event.getEntity().getLocation(), RegionProtectionType.FRAMES);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(damagerUser, event.getEntity().getLocation(), true);
         if(!regionFeedback.isPermit()) {
             event.setCancelled(true);
             return;

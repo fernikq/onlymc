@@ -13,23 +13,30 @@ public class Region {
     private Location lowerCorner;
     private Location upperCorner;
     private int priority;
-    private boolean canBuild;
-    private boolean canDestroy;
-    private boolean canThrowPearls;
-    private boolean canUseBuckets;
-    private boolean canExplode;
-    private boolean canHurt;
-    private boolean canSpawnVehicles;
+    private List<String> blockedCommands;
+    private boolean canPlayerBuild;
+    private boolean canPlayerDestroy;
+    private boolean canPlayerThrowPearls;
+    private boolean canPlayerUserBuckets;
+    private boolean canPlayerHurtOther;
+    private boolean canPlayerBeHurt;
+    private boolean canPlayerSpawnVehicles;
+    private boolean canPlayerIgniteBlocks;
+    private boolean canPlayerIgniteTNT;
+    private boolean canPlayerChangePaintings;
+    private boolean canPlayerChangeFrames;
+    private boolean canPlayerDestroyFarmlands;
+    private boolean canPlayerBeHungry;
+    private boolean canPlayerJoinDuringPVP;
+    private boolean canEntityChangePaintings;
+    private boolean canEntityChangeFrames;
+    private boolean canEntityIgniteTNT;
+    private boolean canEntityExplode;
+    private boolean canEntityIgniteBlocks;
     private boolean isStoneGeneratorRegion;
     private boolean allowFireSpread;
-    private boolean canSpreadFire;
     private boolean allowMobSpawning;
-    private boolean canEnterDuringFight;
-    private boolean canDestroyFarmland;
-    private boolean canChangeFrames;
-    private boolean canChangePaintings;
     private boolean allowLeavesDecay;
-    private List<String> blockedCommands;
 
     public boolean isIn(Location location){
         if(!StringUtils.equals(location.getWorld().getName(), this.lowerCorner.getWorld().getName())){
@@ -52,70 +59,6 @@ public class Region {
 
     public int getPriority() {
         return priority;
-    }
-
-    public boolean isCanBuild() {
-        return canBuild;
-    }
-
-    public boolean isCanDestroy() {
-        return canDestroy;
-    }
-
-    public boolean isCanThrowPearls() {
-        return canThrowPearls;
-    }
-
-    public boolean isCanUseBuckets() {
-        return canUseBuckets;
-    }
-
-    public boolean isCanExplode() {
-        return canExplode;
-    }
-
-    public boolean isCanHurt() {
-        return canHurt;
-    }
-
-    public boolean isCanSpawnVehicles() {
-        return canSpawnVehicles;
-    }
-
-    public boolean isStoneGeneratorRegion() {
-        return isStoneGeneratorRegion;
-    }
-
-    public boolean isAllowFireSpread() {
-        return allowFireSpread;
-    }
-
-    public boolean isCanSpreadFire() {
-        return canSpreadFire;
-    }
-
-    public boolean isAllowMobSpawning() {
-        return allowMobSpawning;
-    }
-
-    public boolean isCanEnterDuringFight() {
-        return canEnterDuringFight;
-    }
-
-    public boolean isCanDestroyFarmland() {
-        return canDestroyFarmland;
-    }
-
-    public boolean isCanChangeFrames() {
-        return canChangeFrames;
-    }
-
-    public boolean isCanChangePaintings() {
-        return canChangePaintings;
-    }
-
-    public boolean isAllowLeavesDecay() {
-        return allowLeavesDecay;
     }
 
     public List<String> getBlockedCommands() {
@@ -142,38 +85,195 @@ public class Region {
         return this;
     }
 
-    public Region setCanBuild(boolean canBuild) {
-        this.canBuild = canBuild;
+    public Region setBlockedCommands(List<String> blockedCommands) {
+        this.blockedCommands = blockedCommands;
         return this;
     }
 
-    public Region setCanDestroy(boolean canDestroy) {
-        this.canDestroy = canDestroy;
+    public boolean isCanEntityIgniteBlocks() {
+        return canEntityIgniteBlocks;
+    }
+
+    public boolean isCanPlayerBuild() {
+        return canPlayerBuild;
+    }
+
+    public boolean isCanPlayerDestroy() {
+        return canPlayerDestroy;
+    }
+
+    public boolean isCanPlayerThrowPearls() {
+        return canPlayerThrowPearls;
+    }
+
+    public boolean isCanPlayerUserBuckets() {
+        return canPlayerUserBuckets;
+    }
+
+    public boolean isCanPlayerHurtOther() {
+        return canPlayerHurtOther;
+    }
+
+    public boolean isCanPlayerBeHurt() {
+        return canPlayerBeHurt;
+    }
+
+    public boolean isCanPlayerSpawnVehicles() {
+        return canPlayerSpawnVehicles;
+    }
+
+    public boolean isCanPlayerIgniteBlocks() {
+        return canPlayerIgniteBlocks;
+    }
+
+    public boolean isCanPlayerIgniteTNT() {
+        return canPlayerIgniteTNT;
+    }
+
+    public boolean isCanPlayerChangePaintings() {
+        return canPlayerChangePaintings;
+    }
+
+    public boolean isCanPlayerChangeFrames() {
+        return canPlayerChangeFrames;
+    }
+
+    public boolean isCanPlayerDestroyFarmlands() {
+        return canPlayerDestroyFarmlands;
+    }
+
+    public boolean isCanPlayerBeHungry() {
+        return canPlayerBeHungry;
+    }
+
+    public boolean isCanPlayerJoinDuringPVP() {
+        return canPlayerJoinDuringPVP;
+    }
+
+    public boolean isCanEntityChangePaintings() {
+        return canEntityChangePaintings;
+    }
+
+    public boolean isCanEntityChangeFrames() {
+        return canEntityChangeFrames;
+    }
+
+    public boolean isCanEntityIgniteTNT() {
+        return canEntityIgniteTNT;
+    }
+
+    public boolean isCanEntityExplode() {
+        return canEntityExplode;
+    }
+
+    public boolean isStoneGeneratorRegion() {
+        return isStoneGeneratorRegion;
+    }
+
+    public boolean isAllowFireSpread() {
+        return allowFireSpread;
+    }
+
+    public boolean isAllowMobSpawning() {
+        return allowMobSpawning;
+    }
+
+    public boolean isAllowLeavesDecay() {
+        return allowLeavesDecay;
+    }
+
+    public Region setCanPlayerBuild(boolean canPlayerBuild) {
+        this.canPlayerBuild = canPlayerBuild;
         return this;
     }
 
-    public Region setCanThrowPearls(boolean canThrowPearls) {
-        this.canThrowPearls = canThrowPearls;
+    public Region setCanPlayerDestroy(boolean canPlayerDestroy) {
+        this.canPlayerDestroy = canPlayerDestroy;
         return this;
     }
 
-    public Region setCanUseBuckets(boolean canUseBuckets) {
-        this.canUseBuckets = canUseBuckets;
+    public Region setCanEntityIgniteBlocks(boolean canEntityIgniteBlocks) {
+        this.canEntityIgniteBlocks = canEntityIgniteBlocks;
         return this;
     }
 
-    public Region setCanExplode(boolean canExplode) {
-        this.canExplode = canExplode;
+    public Region setCanPlayerThrowPearls(boolean canPlayerThrowPearls) {
+        this.canPlayerThrowPearls = canPlayerThrowPearls;
         return this;
     }
 
-    public Region setCanHurt(boolean canHurt) {
-        this.canHurt = canHurt;
+    public Region setCanPlayerUserBuckets(boolean canPlayerUserBuckets) {
+        this.canPlayerUserBuckets = canPlayerUserBuckets;
         return this;
     }
 
-    public Region setCanSpawnVehicles(boolean canSpawnVehicles) {
-        this.canSpawnVehicles = canSpawnVehicles;
+    public Region setCanPlayerHurtOther(boolean canPlayerHurtOther) {
+        this.canPlayerHurtOther = canPlayerHurtOther;
+        return this;
+    }
+
+    public Region setCanPlayerBeHurt(boolean canPlayerBeHurt) {
+        this.canPlayerBeHurt = canPlayerBeHurt;
+        return this;
+    }
+
+    public Region setCanPlayerSpawnVehicles(boolean canPlayerSpawnVehicles) {
+        this.canPlayerSpawnVehicles = canPlayerSpawnVehicles;
+        return this;
+    }
+
+    public Region setCanPlayerIgniteBlocks(boolean canPlayerIgniteBlocks) {
+        this.canPlayerIgniteBlocks = canPlayerIgniteBlocks;
+        return this;
+    }
+
+    public Region setCanPlayerIgniteTNT(boolean canPlayerIgniteTNT) {
+        this.canPlayerIgniteTNT = canPlayerIgniteTNT;
+        return this;
+    }
+
+    public Region setCanPlayerChangePaintings(boolean canPlayerChangePaintings) {
+        this.canPlayerChangePaintings = canPlayerChangePaintings;
+        return this;
+    }
+
+    public Region setCanPlayerChangeFrames(boolean canPlayerChangeFrames) {
+        this.canPlayerChangeFrames = canPlayerChangeFrames;
+        return this;
+    }
+
+    public Region setCanPlayerDestroyFarmlands(boolean canPlayerDestroyFarmlands) {
+        this.canPlayerDestroyFarmlands = canPlayerDestroyFarmlands;
+        return this;
+    }
+
+    public Region setCanPlayerBeHungry(boolean canPlayerBeHungry) {
+        this.canPlayerBeHungry = canPlayerBeHungry;
+        return this;
+    }
+
+    public Region setCanPlayerJoinDuringPVP(boolean canPlayerJoinDuringPVP) {
+        this.canPlayerJoinDuringPVP = canPlayerJoinDuringPVP;
+        return this;
+    }
+
+    public Region setCanEntityChangePaintings(boolean canEntityChangePaintings) {
+        this.canEntityChangePaintings = canEntityChangePaintings;
+        return this;
+    }
+
+    public Region setCanEntityChangeFrames(boolean canEntityChangeFrames) {
+        this.canEntityChangeFrames = canEntityChangeFrames;
+        return this;
+    }
+
+    public Region setCanEntityIgniteTNT(boolean canEntityIgniteTNT) {
+        this.canEntityIgniteTNT = canEntityIgniteTNT;
+        return this;
+    }
+
+    public Region setCanEntityExplode(boolean canEntityExplode) {
+        this.canEntityExplode = canEntityExplode;
         return this;
     }
 
@@ -187,43 +287,13 @@ public class Region {
         return this;
     }
 
-    public Region setCanSpreadFire(boolean canSpreadFire) {
-        this.canSpreadFire = canSpreadFire;
-        return this;
-    }
-
     public Region setAllowMobSpawning(boolean allowMobSpawning) {
         this.allowMobSpawning = allowMobSpawning;
         return this;
     }
 
-    public Region setCanEnterDuringFight(boolean canEnterDuringFight) {
-        this.canEnterDuringFight = canEnterDuringFight;
-        return this;
-    }
-
-    public Region setCanDestroyFarmland(boolean canDestroyFarmland) {
-        this.canDestroyFarmland = canDestroyFarmland;
-        return this;
-    }
-
-    public Region setCanChangeFrames(boolean canDestroyFrames) {
-        this.canChangeFrames = canDestroyFrames;
-        return this;
-    }
-
-    public Region setCanChangePaintings(boolean canDestroyPaintings) {
-        this.canChangePaintings = canDestroyPaintings;
-        return this;
-    }
-
     public Region setAllowLeavesDecay(boolean allowLeavesDecay) {
         this.allowLeavesDecay = allowLeavesDecay;
-        return this;
-    }
-
-    public Region setBlockedCommands(List<String> blockedCommands) {
-        this.blockedCommands = blockedCommands;
         return this;
     }
 }

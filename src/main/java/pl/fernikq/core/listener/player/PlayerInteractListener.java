@@ -17,9 +17,7 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
-import pl.fernikq.core.guild.region.GuildRegion;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.*;
 
@@ -41,12 +39,12 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onRegion(PlayerInteractEvent event){
+    public void onInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
         if(player.getItemInHand() != null && event.getAction() == Action.RIGHT_CLICK_BLOCK && this.vehicles.contains(player.getItemInHand().getType())){
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.VEHICLES);
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().canSpawnVehicles(user, block.getLocation());
             if(!regionFeedback.isPermit()){
                 event.setCancelled(true);
                 ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
@@ -65,7 +63,7 @@ public class PlayerInteractListener implements Listener {
         }
         if(block.getType() == Material.TNT && event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand() != null && player.getItemInHand().getType() == Material.FLINT_AND_STEEL){
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, block.getLocation(), RegionProtectionType.IGNITE_TNT);
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().canIgniteTNT(user, block.getLocation(), true);
             if(!regionFeedback.isPermit()) {
                 event.setCancelled(true);
                 return;

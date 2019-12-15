@@ -9,15 +9,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
-import pl.fernikq.core.util.ChatUtil;
-
-import java.util.List;
-import java.util.Map;
 
 public class HangingBreakListener implements Listener {
 
@@ -37,7 +31,7 @@ public class HangingBreakListener implements Listener {
                 Player player = (Player)remover;
                 if(entity.getType() == EntityType.PAINTING){
                     User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-                    RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, entity.getLocation(), RegionProtectionType.PAINTINGS);
+                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangePaintings(user, entity.getLocation(), true);
                     if(!regionFeedback.isPermit()){
                         event.setCancelled(true);
                         return;
@@ -46,7 +40,7 @@ public class HangingBreakListener implements Listener {
                 }
                 if(entity.getType() == EntityType.ITEM_FRAME){
                     User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-                    RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, entity.getLocation(), RegionProtectionType.FRAMES);
+                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(user, entity.getLocation(), true);
                     if(!regionFeedback.isPermit()){
                         event.setCancelled(true);
                         return;
@@ -55,7 +49,7 @@ public class HangingBreakListener implements Listener {
                 }
             }else{
                 if(entity.getType() == EntityType.PAINTING){
-                    RegionFeedback regionFeedback = this.plugin.getRegionManager().can(entity.getLocation(), RegionProtectionType.PAINTINGS);
+                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangePaintings(null, entity.getLocation(), false);
                     if(!regionFeedback.isPermit()){
                         event.setCancelled(true);
                         return;
@@ -63,7 +57,7 @@ public class HangingBreakListener implements Listener {
                     return;
                 }
                 if(entity.getType() == EntityType.ITEM_FRAME){
-                    RegionFeedback regionFeedback = this.plugin.getRegionManager().can(entity.getLocation(), RegionProtectionType.FRAMES);
+                    RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(null, entity.getLocation(), false);
                     if(!regionFeedback.isPermit()){
                         event.setCancelled(true);
                         return;
@@ -75,7 +69,7 @@ public class HangingBreakListener implements Listener {
         }
         if(event.getCause() == HangingBreakEvent.RemoveCause.EXPLOSION){
             if(entity.getType() == EntityType.PAINTING){
-                RegionFeedback regionFeedback = this.plugin.getRegionManager().can(entity.getLocation(), RegionProtectionType.PAINTINGS);
+                RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangePaintings(null, entity.getLocation(), false);
                 if(!regionFeedback.isPermit()){
                     event.setCancelled(true);
                     return;
@@ -83,7 +77,7 @@ public class HangingBreakListener implements Listener {
                 return;
             }
             if(entity.getType() == EntityType.ITEM_FRAME){
-                RegionFeedback regionFeedback = this.plugin.getRegionManager().can(entity.getLocation(), RegionProtectionType.FRAMES);
+                RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(null, entity.getLocation(), false);
                 if(!regionFeedback.isPermit()){
                     event.setCancelled(true);
                     return;

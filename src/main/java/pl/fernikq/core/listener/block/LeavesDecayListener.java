@@ -8,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.LeavesDecayEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 
 public class LeavesDecayListener implements Listener {
 
@@ -22,7 +21,7 @@ public class LeavesDecayListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onRegion(LeavesDecayEvent event){
         Block block = event.getBlock();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(block.getLocation(), RegionProtectionType.LEAVES);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().allowLeavesDecay(block.getLocation());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             return;

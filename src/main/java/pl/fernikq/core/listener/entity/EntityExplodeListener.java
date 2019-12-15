@@ -12,7 +12,6 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.TimeUtil;
 

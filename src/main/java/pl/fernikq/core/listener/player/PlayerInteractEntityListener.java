@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
-import pl.fernikq.core.region.RegionProtectionType;
 import pl.fernikq.core.user.User;
 
 public class PlayerInteractEntityListener implements Listener {
@@ -30,7 +29,7 @@ public class PlayerInteractEntityListener implements Listener {
             return;
         }
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().can(user, entity.getLocation(), RegionProtectionType.FRAMES);
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(user, entity.getLocation(), true);
         if(!regionFeedback.isPermit()) {
             event.setCancelled(true);
             return;

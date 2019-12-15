@@ -84,15 +84,15 @@ public class RegionManager {
             Location upperCorner = new Location(Bukkit.getWorld(c.getString("location.world")), c.getInt("location.upper.x"),  c.getInt("location.upper.y"), c.getInt("location.upper.z"));
             List<String> blockedCommands = c.getStringList("blockedCommands");
             Region region = new Region().setRegionName(c.getString("name")).setLowerCorner(lowerCorner).setUpperCorner(upperCorner).
-                    setPriority(c.getInt("priority")).setCanBuild(c.getBoolean("canBuild")).
-                    setCanDestroy(c.getBoolean("canDestroy")).setCanThrowPearls(c.getBoolean("canThrowPearls")).
-                    setCanUseBuckets(c.getBoolean("canUseBuckets")).setCanExplode(c.getBoolean("canExplode")).
-                    setCanHurt(c.getBoolean("canHurt")).setCanSpawnVehicles(c.getBoolean("canSpawnVehicles")).
-                    setStoneGeneratorRegion(c.getBoolean("isStoneGeneratorRegion")).setAllowFireSpread(c.getBoolean("allowFireSpread")).
-                    setCanSpreadFire(c.getBoolean("canSpreadFire")).setAllowMobSpawning(c.getBoolean("allowMobSpawning")).
-                    setCanEnterDuringFight(c.getBoolean("canEnterDuringFight")).setCanChangePaintings(c.getBoolean("canChangePaintings")).
-                    setCanChangeFrames(c.getBoolean("canChangeFrames")).setCanDestroyFarmland(c.getBoolean("canDestroyFarmlands")).
-                    setAllowLeavesDecay(c.getBoolean("allowLeavesDecay")).setBlockedCommands(blockedCommands);
+                    setPriority(c.getInt("priority")).setBlockedCommands(blockedCommands).setCanPlayerBuild(c.getBoolean("player.canBuild")).setCanPlayerDestroy(c.getBoolean("player.canDestroy"))
+                    .setCanPlayerThrowPearls(c.getBoolean("player.canThrowPearls")).setCanPlayerUserBuckets(c.getBoolean("player.canUseBuckets")).setCanPlayerHurtOther(c.getBoolean("player.canHurtOther"))
+                    .setCanPlayerBeHurt(c.getBoolean("player.canBeHurt")).setCanPlayerSpawnVehicles(c.getBoolean("player.canSpawnVehicles")).setCanPlayerIgniteBlocks(c.getBoolean("player.canIgniteBlocks"))
+                    .setCanPlayerIgniteTNT(c.getBoolean("player.canIgniteTNT")).setCanPlayerChangePaintings(c.getBoolean("player.canChangePaintings")).setCanPlayerChangeFrames(c.getBoolean("player.canChangeFrames"))
+                    .setCanPlayerDestroyFarmlands(c.getBoolean("player.canDestroyFarmlands")).setCanPlayerBeHungry(c.getBoolean("player.canBeHungry")).setCanPlayerJoinDuringPVP(c.getBoolean("player.canJoinDuringPVP"))
+                    .setCanEntityChangePaintings(c.getBoolean("entities.canChangePaintings")).setCanEntityChangeFrames(c.getBoolean("entities.canChangeFrames"))
+                    .setCanEntityExplode(c.getBoolean("entities.canExplode")).setCanEntityIgniteTNT(c.getBoolean("entities.canIgniteTNT")).setStoneGeneratorRegion(c.getBoolean("other.isStoneGeneratorRegion"))
+                    .setAllowFireSpread(c.getBoolean("other.allowFireSpread")).setAllowLeavesDecay(c.getBoolean("other.allowLeavesDecay")).setAllowMobSpawning(c.getBoolean("other.allowMobSpawning"))
+                    .setCanEntityIgniteBlocks(c.getBoolean("entities.canIgniteBlocks"));
             this.regions.add(region);
         }
     }
@@ -138,7 +138,7 @@ public class RegionManager {
             return checkRegions();
         }
         for(Region region : getRegionsByLocation(location)){
-            return region.isCanExplode() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+            return region.isCanEntityExplode() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
         }
         return RegionFeedback.ALLOW;
     }
@@ -176,7 +176,7 @@ public class RegionManager {
             return checkRegions();
         }
         for(Region region : getRegionsByLocation(location)){
-            return region.isCanBuild() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUILD_SPAWN;
+            return region.isCanPlayerBuild() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUILD_SPAWN;
         }
         return RegionFeedback.ALLOW;
     }
@@ -211,7 +211,7 @@ public class RegionManager {
             return checkRegions();
         }
         for(Region region : getRegionsByLocation(location)){
-            if(region.isCanDestroy()){
+            if(region.isCanPlayerDestroy()){
                 if(region.isStoneGeneratorRegion()){
                     if(user.asPlayer().getItemInHand() != null && user.asPlayer().getItemInHand().getType() == Material.GOLD_PICKAXE){
                         return RegionFeedback.DENY_DESTROY_GOLD_PICKAXE;
@@ -225,243 +225,306 @@ public class RegionManager {
     }
 
     public RegionFeedback canDestroyFarmlands(User user, Location location){
+        if(user == null) {
+            return RegionFeedback.DENY_ERROR;
+        }
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(guild != null) {
+            if(!user.hasGuild()) {
+                return RegionFeedback.DENY;
+            }
+            if(!user.getGuild().equals(guild)) {
+                return RegionFeedback.DENY;
+            }
+        }
         if(checkRegions() != null){
             return checkRegions();
         }
-        for(Region region : getRegionsByLocation(location)){
-            return region.isCanDestroyFarmland() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        for(Region region : getRegionsByLocation(location)) {
+            return region.isCanPlayerDestroyFarmlands() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canThrowPearls(User user, Location location) {
+        if(user == null) {
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)) {
+            return RegionFeedback.ALLOW;
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)) {
+            return region.isCanPlayerThrowPearls() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canUseBuckets(User user, Location location) {
+        if(user == null) {
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)) {
+            return RegionFeedback.ALLOW;
         }
         Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
         if(guild != null){
             if(!user.hasGuild()){
-                return RegionFeedback.DENY;
+                return RegionFeedback.DENY_BUCKETS_GUILD;
             }
             if(!user.getGuild().equals(guild)){
-                return RegionFeedback.DENY;
+                return RegionFeedback.DENY_BUCKETS_GUILD;
             }
+            if(guild.getRegion().isInCenter(location)){
+                return RegionFeedback.DENY_BUCKETS_GUILD_CENTER;
+            }
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanPlayerUserBuckets() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUCKETS;
         }
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback can(Location location, RegionProtectionType type){
-        switch(type){
-            case FIRE_SPREAD:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    return RegionFeedback.DENY;
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isAllowFireSpread() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case MOB_SPAWNING:{
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isAllowMobSpawning() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case FRAMES:{
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanChangeFrames() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case PAINTINGS:{
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanChangePaintings() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case LEAVES:{
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isAllowLeavesDecay() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case HURT:{
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanHurt() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case CAN_FIRE_SPREAD:{
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanSpreadFire() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-        }
-        System.out.println("can without player switch failed" + type.name());
-        return RegionFeedback.ALLOW;
-    }
-
-    public RegionFeedback can(User user, Location location, RegionProtectionType type){
-        if(user == null){
+    public RegionFeedback canSpawnVehicles(User user, Location location) {
+        if(user == null) {
             return RegionFeedback.DENY_ERROR;
         }
-        if(user.canByGroup(UserGroup.ADMIN)){
+        if(user.canByGroup(UserGroup.ADMIN)) {
             return RegionFeedback.ALLOW;
         }
-        switch(type){
-            case IGNITE_TNT:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanExplode() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(guild != null){
+            if(!user.hasGuild()){
+                return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD;
             }
-            case CAN_FIRE_SPREAD:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanSpreadFire() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
+            if(!user.getGuild().equals(guild)){
+                return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD;
             }
-            case FRAMES:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanChangeFrames() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case PAINTINGS:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanChangePaintings() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case BUCKETS:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY_BUCKETS_GUILD;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY_BUCKETS_GUILD;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY_BUCKETS_GUILD_CENTER;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanUseBuckets() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUCKETS;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case PEARLS:{
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanThrowPearls() ? RegionFeedback.ALLOW : RegionFeedback.DENY_PEARLS;
-                }
-                return RegionFeedback.ALLOW;
-            }
-            case VEHICLES:{
-                Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
-                if(guild != null){
-                    if(!user.hasGuild()){
-                        return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD;
-                    }
-                    if(!user.getGuild().equals(guild)){
-                        return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD;
-                    }
-                    if(guild.getRegion().isInCenter(location)){
-                        return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD_CENTER;
-                    }
-                }
-                if(checkRegions() != null){
-                    return checkRegions();
-                }
-                for(Region region : getRegionsByLocation(location)){
-                    return region.isCanSpawnVehicles() ? RegionFeedback.ALLOW : RegionFeedback.DENY_SPAWN_VEHICLES;
-                }
-                return RegionFeedback.ALLOW;
+            if(guild.getRegion().isInCenter(location)){
+                return RegionFeedback.DENY_SPAWN_VEHICLES_GUILD_CENTER;
             }
         }
-        System.out.println("can with player switch failed" + type.name() + user.getName());
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanPlayerSpawnVehicles() ? RegionFeedback.ALLOW : RegionFeedback.DENY_SPAWN_VEHICLES;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canIgniteBlocks(User user, Location location, boolean isPlayer) {
+        if(isPlayer){
+            if(user == null) {
+                return RegionFeedback.DENY_ERROR;
+            }
+            if(user.canByGroup(UserGroup.ADMIN)) {
+                return RegionFeedback.ALLOW;
+            }
+            Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+            if(guild != null){
+                if(!user.hasGuild()){
+                    return RegionFeedback.DENY;
+                }
+                if(!user.getGuild().equals(guild)){
+                    return RegionFeedback.DENY;
+                }
+                if(guild.getRegion().isInCenter(location)){
+                    return RegionFeedback.DENY;
+                }
+            }
+            if(checkRegions() != null){
+                return checkRegions();
+            }
+            for(Region region : getRegionsByLocation(location)){
+                return region.isCanPlayerIgniteBlocks() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+            }
+            return RegionFeedback.ALLOW;
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanEntityIgniteBlocks() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canIgniteTNT(User user, Location location, boolean isPlayer) {
+        if(isPlayer){
+            if(user == null) {
+                return RegionFeedback.DENY_ERROR;
+            }
+            if(user.canByGroup(UserGroup.ADMIN)) {
+                return RegionFeedback.ALLOW;
+            }
+            Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+            if(guild != null){
+                if(!user.hasGuild()){
+                    return RegionFeedback.DENY;
+                }
+                if(!user.getGuild().equals(guild)){
+                    return RegionFeedback.DENY;
+                }
+                if(guild.getRegion().isInCenter(location)){
+                    return RegionFeedback.DENY;
+                }
+            }
+            if(checkRegions() != null){
+                return checkRegions();
+            }
+            for(Region region : getRegionsByLocation(location)){
+                return region.isCanPlayerIgniteTNT() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+            }
+            return RegionFeedback.ALLOW;
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanEntityIgniteTNT() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canChangeFrames(User user, Location location, boolean isPlayer) {
+        if(isPlayer){
+            if(user == null) {
+                return RegionFeedback.DENY_ERROR;
+            }
+            if(user.canByGroup(UserGroup.ADMIN)) {
+                return RegionFeedback.ALLOW;
+            }
+            Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+            if(guild != null){
+                if(!user.hasGuild()){
+                    return RegionFeedback.DENY;
+                }
+                if(!user.getGuild().equals(guild)){
+                    return RegionFeedback.DENY;
+                }
+                if(guild.getRegion().isInCenter(location)){
+                    return RegionFeedback.DENY;
+                }
+            }
+            if(checkRegions() != null){
+                return checkRegions();
+            }
+            for(Region region : getRegionsByLocation(location)){
+                return region.isCanPlayerChangeFrames() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+            }
+            return RegionFeedback.ALLOW;
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanEntityChangeFrames() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canChangePaintings(User user, Location location, boolean isPlayer) {
+        if(isPlayer){
+            if(user == null) {
+                return RegionFeedback.DENY_ERROR;
+            }
+            if(user.canByGroup(UserGroup.ADMIN)) {
+                return RegionFeedback.ALLOW;
+            }
+            Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+            if(guild != null){
+                if(!user.hasGuild()){
+                    return RegionFeedback.DENY;
+                }
+                if(!user.getGuild().equals(guild)){
+                    return RegionFeedback.DENY;
+                }
+                if(guild.getRegion().isInCenter(location)){
+                    return RegionFeedback.DENY;
+                }
+            }
+            if(checkRegions() != null){
+                return checkRegions();
+            }
+            for(Region region : getRegionsByLocation(location)){
+                return region.isCanPlayerChangePaintings() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+            }
+            return RegionFeedback.ALLOW;
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanEntityChangePaintings() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canBeHungry(Location location) {
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanPlayerBeHungry() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canJoinDuringPVP(User user, Location location) {
+        if(user == null) {
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)) {
+            return RegionFeedback.ALLOW;
+        }
+        //TODO fight and region check
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback allowFireSpread(Location location) {
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(guild != null){
+            return RegionFeedback.DENY;
+        }
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isAllowFireSpread() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback allowMobSpawning(Location location) {
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isAllowMobSpawning() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback allowLeavesDecay(Location location) {
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isAllowLeavesDecay() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
+        return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canHurt(Location location){
+        if(checkRegions() != null){
+            return checkRegions();
+        }
+        for(Region region : getRegionsByLocation(location)){
+            return region.isCanPlayerBeHurt() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+        }
         return RegionFeedback.ALLOW;
     }
 
@@ -485,26 +548,26 @@ public class RegionManager {
             return RegionFeedback.ALLOW;
         }
         if(damagerRegion == null){
-            if(victimRegion.isCanHurt()){
+            if(victimRegion.isCanPlayerHurtOther()){
                 return RegionFeedback.ALLOW;
             }else{
                 return RegionFeedback.DENY;
             }
         }
         if(victimRegion == null){
-            if(damagerRegion.isCanHurt()){
+            if(damagerRegion.isCanPlayerHurtOther()){
                 return RegionFeedback.ALLOW;
             }else{
                 return RegionFeedback.DENY_PVP_OTHER_REGION;
             }
         }
-        if(!victimRegion.isCanHurt() && !damagerRegion.isCanHurt()){
+        if(!victimRegion.isCanPlayerHurtOther() && !damagerRegion.isCanPlayerHurtOther()){
             return RegionFeedback.DENY;
         }
-        if(damagerRegion.isCanHurt() && !victimRegion.isCanHurt()){
+        if(damagerRegion.isCanPlayerHurtOther() && !victimRegion.isCanPlayerHurtOther()){
             return RegionFeedback.DENY;
         }
-        if(!damagerRegion.isCanHurt() && victimRegion.isCanHurt()){
+        if(!damagerRegion.isCanPlayerHurtOther() && victimRegion.isCanPlayerHurtOther()){
             return RegionFeedback.DENY_PVP_OTHER_REGION;
         }
         return RegionFeedback.ALLOW;

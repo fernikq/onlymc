@@ -5,28 +5,38 @@ Regions:
     location:
       world: 'world'
       lower:
-        x: -27
+        x: 0
         y: 0
-        z: -28
+        z: 0
       upper:
-        x: -18
+        x: 1
         y: 256
-        z: -21
+        z: 1
     priority: 1
-    canBuild: false
-    canDestroy: false
-    canThrowPearls: false
-    canUseBuckets: false
-    canExplode: false
-    canHurt: false
-    canSpawnVehicles: false
-    isStoneGeneratorRegion: false
-    allowFireSpread: false
-    canSpreadFire: false
-    allowMobSpawning: false
-    canEnterDuringFight: false
-    canChangePaintings: false
-    canChangeFrames: false
-    canDestroyFarmlands: false
-    allowLeavesDecay: false
     blockedCommands: []
+    player:
+      canBuild: false
+      canDestroy: false
+      canThrowPearls: false
+      canUseBuckets: false
+      canHurtOther: false
+      canBeHurt: false
+      canSpawnVehicles: false
+      canIgniteBlocks: false
+      canIgniteTNT: false
+      canChangePaintings: false
+      canChangeFrames: false
+      canDestroyFarmlands: false
+      canBeHungry: false
+      canJoinDuringPVP: false
+    entities:
+      canChangePaintings: false
+      canIgniteTNT: false
+      canIgniteBlocks: false
+      canExplode: false
+      canChangeFrames: false
+    other:
+      isStoneGeneratorRegion: false
+      allowFireSpread: false
+      allowMobSpawning: false
+      allowLeavesDecay: false
