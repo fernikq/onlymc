@@ -13,13 +13,13 @@ import java.io.IOException;
 
 public class SerializationUtil {
 
-    public static String itemStackToString(ItemStack[] inventory) {
+    public static String itemStackToString(ItemStack[] itemstack) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
-            dataOutput.writeInt(inventory.length);
-            for (int i = 0; i < inventory.length; i++) {
-                dataOutput.writeObject(inventory[i]);
+            dataOutput.writeInt(itemstack.length);
+            for (int i = 0; i < itemstack.length; i++) {
+                dataOutput.writeObject(itemstack[i]);
             }
             dataOutput.close();
             return Base64Coder.encodeLines(outputStream.toByteArray());

@@ -529,6 +529,9 @@ public class RegionManager {
     }
 
     public RegionFeedback canHurt(User damager, User victim){
+        if(damager == null || victim == null) {
+            return RegionFeedback.DENY_ERROR;
+        }
         if(damager.hasGuild() && victim.hasGuild()){
             if(damager.getGuild().equals(victim.getGuild())){
                 if(!damager.getGuild().isFriendlyFire()){

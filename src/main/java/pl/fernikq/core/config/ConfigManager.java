@@ -71,6 +71,7 @@ public class ConfigManager {
     public static int guildTreasureSizeThirdLevelCost;
     public static String guildMaxTimeRenew;
     public static int guildTimeRenewCost;
+    public static int playerFightTime;
     public static String guildDenyBuildTimeAfterExplosion;
     public static List<String> guildPlayerItemsToCreate;
     public static List<String> guildVipItemsToCreate;
@@ -181,5 +182,6 @@ public class ConfigManager {
         guildMaxTimeRenew = "7d";
         guildTimeRenewCost = 2500;
         guildDenyBuildTimeAfterExplosion = "1m";
+        playerFightTime = 30;
     }
 }

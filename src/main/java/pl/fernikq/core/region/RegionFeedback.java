@@ -37,6 +37,7 @@ public enum RegionFeedback {
 
     private RegionFeedback(boolean permit){
         this.permit = permit;
+        this.feedbackMessage = "";
     }
 
     private RegionFeedback(boolean permit, String feedbackMessage){

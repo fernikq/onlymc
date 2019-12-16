@@ -61,6 +61,8 @@ public class MessagesManager {
     public static String guildDestroyMessage;
     public static String guildAttackMessage;
     public static String guildTNTMessage;
+    public static String playerFightMessage;
+    public static String playerFightPlusAssistMessage;
     public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
@@ -176,5 +178,7 @@ public class MessagesManager {
         guildJoinCuboidMessage = "&8>> &aWkroczyles {n}na teren gildii &8[&a{TAG}&8]";
         guildIntruderMessage = "&8[&c&lINTRUZ&8] {n}Gracz &c{PLAYER} {n}wszedl na teren twojej gildii!";
         guildTNTMessage = "&8[&c&lTNT&8] {n}Na terenie twojej gildii wybuchlo &cTNT {n}budowanie zostalo zablokowane na &c{TIME}!";
+        playerFightMessage = "&8>> {n}Gracz {VICTIM-GUILD}{c}{VICTIM} &8[&f-&c{VICTIM-POINTS}&8] {n}zostal zabity przez {KILLER-GUILD}{c}{KILLER} &8[&f+&a{KILLER-POINTS}&8]";
+        playerFightPlusAssistMessage = "&8>> {n}Przy zabojstwie asystowal {ASSIST-GUILD}{c}{ASSIST} &8[&f+&a{ASSIST-POINTS}&8]";
     }
 }

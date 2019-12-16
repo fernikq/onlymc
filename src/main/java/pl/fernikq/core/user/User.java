@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import pl.fernikq.core.dummy.Dummy;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.user.fight.UserFight;
 import pl.fernikq.core.user.home.Home;
 
 import java.sql.ResultSet;
@@ -24,6 +25,7 @@ public class User {
     private UserGroup group;
     private UserStat userStat;
     private UserChat userChat;
+    private UserFight userFight;
 
     private Map<String, Home> homes;
     private boolean godMode;
@@ -51,6 +53,7 @@ public class User {
         this.dummy = new Dummy(this);
         this.guild = null;
         this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
+        this.userFight = new UserFight(this);
     }
 
     public User(ResultSet rs){
@@ -69,6 +72,7 @@ public class User {
             this.dummy = new Dummy(this);
             this.guild = null;
             this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
+            this.userFight = new UserFight(this);
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -108,6 +112,10 @@ public class User {
 
     public void setKitTime(String kitName, long time){
         this.kitTimes.put(kitName, time);
+    }
+
+    public UserFight getUserFight() {
+        return userFight;
     }
 
     public void setFirstAddress(String firstAddress) {
@@ -187,9 +195,6 @@ public class User {
     }
 
     public UserStat getUserStat() {
-        if(userStat == null){
-            this.userStat = new UserStat(this);
-        }
         return userStat;
     }
 

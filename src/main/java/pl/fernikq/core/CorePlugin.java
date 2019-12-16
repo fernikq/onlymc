@@ -237,6 +237,7 @@ public class CorePlugin extends JavaPlugin {
         new PlayerFoodLevelListener(this);
         new PlayerPickupItemListener(this);
         new PlayerDropItemListener(this);
+        new PlayerDeathListener(this);
     }
 
     public ConfigManager getConfigManager() {

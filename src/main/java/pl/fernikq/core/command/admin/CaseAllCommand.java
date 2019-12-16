@@ -37,8 +37,8 @@ public class CaseAllCommand extends CustomCommand {
         if(amount < 1){
             return ChatUtil.sendMessage(sender, Lang.integerLessThanOne);
         }
+        ItemBuilder itemBuilder = new ItemBuilder(this.plugin.getDropManager().getPremiumCaseItem().clone()).setAmount(amount);
         Bukkit.getOnlinePlayers().forEach(online -> {
-            ItemBuilder itemBuilder = new ItemBuilder(this.plugin.getDropManager().getPremiumCaseItem().clone()).setAmount(amount);
             ItemUtil.giveItems(online, itemBuilder.toItemStack());
             ChatUtil.sendMessage(online, "&8>> {n}Kazdy na serwerze otrzymal "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}w ilosci {c}"+amount);
         });
