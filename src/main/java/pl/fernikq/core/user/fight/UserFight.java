@@ -52,8 +52,8 @@ public class UserFight {
         return this.lastAttackTime >= System.currentTimeMillis();
     }
 
-    public boolean wasDuringFight(){
-        return this.lastAttackTime > System.currentTimeMillis() - TimeUnit.SECONDS.toMillis(5);
+    public boolean wasDuringFight(int seconds){
+        return this.lastAttackTime > System.currentTimeMillis() - TimeUnit.SECONDS.toMillis(seconds);
     }
 
     public int getTimeToEnd(){
@@ -65,6 +65,10 @@ public class UserFight {
 
     public User getUser() {
         return user;
+    }
+
+    public long getLastAttackTime() {
+        return lastAttackTime;
     }
 
     public void setLastAttacker(User lastAttacker) {

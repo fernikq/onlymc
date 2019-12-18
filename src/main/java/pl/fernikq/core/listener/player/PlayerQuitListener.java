@@ -24,6 +24,14 @@ public class PlayerQuitListener implements Listener {
         Player player = event.getPlayer();
         event.setQuitMessage(ChatUtil.fixColor(MessagesManager.playerQuitMessage.replace("{PLAYER}", player.getName())));
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+            if(user.getUserFight().isDuringFight()){
+                player.setHealth(0.0);
+                user.getUserFight().removeFight();
+                String message = MessagesManager.playerFightLogoutMessage;
+                message = message.replace("{PLAYER}", user.getName());
+                String finalMessage = message;
+                Bukkit.getOnlinePlayers().forEach(o -> ChatUtil.sendMessage(o, finalMessage));
+            }
             this.plugin.getUserManager().updateUser(user);
             user.setScoreboard(null);
         });
