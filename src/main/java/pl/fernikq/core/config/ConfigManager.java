@@ -72,6 +72,7 @@ public class ConfigManager {
     public static String guildMaxTimeRenew;
     public static int guildTimeRenewCost;
     public static int playerFightTime;
+    public static int blockBuildingBelowYDuringFight;
     public static double punchingLinePower;
     public static String guildDenyBuildTimeAfterExplosion;
     public static List<String> guildPlayerItemsToCreate;
@@ -185,5 +186,6 @@ public class ConfigManager {
         guildDenyBuildTimeAfterExplosion = "1m";
         playerFightTime = 30;
         punchingLinePower = -1.2;
+        blockBuildingBelowYDuringFight = 50;
     }
 }

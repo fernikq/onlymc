@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
@@ -38,6 +39,10 @@ public class BlockPlaceListener implements Listener {
             event.setCancelled(true);
             if(regionFeedback.equals(RegionFeedback.DENY_BUILD_GUILD_CAUSE_EXPLOSION)){
                 ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage().replace("{TIME}", TimeUtil.getTimeToString(user.getGuild().getRegion().getLastExplodeTime() - System.currentTimeMillis())));
+                return;
+            }
+            if(regionFeedback.equals(RegionFeedback.DENY_BUILD_PVP_Y)){
+                ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage().replace("{Y}", Integer.toString(ConfigManager.blockBuildingBelowYDuringFight)));
                 return;
             }
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());

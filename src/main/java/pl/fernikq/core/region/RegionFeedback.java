@@ -9,6 +9,7 @@ public enum RegionFeedback {
 
     DENY_DESTROY_SPAWN(false,  MessagesManager.error("Nie mozesz niszczyc blokow na tym terenie!")),
     DENY_BUILD_SPAWN(false,  MessagesManager.error("Nie mozesz budowac na tym terenie!")),
+    DENY_BUILD_PVP_Y(false,  MessagesManager.error("Podczas walki nie mozesz budowac ponizej kratki &c{Y}!")),
     DENY_DESTROY_GOLD_PICKAXE(false,  MessagesManager.error("Nie mozesz tutaj niszczyc blokow &eZlotym kilofem&8!")),
     DENY_BUCKETS(false,  MessagesManager.error("Nie mozesz tutaj uzywac wiaderek!")),
     DENY_PEARLS(false,  MessagesManager.error("Perly zostaly wylaczone na tym terenie!")),

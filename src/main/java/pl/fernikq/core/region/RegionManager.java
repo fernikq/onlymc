@@ -150,6 +150,9 @@ public class RegionManager {
         if(user.canByGroup(UserGroup.ADMIN)){
             return RegionFeedback.ALLOW;
         }
+        if(user.getUserFight().isDuringFight() && location.getBlockY() < ConfigManager.blockBuildingBelowYDuringFight){
+            return RegionFeedback.DENY_BUILD_PVP_Y;
+        }
         Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
         if(guild != null){
             if(!user.hasGuild()){
