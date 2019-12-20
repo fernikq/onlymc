@@ -1,8 +1,11 @@
 package pl.fernikq.core.util;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.util.Vector;
+import pl.fernikq.core.config.ConfigManager;
 
 public class PlayerUtil {
 
@@ -17,5 +20,13 @@ public class PlayerUtil {
             }
         }
         return null;
+    }
+
+    public static void punchPlayer(Player player, Location to, Location from){
+        Vector vectorFrom = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
+        Vector vectorTo = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
+        Vector vectorSubtract = vectorTo.subtract(vectorFrom);
+        Vector vector = new Vector(vectorSubtract.getBlockX(), vectorSubtract.getY(), vectorSubtract.getBlockZ());
+        player.setVelocity(vector.multiply(ConfigManager.punchingLinePower).setY(0.5));
     }
 }

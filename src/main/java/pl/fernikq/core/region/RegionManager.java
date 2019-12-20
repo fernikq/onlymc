@@ -473,14 +473,25 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canJoinDuringPVP(User user, Location location) {
+    public RegionFeedback canJoinDuringPVP(User user, Location location, Location from) {
         if(user == null) {
             return RegionFeedback.DENY_ERROR;
         }
         if(user.canByGroup(UserGroup.ADMIN)) {
             return RegionFeedback.ALLOW;
         }
-        //TODO fight and region check
+        if(user.getUserFight().isDuringFight()){
+            if(checkRegions() != null){
+                return checkRegions();
+            }
+            Region regionFrom = getRegionByLocation(from);
+            if(regionFrom != null && !regionFrom.isCanPlayerJoinDuringPVP()){
+                return RegionFeedback.ALLOW;
+            }
+            for(Region region : getRegionsByLocation(location)){
+                return region.isCanPlayerJoinDuringPVP() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+            }
+        }
         return RegionFeedback.ALLOW;
     }
 
@@ -585,6 +596,11 @@ public class RegionManager {
         }
         if(this.plugin.getSimpleCommandManager().getBlockedCommands().contains(command.toLowerCase())){
             return RegionFeedback.DENY_PROCCESS_COMMAND;
+        }
+        if(user.getUserFight().isDuringFight()){
+            if(!this.plugin.getSimpleCommandManager().getAllowedDuringPVP().contains(command.toLowerCase())){
+                return RegionFeedback.DENY_PROCCESS_COMMAND_FIGHT;
+            }
         }
         Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
         if(guild != null){

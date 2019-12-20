@@ -5,12 +5,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.util.Vector;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.LocationUtil;
+import pl.fernikq.core.util.PlayerUtil;
 
 public class PlayerMoveListener implements Listener {
 
@@ -28,6 +32,14 @@ public class PlayerMoveListener implements Listener {
             Guild guildFrom = this.plugin.getGuildManager().getGuildByLocation(event.getFrom().getBlock().getLocation()).getOrNull();
             Guild guildTo = this.plugin.getGuildManager().getGuildByLocation(event.getTo().getBlock().getLocation()).getOrNull();
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+            if(user.getUserFight().isDuringFight()){
+                RegionFeedback regionFeedback = this.plugin.getRegionManager().canJoinDuringPVP(user, event.getTo(), event.getFrom());
+                if(!regionFeedback.isPermit()){
+                    player.teleport(event.getFrom());
+                    PlayerUtil.punchPlayer(player, event.getTo(), event.getFrom());
+                    return;
+                }
+            }
             if(guildFrom != null && guildTo == null){
                 ChatUtil.sendMessage(player, MessagesManager.guildQuitCuboidMessage.replace("{TAG}", guildFrom.getTag()));
                 return;
