@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 public class TitleUtil {
 
     public static void sendTitle(Player player, String text, int time){
+        if(player == null || !player.isOnline()){
+            return;
+        }
         IChatBaseComponent chatTitle = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + text + "\",color:" + ChatColor.WHITE.name().toLowerCase() + "}");
 
         PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, chatTitle);
@@ -19,6 +22,9 @@ public class TitleUtil {
     }
 
     public static void sendSubTitle(Player player, String text, int time){
+        if(player == null || !player.isOnline()){
+            return;
+        }
         IChatBaseComponent chatTitle = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + text + "\",color:" + ChatColor.WHITE.name().toLowerCase() + "}");
 
         PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, chatTitle);
@@ -29,6 +35,9 @@ public class TitleUtil {
     }
 
     public static void sendActionBar(Player player, String text){
+        if(player == null || !player.isOnline()){
+            return;
+        }
         IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + text + "\"}");
         PacketPlayOutChat bar = new PacketPlayOutChat(icbc, (byte)2);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(bar);

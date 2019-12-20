@@ -7,6 +7,8 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.TitleUtil;
 
+import java.util.HashSet;
+
 public class AntylogoutTask extends BukkitRunnable implements SimpleTask {
 
     private final CorePlugin plugin;
@@ -17,25 +19,19 @@ public class AntylogoutTask extends BukkitRunnable implements SimpleTask {
 
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().forEach(o -> {
-            this.plugin.getUserManager().getUser(o.getUniqueId()).peek(user -> {
-                if(user.getUserFight().getLastAttackTime() == 0L){
+        new HashSet<>(this.plugin.getFightManager().getUsersDuringFight()).forEach(user -> {
+            if(!user.getUserFight().isDuringFight()) {
+                if(user.getUserFight().wasDuringFight(5)) {
+                    TitleUtil.sendActionBar(user.asPlayer(), ChatUtil.fixColor(MessagesManager.playerFightFinishMessage));
                     return;
                 }
-                if(!user.getUserFight().isDuringFight()){
-                    if(user.getUserFight().wasDuringFight(3)) {
-                        TitleUtil.sendActionBar(o, ChatUtil.fixColor(MessagesManager.playerFightFinishMessage));
-                        return;
-                    }
-                    if(!user.getUserFight().wasDuringFight(30)){
-                        user.getUserFight().removeFight();
-                    }
-                }
-                if(user.getUserFight().isDuringFight()){
-                    TitleUtil.sendActionBar(o, ChatUtil.fixColor(MessagesManager.playerFightAntylogoutMessage.replace("{TIME}", Integer.toString(user.getUserFight().getTimeToEnd()))));
+                if(!user.getUserFight().wasDuringFight(30)) {
+                    this.plugin.getFightManager().removeFight(user);
                     return;
                 }
-            });
+            }else {
+                TitleUtil.sendActionBar(user.asPlayer(), ChatUtil.fixColor(MessagesManager.playerFightAntylogoutMessage.replace("{TIME}", Integer.toString(user.getUserFight().getTimeToEnd()))));
+            }
         });
     }
 

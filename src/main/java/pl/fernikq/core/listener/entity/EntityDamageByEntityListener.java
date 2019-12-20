@@ -48,8 +48,12 @@ public class EntityDamageByEntityListener implements Listener {
             UserFight damagerFight = damagerUser.getUserFight();
             victimFight.setLastAttacker(damagerUser);
             victimFight.setLastAttackTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000));
+            victimFight.setAntylogoutTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000));
             damagerFight.setLastAttacker(victimUser);
             damagerFight.setLastAttackTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000));
+            damagerFight.setAntylogoutTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000));
+            this.plugin.getFightManager().getUsersDuringFight().add(damagerUser);
+            this.plugin.getFightManager().getUsersDuringFight().add(victimUser);
             Damage damage = victimFight.getDamageByUser(damagerUser);
             if(damage == null){
                 damage = new Damage(damagerUser, event.getDamage());

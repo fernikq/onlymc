@@ -26,7 +26,7 @@ public class PlayerQuitListener implements Listener {
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
             if(user.getUserFight().isDuringFight()){
                 player.setHealth(0.0);
-                user.getUserFight().removeFight();
+                this.plugin.getFightManager().removeFight(user);
                 String message = MessagesManager.playerFightLogoutMessage;
                 message = message.replace("{PLAYER}", user.getName());
                 String finalMessage = message;

@@ -33,6 +33,7 @@ import pl.fernikq.core.task.*;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.UserPermissionsManager;
+import pl.fernikq.core.user.fight.FightManager;
 import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.RankingUtil;
@@ -70,6 +71,7 @@ public class CorePlugin extends JavaPlugin {
     private GuildManager guildManager;
     private AllianceManager allianceManager;
     private GuildInventory guildInventory;
+    private FightManager fightManager;
 
     @Override
     public void onEnable() {
@@ -126,6 +128,7 @@ public class CorePlugin extends JavaPlugin {
         this.guildManager = new GuildManager(this);
         this.allianceManager = new AllianceManager(this);
         this.guildInventory = new GuildInventory(this);
+        this.fightManager = new FightManager(this);
     }
 
     private void initData(){
@@ -331,5 +334,9 @@ public class CorePlugin extends JavaPlugin {
 
     public GuildInventory getGuildInventory() {
         return guildInventory;
+    }
+
+    public FightManager getFightManager() {
+        return fightManager;
     }
 }

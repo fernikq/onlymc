@@ -99,7 +99,6 @@ public class PlayerDeathListener implements Listener {
                 ChatUtil.sendMessage(o, finalMessage);
             });
         }
-
-        victimFight.removeFight();
+        this.plugin.getFightManager().removeFight(victimUser);
     }
 }

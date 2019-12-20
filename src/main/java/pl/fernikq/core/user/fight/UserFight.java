@@ -1,5 +1,7 @@
 package pl.fernikq.core.user.fight;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import pl.fernikq.core.region.Region;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.TimeUtil;
@@ -13,6 +15,7 @@ public class UserFight {
     private Map<User, Damage> damageMap;
     private User lastAttacker;
     private long lastAttackTime;
+    private long antylogoutTime;
     private Map<User, Long> lastKilled;
     private Comparator<Damage> damageComparator;
 
@@ -20,6 +23,7 @@ public class UserFight {
         this.user = user;
         this.lastAttacker = null;
         this.lastAttackTime = 0L;
+        this.antylogoutTime = 0L;
         this.damageMap = new HashMap<>();
         this.lastKilled = new HashMap<>();
         this.damageComparator = new Comparator<Damage>() {
@@ -40,16 +44,20 @@ public class UserFight {
         };
     }
 
-    public boolean wasKilledLastTime(User user){
-        return this.lastKilled.containsKey(user) && this.lastKilled.get(user) > System.currentTimeMillis();
-    }
-
     public void setLastAttackTime(long lastAttackTime) {
         this.lastAttackTime = lastAttackTime;
     }
 
     public boolean isDuringFight(){
-        return this.lastAttackTime >= System.currentTimeMillis();
+        return this.antylogoutTime >= System.currentTimeMillis();
+    }
+
+    public boolean wasKilledLastTime(User user){
+        return this.lastKilled.containsKey(user) && this.lastKilled.get(user) > System.currentTimeMillis();
+    }
+
+    public void setKilledLastTime(User user){
+        this.lastKilled.putIfAbsent(user, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(6));
     }
 
     public boolean wasDuringFight(int seconds){
@@ -57,10 +65,10 @@ public class UserFight {
     }
 
     public int getTimeToEnd(){
-        if(this.lastAttackTime - System.currentTimeMillis() < 1000){
+        if(this.antylogoutTime - System.currentTimeMillis() < 1000){
             return 0;
         }
-        return (int) TimeUnit.MILLISECONDS.toSeconds(this.lastAttackTime - System.currentTimeMillis());
+        return (int) TimeUnit.MILLISECONDS.toSeconds(this.antylogoutTime - System.currentTimeMillis());
     }
 
     public User getUser() {
@@ -69,6 +77,14 @@ public class UserFight {
 
     public long getLastAttackTime() {
         return lastAttackTime;
+    }
+
+    public long getAntylogoutTime() {
+        return antylogoutTime;
+    }
+
+    public void setAntylogoutTime(long antylogoutTime) {
+        this.antylogoutTime = antylogoutTime;
     }
 
     public void setLastAttacker(User lastAttacker) {
@@ -85,7 +101,7 @@ public class UserFight {
 
     public void removeFight(){
         this.damageMap.clear();
-        this.lastAttackTime = 0L;
+        this.antylogoutTime = 0L;
         this.lastAttacker = null;
     }
 
