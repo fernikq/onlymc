@@ -381,4 +381,44 @@ public class UserInventory {
         user.addInventory(gui);
         return gui;
     }
+
+    public InventoryGUI enderchestUpgrade(User user) {
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lUlepszenia endera &8]", 3, true);
+        user.addInventory(gui);
+        ItemBuilder ender1 = new ItemBuilder(Material.ENDER_CHEST).setName(ChatUtil.fixColor("{n}Poziom {c}1"));
+        ItemBuilder ender2 = new ItemBuilder(Material.ENDER_CHEST).setName(ChatUtil.fixColor("{n}Poziom {c}2"));
+        ItemBuilder ender3 = new ItemBuilder(Material.ENDER_CHEST).setName(ChatUtil.fixColor("{n}Poziom {c}3"));
+        if(user.getEnderchest().getLevel() >= 3){
+            ender1.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz {c}maksymalny {n}poziom enderchesta")));
+            ender2.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz {c}maksymalny {n}poziom enderchesta")));
+            ender3.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz {c}maksymalny {n}poziom enderchesta")));
+        }else{
+            if(user.getEnderchest().getLevel() == 2){
+                ender1.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz {c}wyzszy {n}poziom enderchesta")));
+                ender2.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz {c}podany {n}poziom enderchesta")));
+                ender3.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby ulepszyc do {c}"+3+" {n}poziomu", " ", "&8>> {n}Koszt&8: {c}"+user.getEnderchest().getCostByLevel())));
+            }
+            if(user.getEnderchest().getLevel() == 1){
+                ender1.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz {c}podany {n}poziom enderchesta")));
+                ender2.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby ulepszyc do {c}2 {n}poziomu", " ", "&8>> {n}Koszt&8: {c}"+user.getEnderchest().getCostByLevel())));
+                ender3.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Aby ulepszyc enderchest do poziomu {c}3", "&8>> {n}musisz posiadac {c}2 {n}poziom enderchesta")));
+            }
+            if(user.getEnderchest().getLevel() == 0){
+                ender1.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby ulepszyc do {c}1 {n}poziomu", " ", "&8>> {n}Koszt&8: {c}"+user.getEnderchest().getCostByLevel())));
+                ender2.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Aby ulepszyc enderchest do poziomu {c}2", "&8>> {n}musisz posiadac {c}1 {n}poziom enderchesta")));
+                ender3.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Aby ulepszyc enderchest do poziomu {c}3", "&8>> {n}musisz posiadac {c}2 {n}poziom enderchesta")));
+            }
+        }
+        gui.setItem(10, ender1.toItemStack(), new EnderchestUpgradeAction(this.plugin, 1, user));
+        gui.setItem(13, ender2.toItemStack(), new EnderchestUpgradeAction(this.plugin, 2, user));
+        gui.setItem(16, ender3.toItemStack(), new EnderchestUpgradeAction(this.plugin, 3, user));
+        gui.setItem(1, this.color.clone());
+        gui.setItem(19, this.color.clone());
+        gui.setItem(4, this.color.clone());
+        gui.setItem(22, this.color.clone());
+        gui.setItem(7, this.color.clone());
+        gui.setItem(25, this.color.clone());
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
 }

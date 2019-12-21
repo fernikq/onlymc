@@ -69,6 +69,9 @@ public class ConfigManager {
     public static int guildTreasureSizeFirstLevelCost;
     public static int guildTreasureSizeSecondLevelCost;
     public static int guildTreasureSizeThirdLevelCost;
+    public static int enderchestSizeFirstLevelCost;
+    public static int enderchestSizeSecondLevelCost;
+    public static int enderchestSizeThirdLevelCost;
     public static String guildMaxTimeRenew;
     public static int guildTimeRenewCost;
     public static int playerFightTime;
@@ -154,6 +157,9 @@ public class ConfigManager {
         guildTreasureSizeFirstLevelCost = 1000;
         guildTreasureSizeSecondLevelCost = 2000;
         guildTreasureSizeThirdLevelCost = 3000;
+        enderchestSizeFirstLevelCost = 500;
+        enderchestSizeSecondLevelCost = 1500;
+        enderchestSizeThirdLevelCost = 2500;
         guildStartHealth = 3;
         guildCuboidSizeAddByEnlarge = 5;
         guildStartCuboidSize = 50;
