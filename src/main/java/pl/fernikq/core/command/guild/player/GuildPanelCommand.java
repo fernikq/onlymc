@@ -36,7 +36,7 @@ public class GuildPanelCommand extends CustomCommand {
            }
            Guild guild = user.getGuild();
            if(!guild.getMemberByName(user.getName()).isPresent()){
-               ChatUtil.sendMessage(sender, MessagesManager.commandErrorMessage);
+               ChatUtil.sendMessage(sender, MessagesManager.errorMessage);
                return;
            }
            this.plugin.getGuildInventory().guildMenu(user).openInventory(player);

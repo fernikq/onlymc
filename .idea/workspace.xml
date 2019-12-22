@@ -7,15 +7,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79f0a505-89aa-425d-b238-34189b84f379" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/EnderCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/actions/user/EnderchestUpgradeAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/enderchest/Enderchest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/EnderChestCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/CorePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/CorePlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/CustomCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/CustomCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/GuildCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/GuildCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildAllianceBreakCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildAllianceBreakCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildAllianceCreateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildAllianceCreateCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildHomeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildHomeCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildInviteCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildInviteCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildKickCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildKickCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildPVPCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildPVPCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildPanelCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildPanelCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildQuitCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildQuitCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildSetHomeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildSetHomeCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildTreasureCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildTreasureCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/ConfigManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/user/UserInventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/user/UserInventory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/MessagesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/MessagesManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/inventory/InventoryCloseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/inventory/InventoryCloseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerInteractListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerInteractListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/enderchest/Enderchest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/enderchest/Enderchest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -27,11 +38,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/enderchest/Enderchest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="48" column="110" lean-forward="true" selection-start-line="48" selection-start-column="110" selection-end-line="48" selection-end-column="110" />
+            <state relative-caret-position="367">
+              <caret line="52" column="121" selection-start-line="52" selection-start-column="121" selection-end-line="52" selection-end-column="121" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -39,20 +50,32 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/user/UserInventory.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerInteractListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="406" column="53" selection-start-line="406" selection-start-column="53" selection-end-line="406" selection-end-column="53" />
+            <state relative-caret-position="448">
+              <caret line="202" column="54" lean-forward="true" selection-start-line="202" selection-start-column="54" selection-end-line="202" selection-end-column="54" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/EnderCommand.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/EnderChestCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="27" column="61" selection-start-line="27" selection-start-column="61" selection-end-line="27" selection-end-column="61" />
+            <state relative-caret-position="646">
+              <caret line="38" column="13" lean-forward="true" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/inventory/InventoryCloseListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="43" column="85" lean-forward="true" selection-start-line="43" selection-start-column="85" selection-end-line="43" selection-end-column="85" />
             </state>
           </provider>
         </entry>
@@ -60,8 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/CorePlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="209" column="25" lean-forward="true" selection-start-line="209" selection-start-column="25" selection-end-line="209" selection-end-column="25" />
+            <state relative-caret-position="524">
+              <caret line="210" column="99" lean-forward="true" selection-start-line="210" selection-start-column="99" selection-end-line="210" selection-end-column="99" />
             </state>
           </provider>
         </entry>
@@ -69,8 +92,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/actions/user/EnderchestUpgradeAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="99" column="94" selection-start-line="99" selection-start-column="94" selection-end-line="99" selection-end-column="94" />
+            <state relative-caret-position="677">
+              <caret line="97" column="44" lean-forward="true" selection-start-line="97" selection-start-column="44" selection-end-line="97" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -79,46 +102,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserManager.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/MessagesManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="413">
-              <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
+            <state relative-caret-position="-1207">
+              <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserData.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/DropCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="76" column="54" lean-forward="true" selection-start-line="76" selection-start-column="54" selection-end-line="76" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/User.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="251">
-              <caret line="58" column="47" selection-start-line="58" selection-start-column="47" selection-end-line="58" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/guild/treasure/GuildTreasure.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="22" column="38" lean-forward="true" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/ConfigManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="161" column="44" lean-forward="true" selection-start-line="161" selection-start-column="44" selection-end-line="161" selection-end-column="44" />
+            <state relative-caret-position="306">
+              <caret line="28" column="39" lean-forward="true" selection-start-line="25" selection-start-column="8" selection-end-line="28" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -165,21 +161,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/block/LeavesDecayListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/entity/CreatureSpawnListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/entity/HangingBreakListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/entity/HangingPlaceListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/BucketListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerInteractEntityListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/TeleportListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerFoodListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerFoodLevelListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerDropItemListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/entity/EntityInteractListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/regions.yml" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/region/Region.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerInteractListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerPickupItemListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/item.yml" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/kit/KitManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/util/SerializationUtil.java" />
@@ -190,7 +171,6 @@
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/top/TopType.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/top/TopManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/top/comparator/CoinsComparator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/MessagesManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/fight/FightManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerDeathListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerQuitListener.java" />
@@ -208,14 +188,30 @@
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/block/BlockMoveByPistonListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/guild/treasure/GuildTreasure.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/ConfigManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/enderchest/Enderchest.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/EnderCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/CorePlugin.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserData.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/actions/user/EnderchestUpgradeAction.java" />
         <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/user/UserInventory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/inventory/InventoryCloseListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/ConfigManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/MessagesManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerInteractListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/CustomCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildInviteCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildQuitCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildAllianceCreateCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildPVPCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildPanelCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildSetHomeCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildKickCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildHomeCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildAllianceBreakCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildTreasureCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/GuildCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/CorePlugin.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/EnderChestCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/enderchest/Enderchest.java" />
       </list>
     </option>
   </component>
@@ -256,7 +252,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -341,6 +337,88 @@
               <item name="pl" type="462c0819:PsiDirectoryNode" />
               <item name="fernikq" type="462c0819:PsiDirectoryNode" />
               <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="onlymc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="onlymc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="pl" type="462c0819:PsiDirectoryNode" />
+              <item name="fernikq" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="inventory" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="onlymc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="onlymc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="pl" type="462c0819:PsiDirectoryNode" />
+              <item name="fernikq" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="inventory" type="462c0819:PsiDirectoryNode" />
+              <item name="actions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="onlymc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="onlymc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="pl" type="462c0819:PsiDirectoryNode" />
+              <item name="fernikq" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="inventory" type="462c0819:PsiDirectoryNode" />
+              <item name="actions" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="onlymc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="onlymc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="pl" type="462c0819:PsiDirectoryNode" />
+              <item name="fernikq" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="listener" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="onlymc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="onlymc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="pl" type="462c0819:PsiDirectoryNode" />
+              <item name="fernikq" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="listener" type="462c0819:PsiDirectoryNode" />
+              <item name="inventory" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="onlymc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="onlymc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="pl" type="462c0819:PsiDirectoryNode" />
+              <item name="fernikq" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="listener" type="462c0819:PsiDirectoryNode" />
+              <item name="player" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="onlymc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="onlymc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="pl" type="462c0819:PsiDirectoryNode" />
+              <item name="fernikq" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="user" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -361,13 +439,13 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ToolWindowEvent Log.ShowToolbar" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576963643131" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577010913004" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/permissions.yml" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15820312" />
@@ -423,13 +501,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1565626582699</updated>
-    </task>
-    <task id="LOCAL-00073" summary="titleUtil, title Command, Broadcast Command">
-      <created>1572800744579</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1572800744579</updated>
     </task>
     <task id="LOCAL-00074" summary="DropLoader">
       <created>1572892168341</created>
@@ -767,7 +838,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576957495492</updated>
     </task>
-    <option name="localTasksCounter" value="122" />
+    <task id="LOCAL-00122" summary="enderchest object, enderchest upgrade">
+      <created>1576963736014</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1576963736014</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="TodoView">
@@ -783,7 +861,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20415778" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20628998" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -796,7 +874,7 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" visible="true" weight="0.3217768" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3217768" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50053304" side_tool="true" weight="0.32827735" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32936078" />
@@ -840,7 +918,6 @@
     </layout-to-restore>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="commands" />
     <MESSAGE value="playerMoveListener" />
     <MESSAGE value="guildRegions" />
     <MESSAGE value="entityExplode" />
@@ -865,150 +942,10 @@
     <MESSAGE value="punching line system" />
     <MESSAGE value="fight block building" />
     <MESSAGE value="block destroying guildCenter/stoneGenerator by piston" />
-    <option name="LAST_COMMIT_MESSAGE" value="block destroying guildCenter/stoneGenerator by piston" />
+    <MESSAGE value="enderchest object, enderchest upgrade" />
+    <option name="LAST_COMMIT_MESSAGE" value="enderchest object, enderchest upgrade" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/guild/member/GuildPermission.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/top/TopKind.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/top/TopType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/top/TopManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="36" lean-forward="true" selection-start-line="13" selection-start-column="36" selection-end-line="13" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/top/comparator/CoinsComparator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="689">
-          <caret line="70" column="32" selection-start-line="70" selection-start-column="32" selection-end-line="70" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/top/comparator/Sortable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/util/TitleUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/MessagesManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1335">
-          <caret line="66" column="25" selection-start-line="66" selection-start-column="25" selection-end-line="66" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerQuitListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="28" column="64" selection-start-line="28" selection-start-column="64" selection-end-line="28" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerDeathListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="37" column="23" selection-start-line="37" selection-start-column="23" selection-end-line="37" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/task/RemoveItemsTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/entity/EntityDamageByEntityListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/Set.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="118" column="12" selection-start-line="118" selection-start-column="12" selection-end-line="118" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerCommandPreprocessListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/automessage.yml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/regions.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/commands.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/simpleCommand/SimpleCommandManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="103" column="23" selection-start-line="103" selection-start-column="23" selection-end-line="103" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/bukki/bukkit/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar!/org/bukkit/util/Vector.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="220" column="18" selection-start-line="220" selection-start-column="18" selection-end-line="220" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerMoveListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="331">
@@ -1037,13 +974,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
           <caret line="643" column="27" lean-forward="true" selection-start-line="643" selection-start-column="27" selection-end-line="643" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/region/RegionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="184" column="5" selection-start-line="184" selection-start-column="5" selection-end-line="184" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1150,38 +1080,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerJoinListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="44" column="41" selection-start-line="44" selection-start-column="41" selection-end-line="44" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/kit/KitManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="88" column="51" lean-forward="true" selection-start-line="88" selection-start-column="51" selection-end-line="88" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="58" column="47" selection-start-line="58" selection-start-column="47" selection-end-line="58" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/ConfigManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="161" column="44" lean-forward="true" selection-start-line="161" selection-start-column="44" selection-end-line="161" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/guild/treasure/GuildTreasure.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="22" column="38" lean-forward="true" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -1192,10 +1094,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/user/UserInventory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6579">
+          <caret line="409" column="13" selection-start-line="409" selection-start-column="13" selection-end-line="409" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
+        <state relative-caret-position="1020">
           <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="76" column="54" selection-start-line="76" selection-start-column="54" selection-end-line="76" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="58" column="47" selection-start-line="58" selection-start-column="47" selection-end-line="58" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/guild/treasure/GuildTreasure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -1206,24 +1136,164 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/CorePlugin.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/ConfigManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="209" column="25" lean-forward="true" selection-start-line="209" selection-start-column="25" selection-end-line="209" selection-end-column="25" />
+        <state relative-caret-position="-969">
+          <caret line="83" column="60" lean-forward="true" selection-start-line="83" selection-start-column="60" selection-end-line="83" selection-end-column="60" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/UserData.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/region/RegionManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="76" column="54" lean-forward="true" selection-start-line="76" selection-start-column="54" selection-end-line="76" selection-end-column="54" />
+        <state relative-caret-position="200">
+          <caret line="229" column="26" selection-start-line="229" selection-start-column="26" selection-end-line="229" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/enderchest/Enderchest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/CustomCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="106" column="85" selection-start-line="106" selection-start-column="73" selection-end-line="106" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildInviteCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="42" column="73" selection-start-line="42" selection-start-column="73" selection-end-line="42" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildQuitCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="45" column="72" selection-start-line="45" selection-start-column="72" selection-end-line="45" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildAllianceCreateCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="43" column="73" selection-start-line="43" selection-start-column="73" selection-end-line="43" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildPVPCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="41" column="73" selection-start-line="41" selection-start-column="73" selection-end-line="41" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildPanelCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="38" column="72" selection-start-line="38" selection-start-column="72" selection-end-line="38" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildSetHomeCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="41" column="73" selection-start-line="41" selection-start-column="73" selection-end-line="41" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildKickCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="74" column="60" selection-start-line="74" selection-start-column="60" selection-end-line="74" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildHomeCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="42" column="73" selection-start-line="42" selection-start-column="73" selection-end-line="42" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildAllianceBreakCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="43" column="73" selection-start-line="43" selection-start-column="73" selection-end-line="43" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/player/GuildTreasureCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="41" column="73" selection-start-line="41" selection-start-column="73" selection-end-line="41" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/guild/GuildCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="59" column="81" selection-start-line="59" selection-start-column="81" selection-end-line="59" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerJoinListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="44" column="41" selection-start-line="44" selection-start-column="41" selection-end-line="44" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/DropCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
-          <caret line="48" column="110" lean-forward="true" selection-start-line="48" selection-start-column="110" selection-end-line="48" selection-end-column="110" />
+          <caret line="28" column="39" lean-forward="true" selection-start-line="25" selection-start-column="8" selection-end-line="28" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/Lang.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/CommandManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/CorePlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="524">
+          <caret line="210" column="99" lean-forward="true" selection-start-line="210" selection-start-column="99" selection-end-line="210" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/config/MessagesManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1207">
+          <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/player/PlayerInteractListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="202" column="54" lean-forward="true" selection-start-line="202" selection-start-column="54" selection-end-line="202" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/listener/inventory/InventoryCloseListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="43" column="85" lean-forward="true" selection-start-line="43" selection-start-column="85" selection-end-line="43" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/command/player/EnderChestCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="38" column="13" lean-forward="true" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1232,18 +1302,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/actions/user/EnderchestUpgradeAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="99" column="94" selection-start-line="99" selection-start-column="94" selection-end-line="99" selection-end-column="94" />
+        <state relative-caret-position="677">
+          <caret line="97" column="44" lean-forward="true" selection-start-line="97" selection-start-column="44" selection-end-line="97" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/inventory/user/UserInventory.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pl/fernikq/core/user/enderchest/Enderchest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="406" column="53" selection-start-line="406" selection-start-column="53" selection-end-line="406" selection-end-column="53" />
+        <state relative-caret-position="367">
+          <caret line="52" column="121" selection-start-line="52" selection-start-column="121" selection-end-line="52" selection-end-column="121" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

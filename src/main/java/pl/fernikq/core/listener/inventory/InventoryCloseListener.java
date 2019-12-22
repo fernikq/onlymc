@@ -37,6 +37,16 @@ public class InventoryCloseListener implements Listener {
                     guild.getTreasure().setItems(event.getInventory().getContents());
                 }
             });
+            return;
+        }
+        if(event.getInventory().getName().equalsIgnoreCase(ChatUtil.fixColor("&8[ {c}&lEnderchest &8]"))){
+            Player player = (Player)event.getPlayer();
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+               if(user.getEnderchest().getUserEnderchest() != null) {
+                   user.getEnderchest().getUserEnderchest().getEnderchest().setItems(event.getInventory().getContents());
+               }
+            });
+            return;
         }
     }
 }

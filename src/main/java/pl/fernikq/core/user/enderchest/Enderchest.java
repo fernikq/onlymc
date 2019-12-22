@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
@@ -19,6 +20,7 @@ public class Enderchest {
     private int level;
     private ItemStack[] items;
     private Inventory inventory;
+    private User userEnderchest;
 
     public Enderchest(User user){
         this.user = user;
@@ -48,12 +50,21 @@ public class Enderchest {
         Bukkit.getOnlinePlayers().forEach(o -> {
             if(o.getOpenInventory() != null && o.getOpenInventory().getTopInventory().equals(this.inventory)){
                 o.closeInventory();
+                ChatUtil.sendMessage(o, MessagesManager.error("Enderchest zostal zamkniety, poniewaz zostal ulepszony"));
             }
         });
         this.inventory = Bukkit.createInventory(null, getSizeByLevel(), ChatUtil.fixColor("&8[ {c}&lEnderchest &8]"));
         if(this.items != null){
             this.inventory.setContents(this.items);
         }
+    }
+
+    public User getUserEnderchest() {
+        return userEnderchest;
+    }
+
+    public void setUserEnderchest(User userEnderchest) {
+        this.userEnderchest = userEnderchest;
     }
 
     public int getLevel() {

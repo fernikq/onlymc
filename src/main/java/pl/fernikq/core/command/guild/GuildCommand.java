@@ -57,7 +57,7 @@ public class GuildCommand extends CustomCommand {
             Player player = (Player)sender;
             this.plugin.getUserManager().getUser(player.getUniqueId())
                     .onEmpty(() -> {
-                        ChatUtil.sendMessage(sender, MessagesManager.commandErrorMessage);
+                        ChatUtil.sendMessage(sender, MessagesManager.errorMessage);
                         return;
                     }).peek(user -> {
                         if(!user.canByGroup(customCommand.getGroup())){

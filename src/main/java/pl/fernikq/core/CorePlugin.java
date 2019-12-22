@@ -208,6 +208,7 @@ public class CorePlugin extends JavaPlugin {
         new CobblexCommand("cobblex", new String[]{"cx"}, UserGroup.PLAYER, this).register();
         new IgnoreCommand("ignore", new String[0], UserGroup.PLAYER, this).register();
         new EnderCommand("ender", new String[0], UserGroup.PLAYER, this).register();
+        new EnderChestCommand("enderchest", new String[]{"ec"}, UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
     }

@@ -14,7 +14,7 @@ public class MessagesManager {
     private final CorePlugin plugin;
     private final File file;
 
-    public static String commandErrorMessage;
+    public static String errorMessage;
     public static String commandErrorPermission;
     public static String commandCorrectUsage;
     public static String errorFormat;
@@ -116,7 +116,7 @@ public class MessagesManager {
     }
 
     private void setDefaultValues(){
-        commandErrorMessage = "&4&lBlad &8>> &fBlad podczas wykonywania komendy, zglos sie do administratora!";
+        errorMessage = "&4&lBlad &8>> &fWystapil blad, zglos sie do administratora!";
         commandErrorPermission = "&4&lBlad &8>> &fNie posiadasz wystarczajacych uprawnien aby uzyc tej komendy!";
         errorFormat = "&4&lBlad &8>> &f{ERROR}";
         commandCorrectUsage = "&c&lPoprawne uzycie&8: &f{USAGE}";

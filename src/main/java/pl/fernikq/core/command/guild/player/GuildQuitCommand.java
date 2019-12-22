@@ -43,7 +43,7 @@ public class GuildQuitCommand extends CustomCommand {
            }
            GuildMember member = guild.getMemberByName(user.getName()).orElse(null);
            if(member == null){
-               ChatUtil.sendMessage(sender, MessagesManager.commandErrorMessage);
+               ChatUtil.sendMessage(sender, MessagesManager.errorMessage);
                return;
            }
            String message = MessagesManager.guildQuitMessage;

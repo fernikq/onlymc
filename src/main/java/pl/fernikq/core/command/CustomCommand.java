@@ -104,7 +104,7 @@ public abstract class CustomCommand implements CommandExecutor {
                 Player player = (Player)sender;
                 this.plugin.getUserManager().getUser(player.getUniqueId())
                         .onEmpty(() -> {
-                            ChatUtil.sendMessage(sender, MessagesManager.commandErrorMessage);
+                            ChatUtil.sendMessage(sender, MessagesManager.errorMessage);
                             return;
                         })
                         .peek(user -> {

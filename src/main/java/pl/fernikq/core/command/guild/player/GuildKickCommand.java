@@ -41,7 +41,7 @@ public class GuildKickCommand extends CustomCommand {
             Guild guild = user.getGuild();
             GuildMember member = guild.getMemberByName(user.getName()).orElse(null);
             if(member == null){
-                ChatUtil.sendMessage(sender, MessagesManager.commandErrorMessage);
+                ChatUtil.sendMessage(sender, MessagesManager.errorMessage);
                 return;
             }
             if(!member.hasPermission(GuildPermission.KICK)){
@@ -72,7 +72,7 @@ public class GuildKickCommand extends CustomCommand {
             }
             GuildMember targetMember = guild.getMemberByName(targetUser.getName()).orElse(null);
             if(targetMember == null){
-                ChatUtil.sendMessage(sender, MessagesManager.commandErrorMessage);
+                ChatUtil.sendMessage(sender, MessagesManager.errorMessage);
                 return;
             }
             String message = MessagesManager.guildKickMessage;

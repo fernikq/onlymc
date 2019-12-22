@@ -81,6 +81,7 @@ public class ConfigManager {
     public static List<String> guildPlayerItemsToCreate;
     public static List<String> guildVipItemsToCreate;
     public static boolean usePremiumHeadsInGUI;
+    public static boolean blockOpeningEnderchestDuringFight;
     public static boolean isServerRunningInOnlineModeOrHasPremiumLogin;
 
     public void load(){
@@ -193,5 +194,6 @@ public class ConfigManager {
         playerFightTime = 30;
         punchingLinePower = -1.2;
         blockBuildingBelowYDuringFight = 50;
+        blockOpeningEnderchestDuringFight = true;
     }
 }

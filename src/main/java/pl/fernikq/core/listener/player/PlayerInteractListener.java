@@ -127,7 +127,7 @@ public class PlayerInteractListener implements Listener {
                     }
                     User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
                     if(user == null) {
-                        ChatUtil.sendMessage(player, MessagesManager.commandErrorMessage);
+                        ChatUtil.sendMessage(player, MessagesManager.errorMessage);
                         return;
                     }
                     if(!user.hasGuild()) {
@@ -185,7 +185,7 @@ public class PlayerInteractListener implements Listener {
                     }
                     User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
                     if(user == null) {
-                        ChatUtil.sendMessage(player, MessagesManager.commandErrorMessage);
+                        ChatUtil.sendMessage(player, MessagesManager.errorMessage);
                         return;
                     }
                     if(!user.hasGuild()) {
@@ -207,6 +207,17 @@ public class PlayerInteractListener implements Listener {
                 return;
             }
             return;
+        }
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.ENDER_CHEST){
+            event.setCancelled(true);
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+                if(user.getUserFight().isDuringFight() && ConfigManager.blockOpeningEnderchestDuringFight){
+                    ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz otworzyc enderchesta podczas walki!"));
+                    return;
+                }
+                player.openInventory(user.getEnderchest().getInventory());
+                user.getEnderchest().setUserEnderchest(user);
+            }).onEmpty(() -> ChatUtil.sendMessage(player, MessagesManager.error("Wystapil blad, zglos sie do administracji!")));
         }
     }
 }
