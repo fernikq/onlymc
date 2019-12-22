@@ -30,6 +30,9 @@ public class PlayerDeathListener implements Listener {
     public void onDeath(PlayerDeathEvent event){
         event.setDeathMessage(null);
         Player player = event.getEntity();
+        if(player.isOnline() && player.isDead()){
+            player.spigot().respawn();
+        }
         User victimUser = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
         if(victimUser == null){
             return;

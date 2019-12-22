@@ -245,6 +245,7 @@ public class CorePlugin extends JavaPlugin {
         new PlayerDropItemListener(this);
         new PlayerDeathListener(this);
         new BlockMoveByPistonListener(this);
+        new PlayerRespawnListener(this);
     }
 
     public ConfigManager getConfigManager() {

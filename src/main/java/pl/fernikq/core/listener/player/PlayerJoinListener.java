@@ -34,6 +34,9 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
+        if(player.isOnline() && player.isDead()){
+            player.spigot().respawn();
+        }
         event.setJoinMessage(ChatUtil.fixColor(MessagesManager.playerJoinMessage.replace("{PLAYER}", player.getName())));
         User user = this.plugin.getUserManager().getUser(player);
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
