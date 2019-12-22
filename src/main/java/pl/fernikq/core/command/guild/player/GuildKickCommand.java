@@ -79,7 +79,7 @@ public class GuildKickCommand extends CustomCommand {
             message = message.replace("{TAG}", guild.getTag());
             message = message.replace("{PLAYER}", targetUser.getName());
             String finalMessage = message;
-            Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, finalMessage));
+            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
             this.plugin.getGuildManager().removeMember(targetMember);
         });
         return true;

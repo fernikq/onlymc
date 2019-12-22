@@ -82,7 +82,7 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
-        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this));
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this));
         simpleTasks.forEach(SimpleTask::start);
     }
 
@@ -209,6 +209,7 @@ public class CorePlugin extends JavaPlugin {
         new IgnoreCommand("ignore", new String[0], UserGroup.PLAYER, this).register();
         new EnderCommand("ender", new String[0], UserGroup.PLAYER, this).register();
         new EnderChestCommand("enderchest", new String[]{"ec"}, UserGroup.PLAYER, this).register();
+        new ChatSettingsCommand("ustawienia", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
     }

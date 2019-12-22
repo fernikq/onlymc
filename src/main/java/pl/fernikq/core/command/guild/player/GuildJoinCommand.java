@@ -54,7 +54,7 @@ public class GuildJoinCommand extends CustomCommand {
            message = message.replace("{TAG}", guild.getTag());
            message = message.replace("{PLAYER}", player.getName());
            String finalMessage = message;
-           Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, finalMessage));
+            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
            this.plugin.getGuildManager().addMember(user, guild, GuildPermission.PLACE, GuildPermission.BREAK, GuildPermission.BASE_TELEPORT);
         });
         return true;

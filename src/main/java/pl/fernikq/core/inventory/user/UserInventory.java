@@ -421,4 +421,31 @@ public class UserInventory {
         gui.setEmptyItem(this.blank);
         return gui;
     }
+
+    public InventoryGUI chatSettings(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lUstawienia chatu &8]", 3, true);
+        user.addInventory(gui);
+        ItemBuilder guildMessages = new ItemBuilder(Material.ENDER_PORTAL_FRAME).setName(ChatUtil.fixColor("{n}Wiadomosc zwiazane z gildiami"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Status&8: "+(user.getUserChat().isGuildMessages() ? "&awlaczone" : "&cwylaczone"))));;
+        ItemBuilder fightMessages = new ItemBuilder(Material.DIAMOND_SWORD).setName(ChatUtil.fixColor("{n}Wiadomosci zwiazane z walka"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Status&8: "+(user.getUserChat().isFightMessages() ? "&awlaczone" : "&cwylaczone"))));;
+        ItemBuilder autoMessages = new ItemBuilder(Material.PAPER).setName(ChatUtil.fixColor("{n}Automatyczne wiadomosci"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Status&8: "+(user.getUserChat().isAutoMessages() ? "&awlaczone" : "&cwylaczone"))));;
+        ItemBuilder caseMessages = new ItemBuilder(this.plugin.getDropManager().getPremiumCaseItem().getType()).setName(ChatUtil.fixColor("{n}Wiadomosci z "+this.plugin.getDropManager().getPremiumCaseNameInGUI()))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Status&8: "+(user.getUserChat().isPremiumCaseMessages() ? "&awlaczone" : "&cwylaczone"))));
+        gui.setItem(10, guildMessages.toItemStack(), new ChatSettingsAction(this.plugin, ChatSettingsActionType.GUILD, user));
+        gui.setItem(12, fightMessages.toItemStack(), new ChatSettingsAction(this.plugin, ChatSettingsActionType.FIGHT, user));
+        gui.setItem(14, autoMessages.toItemStack(), new ChatSettingsAction(this.plugin, ChatSettingsActionType.AUTOMESSAGE, user));
+        gui.setItem(16, caseMessages.toItemStack(), new ChatSettingsAction(this.plugin, ChatSettingsActionType.CASE, user));
+        gui.setItem(1, this.color.clone());
+        gui.setItem(19, this.color.clone());
+        gui.setItem(3, this.color.clone());
+        gui.setItem(21, this.color.clone());
+        gui.setItem(5, this.color.clone());
+        gui.setItem(23, this.color.clone());
+        gui.setItem(7, this.color.clone());
+        gui.setItem(25, this.color.clone());
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
 }

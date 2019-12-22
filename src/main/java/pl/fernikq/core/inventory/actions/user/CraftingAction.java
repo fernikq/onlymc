@@ -51,7 +51,7 @@ public class CraftingAction implements InventoryAction {
             generator.removeItems(player);
             ChatUtil.sendMessage(player, "&8>> {n}Utworzyles {c}" + (generator.getItemStack().getItemMeta().getDisplayName() == null ? generator.getItemStack().getType().name().toLowerCase() : generator.getItemStack().getItemMeta().getDisplayName()));
             ItemUtil.giveItems(player, generator.getItemStack().clone());
-            this.plugin.getUserInventory().craftings(this.plugin.getUserManager().getUser(player.getUniqueId()).get(), generator).openInventory(player);
+            this.plugin.getUserInventory().craftings(user, generator).openInventory(player);
         }
     }
 }

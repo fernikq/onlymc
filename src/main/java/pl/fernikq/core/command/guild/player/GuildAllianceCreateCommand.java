@@ -76,7 +76,7 @@ public class GuildAllianceCreateCommand extends CustomCommand {
                 message = message.replace("{TAG1}", guild.getTag());
                 message = message.replace("{TAG2}", targetGuild.getTag());
                 String finalMessage = message;
-                Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, finalMessage));
+                this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
                 return;
             }
             if(guild.getAlliesRequest().asMap().containsKey(targetGuild)){

@@ -11,6 +11,7 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
+import pl.fernikq.core.inventory.actions.user.ChatSettingsAction;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
@@ -66,7 +67,7 @@ public class GuildAllianceBreakCommand extends CustomCommand {
             message = message.replace("{TAG1}", guild.getTag());
             message = message.replace("{TAG2}", targetGuild.getTag());
             String finalMessage = message;
-            Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, finalMessage));
+            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
         });
         return true;
     }

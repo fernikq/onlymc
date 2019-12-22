@@ -19,6 +19,7 @@ import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.*;
 
 import java.util.ArrayList;
@@ -104,14 +105,12 @@ public class PlayerInteractListener implements Listener {
                 ChatUtil.sendMessage(player, "&8>> {n}Otworzyles "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}ale niestety nic nie wypadlo :(");
                 return;
             }
-            Bukkit.getOnlinePlayers().forEach(online -> {
-                this.plugin.getUserManager().getUser(online.getUniqueId()).filter(user -> user.getUserChat().isPremiumCaseMessages()).peek(user -> {
-                    ChatUtil.sendMessage(online, "{n}Gracz {c}"+player.getName()+" {n}otworzyl "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}i otrzymal&8:", " ");
-                    for(String string : dropMessages){
-                        ChatUtil.sendMessage(online, string);
-                    }
-                    ChatUtil.sendMessage(online, " ");
-                });
+            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isPremiumCaseMessages()).forEach(onlineUser -> {
+                ChatUtil.sendMessage(onlineUser.asPlayer(), "{n}Gracz {c}"+player.getName()+" {n}otworzyl "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}i otrzymal&8:", " ");
+                for(String string : dropMessages){
+                    ChatUtil.sendMessage(onlineUser.asPlayer(), string);
+                }
+                ChatUtil.sendMessage(onlineUser.asPlayer(), " ");
             });
             return;
         }
@@ -161,7 +160,7 @@ public class PlayerInteractListener implements Listener {
                         message = message.replace("{TAG1}", guild.getTag());
                         message = message.replace("{TAG2}", userGuild.getTag());
                         String finalMessage = message;
-                        Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, finalMessage));
+                        this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
                         return;
                     }
                     guild.setHealth(guild.getHealth() - 1);
@@ -174,7 +173,7 @@ public class PlayerInteractListener implements Listener {
                     message = message.replace("{TAG2}", guild.getTag());
                     message = message.replace("{TAG1}", userGuild.getTag());
                     String finalMessage = message;
-                    Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, finalMessage));
+                    this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
                 });
                 return;
             }
@@ -211,7 +210,7 @@ public class PlayerInteractListener implements Listener {
         if(event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.ENDER_CHEST){
             event.setCancelled(true);
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
-                if(user.getUserFight().isDuringFight() && ConfigManager.blockOpeningEnderchestDuringFight){
+                if(user.getUserFight().isDuringFight() && ConfigManager.blockOpeningEnderchestDuringFight && !user.canByGroup(UserGroup.ADMIN)){
                     ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz otworzyc enderchesta podczas walki!"));
                     return;
                 }

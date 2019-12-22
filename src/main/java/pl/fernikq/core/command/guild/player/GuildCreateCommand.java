@@ -88,7 +88,7 @@ public class GuildCreateCommand extends CustomCommand {
             message = message.replace("{NAME}", name);
             message = message.replace("{OWNER}", player.getName());
             String finalMessage = message;
-            Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, finalMessage));
+            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
         });
         return true;
     }

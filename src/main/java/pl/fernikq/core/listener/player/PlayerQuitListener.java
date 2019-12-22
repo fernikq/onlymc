@@ -30,7 +30,7 @@ public class PlayerQuitListener implements Listener {
                 String message = MessagesManager.playerFightLogoutMessage;
                 message = message.replace("{PLAYER}", user.getName());
                 String finalMessage = message;
-                Bukkit.getOnlinePlayers().forEach(o -> ChatUtil.sendMessage(o, finalMessage));
+                this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isFightMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
             }
             this.plugin.getUserManager().updateUser(user);
             user.setScoreboard(null);

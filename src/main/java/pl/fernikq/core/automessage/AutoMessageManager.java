@@ -3,8 +3,10 @@ package pl.fernikq.core.automessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
 import java.io.File;
@@ -58,9 +60,9 @@ public class AutoMessageManager {
                 return;
             }
             AutoMessage autoMessage = this.autoMessages.get(repeat);
-            Bukkit.getOnlinePlayers().forEach(online -> {
+            this.plugin.getUserManager().getOnlineUsers().stream().filter(user -> user.getUserChat().isAutoMessages()).forEach(user -> {
                 for(String line : autoMessage.getLines()){
-                    ChatUtil.sendMessage(online, line);
+                    ChatUtil.sendMessage(user.asPlayer(), line);
                 }
             });
             repeat++;

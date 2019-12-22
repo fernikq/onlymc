@@ -3,6 +3,7 @@ package pl.fernikq.core.user;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 
@@ -52,6 +53,17 @@ public class UserManager {
             insertUser(user);
             return user;
         });
+    }
+
+    public java.util.Set<User> getOnlineUsers(){
+        java.util.Set<User> online = new java.util.HashSet<>();
+        Bukkit.getOnlinePlayers().forEach(o -> {
+            User user = getUser(o.getUniqueId()).getOrNull();
+            if(user != null){
+                online.add(user);
+            }
+        });
+        return online;
     }
 
     public void insertUser(User user){

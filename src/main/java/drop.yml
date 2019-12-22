@@ -1,7 +1,7 @@
 #Dostepne zmienne: nameInGUI, enchant, lore, name
 Cobblex:
   item: 'mossy_cobblestone:0'
-  name: '&a&lCobbleX'
+  name: '&c&lCobbleX'
   nameInGUI: 'CobbleX'
   lore:
     - ' '
@@ -10,8 +10,8 @@ Cobblex:
 PremiumCase:
   maxItemsInOneCase: 6
   item: 'chest:0'
-  name: '&c&lChampionChest'
-  nameInGUI: 'ChampionChest'
+  name: '&c&lPremiumCase'
+  nameInGUI: 'PremiumCase'
   lore:
     - ' '
     - '&8>> &fPostaw aby otworzyc&8!'

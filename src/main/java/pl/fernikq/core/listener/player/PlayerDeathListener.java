@@ -77,9 +77,9 @@ public class PlayerDeathListener implements Listener {
             assistMessage = assistMessage.replace("{ASSIST-POINTS}", Integer.toString(assistPoints));
             String finalMessage = message;
             String finalAssistMessage = assistMessage;
-            Bukkit.getOnlinePlayers().forEach(o -> {
-                ChatUtil.sendMessage(o, finalMessage);
-                ChatUtil.sendMessage(o, finalAssistMessage);
+            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isFightMessages()).forEach(onlineUser -> {
+                ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage);
+                ChatUtil.sendMessage(onlineUser.asPlayer(), finalAssistMessage);
             });
         }else{
             int points = RankingUtil.calculatePoints(victimUser.getUserStat().getPoints(), killerUser.getUserStat().getPoints());
@@ -95,8 +95,8 @@ public class PlayerDeathListener implements Listener {
             message = message.replace("{VICTIM-GUILD}", victimUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", victimUser.getGuild().getTag()) : "");
             message = message.replace("{VICTIM-POINTS}", Integer.toString(points));
             String finalMessage = message;
-            Bukkit.getOnlinePlayers().forEach(o -> {
-                ChatUtil.sendMessage(o, finalMessage);
+            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isFightMessages()).forEach(onlineUser -> {
+                ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage);
             });
         }
         this.plugin.getFightManager().removeFight(victimUser);
