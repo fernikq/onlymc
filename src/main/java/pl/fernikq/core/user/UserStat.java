@@ -1,9 +1,11 @@
 package pl.fernikq.core.user;
 
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.util.TimeUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 
 public class UserStat {
 
@@ -23,6 +25,10 @@ public class UserStat {
     private int kills;
     private int deaths;
     private int assists;
+    private int logouts;
+    private int distanceTraveled;
+    private long spentTime;
+    private long joinTime;
 
     public UserStat(User user){
         this.coins = 0;
@@ -41,6 +47,9 @@ public class UserStat {
         this.kills = 0;
         this.deaths = 0;
         this.assists = 0;
+        this.logouts = 0;
+        this.distanceTraveled = 0;
+        this.spentTime = 0L;
         user.setUserStat(this);
     }
 
@@ -62,10 +71,53 @@ public class UserStat {
             this.kills = rs.getInt("kills");
             this.deaths = rs.getInt("deaths");
             this.assists = rs.getInt("assists");
+            this.distanceTraveled = rs.getInt("distanceTraveled");
+            this.logouts = rs.getInt("logouts");
+            this.spentTime = rs.getLong("spentTime");
+            this.joinTime = 0L;
+            if(spentTime > TimeUnit.DAYS.toMillis(100)){
+                this.spentTime = 0L;
+            }
             user.setUserStat(this);
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public long getOnlineTime(){
+        return this.joinTime > 0 ? this.spentTime + (System.currentTimeMillis() - this.joinTime) : this.spentTime;
+    }
+
+    public long getSpentTime() {
+        return spentTime;
+    }
+
+    public long getJoinTime() {
+        return joinTime;
+    }
+
+    public void setSpentTime(long spentTime) {
+        this.spentTime = spentTime;
+    }
+
+    public void setJoinTime(long joinTime) {
+        this.joinTime = joinTime;
+    }
+
+    public int getLogouts() {
+        return logouts;
+    }
+
+    public void setLogouts(int logouts) {
+        this.logouts = logouts;
+    }
+
+    public int getDistanceTraveled() {
+        return distanceTraveled;
+    }
+
+    public void setDistanceTraveled(int distanceTraveled) {
+        this.distanceTraveled = distanceTraveled;
     }
 
     public void setTurboDropTime(long turboDropTime) {

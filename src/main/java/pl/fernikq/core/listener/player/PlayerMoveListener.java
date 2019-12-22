@@ -32,6 +32,10 @@ public class PlayerMoveListener implements Listener {
             Guild guildFrom = this.plugin.getGuildManager().getGuildByLocation(event.getFrom().getBlock().getLocation()).getOrNull();
             Guild guildTo = this.plugin.getGuildManager().getGuildByLocation(event.getTo().getBlock().getLocation()).getOrNull();
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+            if(user == null){
+                return;
+            }
+            user.getUserStat().setDistanceTraveled(user.getUserStat().getDistanceTraveled() + 1);
             if(user.getUserFight().isDuringFight()){
                 RegionFeedback regionFeedback = this.plugin.getRegionManager().canJoinDuringPVP(user, event.getTo(), event.getFrom());
                 if(!regionFeedback.isPermit()){

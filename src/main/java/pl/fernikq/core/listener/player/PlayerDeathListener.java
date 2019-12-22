@@ -62,8 +62,11 @@ public class PlayerDeathListener implements Listener {
                 assistPoints = 0;
             }
             killerUser.getUserStat().setPoints(killerUser.getUserStat().getPoints() + points);
+            killerUser.getUserStat().setKills(killerUser.getUserStat().getKills() + 1);
             assistUser.getUserStat().setPoints(assistUser.getUserStat().getPoints() + assistPoints);
+            assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
+            victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);
             this.plugin.getDummyManager().updateScore(assistUser);
             this.plugin.getDummyManager().updateScore(victimUser);
             this.plugin.getDummyManager().updateScore(killerUser);
@@ -87,7 +90,9 @@ public class PlayerDeathListener implements Listener {
         }else{
             int points = RankingUtil.calculatePoints(victimUser.getUserStat().getPoints(), killerUser.getUserStat().getPoints());
             killerUser.getUserStat().setPoints(killerUser.getUserStat().getPoints() + points);
+            killerUser.getUserStat().setKills(killerUser.getUserStat().getKills() + 1);
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
+            victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);
             this.plugin.getDummyManager().updateScore(victimUser);
             this.plugin.getDummyManager().updateScore(killerUser);
             String message = MessagesManager.playerFightMessage;

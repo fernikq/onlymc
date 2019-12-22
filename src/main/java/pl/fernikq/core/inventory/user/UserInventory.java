@@ -9,6 +9,7 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
+import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.inventory.actions.user.*;
 import pl.fernikq.core.inventory.enums.user.*;
@@ -19,6 +20,7 @@ import pl.fernikq.core.shop.ShopItem;
 import pl.fernikq.core.shop.ShopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
+import pl.fernikq.core.user.UserStat;
 import pl.fernikq.core.util.*;
 
 import java.util.Arrays;
@@ -445,6 +447,59 @@ public class UserInventory {
         gui.setItem(23, this.color.clone());
         gui.setItem(7, this.color.clone());
         gui.setItem(25, this.color.clone());
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI playerInfo(User user, User target) {
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lInformacje o graczu &8]", 5, true);
+        user.addInventory(gui);
+        gui.setItem(1, this.color);
+        gui.setItem(3, this.color);
+        gui.setItem(5, this.color);
+        gui.setItem(7, this.color);
+        gui.setItem(13, this.color);
+        gui.setItem(19, this.color);
+        gui.setItem(21, this.color);
+        gui.setItem(23, this.color);
+        gui.setItem(25, this.color);
+        gui.setItem(31, this.color);
+        gui.setItem(37, this.color);
+        gui.setItem(39, this.color);
+        gui.setItem(41, this.color);
+        gui.setItem(43, this.color);
+        UserStat stat = target.getUserStat();
+        ItemBuilder playerName = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setSkullOwner(target.getName()).setName(ChatUtil.fixColor("{n}Nick&8: {c}"+target.getName()));
+        ItemBuilder fight = new ItemBuilder(Material.DIAMOND_SWORD).setName(ChatUtil.fixColor("{c}&lWalka")).
+                setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Zabojstwa&8: {c}"+stat.getKills(), "&8>> {n}Smierci&8: {c}"+stat.getDeaths(),
+                        "&8>> {n}Punkty&8: {c}"+stat.getPoints(), "&8>> {n}Logouty&8: {c}"+stat.getLogouts(), "&8>> {n}Asysty&8: {c}"+stat.getAssists())));
+        ItemBuilder rank = new ItemBuilder(Material.BOOK).setName(ChatUtil.fixColor("{c}&lRanga")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiada range {c}"+(target.getGroup().equals(UserGroup.PLAYER) ? "Gracz" : target.getGroup().name()))));
+        ItemBuilder turbo = new ItemBuilder(Material.GOLD_PICKAXE).setName(ChatUtil.fixColor("{c}&lTurbo")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}TurboDrop&8: "+(stat.isTurboDrop() ? "&aTak" : "&cNie"), "&8>> {n}TurboExp&8: "+(stat.isTurboExp() ? "&aTak" : "&cNie"))));
+        ItemBuilder guildItem = new ItemBuilder(Material.ENDER_PORTAL_FRAME).setName(ChatUtil.fixColor("{c}&lGildia"));
+        if(target.hasGuild()){
+            Guild guild = target.getGuild();
+            guildItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Tag&8: {c}"+guild.getTag(), "&8>> {n}Nazwa&8: {c}"+guild.getName(),
+                    "&8>> {n}Zalozyciel&8: {c}"+guild.getOwner().getName(), "&8>> {n}Punkty&8: {c}"+guild.getPoints(), "&8>> {n}Zabojstwa&8: {c}"+guild.getKills(), "&8>> {n}Smierci&8: {c}"+guild.getDeaths(),
+                    "&8>> {n}Asysty&8: {c}"+guild.getAssists())));
+        }else{
+            guildItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nie posiada gildii!")));
+        }
+        ItemBuilder drop = new ItemBuilder(Material.STONE).setName(ChatUtil.fixColor("{c}&lDrop")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+                "&8>> {n}Wykopany kamien&8: {c}"+stat.getMinedStone(), "&8>> {n}Poziom&8: {c}"+stat.getLevel(), "&8>> {n}Otworzone "+this.plugin.getDropManager().getPremiumCaseNameInGUI()+"&8: {c}"+stat.getOpenedPremiumCase(),
+                "&8>> {n}Otworzone "+this.plugin.getDropManager().getCobblexNameInGUI()+"&8: {c}"+stat.getOpenedCobblex())));
+        ItemBuilder coins = new ItemBuilder(Material.DOUBLE_PLANT).setName(ChatUtil.fixColor("{c}&lMonety")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiada&8: {c}"+stat.getCoins()+" {n}monet", "&8>> {n}Wykopanych z kamienia&8: {c}"+stat.getCoinsFromStone())));
+        ItemBuilder distance = new ItemBuilder(Material.GOLD_BOOTS).setName(ChatUtil.fixColor("{c}&lDystans")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Przebyty dystans&8: {c}"+stat.getDistanceTraveled()+"m")));
+        ItemBuilder online = new ItemBuilder(Material.WATCH).setName(ChatUtil.fixColor("{c}&lCzas Online")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+                 "&8>> {n}Online&8: "+(target.asPlayer() != null ? "&aTak" : "&cNie"), "&8>> {n}Spedzil&8: {c}"+TimeUtil.getTimeToString(stat.getOnlineTime()))));
+        gui.setItem(22, playerName.toItemStack());
+        gui.setItem(10, fight.toItemStack());
+        gui.setItem(12, rank.toItemStack());
+        gui.setItem(14, turbo.toItemStack());
+        gui.setItem(16, guildItem.toItemStack());
+        gui.setItem(28, drop.toItemStack());
+        gui.setItem(30, coins.toItemStack());
+        gui.setItem(32, distance.toItemStack());
+        gui.setItem(34, online.toItemStack());
         gui.setEmptyItem(this.blank);
         return gui;
     }

@@ -212,6 +212,26 @@ public class Guild {
         return preDeleted;
     }
 
+    public int getKills(){
+        int kills = this.members.stream().mapToInt(member -> member.getUser().getUserStat().getKills()).sum();
+        return kills;
+    }
+
+    public int getDeaths(){
+        int deaths = this.members.stream().mapToInt(member -> member.getUser().getUserStat().getDeaths()).sum();
+        return deaths;
+    }
+
+    public int getPoints(){
+        int points = this.members.stream().mapToInt(member -> member.getUser().getUserStat().getPoints()).sum();
+        return points / this.members.size();
+    }
+
+    public int getAssists(){
+        int assists = this.members.stream().mapToInt(member -> member.getUser().getUserStat().getAssists()).sum();
+        return assists;
+    }
+
     public int getEnlargeMembersLevel() {
         return enlargeMembersLevel;
     }

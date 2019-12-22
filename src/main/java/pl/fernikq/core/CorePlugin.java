@@ -92,6 +92,8 @@ public class CorePlugin extends JavaPlugin {
         this.mySQL.openWithoutTask();
         Bukkit.getOnlinePlayers().forEach(player -> {
             this.userManager.getUser(player.getUniqueId()).peek(user -> {
+                user.getUserStat().setSpentTime(user.getUserStat().getSpentTime() + (System.currentTimeMillis() - user.getUserStat().getJoinTime()));
+                user.getUserStat().setJoinTime(0L);
                 this.userManager.updateUser(user);
                 this.fightManager.removeFight(user);
             });
@@ -101,6 +103,7 @@ public class CorePlugin extends JavaPlugin {
         Bukkit.getWorlds().forEach(world -> world.save());
         simpleTasks.forEach(SimpleTask::stop);
         this.mySQL.closeConnection();
+        Bukkit.shutdown();
     }
 
     private void initPacketReceiving(){
@@ -210,6 +213,7 @@ public class CorePlugin extends JavaPlugin {
         new EnderCommand("ender", new String[0], UserGroup.PLAYER, this).register();
         new EnderChestCommand("enderchest", new String[]{"ec"}, UserGroup.PLAYER, this).register();
         new ChatSettingsCommand("ustawienia", new String[0], UserGroup.PLAYER, this).register();
+        new PlayerInfoCommand("gracz", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
     }
