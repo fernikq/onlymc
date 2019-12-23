@@ -2,6 +2,7 @@ package pl.fernikq.core.inventory.actions.user;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
@@ -26,7 +27,7 @@ public class DepositeAction implements InventoryAction {
     }
 
     @Override
-    public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack) {
+    public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack, InventoryClickEvent event) {
         if(depositeActionType.equals(DepositeActionType.TAKE_APPLES)){
             int applesInInventory = ItemUtil.getAmountOfMaterial(player.getInventory(), Material.GOLDEN_APPLE, (short) 0);
             if(user.getUserStat().getDepositeApples() <= 0){

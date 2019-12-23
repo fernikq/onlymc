@@ -1,6 +1,7 @@
 package pl.fernikq.core.inventory.actions.user;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
@@ -33,7 +34,7 @@ public class KitAction implements InventoryAction {
     }
 
     @Override
-    public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack) {
+    public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack, InventoryClickEvent event) {
         if(kitActionType.equals(KitActionType.CHOOSE)){
             this.plugin.getUserInventory().kit(user, kit).openInventory(player);
             return;

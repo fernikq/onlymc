@@ -1,6 +1,7 @@
 package pl.fernikq.core.inventory.actions.user;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
@@ -21,7 +22,7 @@ public class ChatSettingsAction implements InventoryAction {
     }
 
     @Override
-    public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack) {
+    public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack, InventoryClickEvent event) {
         if(type.equals(ChatSettingsActionType.AUTOMESSAGE)){
             user.getUserChat().setAutoMessages(!user.getUserChat().isAutoMessages());
             this.plugin.getUserInventory().chatSettings(user).openInventory(player);

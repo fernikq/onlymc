@@ -76,6 +76,7 @@ public class ConfigManager {
     public static int guildTimeRenewCost;
     public static int playerFightTime;
     public static int blockBuildingBelowYDuringFight;
+    public static int playerPointsResetCost;
     public static double punchingLinePower;
     public static String guildDenyBuildTimeAfterExplosion;
     public static List<String> guildPlayerItemsToCreate;
@@ -195,5 +196,6 @@ public class ConfigManager {
         punchingLinePower = -1.2;
         blockBuildingBelowYDuringFight = 50;
         blockOpeningEnderchestDuringFight = true;
+        playerPointsResetCost = 500;
     }
 }

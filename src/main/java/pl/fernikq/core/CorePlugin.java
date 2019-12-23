@@ -2,6 +2,7 @@ package pl.fernikq.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.fernikq.core.abyss.AbyssManager;
 import pl.fernikq.core.automessage.AutoMessageManager;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
@@ -72,6 +73,7 @@ public class CorePlugin extends JavaPlugin {
     private AllianceManager allianceManager;
     private GuildInventory guildInventory;
     private FightManager fightManager;
+    private AbyssManager abyssManager;
 
     @Override
     public void onEnable() {
@@ -135,6 +137,7 @@ public class CorePlugin extends JavaPlugin {
         this.allianceManager = new AllianceManager(this);
         this.guildInventory = new GuildInventory(this);
         this.fightManager = new FightManager(this);
+        this.abyssManager = new AbyssManager(this);
     }
 
     private void initData(){
@@ -211,9 +214,11 @@ public class CorePlugin extends JavaPlugin {
         new CobblexCommand("cobblex", new String[]{"cx"}, UserGroup.PLAYER, this).register();
         new IgnoreCommand("ignore", new String[0], UserGroup.PLAYER, this).register();
         new EnderCommand("ender", new String[0], UserGroup.PLAYER, this).register();
-        new EnderChestCommand("enderchest", new String[]{"ec"}, UserGroup.PLAYER, this).register();
+        new EnderChestCommand("enderchest", new String[]{"ec"}, UserGroup.VIP, this).register();
         new ChatSettingsCommand("ustawienia", new String[0], UserGroup.PLAYER, this).register();
         new PlayerInfoCommand("gracz", new String[0], UserGroup.PLAYER, this).register();
+        new ResetPointsCommand("resetuj", new String[0], UserGroup.PLAYER, this).register();
+        new AbyssCommand("otchlan", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
     }
@@ -350,5 +355,9 @@ public class CorePlugin extends JavaPlugin {
 
     public FightManager getFightManager() {
         return fightManager;
+    }
+
+    public AbyssManager getAbyssManager() {
+        return abyssManager;
     }
 }

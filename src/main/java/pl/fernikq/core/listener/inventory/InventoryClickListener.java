@@ -21,6 +21,8 @@ import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -56,7 +58,16 @@ public class InventoryClickListener implements Listener {
                 }
                 InventoryAction action = inventoryGUI.getActions().get(event.getRawSlot());
                 if(action != null){
-                    action.execute(player, event.getInventory(), event.getRawSlot(), event.getInventory().getItem(event.getRawSlot()));
+                    action.execute(player, event.getInventory(), event.getRawSlot(), event.getInventory().getItem(event.getRawSlot()), event);
+                }
+                return;
+            }
+            Map<String, InventoryGUI> abyssInventories = new HashMap<>(this.plugin.getAbyssManager().getInventories());
+            inventoryGUI = abyssInventories.get(ChatUtil.fixColor(event.getInventory().getName()));
+            if(inventoryGUI != null){
+                InventoryAction action = inventoryGUI.getActions().get(event.getRawSlot());
+                if(action != null){
+                    action.execute(player, event.getInventory(), event.getRawSlot(), event.getInventory().getItem(event.getRawSlot()), event);
                 }
                 return;
             }

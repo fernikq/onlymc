@@ -160,11 +160,13 @@ public class GuildInventory {
         GuildMember userMember = guild.getMemberByName(user.getName()).orElse(null);
         List<GuildMember> guildMemberList = guild.getMembers().stream().filter(guildMember -> !guildMember.getUser().equals(guild.getOwner())).collect(Collectors.toList());
         for(int i = (page - 1) * 45; i < page * 45; i++) {
-            if(guildMemberList.size() >= 0 && i <= guildMemberList.size() - 1) {
+            if(guildMemberList.size() > 0 && i <= guildMemberList.size() - 1) {
                 GuildMember member = guildMemberList.get(i);
                 ItemBuilder head = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setName(ChatUtil.fixColor("{c}&l" + member.getUser().getName())).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zarzadzac&8!"))).setSkullOwner(member.getUser().getName());
                 gui.addItem(head.toItemStack(), new GuildPanelAction(this.plugin, guild, user, userMember, member, null, GuildPanelActionType.OPEN_MEMBER_PERMISSIONS, page, 0));
+                continue;
             }
+            break;
         }
         gui.setItem(50, new ItemBuilder(Material.SKULL_ITEM).setDurability((short)3).setSkullOwner("MHF_ArrowRight").setName(ChatUtil.fixColor("&a&lDalej")).toItemStack(),
                 new GuildPanelAction(this.plugin, guild, user, userMember, null, null, GuildPanelActionType.OPEN_MEMBER_PERMISSION_NEXT_PAGE, page, 0));
