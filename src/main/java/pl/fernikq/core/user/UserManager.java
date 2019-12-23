@@ -6,6 +6,7 @@ import io.vavr.control.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.top.TopKind;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,6 +52,10 @@ public class UserManager {
         return this.users.computeIfAbsent(player.getUniqueId(), uuid -> {
             User user = new User(player);
             insertUser(user);
+            this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> {
+                sortable.addObject(user);
+                sortable.sort();
+            });
             return user;
         });
     }
@@ -86,6 +91,10 @@ public class UserManager {
         this.plugin.runAsync(() -> {
             this.userData.deleteUser(user);
             this.userStatData.deleteUser(user);
+            this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> {
+                sortable.removeObject(user);
+                sortable.sort();
+            });
         });
     }
 

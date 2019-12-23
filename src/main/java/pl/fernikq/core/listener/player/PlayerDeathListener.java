@@ -9,6 +9,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.fight.Damage;
 import pl.fernikq.core.user.fight.UserFight;
@@ -37,6 +38,8 @@ public class PlayerDeathListener implements Listener {
         if(victimUser == null){
             return;
         }
+        victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);
+        this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_DEATHS).sort());
         UserFight victimFight = victimUser.getUserFight();
         if(victimFight.getDamageMap().isEmpty() && victimFight.getLastAttacker() == null){
             return;
@@ -66,7 +69,7 @@ public class PlayerDeathListener implements Listener {
             assistUser.getUserStat().setPoints(assistUser.getUserStat().getPoints() + assistPoints);
             assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
-            victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
             this.plugin.getDummyManager().updateScore(assistUser);
             this.plugin.getDummyManager().updateScore(victimUser);
             this.plugin.getDummyManager().updateScore(killerUser);
@@ -92,7 +95,6 @@ public class PlayerDeathListener implements Listener {
             killerUser.getUserStat().setPoints(killerUser.getUserStat().getPoints() + points);
             killerUser.getUserStat().setKills(killerUser.getUserStat().getKills() + 1);
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
-            victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);
             this.plugin.getDummyManager().updateScore(victimUser);
             this.plugin.getDummyManager().updateScore(killerUser);
             String message = MessagesManager.playerFightMessage;
@@ -107,6 +109,8 @@ public class PlayerDeathListener implements Listener {
                 ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage);
             });
         }
+        this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).sort());
+        this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).sort());
         this.plugin.getFightManager().removeFight(victimUser);
     }
 }

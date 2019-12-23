@@ -16,6 +16,8 @@ import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.guild.region.GuildRegion;
 import pl.fernikq.core.guild.region.GuildRegionData;
 import pl.fernikq.core.guild.treasure.GuildTreasureData;
+import pl.fernikq.core.top.TopKind;
+import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ItemUtil;
@@ -80,7 +82,7 @@ public class GuildManager {
 
     public void removeMember(GuildMember member){
         member.getGuild().removeMember(member);
-        this.plugin.runAsync(() ->  this.guildMemberData.deleteMember(member));
+        this.plugin.runAsync(() -> this.guildMemberData.deleteMember(member));
         this.plugin.getTagManager().updateTag(member.getUser().asPlayer());
     }
 
@@ -90,9 +92,13 @@ public class GuildManager {
         this.plugin.getUserManager().getUser(owner.getUniqueId()).peek(user -> {
             Guild guild = new Guild(user, tag.toUpperCase(), name);
             GuildRegion region = new GuildRegion(guild, center.getBlock().getLocation());
+            registerGuild(guild);
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(sortable -> {
+                sortable.addObject(guild);
+                sortable.sort();
+            }));
             addMember(user, guild, GuildPermission.values());
             createGuildRoom(guild);
-            registerGuild(guild);
             this.plugin.runAsync(() -> {
                 this.guildData.insertGuild(guild);
                 this.guildRegionData.insertRegion(region);
@@ -108,6 +114,10 @@ public class GuildManager {
             this.guildTreasureData.deleteTreasure(guild.getTreasure());
             this.guildRegionData.deleteRegion(guild.getRegion());
         });
+        this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(sortable -> {
+            sortable.removeObject(guild);
+            sortable.sort();
+        }));
         guild.getMembers().forEach(member -> removeMember(member));
         this.plugin.getAllianceManager().getAllies(guild).forEach(ally -> this.plugin.getAllianceManager().removeAlliance(ally, guild));
         this.guilds.remove(guild.getTag().toUpperCase());

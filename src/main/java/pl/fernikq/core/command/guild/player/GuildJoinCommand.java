@@ -10,6 +10,8 @@ import pl.fernikq.core.config.Lang;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.member.GuildPermission;
+import pl.fernikq.core.top.TopKind;
+import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
@@ -54,8 +56,9 @@ public class GuildJoinCommand extends CustomCommand {
            message = message.replace("{TAG}", guild.getTag());
            message = message.replace("{PLAYER}", player.getName());
            String finalMessage = message;
-            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
+           this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
            this.plugin.getGuildManager().addMember(user, guild, GuildPermission.PLACE, GuildPermission.BREAK, GuildPermission.BASE_TELEPORT);
+           this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(Sortable::sort));
         });
         return true;
     }

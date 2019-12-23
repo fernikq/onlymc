@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
@@ -29,6 +30,7 @@ public class PlayerQuitListener implements Listener {
             if(user.getUserFight().isDuringFight()){
                 player.setHealth(0.0);
                 user.getUserStat().setLogouts(user.getUserStat().getLogouts() + 1);
+                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_LOGOUTS).sort());
                 this.plugin.getFightManager().removeFight(user);
                 String message = MessagesManager.playerFightLogoutMessage;
                 message = message.replace("{PLAYER}", user.getName());
