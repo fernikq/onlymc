@@ -35,7 +35,7 @@ public class PlayerQuitListener implements Listener {
                 String finalMessage = message;
                 this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isFightMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
             }
-            this.plugin.getUserManager().updateUser(user);
+            this.plugin.runAsync(() -> this.plugin.getUserManager().updateUser(user));
             user.setScoreboard(null);
         });
         this.plugin.getTagManager().removeTag(player);

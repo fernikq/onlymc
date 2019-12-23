@@ -74,10 +74,8 @@ public class UserManager {
     }
 
     public void updateUser(User user){
-        this.plugin.runAsync(() -> {
-            this.userData.updateUser(user);
-            this.userStatData.updateStats(user);
-        });
+        this.userData.updateUser(user);
+        this.userStatData.updateStats(user);
     }
 
     public void updateUserInfo(User user){

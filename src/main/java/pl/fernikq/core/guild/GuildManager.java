@@ -62,12 +62,10 @@ public class GuildManager {
     }
 
     public void updateGuild(Guild guild){
-        this.plugin.runAsync(() -> {
-            this.guildData.updateGuild(guild);
-            this.guildRegionData.updateRegion(guild.getRegion());
-            this.guildTreasureData.updateTreasure(guild.getTreasure());
-        });
-        guild.getMembers().forEach(member -> this.plugin.runAsync(() -> this.guildMemberData.updateMember(member)));
+        this.guildData.updateGuild(guild);
+        this.guildRegionData.updateRegion(guild.getRegion());
+        this.guildTreasureData.updateTreasure(guild.getTreasure());
+        guild.getMembers().forEach(member -> this.guildMemberData.updateMember(member));
     }
 
     public void registerGuild(Guild guild){
