@@ -10,6 +10,7 @@ import pl.fernikq.core.command.CustomCommand;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.Lang;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
@@ -45,7 +46,7 @@ public class ResetPointsCommand extends CustomCommand {
            if(this.cache.asMap().containsKey(user)){
                user.getUserStat().setPoints(ConfigManager.playerStartPoints);
                ChatUtil.sendMessage(player, "&8>> {n}Twoje punkty zostaly zresetowane do {c}"+ConfigManager.playerStartPoints);
-               //TODO sort points comparator
+               this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).sort());
                return;
            }
            this.cache.put(user, 100L);
