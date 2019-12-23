@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.member.GuildMember;
@@ -61,10 +62,12 @@ public class GuildManager {
     }
 
     public void updateGuild(Guild guild){
-        this.guildData.updateGuild(guild);
-        this.guildRegionData.updateRegion(guild.getRegion());
-        this.guildTreasureData.updateTreasure(guild.getTreasure());
-        guild.getMembers().forEach(member -> this.guildMemberData.updateMember(member));
+        this.plugin.runAsync(() -> {
+            this.guildData.updateGuild(guild);
+            this.guildRegionData.updateRegion(guild.getRegion());
+            this.guildTreasureData.updateTreasure(guild.getTreasure());
+        });
+        guild.getMembers().forEach(member -> this.plugin.runAsync(() -> this.guildMemberData.updateMember(member)));
     }
 
     public void registerGuild(Guild guild){
@@ -73,13 +76,13 @@ public class GuildManager {
 
     public void addMember(User user, Guild guild, GuildPermission... guildPermissions){
         GuildMember member = new GuildMember(user, guild, guildPermissions);
-        this.guildMemberData.insertMember(member);
+        this.plugin.runAsync(() -> this.guildMemberData.insertMember(member));
         this.plugin.getTagManager().updateTag(member.getUser().asPlayer());
     }
 
     public void removeMember(GuildMember member){
         member.getGuild().removeMember(member);
-        this.guildMemberData.deleteMember(member);
+        this.plugin.runAsync(() ->  this.guildMemberData.deleteMember(member));
         this.plugin.getTagManager().updateTag(member.getUser().asPlayer());
     }
 
@@ -92,17 +95,21 @@ public class GuildManager {
             addMember(user, guild, GuildPermission.values());
             createGuildRoom(guild);
             registerGuild(guild);
-            this.guildData.insertGuild(guild);
-            this.guildRegionData.insertRegion(region);
-            this.guildTreasureData.insertTreasure(guild.getTreasure());
+            this.plugin.runAsync(() -> {
+                this.guildData.insertGuild(guild);
+                this.guildRegionData.insertRegion(region);
+                this.guildTreasureData.insertTreasure(guild.getTreasure());
+            });
             owner.teleport(region.getHome());
         });
     }
 
     public void deleteGuild(Guild guild){
-        this.guildData.deleteGuild(guild);
-        this.guildTreasureData.deleteTreasure(guild.getTreasure());
-        this.guildRegionData.deleteRegion(guild.getRegion());
+        this.plugin.runAsync(() -> {
+            this.guildData.deleteGuild(guild);
+            this.guildTreasureData.deleteTreasure(guild.getTreasure());
+            this.guildRegionData.deleteRegion(guild.getRegion());
+        });
         guild.getMembers().forEach(member -> removeMember(member));
         this.plugin.getAllianceManager().getAllies(guild).forEach(ally -> this.plugin.getAllianceManager().removeAlliance(ally, guild));
         this.guilds.remove(guild.getTag().toUpperCase());

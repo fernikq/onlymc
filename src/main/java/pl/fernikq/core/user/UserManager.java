@@ -67,22 +67,28 @@ public class UserManager {
     }
 
     public void insertUser(User user){
-        this.userData.insertUser(user);
-        this.userStatData.insertStats(user);
+        this.plugin.runAsync(() -> {
+            this.userData.insertUser(user);
+            this.userStatData.insertStats(user);
+        });
     }
 
     public void updateUser(User user){
-        this.userData.updateUser(user);
-        this.userStatData.updateStats(user);
+        this.plugin.runAsync(() -> {
+            this.userData.updateUser(user);
+            this.userStatData.updateStats(user);
+        });
     }
 
     public void updateUserInfo(User user){
-        this.userData.updateUser(user);
+        this.plugin.runAsync(() -> this.userData.updateUser(user));
     }
 
     private void removeUser(User user){
-        this.userData.deleteUser(user);
-        this.userStatData.deleteUser(user);
+        this.plugin.runAsync(() -> {
+            this.userData.deleteUser(user);
+            this.userStatData.deleteUser(user);
+        });
     }
 
     public Option<User> getUser(String name){

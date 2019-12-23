@@ -41,12 +41,12 @@ public class HomeManager {
     public void create(User user, String name, Location location){
         Home home = new Home(user, name, location);
         user.addHome(home);
-        this.homeData.insertHome(home);
+        this.plugin.runAsync(() -> this.homeData.insertHome(home));
     }
 
     public void delete(User user, Home home){
         user.removeHome(home);
-        this.homeData.deleteHome(home);
+        this.plugin.runAsync(() -> this.homeData.deleteHome(home));
     }
 
     public void init(){

@@ -108,6 +108,10 @@ public class CorePlugin extends JavaPlugin {
         Bukkit.shutdown();
     }
 
+    public void runAsync(final Runnable runnable) {
+        this.getServer().getScheduler().runTaskAsynchronously(this, runnable);
+    }
+
     private void initPacketReceiving(){
         //new BlockDigListener(this);
 

@@ -41,7 +41,7 @@ public class SetWarpCommand extends CustomCommand {
                 return;
             }).peek(warp -> {
                 warp.setLocation(player.getLocation());
-                this.plugin.getWarpManager().getWarpData().updateWarp(warp);
+                this.plugin.runAsync(() -> this.plugin.getWarpManager().getWarpData().updateWarp(warp));
                 ChatUtil.sendMessage(sender, "&8>> {n}Zmieniles lokalizacje warpu {c}"+warp.getName());
                 return;
             });
@@ -60,7 +60,7 @@ public class SetWarpCommand extends CustomCommand {
         }).peek(warp -> {
             warp.setLocation(player.getLocation());
             warp.setRequiredGroup(UserGroup.getByName(groupName));
-            this.plugin.getWarpManager().getWarpData().updateWarp(warp);
+            this.plugin.runAsync(() -> this.plugin.getWarpManager().getWarpData().updateWarp(warp));
             ChatUtil.sendMessage(sender, "&8>> {n}Zmieniles lokalizacje i wymagana range warpu {c}"+warp.getName());
             return;
         });

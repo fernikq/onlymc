@@ -29,7 +29,7 @@ public class WarpGroupCommand extends CustomCommand {
         }
         this.plugin.getWarpManager().getWarp(args[0]).peek(warp -> {
             warp.setRequiredGroup(UserGroup.getByName(groupName));
-            this.plugin.getWarpManager().getWarpData().updateWarp(warp);
+            this.plugin.runAsync(() -> this.plugin.getWarpManager().getWarpData().updateWarp(warp));
             ChatUtil.sendMessage(sender, "&8>> {n}Zmieniles wymagana range warpu {c}"+warp.getName());
             return;
         }).onEmpty(() -> {

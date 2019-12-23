@@ -33,7 +33,7 @@ public class AllianceManager {
         if(!hasAlliance(guild1, guild2)){
             Alliance alliance = new Alliance(guild1, guild2);
             this.alliances.add(alliance);
-            this.allianceData.insertAlliance(alliance);
+            this.plugin.runAsync(() -> this.allianceData.insertAlliance(alliance));
             guild1.getOnlineMembers().forEach(onlineMember -> {
                 this.plugin.getTagManager().updateTag(onlineMember.getUser().asPlayer());
             });
@@ -46,7 +46,7 @@ public class AllianceManager {
     public void removeAlliance(Guild guild1, Guild guild2){
         getAlliance(guild1, guild2).ifPresent(alliance -> {
             this.alliances.remove(alliance);
-            this.allianceData.deleteAlliance(alliance);
+            this.plugin.runAsync(() -> this.allianceData.deleteAlliance(alliance));
             guild1.getOnlineMembers().forEach(onlineMember -> {
                 this.plugin.getTagManager().updateTag(onlineMember.getUser().asPlayer());
             });

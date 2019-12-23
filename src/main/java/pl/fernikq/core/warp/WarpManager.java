@@ -22,12 +22,12 @@ public class WarpManager {
 
     public void addWarp(Warp warp){
         this.warps.putIfAbsent(warp.getName().toLowerCase(), warp);
-        this.warpData.insertWarp(warp);
+        this.plugin.runAsync(() -> this.warpData.insertWarp(warp));
     }
 
     public void removeWarp(Warp warp){
         this.warps.remove(warp.getName().toLowerCase());
-        this.warpData.deleteWarp(warp);
+        this.plugin.runAsync(() -> this.warpData.deleteWarp(warp));
     }
 
     public void registerWarp(Warp warp){

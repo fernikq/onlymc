@@ -36,7 +36,7 @@ public class SethomeCommand extends CustomCommand {
                 if(user.getHomes().size() == 1){
                     Home home = this.plugin.getHomeManager().get(user, 0);
                     home.setLocation(player.getLocation());
-                    this.plugin.getHomeManager().getHomeData().update(home);
+                    this.plugin.runAsync(() -> this.plugin.getHomeManager().getHomeData().update(home));
                     ChatUtil.sendMessage(player, "&8>> {n}Zmieniles lokalizacje domu o nazwie {c}"+home.getName());
                     return;
                 }else{
@@ -58,7 +58,7 @@ public class SethomeCommand extends CustomCommand {
             if(this.plugin.getHomeManager().exists(user, homeName)){
                 Home home = this.plugin.getHomeManager().get(user, homeName);
                 home.setLocation(player.getLocation());
-                this.plugin.getHomeManager().getHomeData().update(home);
+                this.plugin.runAsync(() -> this.plugin.getHomeManager().getHomeData().update(home));
                 ChatUtil.sendMessage(player, "&8>> {n}Zmieniles lokalizacje domu o nazwie {c}"+home.getName());
                 return;
             }
