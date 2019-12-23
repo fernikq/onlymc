@@ -31,6 +31,7 @@ import pl.fernikq.core.region.RegionManager;
 import pl.fernikq.core.shop.ShopManager;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.task.*;
+import pl.fernikq.core.top.TopManager;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.UserPermissionsManager;
@@ -74,6 +75,7 @@ public class CorePlugin extends JavaPlugin {
     private GuildInventory guildInventory;
     private FightManager fightManager;
     private AbyssManager abyssManager;
+    private TopManager topManager;
 
     @Override
     public void onEnable() {
@@ -142,6 +144,7 @@ public class CorePlugin extends JavaPlugin {
         this.guildInventory = new GuildInventory(this);
         this.fightManager = new FightManager(this);
         this.abyssManager = new AbyssManager(this);
+        this.topManager = new TopManager(this);
     }
 
     private void initData(){
@@ -363,5 +366,9 @@ public class CorePlugin extends JavaPlugin {
 
     public AbyssManager getAbyssManager() {
         return abyssManager;
+    }
+
+    public TopManager getTopManager() {
+        return topManager;
     }
 }

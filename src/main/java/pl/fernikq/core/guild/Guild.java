@@ -217,6 +217,10 @@ public class Guild {
         return kills;
     }
 
+    public int getLogouts(){
+        return this.members.stream().mapToInt(member -> member.getUser().getUserStat().getLogouts()).sum();
+    }
+
     public int getDeaths(){
         int deaths = this.members.stream().mapToInt(member -> member.getUser().getUserStat().getDeaths()).sum();
         return deaths;

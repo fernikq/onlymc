@@ -1,6 +1,8 @@
 package pl.fernikq.core.guild;
 
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.top.TopKind;
+import pl.fernikq.core.top.comparator.Sortable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,8 +49,10 @@ public class GuildData {
                 this.plugin.getUserManager().getUser(UUID.fromString(resultSet.getString("owner"))).peek(user -> {
                    Guild guild = new Guild(user, resultSet);
                    this.plugin.getGuildManager().registerGuild(guild);
+                   this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(sortable -> sortable.addObject(guild));
                 });
             }
+            this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(Sortable::sort);
         } catch(SQLException e) {
             e.printStackTrace();
         }

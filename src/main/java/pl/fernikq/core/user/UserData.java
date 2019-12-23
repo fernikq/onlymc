@@ -1,6 +1,8 @@
 package pl.fernikq.core.user;
 
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.top.TopKind;
+import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.enderchest.Enderchest;
 import pl.fernikq.core.util.Logger;
 import pl.fernikq.core.util.SerializationUtil;
@@ -46,7 +48,9 @@ public class UserData {
                 user.setKitTimes(this.plugin.getKitManager().kitsFromString(rs.getString("kitTimes")));
                 new Enderchest(user, rs);
                 this.plugin.getUserManager().registerUser(user);
+                this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> sortable.addObject(user));
             }
+            this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(Sortable::sort);
         } catch(SQLException e) {
             e.printStackTrace();
         }

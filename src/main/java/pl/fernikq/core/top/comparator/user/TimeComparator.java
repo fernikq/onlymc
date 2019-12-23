@@ -1,6 +1,7 @@
-package pl.fernikq.core.top.comparator;
+package pl.fernikq.core.top.comparator.user;
 
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class CoinsComparator implements Sortable<User> {
+public class TimeComparator implements Sortable<User> {
 
     private final CorePlugin plugin;
     private List<User> userList;
@@ -17,7 +18,7 @@ public class CoinsComparator implements Sortable<User> {
     private TopKind topKind;
     private Comparator<User> userComparator;
 
-    public CoinsComparator(CorePlugin plugin, TopType topType, TopKind topKind){
+    public TimeComparator(CorePlugin plugin, TopType topType, TopKind topKind){
         this.plugin = plugin;
         this.topType = topType;
         this.topKind = topKind;
@@ -25,7 +26,7 @@ public class CoinsComparator implements Sortable<User> {
         this.userComparator = new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                int i = Integer.compare(o2.getUserStat().getCoins(), o1.getUserStat().getCoins());
+                long i = Long.compare(o2.getUserStat().getOnlineTime(), o1.getUserStat().getOnlineTime());
                 if(i == 0){
                     if(o1.getName() == null){
                         return -1;
@@ -47,7 +48,7 @@ public class CoinsComparator implements Sortable<User> {
 
     @Override
     public User getObjectByPosition(int position){
-        return this.userList.size() > position - 1 ? this.userList.get(position) : null;
+        return this.userList.size() > position ? this.userList.get(position) : null;
     }
 
     @Override
