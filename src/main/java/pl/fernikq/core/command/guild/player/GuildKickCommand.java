@@ -12,6 +12,7 @@ import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.top.TopKind;
+import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
@@ -83,7 +84,7 @@ public class GuildKickCommand extends CustomCommand {
             String finalMessage = message;
             this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
             this.plugin.getGuildManager().removeMember(targetMember);
-            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(Sortable::sort));
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).stream().filter(sortable -> !sortable.getTopType().equals(TopType.GUILD_COINS)).forEach(Sortable::sort));
         });
         return true;
     }
