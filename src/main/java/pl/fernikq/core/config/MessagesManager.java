@@ -63,6 +63,7 @@ public class MessagesManager {
     public static String guildExpireMessage;
     public static String guildTNTMessage;
     public static String playerFightMessage;
+    public static String playerQuestMessage;
     public static String playerFightPlusAssistMessage;
     public static String playerFightAntylogoutMessage;
     public static String playerFightFinishMessage;
@@ -188,5 +189,6 @@ public class MessagesManager {
         playerFightAntylogoutMessage = "{n}Jestes podczas walki jeszcze przez &c&l{TIME} {n}sek";
         playerFightFinishMessage = "&a&lSkonczyles walke, mozesz sie wylogowac!";
         playerFightLogoutMessage = "&8>> {n}Gracz &c{PLAYER} {n}wylogowal sie podczas walki&8!";
+        playerQuestMessage = "&8>> {n}Wykonales zadanie {c}{QUEST-NAME} {n}i otrzymales {c}{QUEST-REWARD} {n}monet!";
     }
 }

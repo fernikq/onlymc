@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.top.TopKind;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -58,6 +60,12 @@ public class UserManager {
             });
             return user;
         });
+    }
+
+    public List<String> getUsersNames(List<User> userList){
+        List<String> names = new ArrayList<>();
+        userList.forEach(user -> names.add(user.getName()));
+        return names;
     }
 
     public java.util.Set<User> getOnlineUsers(){

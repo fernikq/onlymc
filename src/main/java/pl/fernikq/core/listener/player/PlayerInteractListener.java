@@ -20,6 +20,7 @@ import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
+import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.*;
 
 import java.util.ArrayList;
@@ -78,8 +79,12 @@ public class PlayerInteractListener implements Listener {
             ItemUtil.giveItems(player, itemBuilder.toItemStack());
             ChatUtil.sendMessage(player, drop.getMessage().replace("{AMOUNT}", Integer.toString(amount)));
             event.setCancelled(true);
-            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> user.getUserStat().addOpenedCobblex(1));
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+                user.getUserStat().addOpenedCobblex(1);
+                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_COBBLEX));
+            });
             ItemUtil.removeFromHand(player, 1);
+
             return;
         }
         if(this.plugin.getDropManager().getPremiumCaseItem().isSimilar(player.getItemInHand())){
@@ -99,7 +104,6 @@ public class PlayerInteractListener implements Listener {
                 items++;
             }
             event.setCancelled(true);
-            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> user.getUserStat().addOpenedPremiumCase(1));
             ItemUtil.removeFromHand(player, 1);
             if(items == 0){
                 ChatUtil.sendMessage(player, "&8>> {n}Otworzyles "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}ale niestety nic nie wypadlo :(");
@@ -111,6 +115,10 @@ public class PlayerInteractListener implements Listener {
                     ChatUtil.sendMessage(onlineUser.asPlayer(), string);
                 }
                 ChatUtil.sendMessage(onlineUser.asPlayer(), " ");
+            });
+            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+                user.getUserStat().addOpenedPremiumCase(1);
+                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_PREMIUMCASE));
             });
             return;
         }

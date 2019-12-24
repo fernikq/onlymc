@@ -1,10 +1,14 @@
 package pl.fernikq.core.user;
 
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.util.TimeUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class UserStat {
@@ -30,6 +34,17 @@ public class UserStat {
     private long spentTime;
     private long joinTime;
 
+    //QUEST
+    private int comebackDay;
+    private int comebackDaysInRow;
+    private int minedWood;
+    private Set<String> exploredGuilds;
+    private Set<User> killedUsers;
+    private Set<User> killedWithRankUsers;
+    private int catchedFishes;
+    private int timeAwardAmount;
+    private int comebackAwardAmount;
+
     public UserStat(User user){
         this.coins = 0;
         this.level = 1;
@@ -50,6 +65,15 @@ public class UserStat {
         this.logouts = 0;
         this.distanceTraveled = 0;
         this.spentTime = 0L;
+        this.comebackDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        this.comebackDaysInRow = 1;
+        this.comebackAwardAmount = 0;
+        this.minedWood = 0;
+        this.catchedFishes = 0;
+        this.timeAwardAmount = 0;
+        this.killedUsers = new HashSet<>();
+        this.killedWithRankUsers = new HashSet<>();
+        this.exploredGuilds = new HashSet<>();
         user.setUserStat(this);
     }
 
@@ -75,6 +99,15 @@ public class UserStat {
             this.logouts = rs.getInt("logouts");
             this.spentTime = rs.getLong("spentTime");
             this.joinTime = 0L;
+            this.comebackDay = rs.getInt("comebackDay");
+            this.comebackDaysInRow = rs.getInt("comebackDaysInRow");
+            this.minedWood = rs.getInt("minedWood");
+            this.catchedFishes = rs.getInt("catchedFishes");
+            this.timeAwardAmount = rs.getInt("timeAwardAmount");
+            this.comebackAwardAmount = rs.getInt("comebackAwardAmount");
+            this.killedUsers = new HashSet<>();
+            this.killedWithRankUsers = new HashSet<>();
+            this.exploredGuilds = new HashSet<>();
             if(spentTime > TimeUnit.DAYS.toMillis(100)){
                 this.spentTime = 0L;
             }
@@ -82,6 +115,78 @@ public class UserStat {
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getComebackAwardAmount() {
+        return comebackAwardAmount;
+    }
+
+    public void setComebackAwardAmount(int comebackAwardAmount) {
+        this.comebackAwardAmount = comebackAwardAmount;
+    }
+
+    public int getComebackDay() {
+        return comebackDay;
+    }
+
+    public void setComebackDay(int comebackDay) {
+        this.comebackDay = comebackDay;
+    }
+
+    public int getComebackDaysInRow() {
+        return comebackDaysInRow;
+    }
+
+    public void setComebackDaysInRow(int comebackDaysInRow) {
+        this.comebackDaysInRow = comebackDaysInRow;
+    }
+
+    public int getMinedWood() {
+        return minedWood;
+    }
+
+    public void setMinedWood(int minedWood) {
+        this.minedWood = minedWood;
+    }
+
+    public Set<String> getExploredGuilds() {
+        return exploredGuilds;
+    }
+
+    public void setExploredGuilds(Set<String> exploredGuilds) {
+        this.exploredGuilds = exploredGuilds;
+    }
+
+    public Set<User> getKilledUsers() {
+        return killedUsers;
+    }
+
+    public void setKilledUsers(Set<User> killedUsers) {
+        this.killedUsers = killedUsers;
+    }
+
+    public Set<User> getKilledWithRankUsers() {
+        return killedWithRankUsers;
+    }
+
+    public void setKilledWithRankUsers(Set<User> killedWithRankUsers) {
+        this.killedWithRankUsers = killedWithRankUsers;
+    }
+
+    public int getCatchedFishes() {
+        return catchedFishes;
+    }
+
+    public void setCatchedFishes(int catchedFishes) {
+        this.catchedFishes = catchedFishes;
+    }
+
+    public int getTimeAwardAmount() {
+        return timeAwardAmount;
+    }
+
+    public void setTimeAwardAmount(int timeAwardAmount) {
+        this.timeAwardAmount = timeAwardAmount;
     }
 
     public long getOnlineTime(){

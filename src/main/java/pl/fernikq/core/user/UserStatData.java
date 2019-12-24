@@ -5,7 +5,9 @@ import pl.fernikq.core.CorePlugin;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class UserStatData {
 
@@ -41,7 +43,16 @@ public class UserStatData {
                     "`assists` INT NOT NULL,"+
                     "`distanceTraveled` INT NOT NULL,"+
                     "`logouts` INT NOT NULL,"+
-                    "`spentTime` LONG NOT NULL);");
+                    "`spentTime` LONG NOT NULL,"+
+                    "`exploredGuilds` TEXT NOT NULL,"+
+                    "`killedUsers` TEXT NOT NULL,"+
+                    "`killedWithRankUsers` TEXT NOT NULL,"+
+                    "`comebackDaysInRow` INT NOT NULL,"+
+                    "`comebackDay` INT NOT NULL,"+
+                    "`minedWood` INT NOT NULL,"+
+                    "`catchedFishes` INT NOT NULL,"+
+                    "`timeAwardAmount` INT NOT NULL,"+
+                    "`comebackAwardAmount` INT NOT NULL);");
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -53,7 +64,14 @@ public class UserStatData {
             ResultSet resultSet = this.plugin.getMySQL().query("SELECT * FROM `core_user_stats`");
             while(resultSet.next()){
                 this.plugin.getUserManager().getUser(UUID.fromString(resultSet.getString("uuid"))).peek(user -> {
-                   new UserStat(user, resultSet);
+                   UserStat userStat = new UserStat(user, resultSet);
+                    try {
+                        userStat.setExploredGuilds(Arrays.stream(resultSet.getString("exploredGuilds").split(":")).collect(Collectors.toSet()));
+                        Arrays.stream(resultSet.getString("killedUsers").split(":")).filter(s -> this.plugin.getUserManager().getUser(s).isDefined()).forEach(s -> userStat.getKilledUsers().add(this.plugin.getUserManager().getUser(s).get()));
+                        Arrays.stream(resultSet.getString("killedWithRankUsers").split(":")).filter(s -> this.plugin.getUserManager().getUser(s).isDefined()).forEach(s -> userStat.getKilledWithRankUsers().add(this.plugin.getUserManager().getUser(s).get()));
+                    } catch(SQLException e) {
+                        e.printStackTrace();
+                    }
                 });
             }
         } catch(SQLException e) {
@@ -67,8 +85,8 @@ public class UserStatData {
             this.plugin.getMySQL().openConnection();
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_user_stats` "+
                     "(id, uuid, coins, level, depositePearls, depositeApples, depositeEnchantedApples, minedStone, miningExperience, openedCobblex, openedPremiumCase, coinsFromStone, turboDropTime, " +
-                    "turboExpTime, points, kills, deaths, assists, distanceTraveled, logouts, spentTime)"+
-                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+                    "turboExpTime, points, kills, deaths, assists, distanceTraveled, logouts, spentTime, exploredGuilds, killedUsers, killedWithRankUsers, comebackDaysInRow, comebackDay, minedWood, catchedFishes, timeAwardAmount, comebackAwardAmount)"+
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, user.getUuid().toString());
             statement.setInt(3, stat.getCoins());
@@ -90,6 +108,18 @@ public class UserStatData {
             statement.setInt(19, stat.getDistanceTraveled());
             statement.setInt(20, stat.getLogouts());
             statement.setLong(21, stat.getSpentTime());
+            String string = String.join(":", stat.getExploredGuilds());
+            statement.setString(22, string);
+            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledUsers().stream().collect(Collectors.toList())));
+            statement.setString(23, string);
+            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledWithRankUsers().stream().collect(Collectors.toList())));
+            statement.setString(24, string);
+            statement.setInt(25, stat.getComebackDaysInRow());
+            statement.setInt(26, stat.getComebackDay());
+            statement.setInt(27, stat.getMinedWood());
+            statement.setInt(28, stat.getCatchedFishes());
+            statement.setInt(29, stat.getTimeAwardAmount());
+            statement.setInt(30, stat.getComebackAwardAmount());
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -105,7 +135,8 @@ public class UserStatData {
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_user_stats` SET "+
                     "`coins` = ?, `level` = ?, `depositePearls` = ?, `depositeApples` = ?, `depositeEnchantedApples` = ?, "+
                     "`minedStone` = ?, `miningExperience` = ?, `openedCobblex` = ?, `openedPremiumCase` = ?, `coinsFromStone` = ?, `turboDropTime` = ?, `turboExpTime` = ?, "+
-                    "`points` = ?, `kills` = ?, `deaths` = ?, `assists` = ?, `distanceTraveled` = ?, `logouts` = ?, `spentTime` = ? "+
+                    "`points` = ?, `kills` = ?, `deaths` = ?, `assists` = ?, `distanceTraveled` = ?, `logouts` = ?, `spentTime` = ?, `exploredGuilds` = ?, `killedUsers` = ?, `killedWithRankUsers` = ?, "+
+                    "`comebackDaysInRow` = ?, `comebackDay` = ?, `minedWood` = ?, `catchedFishes` = ?, `timeAwardAmount` = ?, `comebackAwardAmount` = ? "+
                     "WHERE `uuid` = '"+user.getUuid().toString()+"';");
             statement.setInt(1, stat.getCoins());
             statement.setInt(2, stat.getLevel());
@@ -126,6 +157,18 @@ public class UserStatData {
             statement.setInt(17, stat.getDistanceTraveled());
             statement.setInt(18, stat.getLogouts());
             statement.setLong(19, stat.getSpentTime());
+            String string = String.join(":", stat.getExploredGuilds());
+            statement.setString(20, string);
+            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledUsers().stream().collect(Collectors.toList())));
+            statement.setString(21, string);
+            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledWithRankUsers().stream().collect(Collectors.toList())));
+            statement.setString(22, string);
+            statement.setInt(23, stat.getComebackDaysInRow());
+            statement.setInt(24, stat.getComebackDay());
+            statement.setInt(25, stat.getMinedWood());
+            statement.setInt(26, stat.getCatchedFishes());
+            statement.setInt(27, stat.getTimeAwardAmount());
+            statement.setInt(28, stat.getComebackAwardAmount());
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

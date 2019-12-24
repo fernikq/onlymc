@@ -39,12 +39,14 @@ import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.UserPermissionsManager;
 import pl.fernikq.core.user.fight.FightManager;
 import pl.fernikq.core.user.home.HomeManager;
+import pl.fernikq.core.user.quests.QuestManager;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.RankingUtil;
 import pl.fernikq.core.util.TeleportManager;
 import pl.fernikq.core.vanish.VanishManager;
 import pl.fernikq.core.warp.WarpManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,6 +80,7 @@ public class CorePlugin extends JavaPlugin {
     private FightManager fightManager;
     private AbyssManager abyssManager;
     private TopManager topManager;
+    private QuestManager questManager;
 
     @Override
     public void onEnable() {
@@ -88,7 +91,7 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
-        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this));
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this));
         simpleTasks.forEach(SimpleTask::start);
     }
 
@@ -147,6 +150,7 @@ public class CorePlugin extends JavaPlugin {
         this.guildInventory = new GuildInventory(this);
         this.fightManager = new FightManager(this);
         this.abyssManager = new AbyssManager(this);
+        this.questManager = new QuestManager(this);
     }
 
     private void initData(){
@@ -375,5 +379,9 @@ public class CorePlugin extends JavaPlugin {
 
     public TopManager getTopManager() {
         return topManager;
+    }
+
+    public QuestManager getQuestManager() {
+        return questManager;
     }
 }

@@ -21,6 +21,7 @@ import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
 
 public class PlayerJoinListener implements Listener {
 
@@ -60,6 +61,17 @@ public class PlayerJoinListener implements Listener {
                 break;
             }
             player.hidePlayer(vanished);
+        }
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        if(day != user.getUserStat().getComebackDay()){
+            if(day - user.getUserStat().getComebackDay() == 1){
+                user.getUserStat().setComebackDaysInRow(user.getUserStat().getComebackDaysInRow() + 1);
+                user.getUserStat().setComebackDay(day);
+                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkComebackQuest(user));
+            }else{
+                user.getUserStat().setComebackDay(day);
+                user.getUserStat().setComebackDaysInRow(1);
+            }
         }
     }
 }

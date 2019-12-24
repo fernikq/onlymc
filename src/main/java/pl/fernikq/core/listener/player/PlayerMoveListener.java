@@ -12,6 +12,7 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.LocationUtil;
 import pl.fernikq.core.util.PlayerUtil;
@@ -36,6 +37,7 @@ public class PlayerMoveListener implements Listener {
                 return;
             }
             user.getUserStat().setDistanceTraveled(user.getUserStat().getDistanceTraveled() + 1);
+            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.TRAVELED_DISTANCE));
             if(user.getUserFight().isDuringFight()){
                 RegionFeedback regionFeedback = this.plugin.getRegionManager().canJoinDuringPVP(user, event.getTo(), event.getFrom());
                 if(!regionFeedback.isPermit()){
@@ -51,6 +53,15 @@ public class PlayerMoveListener implements Listener {
             if(guildTo != null && guildFrom == null){
                 ChatUtil.sendMessage(player, MessagesManager.guildJoinCuboidMessage.replace("{TAG}", guildTo.getTag()));
                 if(user != null){
+                    if(user.hasGuild()){
+                        if(!user.getGuild().equals(guildTo)) {
+                            user.getUserStat().getExploredGuilds().add(guildTo.getTag());
+                            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.EXPLORE_GUILDS));
+                        }
+                    }else{
+                        user.getUserStat().getExploredGuilds().add(guildTo.getTag());
+                        this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.EXPLORE_GUILDS));
+                    }
                     if((user.hasGuild() && user.getGuild().equals(guildTo)) || (user.hasGuild() && this.plugin.getAllianceManager().hasAlliance(user.getGuild(), guildTo))){
                         return;
                     }

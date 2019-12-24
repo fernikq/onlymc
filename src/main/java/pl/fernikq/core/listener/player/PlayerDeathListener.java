@@ -11,8 +11,10 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.fight.Damage;
 import pl.fernikq.core.user.fight.UserFight;
+import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.RankingUtil;
 
@@ -68,9 +70,9 @@ public class PlayerDeathListener implements Listener {
                 assistPoints = 0;
             }
             killerUser.getUserStat().setPoints(killerUser.getUserStat().getPoints() + points);
-            killerUser.getUserStat().setKills(killerUser.getUserStat().getKills() + 1);
             assistUser.getUserStat().setPoints(assistUser.getUserStat().getPoints() + assistPoints);
             assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
+            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(assistUser, QuestType.ASSISTS));
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
             this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
             if(assistUser.hasGuild()){
@@ -99,7 +101,6 @@ public class PlayerDeathListener implements Listener {
         }else{
             int points = RankingUtil.calculatePoints(victimUser.getUserStat().getPoints(), killerUser.getUserStat().getPoints());
             killerUser.getUserStat().setPoints(killerUser.getUserStat().getPoints() + points);
-            killerUser.getUserStat().setKills(killerUser.getUserStat().getKills() + 1);
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
             this.plugin.getDummyManager().updateScore(victimUser);
             this.plugin.getDummyManager().updateScore(killerUser);
@@ -115,8 +116,18 @@ public class PlayerDeathListener implements Listener {
                 ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage);
             });
         }
-        this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).sort());
-        this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).sort());
+        if(victimUser.canByGroup(UserGroup.VIP)){
+            killerUser.getUserStat().getKilledWithRankUsers().add(victimUser);
+            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_USERS_WITH_RANK));
+        }
+        killerUser.getUserStat().getKilledUsers().add(victimUser);
+        killerUser.getUserStat().setKills(killerUser.getUserStat().getKills() + 1);
+        this.plugin.runAsync(() -> {
+            this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_USER);
+            this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_UNIQUE_USERS);
+            this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).sort();
+            this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).sort();
+        });
         if(killerUser.hasGuild() || victimUser.hasGuild()){
             this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_POINTS).sort());
             this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_KILLS).sort());

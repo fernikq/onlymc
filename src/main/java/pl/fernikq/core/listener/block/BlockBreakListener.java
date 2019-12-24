@@ -20,6 +20,7 @@ import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
@@ -85,6 +86,7 @@ public class BlockBreakListener implements Listener {
                 ItemUtil.recalculateDurability(player, player.getItemInHand());
             }
             user.getUserStat().addMinedStone(1);
+            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.MINED_STONE));
             user.getUserStat().addMiningExperience(1);
             player.giveExp(user.getUserStat().isTurboExp() ? (ConfigManager.dropStoneExp * (int)ConfigManager.turboExpMultiplier) : ConfigManager.dropStoneExp);
             if(user.getUserStat().getMiningExperience() == user.getUserStat().getLevel() * 260){
@@ -100,6 +102,10 @@ public class BlockBreakListener implements Listener {
         }
         if(block.getType() == Material.OBSIDIAN){
             player.giveExp(user.getUserStat().isTurboExp() ? (ConfigManager.dropObsidianExp * (int)ConfigManager.turboExpMultiplier) : ConfigManager.dropObsidianExp);
+        }
+        if(block.getType() == Material.LOG_2 || block.getType() == Material.LOG){
+            user.getUserStat().setMinedWood(user.getUserStat().getMinedWood() + 1);
+            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.MINED_WOOD));
         }
     }
 
