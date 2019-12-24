@@ -90,7 +90,7 @@ public class GuildCoinsComparator implements Sortable<Guild> {
         if(!this.guildList.contains(user)){
             return;
         }
-        this.guildList.add(user);
+        this.guildList.remove(user);
     }
 
     @Override

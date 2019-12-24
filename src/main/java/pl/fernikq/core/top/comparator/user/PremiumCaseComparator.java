@@ -90,7 +90,7 @@ public class PremiumCaseComparator implements Sortable<User> {
         if(!this.userList.contains(user)){
             return;
         }
-        this.userList.add(user);
+        this.userList.remove(user);
     }
 
     @Override
