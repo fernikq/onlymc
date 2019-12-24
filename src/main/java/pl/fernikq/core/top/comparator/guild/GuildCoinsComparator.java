@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class GuildDeathsComparator implements Sortable<Guild> {
+public class GuildCoinsComparator implements Sortable<Guild> {
 
     private final CorePlugin plugin;
     private List<Guild> guildList;
@@ -23,7 +23,7 @@ public class GuildDeathsComparator implements Sortable<Guild> {
     private TopKind topKind;
     private Comparator<Guild> guildComparator;
 
-    public GuildDeathsComparator(CorePlugin plugin, TopType topType, TopKind topKind){
+    public GuildCoinsComparator(CorePlugin plugin, TopType topType, TopKind topKind){
         this.plugin = plugin;
         this.topType = topType;
         this.topKind = topKind;
@@ -31,7 +31,7 @@ public class GuildDeathsComparator implements Sortable<Guild> {
         this.guildComparator = new Comparator<Guild>() {
             @Override
             public int compare(Guild o1, Guild o2) {
-                int i = Integer.compare(o2.getDeaths(), o1.getDeaths());
+                int i = Integer.compare(o2.getTreasure().getCoins(), o1.getTreasure().getCoins());
                 if(i == 0){
                     if(o1.getName() == null){
                         return -1;
@@ -48,16 +48,17 @@ public class GuildDeathsComparator implements Sortable<Guild> {
 
     @Override
     public InventoryGUI getInventory(Guild object) {
+        sort();
         InventoryGUI inventoryGUI = new InventoryGUI("&8[ {c}&l"+this.topType.getGuiTitle()+" &8]", 6, true);
         for(int i = 0; i < 45; i++){
             Guild topGuild = this.getObjectByPosition(i);
             if(topGuild == null){
                 break;
             }
-            inventoryGUI.addItem(new ItemBuilder(Material.ENDER_PORTAL_FRAME).setName(ChatUtil.fixColor("{n}Pozycja {c}"+(i + 1))).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Gildia&8: {c}"+topGuild.getTag(), "&8>> {n}Smierci&8: {c}"+topGuild.getDeaths()))).toItemStack());
+            inventoryGUI.addItem(new ItemBuilder(Material.ENDER_PORTAL_FRAME).setName(ChatUtil.fixColor("{n}Pozycja {c}"+(i + 1))).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Gildia&8: {c}"+topGuild.getTag(), "&8>> {n}Monety&8: {c}"+topGuild.getTreasure().getCoins()))).toItemStack());
         }
         inventoryGUI.setItem(49, new ItemBuilder(Material.ENDER_PORTAL_FRAME).setName(ChatUtil.fixColor("{n}Pozycja twojej gildii&8: {c}"+(object == null ? "Brak" : (getPositionByObject(object)+1))))
-                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Smierci&8: {c}"+((object == null ? "Brak" : object.getDeaths()))))).toItemStack());
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Monety&8: {c}"+((object == null ? "Brak" : object.getTreasure().getCoins()))))).toItemStack());
         return inventoryGUI;
     }
 

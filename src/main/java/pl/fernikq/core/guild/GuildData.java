@@ -52,7 +52,6 @@ public class GuildData {
                    this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(sortable -> sortable.addObject(guild));
                 });
             }
-            this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(Sortable::sort);
         } catch(SQLException e) {
             e.printStackTrace();
         }

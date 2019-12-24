@@ -31,7 +31,9 @@ import pl.fernikq.core.region.RegionManager;
 import pl.fernikq.core.shop.ShopManager;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.task.*;
+import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.top.TopManager;
+import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.UserPermissionsManager;
@@ -122,6 +124,7 @@ public class CorePlugin extends JavaPlugin {
 
     private void initManagers(){
         this.commandManager = new CommandManager();
+        this.topManager = new TopManager(this);
         this.userManager = new UserManager(this);
         this.tagManager = new TagManager(this);
         this.homeManager = new HomeManager(this);
@@ -144,7 +147,6 @@ public class CorePlugin extends JavaPlugin {
         this.guildInventory = new GuildInventory(this);
         this.fightManager = new FightManager(this);
         this.abyssManager = new AbyssManager(this);
-        this.topManager = new TopManager(this);
     }
 
     private void initData(){
@@ -153,6 +155,8 @@ public class CorePlugin extends JavaPlugin {
         this.warpManager.init();
         this.guildManager.init();
         this.allianceManager.init();
+        this.topManager.getTopsByKind(TopKind.USER).forEach(Sortable::sort);
+        this.topManager.getTopsByKind(TopKind.GUILD).forEach(Sortable::sort);
     }
 
     private void initDatabase(){
@@ -226,6 +230,7 @@ public class CorePlugin extends JavaPlugin {
         new PlayerInfoCommand("gracz", new String[0], UserGroup.PLAYER, this).register();
         new ResetPointsCommand("resetuj", new String[0], UserGroup.PLAYER, this).register();
         new AbyssCommand("otchlan", new String[0], UserGroup.PLAYER, this).register();
+        new TopsCommand("top", new String[]{"topki"}, UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
     }

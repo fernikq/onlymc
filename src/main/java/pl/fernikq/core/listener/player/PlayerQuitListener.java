@@ -31,6 +31,9 @@ public class PlayerQuitListener implements Listener {
                 player.setHealth(0.0);
                 user.getUserStat().setLogouts(user.getUserStat().getLogouts() + 1);
                 this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_LOGOUTS).sort());
+                if(user.hasGuild()){
+                    this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_LOGOUTS).sort());
+                }
                 this.plugin.getFightManager().removeFight(user);
                 String message = MessagesManager.playerFightLogoutMessage;
                 message = message.replace("{PLAYER}", user.getName());

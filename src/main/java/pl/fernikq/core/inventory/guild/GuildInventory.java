@@ -10,8 +10,12 @@ import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.inventory.actions.TopsAction;
 import pl.fernikq.core.inventory.actions.guild.GuildPanelAction;
+import pl.fernikq.core.inventory.enums.TopsActionType;
 import pl.fernikq.core.inventory.enums.guild.GuildPanelActionType;
+import pl.fernikq.core.top.TopKind;
+import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
@@ -206,5 +210,24 @@ public class GuildInventory {
         gui.setItem(7, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("{n}Wplac {c}5000 {n}monet")).toItemStack(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.GIVE_COINS_TO_RESOURCES, 0, 5000));
         gui.setItem(8, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("{n}Wplac {c}10000 {n}monet")).toItemStack(), new GuildPanelAction(this.plugin, guild, user, null, null, null, GuildPanelActionType.GIVE_COINS_TO_RESOURCES, 0, 10000));
         return gui;
+    }
+
+    public InventoryGUI guildTops(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lTOPKI - WYBOR &8]", 3, true);
+        user.addInventory(gui);
+        this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(sortable -> {
+            gui.addItem(new ItemBuilder(sortable.getTopType().getMaterial()).setName(ChatUtil.fixColor("{c}&l"+sortable.getTopType().getName())).toItemStack(), new TopsAction(this.plugin, sortable, TopsActionType.CHOOSE_GUILD_TOP, user));
+        });
+        gui.setItem(26, this.backGlass.clone(), new TopsAction(this.plugin, null, TopsActionType.BACK_TO_MAIN_MENU, user));
+        return gui;
+    }
+
+    public InventoryGUI guildTop(User user, Sortable<Guild> top){
+        InventoryGUI inventoryGUI = top.getInventory(user.getGuild());
+        inventoryGUI.setItem(48, this.backGlass, new TopsAction(this.plugin, top, TopsActionType.OPEN_GUILD_TOPS_SELECT, user));
+        inventoryGUI.setItem(50, this.backGlass, new TopsAction(this.plugin, top, TopsActionType.OPEN_GUILD_TOPS_SELECT, user));
+        inventoryGUI.setEmptyItem(this.blank);
+        user.addInventory(inventoryGUI);
+        return inventoryGUI;
     }
 }

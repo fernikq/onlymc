@@ -40,6 +40,9 @@ public class PlayerDeathListener implements Listener {
         }
         victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);
         this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_DEATHS).sort());
+        if(victimUser.hasGuild()){
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_DEATHS).sort());
+        }
         UserFight victimFight = victimUser.getUserFight();
         if(victimFight.getDamageMap().isEmpty() && victimFight.getLastAttacker() == null){
             return;
@@ -70,6 +73,9 @@ public class PlayerDeathListener implements Listener {
             assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
             this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
+            if(assistUser.hasGuild()){
+                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).sort());
+            }
             this.plugin.getDummyManager().updateScore(assistUser);
             this.plugin.getDummyManager().updateScore(victimUser);
             this.plugin.getDummyManager().updateScore(killerUser);
@@ -111,6 +117,10 @@ public class PlayerDeathListener implements Listener {
         }
         this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).sort());
         this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).sort());
+        if(killerUser.hasGuild() || victimUser.hasGuild()){
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_POINTS).sort());
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_KILLS).sort());
+        }
         this.plugin.getFightManager().removeFight(victimUser);
     }
 }

@@ -23,7 +23,8 @@ public class TopManager {
                 new PremiumCaseComparator(this.plugin, TopType.USER_CASE, TopKind.USER), new StoneComparator(this.plugin, TopType.USER_STONE, TopKind.USER),
                 new TimeComparator(this.plugin, TopType.USER_TIME, TopKind.USER), new GuildAssistsComparator(this.plugin, TopType.GUILD_ASSISTS, TopKind.GUILD),
                 new GuildDeathsComparator(this.plugin, TopType.GUILD_DEATHS, TopKind.GUILD), new GuildKillsComparator(this.plugin, TopType.GUILD_KILLS, TopKind.GUILD),
-                new GuildLogoutsComparator(this.plugin, TopType.GUILD_LOGOUTS, TopKind.GUILD), new GuildPointsComparator(this.plugin, TopType.GUILD_POINTS, TopKind.GUILD));
+                new GuildLogoutsComparator(this.plugin, TopType.GUILD_LOGOUTS, TopKind.GUILD), new GuildPointsComparator(this.plugin, TopType.GUILD_POINTS, TopKind.GUILD),
+                new GuildCoinsComparator(this.plugin, TopType.GUILD_COINS, TopKind.GUILD));
     }
 
     public Sortable getTopByType(TopType topType){

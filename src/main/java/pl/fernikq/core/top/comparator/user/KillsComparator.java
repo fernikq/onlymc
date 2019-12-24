@@ -1,12 +1,17 @@
 package pl.fernikq.core.top.comparator.user;
 
+import org.bukkit.Material;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.ItemBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -36,9 +41,24 @@ public class KillsComparator implements Sortable<User> {
                     }
                     i = o1.getName().compareTo(o2.getName());
                 }
-                return 0;
+                return i;
             }
         };
+    }
+
+    @Override
+    public InventoryGUI getInventory(User object) {
+        InventoryGUI inventoryGUI = new InventoryGUI("&8[ {c}&l"+this.topType.getGuiTitle()+" &8]", 6, true);
+        for(int i = 0; i < 45; i++){
+            User topUser = this.getObjectByPosition(i);
+            if(topUser == null){
+                break;
+            }
+            inventoryGUI.addItem(new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setName(ChatUtil.fixColor("{n}Pozycja {c}"+(i + 1))).setSkullOwner(topUser.getName()).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Gracz&8: {c}"+topUser.getName(), "&8>> {n}Zabojstw&8: {c}"+topUser.getUserStat().getKills()))).toItemStack());
+        }
+        inventoryGUI.setItem(49, new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setName(ChatUtil.fixColor("{n}Twoja pozycja&8: {c}"+(getPositionByObject(object)+1))).setSkullOwner(object.getName())
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Zabojstw&8: {c}"+object.getUserStat().getLogouts()))).toItemStack());
+        return inventoryGUI;
     }
 
     @Override

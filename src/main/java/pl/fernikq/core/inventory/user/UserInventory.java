@@ -11,13 +11,18 @@ import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.inventory.actions.TopsAction;
 import pl.fernikq.core.inventory.actions.user.*;
+import pl.fernikq.core.inventory.enums.TopsActionType;
 import pl.fernikq.core.inventory.enums.user.*;
 import pl.fernikq.core.kit.Kit;
 import pl.fernikq.core.kit.KitItem;
 import pl.fernikq.core.shop.Shop;
 import pl.fernikq.core.shop.ShopItem;
 import pl.fernikq.core.shop.ShopType;
+import pl.fernikq.core.top.TopKind;
+import pl.fernikq.core.top.TopType;
+import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserStat;
@@ -502,5 +507,47 @@ public class UserInventory {
         gui.setItem(34, online.toItemStack());
         gui.setEmptyItem(this.blank);
         return gui;
+    }
+
+    public InventoryGUI topsMenu(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lMENU TOPEK &8]", 1, true);
+        user.addInventory(gui);
+        gui.setItem(2, new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setSkullOwner("Notch").setName(ChatUtil.fixColor("{c}&lTopki graczy")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zobaczyc"))).toItemStack(), new TopsAction(this.plugin, null, TopsActionType.OPEN_USER_TOPS_SELECT, user));
+        gui.setItem(6, new ItemBuilder(Material.ENDER_PORTAL_FRAME).setName(ChatUtil.fixColor("{c}&lTopki gildii")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zobaczyc"))).toItemStack(), new TopsAction(this.plugin, null, TopsActionType.OPEN_GUILD_TOPS_SELECT, user));
+        gui.setItem(1, this.color);
+        gui.setItem(3, this.color);
+        gui.setItem(5, this.color);
+        gui.setItem(7, this.color);
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI playerTops(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lTOPKI - WYBOR &8]", 3, true);
+        user.addInventory(gui);
+        this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> {
+            Material material = sortable.getTopType().getMaterial();
+            String name = sortable.getTopType().getName();
+            if(sortable.getTopType().equals(TopType.USER_COBBLEX)){
+                material = this.plugin.getDropManager().getCobblexItem().getType();
+                name = "Topka "+this.plugin.getDropManager().cobblexNameInGUI;
+            }
+            if(sortable.getTopType().equals(TopType.USER_CASE)){
+                material = this.plugin.getDropManager().getPremiumCaseItem().getType();
+                name = "Topka "+this.plugin.getDropManager().premiumCaseNameInGUI;
+            }
+            gui.addItem(new ItemBuilder(material).setName(ChatUtil.fixColor("{c}&l"+name)).toItemStack(), new TopsAction(this.plugin, sortable, TopsActionType.CHOOSE_USER_TOP, user));
+        });
+        gui.setItem(26, this.backGlass.clone(), new TopsAction(this.plugin, null, TopsActionType.BACK_TO_MAIN_MENU, user));
+        return gui;
+    }
+
+    public InventoryGUI playerTop(User user, Sortable<User> top){
+        InventoryGUI inventoryGUI = top.getInventory(user);
+        inventoryGUI.setItem(48, this.backGlass, new TopsAction(this.plugin, top, TopsActionType.OPEN_USER_TOPS_SELECT, user));
+        inventoryGUI.setItem(50, this.backGlass, new TopsAction(this.plugin, top, TopsActionType.OPEN_USER_TOPS_SELECT, user));
+        inventoryGUI.setEmptyItem(this.blank);
+        user.addInventory(inventoryGUI);
+        return inventoryGUI;
     }
 }

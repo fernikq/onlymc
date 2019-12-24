@@ -50,7 +50,6 @@ public class UserData {
                 this.plugin.getUserManager().registerUser(user);
                 this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> sortable.addObject(user));
             }
-            this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(Sortable::sort);
         } catch(SQLException e) {
             e.printStackTrace();
         }
