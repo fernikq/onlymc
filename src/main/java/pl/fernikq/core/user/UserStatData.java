@@ -66,7 +66,7 @@ public class UserStatData {
                 this.plugin.getUserManager().getUser(UUID.fromString(resultSet.getString("uuid"))).peek(user -> {
                    UserStat userStat = new UserStat(user, resultSet);
                     try {
-                        userStat.setExploredGuilds(Arrays.stream(resultSet.getString("exploredGuilds").split(":")).collect(Collectors.toSet()));
+                        Arrays.stream(resultSet.getString("exploredGuilds").split(":")).filter(s -> !s.isEmpty()).forEach(s -> userStat.getExploredGuilds().add(s));
                         Arrays.stream(resultSet.getString("killedUsers").split(":")).filter(s -> this.plugin.getUserManager().getUser(s).isDefined()).forEach(s -> userStat.getKilledUsers().add(this.plugin.getUserManager().getUser(s).get()));
                         Arrays.stream(resultSet.getString("killedWithRankUsers").split(":")).filter(s -> this.plugin.getUserManager().getUser(s).isDefined()).forEach(s -> userStat.getKilledWithRankUsers().add(this.plugin.getUserManager().getUser(s).get()));
                     } catch(SQLException e) {

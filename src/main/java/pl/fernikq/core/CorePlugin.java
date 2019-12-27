@@ -84,6 +84,7 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        CoreAPI.setPlugin(this);
         initConfigurations();
         initDatabase();
         initManagers();
@@ -230,11 +231,12 @@ public class CorePlugin extends JavaPlugin {
         new IgnoreCommand("ignore", new String[0], UserGroup.PLAYER, this).register();
         new EnderCommand("ender", new String[0], UserGroup.PLAYER, this).register();
         new EnderChestCommand("enderchest", new String[]{"ec"}, UserGroup.VIP, this).register();
-        new ChatSettingsCommand("ustawienia", new String[0], UserGroup.PLAYER, this).register();
+        new ChatSettingsCommand("ustawienia", new String[]{"cc"}, UserGroup.PLAYER, this).register();
         new PlayerInfoCommand("gracz", new String[0], UserGroup.PLAYER, this).register();
         new ResetPointsCommand("resetuj", new String[0], UserGroup.PLAYER, this).register();
         new AbyssCommand("otchlan", new String[0], UserGroup.PLAYER, this).register();
         new TopsCommand("top", new String[]{"topki"}, UserGroup.PLAYER, this).register();
+        new QuestCommand("zadania", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
     }
@@ -271,6 +273,7 @@ public class CorePlugin extends JavaPlugin {
         new PlayerDeathListener(this);
         new BlockMoveByPistonListener(this);
         new PlayerRespawnListener(this);
+        new PlayerFishListener(this);
     }
 
     public ConfigManager getConfigManager() {

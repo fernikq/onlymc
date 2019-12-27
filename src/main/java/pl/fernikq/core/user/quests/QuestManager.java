@@ -6,7 +6,9 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.Logger;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -14,11 +16,12 @@ import java.util.stream.Collectors;
 public class QuestManager {
 
     private final CorePlugin plugin;
-    private Set<Quest> quests;
+    private List<Quest> quests;
+    private List<QuestType> questTypes;
 
     public QuestManager(CorePlugin plugin){
         this.plugin = plugin;
-        this.quests = new HashSet<>();
+        this.quests = new ArrayList<>();
 
         this.quests.add(new Quest("Spedz na serwerze 2 godziny", QuestType.SPENT_TIME, 2, 500, 1));
         this.quests.add(new Quest("Spedz na serwerze 6 godzin", QuestType.SPENT_TIME, 6, 1500, 2));
@@ -62,11 +65,11 @@ public class QuestManager {
         this.quests.add(new Quest("Zabij 12 roznych graczy", QuestType.KILL_UNIQUE_USERS, 12, 2000, 0));
         this.quests.add(new Quest("Zabij 15 roznych graczy", QuestType.KILL_UNIQUE_USERS, 15, 2500, 0));
 
-        this.quests.add(new Quest("Zabij 3 roznych graczy z ranga VIP lub wyzsza", QuestType.KILL_USERS_WITH_RANK, 3, 750, 0));
-        this.quests.add(new Quest("Zabij 6 roznych graczy z ranga VIP lub wyzsza", QuestType.KILL_USERS_WITH_RANK, 6, 1500, 0));
-        this.quests.add(new Quest("Zabij 9 roznych graczy z ranga VIP lub wyzsza", QuestType.KILL_USERS_WITH_RANK, 9, 2000, 0));
-        this.quests.add(new Quest("Zabij 12 roznych graczy z ranga VIP lub wyzsza", QuestType.KILL_USERS_WITH_RANK, 12, 2500, 0));
-        this.quests.add(new Quest("Zabij 15 roznych graczy z ranga VIP lub wyzsza", QuestType.KILL_USERS_WITH_RANK, 15, 3000, 0));
+        this.quests.add(new Quest("Zabij 3 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 3, 750, 0));
+        this.quests.add(new Quest("Zabij 6 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 6, 1500, 0));
+        this.quests.add(new Quest("Zabij 9 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 9, 2000, 0));
+        this.quests.add(new Quest("Zabij 12 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 12, 2500, 0));
+        this.quests.add(new Quest("Zabij 15 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 15, 3000, 0));
 
         this.quests.add(new Quest("Przejdz 2000 kratek", QuestType.TRAVELED_DISTANCE, 2000, 500, 0));
         this.quests.add(new Quest("Przejdz 5000 kratek", QuestType.TRAVELED_DISTANCE, 5000, 1000, 0));
@@ -80,11 +83,11 @@ public class QuestManager {
         this.quests.add(new Quest("Otworz 50 "+this.plugin.getDropManager().getPremiumCaseNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 50, 1750, 0));
         this.quests.add(new Quest("Otworz 100 "+this.plugin.getDropManager().getPremiumCaseNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 100, 2500, 0));
 
-        this.quests.add(new Quest("Otworz 5 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 5, 250, 0));
-        this.quests.add(new Quest("Otworz 10 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 10, 750, 0));
-        this.quests.add(new Quest("Otworz 25 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 25, 1100, 0));
-        this.quests.add(new Quest("Otworz 50 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 50, 1550, 0));
-        this.quests.add(new Quest("Otworz 100 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 100, 2200, 0));
+        this.quests.add(new Quest("Otworz 5 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_COBBLEX, 5, 250, 0));
+        this.quests.add(new Quest("Otworz 10 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_COBBLEX, 10, 750, 0));
+        this.quests.add(new Quest("Otworz 25 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_COBBLEX, 25, 1100, 0));
+        this.quests.add(new Quest("Otworz 50 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_COBBLEX, 50, 1550, 0));
+        this.quests.add(new Quest("Otworz 100 "+this.plugin.getDropManager().getCobblexNameInGUI()+"'ow", QuestType.OPENED_COBBLEX, 100, 2200, 0));
 
         this.quests.add(new Quest("Zdabadz 3 asysty", QuestType.ASSISTS, 3, 500, 0));
         this.quests.add(new Quest("Zdabadz 6 asyst", QuestType.ASSISTS, 6, 1000, 0));
@@ -97,6 +100,8 @@ public class QuestManager {
         this.quests.add(new Quest("Zdabadz 15 zabojstw", QuestType.KILL_USER, 15, 1950, 0));
         this.quests.add(new Quest("Zdabadz 25 zabojstw", QuestType.KILL_USER, 25, 2500, 0));
         this.quests.add(new Quest("Zdabadz 50 zabojstw", QuestType.KILL_USER, 50, 3000, 0));
+
+        this.questTypes = getQuestKinds();
     }
 
     public void checkQuest(User user, QuestType questType){
@@ -122,8 +127,18 @@ public class QuestManager {
         });
     }
 
-    public Set<Quest> getQuestsByType(QuestType questType){
-        return this.quests.stream().filter(quest -> quest.getQuestType().equals(questType)).collect(Collectors.toSet());
+    public List<Quest> getQuestsByType(QuestType questType){
+        return this.quests.stream().filter(quest -> quest.getQuestType().equals(questType)).collect(Collectors.toList());
+    }
+
+    public boolean isDone(User user, Quest quest){
+        if(quest.getQuestType().equals(QuestType.COMEBACK)){
+            return user.getUserStat().getComebackAwardAmount() >= quest.getLevel();
+        }
+        if(quest.getQuestType().equals(QuestType.SPENT_TIME)){
+            return user.getUserStat().getTimeAwardAmount() >= quest.getLevel();
+        }
+        return getAmountByQuest(user, quest.getQuestType()) >= quest.getAmount();
     }
 
     public int getAmountByQuest(User user, QuestType questType){
@@ -161,5 +176,21 @@ public class QuestManager {
             return user.getUserStat().getKills();
         }
         return 999;
+    }
+
+    private List<QuestType> getQuestKinds(){
+        Set<QuestType> questTypes = new HashSet<>();
+        List<QuestType> quests = new ArrayList<>();
+        this.quests.stream().forEach(quest -> {
+            if(!questTypes.contains(quest.getQuestType())){
+                quests.add(quest.getQuestType());
+                questTypes.add(quest.getQuestType());
+            }
+        });
+        return quests;
+    }
+
+    public List<QuestType> getQuestTypes(){
+        return this.questTypes;
     }
 }

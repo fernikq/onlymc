@@ -11,8 +11,10 @@ import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.inventory.actions.QuestAction;
 import pl.fernikq.core.inventory.actions.TopsAction;
 import pl.fernikq.core.inventory.actions.user.*;
+import pl.fernikq.core.inventory.enums.QuestActionType;
 import pl.fernikq.core.inventory.enums.TopsActionType;
 import pl.fernikq.core.inventory.enums.user.*;
 import pl.fernikq.core.kit.Kit;
@@ -26,10 +28,13 @@ import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserStat;
+import pl.fernikq.core.user.quests.Quest;
+import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.*;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class UserInventory {
 
@@ -549,5 +554,43 @@ public class UserInventory {
         inventoryGUI.setEmptyItem(this.blank);
         user.addInventory(inventoryGUI);
         return inventoryGUI;
+    }
+
+    public InventoryGUI playerQuestsMenu(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lZADANIA &8]", 3, true);
+        this.plugin.getQuestManager().getQuestTypes().forEach(quest -> {
+            gui.addItem(new ItemBuilder(quest.getMaterial()).setName(ChatUtil.fixColor("{c}&l"+quest.getName())).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zobaczyc!"))).toItemStack(), new QuestAction(this.plugin, QuestActionType.OPEN_QUEST_GUI, quest, user));
+        });
+        gui.setEmptyItem(this.blank);
+        user.addInventory(gui);
+        return gui;
+    }
+
+    public InventoryGUI playerQuest(User user, QuestType questType) {
+        InventoryGUI gui = new InventoryGUI("{c}&l"+questType.getName(), 3, true);
+        gui.setEmptyItem(this.blank);
+        gui.setItem(9, null);
+        gui.setItem(11, null);
+        gui.setItem(13, null);
+        gui.setItem(15, null);
+        gui.setItem(17, null);
+        this.plugin.getQuestManager().getQuestsByType(questType).forEach(quest -> {
+            ItemBuilder itemBuilder = new ItemBuilder(quest.getQuestType().getMaterial()).setName(ChatUtil.fixColor("{c}&l"+quest.getName()));
+            if(this.plugin.getQuestManager().isDone(user, quest)){
+                itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: &c&lWykonane")));
+            }else{
+                itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+this.plugin.getQuestManager().getAmountByQuest(user, questType)+"&8/{c}"+quest.getAmount())));
+                if(questType.equals(QuestType.SPENT_TIME)){
+                    itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+TimeUtil.getTimeToString(user.getUserStat().getOnlineTime())+" &8[&f"+ TimeUnit.MILLISECONDS.toHours(user.getUserStat().getOnlineTime())+"&8] " +"/{c} "+quest.getAmount()+"h")));
+                }
+                if(questType.equals(QuestType.COMEBACK)){
+                    itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+user.getUserStat().getComebackDaysInRow()+"&8/{c}"+quest.getAmount())));
+                }
+            }
+            gui.addItem(itemBuilder.toItemStack());
+        });
+        gui.setItem(26, this.backGlass, new QuestAction(this.plugin, QuestActionType.OPEN_MENU, null, user));
+        user.addInventory(gui);
+        return gui;
     }
 }
