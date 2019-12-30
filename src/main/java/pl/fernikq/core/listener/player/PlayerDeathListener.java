@@ -1,6 +1,7 @@
 package pl.fernikq.core.listener.player;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,7 +35,7 @@ public class PlayerDeathListener implements Listener {
         event.setDeathMessage(null);
         Player player = event.getEntity();
         if(player.isOnline() && player.isDead()){
-            player.spigot().respawn();
+            this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> player.spigot().respawn(), 1);
         }
         User victimUser = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
         if(victimUser == null){
@@ -53,6 +54,68 @@ public class PlayerDeathListener implements Listener {
         User killerUser = victimFight.getLastAttacker();
         Damage killerDamage = victimFight.getDamageByUser(killerUser);
         damageList.remove(killerDamage);
+        if(victimUser.getLastAddress().equals(killerUser.getLastAddress())){
+            ChatUtil.sendMessage(victimUser.asPlayer(), MessagesManager.error("Podany gracz posiada to samo IP co ty, punkty nie zostaly odebrane!"));
+            ChatUtil.sendMessage(killerUser.asPlayer(), MessagesManager.error("Podany gracz posiada to samo IP co ty, punkty nie zostaly przyznane!"));
+            if(!damageList.isEmpty()) {
+                Damage assistDamage = damageList.get(0);
+                User assistUser = assistDamage.getUser();
+                if(assistUser.getLastAddress().equals(victimUser.getLastAddress())){
+                    this.plugin.getFightManager().removeFight(victimUser);
+                    return;
+                }
+                int points = RankingUtil.calculatePoints(victimUser.getUserStat().getPoints(), killerUser.getUserStat().getPoints());
+                int maxAssistPoints = RankingUtil.calculatePoints(victimUser.getUserStat().getPoints(), assistUser.getUserStat().getPoints());
+                int assistPoints = points * 25/100;
+                if(assistPoints > maxAssistPoints){
+                    assistPoints = maxAssistPoints;
+                }
+                if(assistPoints < 0){
+                    assistPoints = 0;
+                }
+                ChatUtil.sendMessage(assistUser.asPlayer(), "&8>> {n}Asystowales w zabojstwie gracza {c}"+victimUser.getName()+" {n} i otrzymujesz &a"+assistPoints+" {n}punktow");
+                assistUser.getUserStat().setPoints(assistUser.getUserStat().getPoints() + assistPoints);
+                assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
+                victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - assistPoints);
+                ChatUtil.sendMessage(victimUser.asPlayer(), "&8>> {n}Gracz {c}"+assistUser.getName()+" {n}asystowal przy twoim zabojstwie i przez to tracisz &c"+assistPoints+" {n}punktow");
+                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(assistUser, QuestType.ASSISTS));
+                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
+                if(assistUser.hasGuild()){
+                    this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).sort());
+                }
+            }
+            this.plugin.getFightManager().removeFight(victimUser);
+            return;
+        }
+        if(killerUser.getUserFight().wasKilledLastTime(victimUser)){
+            ChatUtil.sendMessage(victimUser.asPlayer(), MessagesManager.error("Podany gracz zabil cie ostatnio, punkty nie zostaly odebrane!"));
+            ChatUtil.sendMessage(killerUser.asPlayer(), MessagesManager.error("Podany gracz zostal przez ciebie ostatnio zabity, punkty nie zostaly przyznane!"));
+            if(!damageList.isEmpty()) {
+                Damage assistDamage = damageList.get(0);
+                User assistUser = assistDamage.getUser();
+                int points = RankingUtil.calculatePoints(victimUser.getUserStat().getPoints(), killerUser.getUserStat().getPoints());
+                int maxAssistPoints = RankingUtil.calculatePoints(victimUser.getUserStat().getPoints(), assistUser.getUserStat().getPoints());
+                int assistPoints = points * 25/100;
+                if(assistPoints > maxAssistPoints){
+                    assistPoints = maxAssistPoints;
+                }
+                if(assistPoints < 0){
+                    assistPoints = 0;
+                }
+                ChatUtil.sendMessage(assistUser.asPlayer(), "&8>> {n}Asystowales w zabojstwie gracza {c}"+victimUser.getName()+" {n} i otrzymujesz &a"+assistPoints+" {n}punktow");
+                assistUser.getUserStat().setPoints(assistUser.getUserStat().getPoints() + assistPoints);
+                assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
+                victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - assistPoints);
+                ChatUtil.sendMessage(victimUser.asPlayer(), "&8>> {n}Gracz {c}"+assistUser.getName()+" {n}asystowal przy twoim zabojstwie i przez to tracisz &c"+assistPoints+" {n}punktow");
+                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(assistUser, QuestType.ASSISTS));
+                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
+                if(assistUser.hasGuild()){
+                    this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).sort());
+                }
+            }
+            this.plugin.getFightManager().removeFight(victimUser);
+            return;
+        }
         if(!damageList.isEmpty()){
             Damage assistDamage = damageList.get(0);
             User assistUser = assistDamage.getUser();
@@ -116,6 +179,7 @@ public class PlayerDeathListener implements Listener {
                 ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage);
             });
         }
+        killerUser.getUserFight().setKilledLastTime(victimUser);
         if(victimUser.canByGroup(UserGroup.VIP)){
             killerUser.getUserStat().getKilledWithRankUsers().add(victimUser);
             this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_USERS_WITH_RANK));

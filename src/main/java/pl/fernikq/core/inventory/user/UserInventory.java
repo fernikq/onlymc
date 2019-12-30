@@ -577,14 +577,14 @@ public class UserInventory {
         this.plugin.getQuestManager().getQuestsByType(questType).forEach(quest -> {
             ItemBuilder itemBuilder = new ItemBuilder(quest.getQuestType().getMaterial()).setName(ChatUtil.fixColor("{c}&l"+quest.getName()));
             if(this.plugin.getQuestManager().isDone(user, quest)){
-                itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: &c&lWykonane")));
+                itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: &c&lWykonane", "&8>> {n}Nagroda&8: {c}"+quest.getReward()+" {n}monet")));
             }else{
-                itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+this.plugin.getQuestManager().getAmountByQuest(user, questType)+"&8/{c}"+quest.getAmount())));
+                itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+this.plugin.getQuestManager().getAmountByQuest(user, questType)+"&8/{c}"+quest.getAmount(), "&8>> {n}Nagroda&8: {c}"+quest.getReward()+" {n}monet")));
                 if(questType.equals(QuestType.SPENT_TIME)){
-                    itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+TimeUtil.getTimeToString(user.getUserStat().getOnlineTime())+" &8[&f"+ TimeUnit.MILLISECONDS.toHours(user.getUserStat().getOnlineTime())+"&8] " +"/{c} "+quest.getAmount()+"h")));
+                    itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+TimeUtil.getTimeToString(user.getUserStat().getOnlineTime())+" &8[&f"+ TimeUnit.MILLISECONDS.toHours(user.getUserStat().getOnlineTime())+"&8] " +"/{c} "+quest.getAmount()+"h", "&8>> {n}Nagroda&8: {c}"+quest.getReward()+" {n}monet")));
                 }
                 if(questType.equals(QuestType.COMEBACK)){
-                    itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+user.getUserStat().getComebackDaysInRow()+"&8/{c}"+quest.getAmount())));
+                    itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Postep&8: {c}"+user.getUserStat().getComebackDaysInRow()+"&8/{c}"+quest.getAmount(), "&8>> {n}Nagroda&8: {c}"+quest.getReward()+" {n}monet")));
                 }
             }
             gui.addItem(itemBuilder.toItemStack());
