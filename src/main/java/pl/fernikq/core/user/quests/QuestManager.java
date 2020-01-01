@@ -108,6 +108,7 @@ public class QuestManager {
         this.quests.stream().filter(quest -> quest.getQuestType().equals(questType)).filter(quest -> quest.getAmount() == getAmountByQuest(user, questType)).forEach(quest -> {
             user.getUserStat().addCoins(quest.getReward());
             ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
+            return;
         });
     }
 
@@ -116,6 +117,7 @@ public class QuestManager {
             user.getUserStat().setTimeAwardAmount(user.getUserStat().getTimeAwardAmount() + 1);
             user.getUserStat().addCoins(quest.getReward());
             ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
+            return;
         });
     }
 
@@ -124,6 +126,7 @@ public class QuestManager {
             user.getUserStat().setComebackAwardAmount(user.getUserStat().getComebackAwardAmount() + 1);
             user.getUserStat().addCoins(quest.getReward());
             ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
+            return;
         });
     }
 

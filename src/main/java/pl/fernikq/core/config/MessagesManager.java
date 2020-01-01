@@ -68,6 +68,8 @@ public class MessagesManager {
     public static String playerFightAntylogoutMessage;
     public static String playerFightFinishMessage;
     public static String playerFightLogoutMessage;
+    public static String tablistUserTopFormat;
+    public static String tablistGuildrTopFormat;
     public static List<String> guildMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
@@ -190,5 +192,7 @@ public class MessagesManager {
         playerFightFinishMessage = "&a&lSkonczyles walke, mozesz sie wylogowac!";
         playerFightLogoutMessage = "&8>> {n}Gracz &c{PLAYER} {n}wylogowal sie podczas walki&8!";
         playerQuestMessage = "&8>> {n}Wykonales zadanie {c}{QUEST-NAME} {n}i otrzymales {c}{QUEST-REWARD} {n}monet!";
+        tablistUserTopFormat = "{USER-NAME} &8[&7{USER-POINTS}&8]";
+        tablistGuildrTopFormat = "{GUILD-TAG} &8[&f{GUILD-POINTS}&8]";
     }
 }

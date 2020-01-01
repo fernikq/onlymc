@@ -36,8 +36,10 @@ public class PlayerMoveListener implements Listener {
             if(user == null){
                 return;
             }
-            user.getUserStat().setDistanceTraveled(user.getUserStat().getDistanceTraveled() + 1);
-            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.TRAVELED_DISTANCE));
+            this.plugin.runAsync(() -> {
+                user.getUserStat().setDistanceTraveled(user.getUserStat().getDistanceTraveled() + 1);
+                this.plugin.getQuestManager().checkQuest(user, QuestType.TRAVELED_DISTANCE);
+            });
             if(user.getUserFight().isDuringFight()){
                 RegionFeedback regionFeedback = this.plugin.getRegionManager().canJoinDuringPVP(user, event.getTo(), event.getFrom());
                 if(!regionFeedback.isPermit()){

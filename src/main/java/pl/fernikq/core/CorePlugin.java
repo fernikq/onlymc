@@ -1,5 +1,6 @@
 package pl.fernikq.core;
 
+import codecrafter47.bungeetablistplus.api.bukkit.BungeeTabListPlusBukkitAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.abyss.AbyssManager;
@@ -44,6 +45,8 @@ import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.RankingUtil;
 import pl.fernikq.core.util.TeleportManager;
 import pl.fernikq.core.vanish.VanishManager;
+import pl.fernikq.core.variable.guild.*;
+import pl.fernikq.core.variable.user.*;
 import pl.fernikq.core.warp.WarpManager;
 
 import java.util.ArrayList;
@@ -94,6 +97,7 @@ public class CorePlugin extends JavaPlugin {
         initPacketReceiving();
         this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this));
         simpleTasks.forEach(SimpleTask::start);
+        registerTablistVariables();
     }
 
     @Override
@@ -114,10 +118,83 @@ public class CorePlugin extends JavaPlugin {
         simpleTasks.forEach(SimpleTask::stop);
         this.mySQL.closeConnection();
         Bukkit.shutdown();
+        unregisterTablistVariables();
     }
 
     public void runAsync(final Runnable runnable) {
         this.getServer().getScheduler().runTaskAsynchronously(this, runnable);
+    }
+
+    private void registerTablistVariables(){
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserNameVariable("user-name", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserRankVariable("user-rank", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserPointsVariable("user-points", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserKillsVariable("user-kills", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserDeathsVariable("user-deaths", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserAssistsVariable("user-assists", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserLogoutsVariable("user-logouts", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserCoinsVariable("user-coins", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserDistanceVariable("user-distance", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserTimeVariable("user-time", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserLevelVariable("user-level", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new UserDaysInRowVariable("user-days-in-row", this));
+
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildTagVariable("guild-tag", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildNameVariable("guild-name", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildPointsVariable("guild-points", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildKillsVariable("guild-kills", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildDeathsVariable("guild-deaths", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildLogoutsVariable("guild-logouts", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildCoinsVariable("guild-coins", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildSizeVariable("guild-size", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildOnlineVariable("guild-online", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildLeaderVariable("guild-owner", this));
+
+        for(int i = 0; i < 32; i++){
+            BungeeTabListPlusBukkitAPI.registerVariable(this, new UserTopVariable("user-top-"+i, this, i));
+        }
+
+        for(int i = 0; i < 32; i++){
+            BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildTopVariable("guild-top-"+i, this, i));
+        }
+    }
+
+    private void unregisterTablistVariables(){
+        try {
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserNameVariable("user-name", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserRankVariable("user-rank", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserPointsVariable("user-points", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserKillsVariable("user-kills", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserDeathsVariable("user-deaths", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserAssistsVariable("user-assists", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserLogoutsVariable("user-logouts", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserCoinsVariable("user-coins", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserDistanceVariable("user-distance", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserTimeVariable("user-time", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserLevelVariable("user-level", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserDaysInRowVariable("user-days-in-row", this));
+
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildTagVariable("guild-tag", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildNameVariable("guild-name", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildPointsVariable("guild-points", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildKillsVariable("guild-kills", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildDeathsVariable("guild-deaths", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildLogoutsVariable("guild-logouts", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildCoinsVariable("guild-coins", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildSizeVariable("guild-size", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildOnlineVariable("guild-online", this));
+            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildLeaderVariable("guild-owner", this));
+
+            for(int i = 0; i < 32; i++){
+                BungeeTabListPlusBukkitAPI.unregisterVariable(new UserTopVariable("user-top-"+i, this, i));
+            }
+
+            for(int i = 0; i < 32; i++){
+                BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildTopVariable("guild-top-"+i, this, i));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void initPacketReceiving(){

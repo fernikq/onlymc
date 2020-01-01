@@ -2,3 +2,5 @@ name: Onlymc-Core
 version: 1.0
 author: fernikq
 main: pl.fernikq.core.CorePlugin
+depend:
+  - BungeeTabListPlus
