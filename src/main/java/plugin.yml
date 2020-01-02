@@ -1,5 +1,5 @@
-name: Onlymc-Core
-version: 1.0
+name: Core
+version: 0.1
 author: fernikq
 main: pl.fernikq.core.CorePlugin
 depend:

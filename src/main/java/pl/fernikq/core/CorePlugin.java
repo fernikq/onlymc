@@ -199,8 +199,7 @@ public class CorePlugin extends JavaPlugin {
 
     private void initPacketReceiving(){
         //new BlockDigListener(this);
-
-        //TODO
+        //TODO if not mcguard
     }
 
     private void initManagers(){
@@ -351,6 +350,8 @@ public class CorePlugin extends JavaPlugin {
         new BlockMoveByPistonListener(this);
         new PlayerRespawnListener(this);
         new PlayerFishListener(this);
+        //new GuardBlockDigListener(this);
+        //TODO mcguard dig listener
     }
 
     public ConfigManager getConfigManager() {
