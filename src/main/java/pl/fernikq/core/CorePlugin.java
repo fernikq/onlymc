@@ -7,6 +7,7 @@ import pl.fernikq.core.abyss.AbyssManager;
 import pl.fernikq.core.automessage.AutoMessageManager;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
+import pl.fernikq.core.command.guild.GuildAdminCommand;
 import pl.fernikq.core.command.guild.GuildCommand;
 import pl.fernikq.core.command.player.*;
 import pl.fernikq.core.command.premium.RepairCommand;
@@ -315,6 +316,7 @@ public class CorePlugin extends JavaPlugin {
         new QuestCommand("zadania", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
+        new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();
     }
 
     private void registerListeners(){

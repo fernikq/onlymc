@@ -71,6 +71,7 @@ public class MessagesManager {
     public static String tablistUserTopFormat;
     public static String tablistGuildrTopFormat;
     public static List<String> guildMainCommandHelp;
+    public static List<String> guildAdminMainCommandHelp;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -168,6 +169,24 @@ public class MessagesManager {
                 "&8>> {c}/g opusc &8- {n}Opuszczenie gildii",
                 "&8>> {c}/g dolacz <tag> &8- {n}Dolaczanie do gildii",
                 "&8>> {c}/g lider <nick> &8- {n}Przekazanie lidera gildii",
+                " ",
+                "&8&m--------&8[ {c}&lGildie &8]&m--------");
+        guildAdminMainCommandHelp = Arrays.asList("&8&m--------&8[ {c}&lGildie &8]&m--------",
+                " ",
+                "&8>> {c}/ga usun <tag> &8- {n}Usuwa gildie o podanym tagu",
+                "&8>> {c}/ga tp <tag> &8- {n}Teleportuje do gildii o podanym tagu",
+                "&8>> {c}/ga dodaj <tag> <nick> &8- {n}Dodaje gracza do gildii o podanym tagu",
+                "&8>> {c}/ga wyrzuc <nick> &8- {n}Wyrzuca gracza o podanym nicku z jego gildii",
+                "&8>> {c}/ga zycia <tag> <ilosc> &8- {n}Ustawia ilosc zyc gildii o podanym tagu",
+                "&8>> {c}/ga lider <nick> &8- {n}Nadaje lidera podanemu graczowi",
+                "&8>> {c}/ga zerwij <tag> <tag> &8- {n}Zrywa sojusz pomiedzy dwoma podanymi gildiami",
+                "&8>> {c}/ga sojusz <tag> <tag> &8- {n}Zawiazuje sojusz pomiedzy dwoma podanymi gildiami",
+                "&8>> {c}/ga itemy <nick> &8- {n}Daje itemy potrzebne do zalozenia gildii podanemu graczowi",
+                "&8>> {c}/ga points <nick> <ilosc> &8- {n}Ustawia ilosc punktow podanemu graczowi",
+                "&8>> {c}/ga kills <nick> <ilosc> &8- {n}Ustawia ilosc zabojstw podanemu graczowi",
+                "&8>> {c}/ga deaths <nick> <ilosc> &8- {n}Ustawia ilosc smierci podanemu graczowi",
+                "&8>> {c}/ga logouts <nick> <ilosc> &8- {n}Ustawia ilosc logoutow podanemu graczowi",
+                "&8>> {c}/ga assists <nick> <ilosc> &8- {n}Ustawia ilosc asyst podanemu graczowi",
                 " ",
                 "&8&m--------&8[ {c}&lGildie &8]&m--------");
         guildCreateMessage = "&8[{c}&lGILDIE&8] {n}Gildia &8[{c}{TAG}&8] {c}{NAME} {n}zostala zalozona przez {c}{OWNER}";

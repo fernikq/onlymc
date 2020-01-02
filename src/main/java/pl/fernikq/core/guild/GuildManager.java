@@ -234,6 +234,27 @@ public class GuildManager {
         }
     }
 
+    public void giveItems(Player player){
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(user != null && user.canByGroup(UserGroup.VIP)){
+            for(String item : ConfigManager.guildVipItemsToCreate) {
+                String[] itemInfo = item.split(":");
+                Material material = ItemUtil.getMaterial(itemInfo[0]);
+                int amount = Integer.parseInt(itemInfo[2]);
+                short data = Short.parseShort(itemInfo[1]);
+                ItemUtil.giveItems(player, new ItemStack(material, amount, data));
+            }
+            return;
+        }
+        for(String item : ConfigManager.guildPlayerItemsToCreate) {
+            String[] itemInfo = item.split(":");
+            Material material = ItemUtil.getMaterial(itemInfo[0]);
+            int amount = Integer.parseInt(itemInfo[2]);
+            short data = Short.parseShort(itemInfo[1]);
+            ItemUtil.giveItems(player, new ItemStack(material, amount, data));
+        }
+    }
+
     public List<String> getGuildInfoMessages(Guild guild){
         return Arrays.asList("&8&m--------&8[ {c}&lINFO &8]&m--------",
                 " ",
