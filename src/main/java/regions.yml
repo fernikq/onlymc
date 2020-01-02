@@ -1,4 +1,8 @@
 regionsEnabled: true
+worldBorders:
+  - 'world:1500'
+  - 'world_nether:600'
+  - 'world_the_end:800'
 Regions:
   1:
     name: 'spawn'

@@ -17,6 +17,8 @@ import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.LocationUtil;
 import pl.fernikq.core.util.PlayerUtil;
 
+import java.util.concurrent.TimeUnit;
+
 public class PlayerMoveListener implements Listener {
 
     private final CorePlugin plugin;
@@ -40,11 +42,19 @@ public class PlayerMoveListener implements Listener {
                 user.getUserStat().setDistanceTraveled(user.getUserStat().getDistanceTraveled() + 1);
                 this.plugin.getQuestManager().checkQuest(user, QuestType.TRAVELED_DISTANCE);
             });
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().canMoveCauseOfBorder(event.getTo(), event.getFrom());
+            if(!regionFeedback.isPermit()){
+                player.teleport(event.getFrom());
+                PlayerUtil.punchPlayer(player, event.getTo(), event.getFrom());
+                ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
+                return;
+            }
             if(user.getUserFight().isDuringFight()){
-                RegionFeedback regionFeedback = this.plugin.getRegionManager().canJoinDuringPVP(user, event.getTo(), event.getFrom());
+                regionFeedback = this.plugin.getRegionManager().canJoinDuringPVP(user, event.getTo(), event.getFrom());
                 if(!regionFeedback.isPermit()){
                     player.teleport(event.getFrom());
                     PlayerUtil.punchPlayer(player, event.getTo(), event.getFrom());
+                    ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
                     return;
                 }
             }

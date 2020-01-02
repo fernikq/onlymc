@@ -32,6 +32,7 @@ public class SetSpawnCommand extends CustomCommand {
         Bukkit.setSpawnRadius(0);
         player.getWorld().save();
         this.plugin.getConfigManager().save();
+        this.plugin.getRegionManager().reloadBorder(player.getWorld());
         return ChatUtil.sendMessage(sender, "&8>> {n}Pomyslnie ustawiles {c}spawn&8!");
     }
 }

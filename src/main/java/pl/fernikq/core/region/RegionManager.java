@@ -2,12 +2,15 @@ package pl.fernikq.core.region;
 
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
+import io.vavr.control.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.yaml.snakeyaml.Yaml;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
@@ -16,12 +19,10 @@ import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
+import pl.fernikq.core.util.NumberUtil;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RegionManager {
@@ -30,12 +31,14 @@ public class RegionManager {
     private List<Region> regions;
     private File regionFile;
     private boolean regionsEnabled;
+    private Map<String, WorldBorder> worldBorders;
 
     private Comparator<Region> regionComparator;
 
     public RegionManager(CorePlugin plugin){
         this.plugin = plugin;
         this.regions = new ArrayList<>();
+        this.worldBorders = new HashMap<>();
         this.regionComparator = new Comparator<Region>() {
             @Override
             public int compare(Region o1, Region o2) {
@@ -95,6 +98,42 @@ public class RegionManager {
                     .setCanEntityIgniteBlocks(c.getBoolean("entities.canIgniteBlocks"));
             this.regions.add(region);
         }
+
+        getRegionFile().getStringList("worldBorders").forEach(s -> {
+            if(!s.contains(":")){
+                return;
+            }
+            String[] borderInfo = s.split(":");
+            World world = Bukkit.getWorld(borderInfo[0]);
+            if(world == null){
+                return;
+            }
+            if(!NumberUtil.isInt(borderInfo[1])){
+                return;
+            }
+            int size = Integer.parseInt(borderInfo[1]);
+            Location lowerCorner = new Vector(world.getSpawnLocation().getBlockX() - (size / 2), 0, world.getSpawnLocation().getBlockZ() - (size / 2)).toLocation(world);
+            Location upperCorner = new Vector(world.getSpawnLocation().getBlockX() + (size / 2), 256, world.getSpawnLocation().getBlockZ() + (size / 2)).toLocation(world);
+            this.worldBorders.put(world.getName(), new WorldBorder(world, upperCorner, lowerCorner, size));
+            world.getWorldBorder().setCenter(world.getSpawnLocation());
+            world.getWorldBorder().setSize(size);
+        });
+    }
+
+    public WorldBorder getWorldBorderByWorld(World world){
+        return this.worldBorders.get(world.getName());
+    }
+
+    public boolean isOutOfBorder(Location location){
+        return Option.of(getWorldBorderByWorld(location.getWorld())).isDefined() && !getWorldBorderByWorld(location.getWorld()).isIn(location);
+    }
+
+    public void reloadBorder(World world){
+        Option.of(getWorldBorderByWorld(world)).peek(worldBorder -> {
+            worldBorder.recalculateCorners();
+            world.getWorldBorder().setCenter(world.getSpawnLocation());
+            world.getWorldBorder().setSize(worldBorder.getSize());
+        });
     }
 
     public List<Region> getRegionsByLocation(Location location){
@@ -253,6 +292,9 @@ public class RegionManager {
         if(user == null) {
             return RegionFeedback.DENY_ERROR;
         }
+        if(isOutOfBorder(location)){
+            return RegionFeedback.DENY_PEARLS_BORDER;
+        }
         if(user.canByGroup(UserGroup.ADMIN)) {
             return RegionFeedback.ALLOW;
         }
@@ -263,6 +305,10 @@ public class RegionManager {
             return region.isCanPlayerThrowPearls() ? RegionFeedback.ALLOW : RegionFeedback.DENY_PEARLS;
         }
         return RegionFeedback.ALLOW;
+    }
+
+    public RegionFeedback canMoveCauseOfBorder(Location location, Location from){
+        return (isOutOfBorder(location) && !isOutOfBorder(from)) ? RegionFeedback.DENY_JOIN_BORDER : RegionFeedback.ALLOW;
     }
 
     public RegionFeedback canUseBuckets(User user, Location location) {
@@ -492,7 +538,7 @@ public class RegionManager {
                 return RegionFeedback.ALLOW;
             }
             for(Region region : getRegionsByLocation(location)){
-                return region.isCanPlayerJoinDuringPVP() ? RegionFeedback.ALLOW : RegionFeedback.DENY;
+                return region.isCanPlayerJoinDuringPVP() ? RegionFeedback.ALLOW : RegionFeedback.DENY_JOIN_SPAWN_CAUSE_PVP;
             }
         }
         return RegionFeedback.ALLOW;

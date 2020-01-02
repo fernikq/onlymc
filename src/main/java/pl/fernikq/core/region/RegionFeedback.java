@@ -13,6 +13,7 @@ public enum RegionFeedback {
     DENY_DESTROY_GOLD_PICKAXE(false,  MessagesManager.error("Nie mozesz tutaj niszczyc blokow &eZlotym kilofem&8!")),
     DENY_BUCKETS(false,  MessagesManager.error("Nie mozesz tutaj uzywac wiaderek!")),
     DENY_PEARLS(false,  MessagesManager.error("Perly zostaly wylaczone na tym terenie!")),
+    DENY_PEARLS_BORDER(false,  MessagesManager.error("Nie mozesz wyjsc za border mapy!")),
     DENY_SPAWN_VEHICLES(false,  MessagesManager.error("Nie mozesz tutaj spawnowac pojazdow!")),
     DENY_PVP_OTHER_REGION(false,  MessagesManager.error("Nie mozesz atakowac graczy, znajdujac sie na na tym terenie!")),
     DENY_PROCCESS_COMMAND(false,  MessagesManager.error("Podana komenda zostala zablokowana!")),
@@ -32,7 +33,9 @@ public enum RegionFeedback {
     DENY_SPAWN_VEHICLES_GUILD_CENTER(false,  MessagesManager.error("Nie mozesz spawnowac pojazdow w centrum gildii!")),
     DENY_PVP_OWN_GUILD(false,  MessagesManager.error("PVP w gildii jest wylaczone!")),
     DENY_PVP_ALLIANCE(false,  MessagesManager.error("Nie mozesz zaatakowac swojego sojusznika!")),
-    DENY_ERROR(false,  MessagesManager.error("Wystapil blad, zglos sie do administracji!"));
+    DENY_ERROR(false,  MessagesManager.error("Wystapil blad, zglos sie do administracji!")),
+    DENY_JOIN_SPAWN_CAUSE_PVP(false,  MessagesManager.error("Nie mozesz wejsc na ten teren podczas walki!")),
+    DENY_JOIN_BORDER(false,  MessagesManager.error("Nie mozesz wyjsc poza granice mapy!"));
 
     private String feedbackMessage;
     private final boolean permit;
