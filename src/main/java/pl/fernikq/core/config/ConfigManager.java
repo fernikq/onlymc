@@ -62,6 +62,7 @@ public class ConfigManager {
     public static int guildCuboidSizeAddByEnlarge;
     public static int minimalDistanceBetweenGuilds;
     public static int minimalDistanceFromSpawn;
+    public static int minimalDistanceFromBorder;
     public static int guildCenterY;
     public static List<Integer> guildAlliesSizeEnlargeCost;
     public static List<Integer> guildMembersSizeEnlargeCost;
@@ -197,5 +198,6 @@ public class ConfigManager {
         blockBuildingBelowYDuringFight = 50;
         blockOpeningEnderchestDuringFight = true;
         playerPointsResetCost = 500;
+        minimalDistanceFromBorder = 120;
     }
 }

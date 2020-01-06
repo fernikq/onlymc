@@ -185,6 +185,10 @@ public class GuildManager {
         return false;
     }
 
+    public boolean isNearBorder(Location location){
+        return !location.toVector().isInSphere(LocationUtil.locationFromString(ConfigManager.spawnLocation).toVector(), (location.getWorld().getWorldBorder().getSize() / 2) - ConfigManager.minimalDistanceFromBorder);
+    }
+
     public boolean hasItems(Player player){
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
         if(user != null && user.canByGroup(UserGroup.VIP)){

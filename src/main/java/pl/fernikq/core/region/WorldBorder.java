@@ -3,6 +3,7 @@ package pl.fernikq.core.region;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
+import pl.fernikq.core.config.ConfigManager;
 
 public class WorldBorder {
 

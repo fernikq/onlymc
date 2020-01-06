@@ -77,6 +77,14 @@ public class GuildCreateCommand extends CustomCommand {
                 ChatUtil.sendMessage(sender, MessagesManager.error("Jestes zbyt blisko innej gildii!"));
                 return;
             }
+            if(this.plugin.getRegionManager().isOutOfBorder(player.getLocation().getBlock().getLocation())){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Nie mozesz stworzyc gildii poza borderem swiata!"));
+                return;
+            }
+            if(this.plugin.getGuildManager().isNearBorder(player.getLocation().getBlock().getLocation())){
+                ChatUtil.sendMessage(sender, MessagesManager.error("Jestes zbyt blisko granicy swiata!"));
+                return;
+            }
             if(!this.plugin.getGuildManager().hasItems(player) && !user.canByGroup(UserGroup.ADMIN)){
                 ChatUtil.sendMessage(sender, MessagesManager.error("Nie posiadasz przedmiotow potrzebnych do zalozenia gildii, sprawdzisz je pod /g itemy!"));
                 return;
