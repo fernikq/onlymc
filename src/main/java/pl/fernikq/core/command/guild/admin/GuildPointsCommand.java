@@ -42,6 +42,7 @@ public class GuildPointsCommand extends CustomCommand {
                     this.plugin.getTopManager().getTopByType(TopType.GUILD_POINTS).sort();
                 }
                 ChatUtil.sendMessage(sender, "&8>> {n}Ustawiles ilosc punktow gracza {c}"+user.getName()+" {n}na {c}"+finalAmount);
+                this.plugin.getDummyManager().updateScore(user);
             });
         }).onEmpty(() -> ChatUtil.sendMessage(sender, Lang.userNotExists));
         return true;

@@ -3,6 +3,7 @@ package pl.fernikq.core.inventory;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.util.ChatUtil;
@@ -21,6 +22,13 @@ public class InventoryGUI {
         this.inventory = Bukkit.createInventory(null, rows * 9, ChatUtil.fixColor(name));
         this.actions = new HashMap<>();
         this.slots = rows * 9;
+        this.cancelling = cancelling;
+    }
+
+    public InventoryGUI(String name, InventoryType type, boolean cancelling){
+        this.inventory = Bukkit.createInventory(null, type, ChatUtil.fixColor(name));
+        this.actions = new HashMap<>();
+        this.slots = type.getDefaultSize();
         this.cancelling = cancelling;
     }
 

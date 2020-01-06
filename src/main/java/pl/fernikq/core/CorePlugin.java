@@ -314,6 +314,7 @@ public class CorePlugin extends JavaPlugin {
         new AbyssCommand("otchlan", new String[0], UserGroup.PLAYER, this).register();
         new TopsCommand("top", new String[]{"topki"}, UserGroup.PLAYER, this).register();
         new QuestCommand("zadania", new String[0], UserGroup.PLAYER, this).register();
+        new EffectsCommand("efekty", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();

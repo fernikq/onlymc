@@ -1,5 +1,7 @@
 package pl.fernikq.core.listener.player;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,12 +16,16 @@ import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.StringUtil;
 
+import java.util.concurrent.TimeUnit;
+
 public class AsyncPlayerChatListener implements Listener {
 
     private final CorePlugin plugin;
+    private Cache<User, Long> cache;
 
     public AsyncPlayerChatListener(CorePlugin plugin){
         this.plugin = plugin;
+        this.cache = CacheBuilder.newBuilder().expireAfterWrite(2, TimeUnit.SECONDS).build();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -30,6 +36,10 @@ public class AsyncPlayerChatListener implements Listener {
         }
         Player player = event.getPlayer();
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+           if(this.cache.asMap().containsKey(user)){
+               ChatUtil.sendMessage(player, MessagesManager.error("Poczekaj chwile przed ponownym napisaniem wiadomosci!"));
+               return;
+           }
            String format = user.canByGroup(UserGroup.HELPER) ? MessagesManager.playerChatAdminFormat : MessagesManager.playerChatFormat;
            if(user.canByGroup(UserGroup.HELPER)){
                event.setMessage(ChatUtil.fixColor(event.getMessage()));
@@ -45,6 +55,9 @@ public class AsyncPlayerChatListener implements Listener {
            format = StringUtil.replace(format, "{NAME}", player.getName());
            format = StringUtil.replace(format, "{MESSAGE}", "%2$s");
            event.setFormat(ChatUtil.fixColor(format));
+           if(!user.canByGroup(UserGroup.HELPER)){
+               this.cache.put(user, 100L);
+           }
         });
     }
 
