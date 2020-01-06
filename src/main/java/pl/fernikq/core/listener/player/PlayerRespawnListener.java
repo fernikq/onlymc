@@ -27,5 +27,8 @@ public class PlayerRespawnListener implements Listener {
         TitleUtil.sendTitle(player, ChatUtil.fixColor("&c&lZginales"), 4);
         TitleUtil.sendSubTitle(player, ChatUtil.fixColor("{n}Nie poddawaj sie!"), 4);
         player.teleport(LocationUtil.locationFromString(ConfigManager.spawnLocation));
+        this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+            user.getSidebar().update();
+        });
     }
 }

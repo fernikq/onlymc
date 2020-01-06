@@ -28,6 +28,7 @@ public class User {
     private UserChat userChat;
     private UserFight userFight;
     private Enderchest enderchest;
+    private UserSidebar sidebar;
 
     private Map<String, Home> homes;
     private boolean godMode;
@@ -57,6 +58,7 @@ public class User {
         this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
         this.userFight = new UserFight(this);
         this.enderchest = new Enderchest(this);
+        this.sidebar = new UserSidebar(this);
     }
 
     public User(ResultSet rs){
@@ -76,9 +78,14 @@ public class User {
             this.guild = null;
             this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
             this.userFight = new UserFight(this);
+            this.sidebar = new UserSidebar(this);
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public UserSidebar getSidebar() {
+        return sidebar;
     }
 
     public Enderchest getEnderchest() {

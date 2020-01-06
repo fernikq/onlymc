@@ -78,12 +78,14 @@ public class GuildManager {
         GuildMember member = new GuildMember(user, guild, guildPermissions);
         this.plugin.runAsync(() -> this.guildMemberData.insertMember(member));
         this.plugin.getTagManager().updateTag(member.getUser().asPlayer());
+        member.getUser().getSidebar().update();
     }
 
     public void removeMember(GuildMember member){
         member.getGuild().removeMember(member);
         this.plugin.runAsync(() -> this.guildMemberData.deleteMember(member));
         this.plugin.getTagManager().updateTag(member.getUser().asPlayer());
+        member.getUser().getSidebar().update();
     }
 
     public void createGuild(Player owner, String tag, String name){

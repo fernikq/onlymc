@@ -17,6 +17,15 @@ public class ChatUtil {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    public static String stripColor(String message){
+        message = StringUtil.replace(message, "&c", "{c}");
+        message = StringUtil.replace(message, "{f}", "{n}");
+        message = StringUtil.replace(message, "»", ">>");
+        message = StringUtil.replace(message, "«", "<<");
+        message = StringUtil.replace(message, "♥", "<3");
+        return ChatColor.stripColor(message);
+    }
+
     public static List<String> fixColor(List<String> list) {
         for (int i = 0; i < list.size(); i++) {
             String string = (String)list.get(i);

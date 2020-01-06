@@ -273,6 +273,10 @@ public class UserStat {
         this.miningExperience = (this.level - 1) * 260;
     }
 
+    public int getStoneToNextLevel(){
+        return this.level * 260 - this.miningExperience;
+    }
+
     public void addDepositeApples(int amount) {
         this.depositeApples += amount;
     }

@@ -1,6 +1,8 @@
 package pl.fernikq.core.util;
 
+import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -28,5 +30,11 @@ public class PlayerUtil {
         Vector vectorSubtract = vectorTo.subtract(vectorFrom);
         Vector vector = new Vector(vectorSubtract.getBlockX(), vectorSubtract.getY(), vectorSubtract.getBlockZ());
         player.setVelocity(vector.multiply(ConfigManager.punchingLinePower).setY(0.5));
+    }
+
+    public static int getPing(Player p) {
+        CraftPlayer cp = (CraftPlayer)p;
+        EntityPlayer ep = cp.getHandle();
+        return ep.ping;
     }
 }

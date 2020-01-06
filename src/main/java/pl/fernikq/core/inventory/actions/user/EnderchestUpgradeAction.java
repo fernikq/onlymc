@@ -51,6 +51,7 @@ public class EnderchestUpgradeAction implements InventoryAction {
             this.user.getEnderchest().recalculateEnderchest();
             ChatUtil.sendMessage(player, "&8>> {n}Ulepszyles enderchest do poziomu {c}"+this.level);
             this.plugin.getUserInventory().enderchestUpgrade(this.user).openInventory(player);
+            user.getSidebar().update();
             return;
         }
         if(this.level == 2){
@@ -75,6 +76,7 @@ public class EnderchestUpgradeAction implements InventoryAction {
             this.user.getEnderchest().recalculateEnderchest();
             ChatUtil.sendMessage(player, "&8>> {n}Ulepszyles enderchest do poziomu {c}"+this.level);
             this.plugin.getUserInventory().enderchestUpgrade(this.user).openInventory(player);
+            user.getSidebar().update();
             return;
         }
         if(this.level == 3){
@@ -99,6 +101,7 @@ public class EnderchestUpgradeAction implements InventoryAction {
             this.user.getEnderchest().recalculateEnderchest();
             ChatUtil.sendMessage(player, "&8>> {n}Ulepszyles enderchest do poziomu {c}"+this.level);
             this.plugin.getUserInventory().enderchestUpgrade(this.user).openInventory(player);
+            user.getSidebar().update();
             return;
         }
     }

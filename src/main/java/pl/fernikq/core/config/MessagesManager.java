@@ -72,6 +72,8 @@ public class MessagesManager {
     public static String tablistGuildrTopFormat;
     public static List<String> guildMainCommandHelp;
     public static List<String> guildAdminMainCommandHelp;
+    public static List<String> playerSidebarLines;
+    public static String sidebarName;
 
     public MessagesManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -213,5 +215,13 @@ public class MessagesManager {
         playerQuestMessage = "&8>> {n}Wykonales zadanie {c}{QUEST-NAME} {n}i otrzymales {c}{QUEST-REWARD} {n}monet!";
         tablistUserTopFormat = "{USER-NAME} &8[&7{USER-POINTS}&8]";
         tablistGuildrTopFormat = "{GUILD-TAG} &8[&f{GUILD-POINTS}&8]";
+        playerSidebarLines = Arrays.asList("&8>> {n}Nick&8: {c}{NICK}",
+                "&f", "&8>> {n}Gildia&8: {c}{GUILD}",
+                "&8>> {n}Punkty&8: {c}{POINTS}",
+                "&8>> {n}Monety&8: {c}{COINS}",
+                "&8>> {n}Do kolejnego poziomu&8: {c}{TO-NEXT-LEVEL}",
+                "&e",
+                "&8>> {n}Ping&8: {c}{PING}");
+        sidebarName = "&8[ &c&lSztos serwer &8]";
     }
 }

@@ -56,6 +56,9 @@ public class PlayerJoinListener implements Listener {
         this.plugin.getDummyManager().createScore(user);
         this.plugin.getDummyManager().updateScore(user);
         this.plugin.getTagManager().createTag(player);
+        if(user.getSidebar().isEnabled()){
+            user.getSidebar().create();
+        }
         for(Player vanished : this.plugin.getVanishManager().getVanished()){
             if(user.canByGroup(UserGroup.HELPER)){
                 break;

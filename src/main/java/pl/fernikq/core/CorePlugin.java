@@ -96,7 +96,7 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
-        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this));
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this));
         simpleTasks.forEach(SimpleTask::start);
         registerTablistVariables();
     }
@@ -315,6 +315,7 @@ public class CorePlugin extends JavaPlugin {
         new TopsCommand("top", new String[]{"topki"}, UserGroup.PLAYER, this).register();
         new QuestCommand("zadania", new String[0], UserGroup.PLAYER, this).register();
         new EffectsCommand("efekty", new String[0], UserGroup.PLAYER, this).register();
+        new SidebarCommand("sidebar", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();

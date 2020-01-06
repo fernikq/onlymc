@@ -39,5 +39,6 @@ public class CustomEffectsAction implements InventoryAction {
         player.addPotionEffect(this.potionEffect);
         user.getUserStat().removeCoins(this.cost);
         ChatUtil.sendMessage(player, "&8>> {n}Pomyslnie kupiles efekt {c}"+this.potionEffectName+" {n}za {c}"+this.cost+" {n}monet!");
+        user.getSidebar().update();
     }
 }

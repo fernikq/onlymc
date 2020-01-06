@@ -87,6 +87,7 @@ public class ShopAction implements InventoryAction {
             ChatUtil.sendMessage(player, StringUtil.replace(MessagesManager.shopBuyItem, "{AMOUNT}", shopItem.getPrice()));
             user.getUserStat().removeCoins(shopItem.getPrice());
             this.plugin.getUserInventory().shopBuy(user, shop).openInventory(player);
+            user.getSidebar().update();
             return;
         }
         if(shopActionType.equals(ShopActionType.SELL_ITEM)) {
@@ -99,6 +100,7 @@ public class ShopAction implements InventoryAction {
             ChatUtil.sendMessage(player, StringUtil.replace(MessagesManager.shopSellItem, "{AMOUNT}", shopItem.getPrice()));
             user.getUserStat().addCoins(shopItem.getPrice());
             this.plugin.getUserInventory().shopSell(user, shop).openInventory(player);
+            user.getSidebar().update();
             return;
         }
         if(shopActionType.equals(ShopActionType.BUY_FROM_LEVEL_SHOP)) {
@@ -115,6 +117,7 @@ public class ShopAction implements InventoryAction {
             ItemUtil.giveItems(player, new ItemBuilder(shopItem.getItemStack().clone()).setAmount(shopItem.getAmount()).toItemStack());
             ChatUtil.sendMessage(player, MessagesManager.levelShopBuyItem);
             this.plugin.getUserInventory().levelShopBuy(user).openInventory(player);
+            user.getSidebar().update();
             return;
         }
     }

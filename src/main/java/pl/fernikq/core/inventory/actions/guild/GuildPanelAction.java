@@ -135,6 +135,7 @@ public class GuildPanelAction implements InventoryAction {
             user.getUserStat().removeCoins(this.coinsToPay);
             ChatUtil.sendMessage(player, "&8>> {n}Wplaciles {c}"+this.coinsToPay+" monet {n}do skarbca gildii&8!");
             this.plugin.getGuildInventory().guildResources(user).openInventory(player);
+            user.getSidebar().update();
             return;
         }
         if(action.equals(GuildPanelActionType.EXECUTE_CUBOID_ENLARGE)){

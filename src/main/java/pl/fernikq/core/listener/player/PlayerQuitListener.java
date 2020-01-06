@@ -41,6 +41,9 @@ public class PlayerQuitListener implements Listener {
                 this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isFightMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
             }
             this.plugin.runAsync(() -> this.plugin.getUserManager().updateUser(user));
+            if(user.getSidebar().hasSidebar()){
+                user.getSidebar().remove();
+            }
             user.setScoreboard(null);
         });
         this.plugin.getTagManager().removeTag(player);
