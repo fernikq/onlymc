@@ -33,8 +33,12 @@ public class PlayerUtil {
     }
 
     public static int getPing(Player p) {
-        CraftPlayer cp = (CraftPlayer)p;
-        EntityPlayer ep = cp.getHandle();
-        return ep.ping;
+        try {
+            CraftPlayer cp = (CraftPlayer) p;
+            EntityPlayer ep = cp.getHandle();
+            return ep.ping;
+        }catch(Exception ex){
+            return 0;
+        }
     }
 }

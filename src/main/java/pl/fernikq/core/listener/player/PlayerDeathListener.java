@@ -13,10 +13,13 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
+import pl.fernikq.core.user.backup.Backup;
+import pl.fernikq.core.user.backup.BackupBuilder;
 import pl.fernikq.core.user.fight.Damage;
 import pl.fernikq.core.user.fight.UserFight;
 import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.PlayerUtil;
 import pl.fernikq.core.util.RankingUtil;
 
 import java.util.List;
@@ -41,6 +44,19 @@ public class PlayerDeathListener implements Listener {
         if(victimUser == null){
             return;
         }
+        String reason = "Brak";
+        if(victimUser.getUserFight().isDuringFight()){
+            reason = "Zabity przez "+victimUser.getUserFight().getLastAttacker().getName();
+        }else{
+            reason = player.getLastDamageCause().getCause().name();
+        }
+        if(victimUser.isLogout()){
+            reason = "Logout";
+        }
+        Backup backup = BackupBuilder.builder().setArmor(player.getInventory().getArmorContents()).setItems(player.getInventory().getContents()).setDeathTime(System.currentTimeMillis())
+                .setEnderchest(victimUser.getEnderchest().getItems()).setPoints(victimUser.getUserStat().getPoints()).setDeaths(victimUser.getUserStat().getDeaths()).setUser(victimUser)
+                .setPing(PlayerUtil.getPing(player)).setReason(reason).build();
+        this.plugin.runAsync(() -> this.plugin.getUserManager().getBackupData().insertBackup(backup));
         victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);
         this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_DEATHS).sort());
         if(victimUser.hasGuild()){

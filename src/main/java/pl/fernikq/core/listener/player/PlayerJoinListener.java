@@ -40,6 +40,7 @@ public class PlayerJoinListener implements Listener {
         }
         event.setJoinMessage(ChatUtil.fixColor(MessagesManager.playerJoinMessage.replace("{PLAYER}", player.getName())));
         User user = this.plugin.getUserManager().getUser(player);
+        user.setLogout(false);
         user.getUserStat().setJoinTime(System.currentTimeMillis());
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
             this.plugin.getUserPermissionsManager().reloadPermissions(user);

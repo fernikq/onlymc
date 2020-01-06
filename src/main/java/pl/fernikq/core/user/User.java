@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import pl.fernikq.core.dummy.Dummy;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.user.backup.Backup;
 import pl.fernikq.core.user.enderchest.Enderchest;
 import pl.fernikq.core.user.fight.UserFight;
 import pl.fernikq.core.user.home.Home;
@@ -16,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class User {
 
@@ -32,6 +34,7 @@ public class User {
 
     private Map<String, Home> homes;
     private boolean godMode;
+    private Set<Backup> backups;
     private Map<String, InventoryGUI> inventories;
     private Map<String, Long> kitTimes;
     private Cache<User, Long> tpaRequests;
@@ -39,6 +42,7 @@ public class User {
     private Scoreboard scoreboard;
     private Dummy dummy;
     private Guild guild;
+    private boolean logout;
 
     public User(Player player){
         this.uuid = player.getUniqueId();
@@ -59,6 +63,8 @@ public class User {
         this.userFight = new UserFight(this);
         this.enderchest = new Enderchest(this);
         this.sidebar = new UserSidebar(this);
+        this.backups = new HashSet<>();
+        this.logout = false;
     }
 
     public User(ResultSet rs){
@@ -79,9 +85,34 @@ public class User {
             this.tpaRequests = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
             this.userFight = new UserFight(this);
             this.sidebar = new UserSidebar(this);
+            this.backups = new HashSet<>();
+            this.logout = false;
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Backup> getSortedBackups(){
+        List<Backup> backups = this.backups.stream().collect(Collectors.toList());
+        backups.sort(new Comparator<Backup>() {
+            @Override
+            public int compare(Backup o1, Backup o2) {
+                return Long.compare(o2.getDeathTime(), o1.getDeathTime());
+            }
+        });
+        return backups;
+    }
+
+    public boolean isLogout() {
+        return logout;
+    }
+
+    public void setLogout(boolean logout) {
+        this.logout = logout;
+    }
+
+    public Set<Backup> getBackups() {
+        return backups;
     }
 
     public UserSidebar getSidebar() {

@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.top.TopKind;
+import pl.fernikq.core.user.backup.BackupData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class UserManager {
     private ConcurrentMap<UUID, User> users;
     private UserData userData;
     private UserStatData userStatData;
+    private BackupData backupData;
 
     public UserManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -29,6 +31,7 @@ public class UserManager {
     public void init(){
         this.userData = new UserData(this.plugin);
         this.userStatData = new UserStatData(this.plugin);
+        this.backupData = new BackupData(this.plugin);
     }
 
     public boolean isCorrect(String name){
@@ -125,5 +128,9 @@ public class UserManager {
 
     public Set<User> getUsers(){
         return HashSet.ofAll(new ConcurrentHashMap<UUID, User>(this.users).values());
+    }
+
+    public BackupData getBackupData() {
+        return backupData;
     }
 }
