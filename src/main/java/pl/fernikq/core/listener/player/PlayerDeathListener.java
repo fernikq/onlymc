@@ -64,6 +64,9 @@ public class PlayerDeathListener implements Listener {
         }
         UserFight victimFight = victimUser.getUserFight();
         if(victimFight.getDamageMap().isEmpty() && victimFight.getLastAttacker() == null){
+            if(victimFight.isDuringFight()){
+                this.plugin.getFightManager().removeFight(victimUser);
+            }
             return;
         }
         List<Damage> damageList = victimFight.getDamageList();
