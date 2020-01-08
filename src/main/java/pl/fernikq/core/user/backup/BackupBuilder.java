@@ -8,7 +8,6 @@ public class BackupBuilder {
     private User user;
     private ItemStack[] items;
     private ItemStack[] armor;
-    private ItemStack[] enderchest;
     private int points;
     private int deaths;
     private long deathTime;
@@ -24,7 +23,6 @@ public class BackupBuilder {
         backup.setUser(this.user);
         backup.setItems(this.items);
         backup.setArmor(this.armor);
-        backup.setEnderchest(this.enderchest);
         backup.setPoints(this.points);
         backup.setDeaths(this.deaths);
         backup.setDeathTime(this.deathTime);
@@ -46,11 +44,6 @@ public class BackupBuilder {
 
     public BackupBuilder setArmor(ItemStack[] armor) {
         this.armor = armor;
-        return this;
-    }
-
-    public BackupBuilder setEnderchest(ItemStack[] enderchest) {
-        this.enderchest = enderchest;
         return this;
     }
 

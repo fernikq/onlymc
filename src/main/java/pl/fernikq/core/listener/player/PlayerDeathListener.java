@@ -54,7 +54,7 @@ public class PlayerDeathListener implements Listener {
             reason = "Logout";
         }
         Backup backup = BackupBuilder.builder().setArmor(player.getInventory().getArmorContents()).setItems(player.getInventory().getContents()).setDeathTime(System.currentTimeMillis())
-                .setEnderchest(victimUser.getEnderchest().getItems()).setPoints(victimUser.getUserStat().getPoints()).setDeaths(victimUser.getUserStat().getDeaths()).setUser(victimUser)
+                .setPoints(victimUser.getUserStat().getPoints()).setDeaths(victimUser.getUserStat().getDeaths()).setUser(victimUser)
                 .setPing(PlayerUtil.getPing(player)).setReason(reason).build();
         this.plugin.runAsync(() -> this.plugin.getUserManager().getBackupData().insertBackup(backup));
         victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);

@@ -31,6 +31,7 @@ import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserStat;
+import pl.fernikq.core.user.backup.Backup;
 import pl.fernikq.core.user.quests.Quest;
 import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.*;
@@ -615,6 +616,44 @@ public class UserInventory {
         gui.setItem(2, damage.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * 35, 0), 1750, "Sila I", user));
         gui.setItem(3, vision.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.NIGHT_VISION, 20 * 260, 0), 125, "Widzenie w ciemnosci", user));
         gui.setItem(4, speed.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.SPEED, 20 * 60, 0), 975, "Szybkosc", user));
+        return gui;
+    }
+
+    public InventoryGUI playerBackups(User user, User backupUser){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lLISTA BACKUPOW &8]", 6, true);
+        user.addInventory(gui);
+        backupUser.getSortedBackups().forEach(backup -> {
+            ItemBuilder backupItem = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setName(ChatUtil.fixColor("{n}Gracz {c}"+backupUser.getName()))
+                    .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Powod&8: {c}"+backup.getReason(), "&8>> {n}Czas&8: {c}"+TimeUtil.getDate(backup.getDeathTime()),
+                            "&8>> {n}Ping&8: {c}"+backup.getPing())));
+            gui.addItem(backupItem.toItemStack(), new PlayerBackupAction(this.plugin, PlayerBackupActionType.CHOOSE_BACKUP, backup, user));
+        });
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI playerBackup(User user, Backup backup){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lBACKUP &8]", 3, true);
+        ItemBuilder items = new ItemBuilder(Material.WOOD_PICKAXE).setName(ChatUtil.fixColor("{c}&lPrzedmioty"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Odda przedmioty&8: "+(backup.isGiveItems() ? "&aTak" : "&cNie"))));
+        ItemBuilder armor = new ItemBuilder(Material.LEATHER_CHESTPLATE).setName(ChatUtil.fixColor("{c}&lZbroja"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Odda zbroje&8: "+(backup.isGiveArmor() ? "&aTak" : "&cNie"))));
+        ItemBuilder deaths = new ItemBuilder(Material.SKULL_ITEM).setName(ChatUtil.fixColor("{c}&lSmierci"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ustawi stara ilosc smierci&8: "+(backup.isGiveDeaths() ? "&aTak" : "&cNie"),
+                        "&8>> {n}Smierci&8: {c}"+backup.getDeaths())));
+        ItemBuilder points = new ItemBuilder(Material.WOOD_SWORD).setName(ChatUtil.fixColor("{c}&lPunkty"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ustawi stara ilosc punktow&8: "+(backup.isGivePoints() ? "&aTak" : "&cNie"),
+                        "&8>> {n}Punktow&8: {c}"+backup.getPoints())));
+        gui.setItem(1, items.toItemStack(), new PlayerBackupAction(this.plugin, PlayerBackupActionType.CHANGE_ITEMS, backup, user));
+        gui.setItem(3, armor.toItemStack(), new PlayerBackupAction(this.plugin, PlayerBackupActionType.CHANGE_ARMOR, backup, user));
+        gui.setItem(5, deaths.toItemStack(), new PlayerBackupAction(this.plugin, PlayerBackupActionType.CHANGE_DEATHS, backup, user));
+        gui.setItem(7, points.toItemStack(), new PlayerBackupAction(this.plugin, PlayerBackupActionType.CHANGE_POINTS, backup, user));
+        gui.setItem(21, this.backGlass, new PlayerBackupAction(this.plugin, PlayerBackupActionType.OPEN_BACKUP_MENU, backup, user));
+        gui.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 5).setName(ChatUtil.fixColor("&aPrzyznaj backup")).toItemStack(),
+                new PlayerBackupAction(this.plugin, PlayerBackupActionType.ACCEPT_BACKUP, backup, user));
+        gui.setItem(23, this.backGlass, new PlayerBackupAction(this.plugin, PlayerBackupActionType.OPEN_BACKUP_MENU, backup, user));
+        gui.setEmptyItem(this.blank);
+        user.addInventory(gui);
         return gui;
     }
 }

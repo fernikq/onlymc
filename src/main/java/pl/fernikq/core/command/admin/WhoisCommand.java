@@ -28,7 +28,7 @@ public class WhoisCommand extends CustomCommand {
             ChatUtil.sendMessage(sender, "&8>> {n}Nick&8: {c}"+user.getName());
             ChatUtil.sendMessage(sender, "&8>> {n}Ranga&8: {c}"+user.getGroup().name());
             ChatUtil.sendMessage(sender, "&8>> {n}Online&8: {c}"+(user.asPlayer() == null ? "nie" : "tak"));
-            ChatUtil.sendMessage(sender, "&8>> {n}UUUID&8: {c}"+user.getUuid().toString());
+            ChatUtil.sendMessage(sender, "&8>> {n}UUID&8: {c}"+user.getUuid().toString());
             ChatUtil.sendMessage(sender, "&8>> {n}Gamemode&8: {c}"+(user.asPlayer() == null ? "offline" : user.asPlayer().getGameMode().name()));
             ChatUtil.sendMessage(sender, "&8>> {n}God&8: {c}"+(user.isGodMode() ? "tak" : "nie"));
             if(user.asPlayer() == null){

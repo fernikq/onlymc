@@ -9,10 +9,12 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.SerializationUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class Enderchest {
 
@@ -50,7 +52,7 @@ public class Enderchest {
         Bukkit.getOnlinePlayers().forEach(o -> {
             if(o.getOpenInventory() != null && o.getOpenInventory().getTopInventory().equals(this.inventory)){
                 o.closeInventory();
-                ChatUtil.sendMessage(o, MessagesManager.error("Enderchest zostal zamkniety, poniewaz zostal ulepszony"));
+                ChatUtil.sendMessage(o, MessagesManager.error("Enderchest zostal zamkniety, poniewaz wykonana zostala jakas akcja!"));
             }
         });
         this.inventory = Bukkit.createInventory(null, getSizeByLevel(), ChatUtil.fixColor("&8[ {c}&lEnderchest &8]"));
@@ -76,7 +78,7 @@ public class Enderchest {
     }
 
     public ItemStack[] getItems() {
-        return items;
+        return items.clone();
     }
 
     public void setItems(ItemStack[] items) {

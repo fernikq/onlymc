@@ -284,6 +284,7 @@ public class CorePlugin extends JavaPlugin {
         new TurboCommand("turbo", new String[0], UserGroup.MOD, this).register();
         new HeadCommand("head", new String[0], UserGroup.HELPER, this).register();
         new WhoisCommand("whois", new String[0], UserGroup.HELPER, this).register();
+        new BackupCommand("backup", new String[0], UserGroup.ADMIN, this).register();
         new ReloadPermissionsCommand("reloadpermissions", new String[0], UserGroup.ROOT, this).register();
 
         //PLAYER

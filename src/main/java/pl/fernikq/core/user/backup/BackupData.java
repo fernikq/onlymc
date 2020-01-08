@@ -26,7 +26,6 @@ public class BackupData {
                     "`uuid` VARCHAR(128) NOT NULL,"+
                     "`items` TEXT NOT NULL,"+
                     "`armor` TEXT NOT NULL,"+
-                    "`enderchest` TEXT NOT NULL,"+
                     "`points` INT NOT NULL,"+
                     "`deaths` INT NOT NULL,"+
                     "`creationTime` LONG NOT NULL,"+
@@ -51,7 +50,7 @@ public class BackupData {
         }
     }
 
-    private void deleteBackup(Backup backup){
+    public void deleteBackup(Backup backup){
         try{
             this.plugin.getMySQL().openConnection();
             this.plugin.getMySQL().update("DELETE FROM `core_user_backups` WHERE `uuid` = '"+backup.getUser().getUuid().toString()+"';");
@@ -63,18 +62,17 @@ public class BackupData {
     public void insertBackup(Backup backup){
         try{
             this.plugin.getMySQL().openConnection();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_user_backups` (id, uuid, items, armor, enderchest, points, deaths, creationTime, reason, ping) "+
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_user_backups` (id, uuid, items, armor, points, deaths, creationTime, reason, ping) "+
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, backup.getUser().getUuid().toString());
             statement.setString(3, SerializationUtil.itemStackToString(backup.getItems()));
             statement.setString(4, SerializationUtil.itemStackToString(backup.getArmor()));
-            statement.setString(5, SerializationUtil.itemStackToString(backup.getEnderchest()));
-            statement.setInt(6, backup.getPoints());
-            statement.setInt(7, backup.getDeaths());
-            statement.setLong(8, backup.getDeathTime());
-            statement.setString(9, backup.getReason());
-            statement.setInt(10, backup.getPing());
+            statement.setInt(5, backup.getPoints());
+            statement.setInt(6, backup.getDeaths());
+            statement.setLong(7, backup.getDeathTime());
+            statement.setString(8, backup.getReason());
+            statement.setInt(9, backup.getPing());
             statement.executeUpdate();
         }catch(SQLException ex){
             ex.printStackTrace();
