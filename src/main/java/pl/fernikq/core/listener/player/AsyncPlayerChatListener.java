@@ -37,6 +37,7 @@ public class AsyncPlayerChatListener implements Listener {
         Player player = event.getPlayer();
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
            if(this.cache.asMap().containsKey(user)){
+               event.setCancelled(true);
                ChatUtil.sendMessage(player, MessagesManager.error("Poczekaj chwile przed ponownym napisaniem wiadomosci!"));
                return;
            }
