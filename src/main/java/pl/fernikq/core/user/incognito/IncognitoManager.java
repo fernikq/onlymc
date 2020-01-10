@@ -124,7 +124,7 @@ public class IncognitoManager {
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getOnlinePlayers().forEach(o -> o.hidePlayer(player));
                 ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer)player).getHandle()));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftPlayer)player).getHandle().getId()));
+                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftPlayer)player).getEntityId()));
             }, 1);
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getOnlinePlayers().forEach(o -> o.showPlayer(player));
@@ -146,7 +146,7 @@ public class IncognitoManager {
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getOnlinePlayers().forEach(o -> o.hidePlayer(player));
                 ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer)player).getHandle()));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftPlayer)player).getHandle().getId()));
+                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftPlayer)player).getEntityId()));
             }, 1);
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getOnlinePlayers().forEach(o -> o.showPlayer(player));
