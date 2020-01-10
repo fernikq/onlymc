@@ -17,12 +17,14 @@ public class Generator {
     private ItemStack itemStack;
     private List<String> ingredients;
     private String inventoryName;
+    private boolean canCraft;
 
-    public Generator(GeneratorType generatorType, ItemStack itemStack, List<String> ingredients, String inventoryName){
+    public Generator(GeneratorType generatorType, ItemStack itemStack, List<String> ingredients, String inventoryName, boolean canCraft){
         this.generatorType = generatorType;
         this.itemStack = itemStack;
         this.ingredients = ingredients;
         this.inventoryName = inventoryName;
+        this.canCraft = canCraft;
     }
 
     public GeneratorType getGeneratorType() {
@@ -91,5 +93,13 @@ public class Generator {
             amounts.put(material, 1);
         }
         return amounts;
+    }
+
+    public boolean isCanCraft() {
+        return canCraft;
+    }
+
+    public void setCanCraft(boolean canCraft) {
+        this.canCraft = canCraft;
     }
 }

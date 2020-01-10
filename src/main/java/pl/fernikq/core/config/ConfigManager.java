@@ -78,6 +78,7 @@ public class ConfigManager {
     public static int playerFightTime;
     public static int blockBuildingBelowYDuringFight;
     public static int playerPointsResetCost;
+    public static double primedTNTSpeed;
     public static double punchingLinePower;
     public static String guildDenyBuildTimeAfterExplosion;
     public static List<String> guildPlayerItemsToCreate;
@@ -199,5 +200,6 @@ public class ConfigManager {
         blockOpeningEnderchestDuringFight = true;
         playerPointsResetCost = 500;
         minimalDistanceFromBorder = 120;
+        primedTNTSpeed = 1.2;
     }
 }

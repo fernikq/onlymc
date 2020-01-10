@@ -5,6 +5,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,6 +16,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.crafting.Generator;
+import pl.fernikq.core.crafting.GeneratorType;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
@@ -40,7 +44,7 @@ public class PlayerInteractListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
@@ -63,7 +67,7 @@ public class PlayerInteractListener implements Listener {
             }
             return;
         }
-        if(block.getType() == Material.TNT && event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand() != null && player.getItemInHand().getType() == Material.FLINT_AND_STEEL){
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.TNT && player.getItemInHand() != null && player.getItemInHand().getType() == Material.FLINT_AND_STEEL){
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
             RegionFeedback regionFeedback = this.plugin.getRegionManager().canIgniteTNT(user, block.getLocation(), true);
             if(!regionFeedback.isPermit()) {
@@ -225,6 +229,16 @@ public class PlayerInteractListener implements Listener {
                 player.openInventory(user.getEnderchest().getInventory());
                 user.getEnderchest().setUserEnderchest(user);
             }).onEmpty(() -> ChatUtil.sendMessage(player, MessagesManager.error("Wystapil blad, zglos sie do administracji!")));
+        }
+        Generator generator = this.plugin.getGeneratorManager().getGenerator(player.getItemInHand());
+        if(generator != null && generator.getGeneratorType().equals(GeneratorType.RZUCANE) && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)){
+            event.setCancelled(true);
+            Entity entity = player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.PRIMED_TNT);
+            entity.setCustomName(ChatUtil.fixColor(generator.getItemStack().getItemMeta().getDisplayName()));
+            entity.setCustomNameVisible(true);
+            entity.setVelocity(player.getEyeLocation().getDirection().multiply(ConfigManager.primedTNTSpeed));
+            ItemUtil.removeFromHand(player, 1);
+            return;
         }
     }
 }

@@ -1,4 +1,15 @@
 Generators:
+  rzucane:
+    item:
+      item: 'tnt:0'
+      amount: 1
+      name: '&c&lRzucane TNT'
+      lore:
+        - ' '
+        - '&8>> &fKliknij aby uzyc'
+    guiName: ''
+    ingredients: []
+    canCraft: false
   sandfarmer:
     item:
       item: 'ender_portal_frame:0'

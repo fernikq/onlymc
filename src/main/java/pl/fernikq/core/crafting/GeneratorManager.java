@@ -69,11 +69,6 @@ public class GeneratorManager {
             if(generatorType == null){
                 continue;
             }
-            List<String> ingredients = c.getStringList("ingredients");
-            if(ingredients.size() < 9){
-                Logger.warning("Ilosc skladnikow "+s+" sie nie zgadza!");
-                continue;
-            }
             String guiName = c.getString("guiName");
             String[] itemInfo = c.getString("item.item").split(":");
             ItemStack itemStack = new ItemStack(ItemUtil.getMaterial(itemInfo[0]), 1, (short) Short.parseShort(itemInfo[1]));
@@ -88,9 +83,21 @@ public class GeneratorManager {
             if(c.getString("item.enchant") != null){
                 builder.setEnchant(ItemUtil.getEnchantsFromString(c.getString("item.enchant")));
             }
-            Generator generator = new Generator(generatorType, builder.toItemStack(), ingredients, guiName);
+            List<String> ingredients = c.getStringList("ingredients");
+            if(ingredients.size() < 9 && !ingredients.isEmpty()){
+                Logger.warning("Ilosc skladnikow "+s+" sie nie zgadza!");
+                continue;
+            }
+            boolean canCraft = true;
+            if(c.getString("canCraft") != null){
+                canCraft = c.getBoolean("canCraft");
+            }
+            Generator generator = new Generator(generatorType, builder.toItemStack(), ingredients, guiName, canCraft);
             this.generators.add(generator);
             char c1 = 'a';
+            if(ingredients.isEmpty() || !canCraft){
+                continue;
+            }
             ShapedRecipe shapedRecipe = new ShapedRecipe(generator.getItemStack()).shape("abc", "def", "ghi");
             for(String ingredient : ingredients){
                 shapedRecipe.setIngredient(c1, ItemUtil.getMaterial(ingredient));

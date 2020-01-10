@@ -9,7 +9,8 @@ public enum GeneratorType {
     OBSIDIAN_GENERATOR("boyfarmer"),
     SAND_GENERATOR("sandfarmer"),
     BLOCK_BREAKER("kopacz"),
-    ENDERCHEST("enderchest");
+    ENDERCHEST("enderchest"),
+    RZUCANE("rzucane");
 
     private final String name;
 

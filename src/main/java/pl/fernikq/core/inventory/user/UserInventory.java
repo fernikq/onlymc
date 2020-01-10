@@ -94,6 +94,9 @@ public class UserInventory {
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lDostepne craftingi &8]", 1, true);
         user.addInventory(gui);
         for(Generator generator : this.plugin.getGeneratorManager().getGenerators()){
+            if(!generator.isCanCraft()){
+                continue;
+            }
             ItemBuilder builder = new ItemBuilder(generator.getItemStack().clone()).setAmount(1);
             builder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zobaczyc crafting")));
             gui.addItem(builder.toItemStack(), new CraftingAction(plugin, CraftingActionType.CHOOSE, generator, user));
