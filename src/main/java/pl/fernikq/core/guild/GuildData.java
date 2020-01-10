@@ -3,6 +3,7 @@ package pl.fernikq.core.guild;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.top.comparator.Sortable;
+import pl.fernikq.core.user.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,6 +55,17 @@ public class GuildData {
             }
         } catch(SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateUUID(UUID oldUUID, UUID newUUID){
+        try {
+            if(!this.plugin.getMySQL().isConnected()) {
+                this.plugin.getMySQL().openConnection();
+            }
+            this.plugin.getMySQL().update("UPDATE `core_guilds` SET `owner` = '"+newUUID.toString()+"' WHERE `owner` = '"+oldUUID.toString()+"';");
+        }catch(SQLException ex){
+            ex.printStackTrace();
         }
     }
 

@@ -27,6 +27,7 @@ import pl.fernikq.core.util.TimeUtil;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -68,6 +69,13 @@ public class GuildManager {
         this.guildRegionData.updateRegion(guild.getRegion());
         this.guildTreasureData.updateTreasure(guild.getTreasure());
         guild.getMembers().forEach(member -> this.guildMemberData.updateMember(member));
+    }
+
+    public void updateUUID(UUID oldUUID, UUID newUUID){
+        this.plugin.runAsync(() -> {
+            this.guildData.updateUUID(oldUUID, newUUID);
+            this.guildMemberData.updateUUID(oldUUID, newUUID);
+        });
     }
 
     public void registerGuild(Guild guild){

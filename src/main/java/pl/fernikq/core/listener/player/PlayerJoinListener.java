@@ -77,6 +77,9 @@ public class PlayerJoinListener implements Listener {
                 user.getUserStat().setComebackDaysInRow(1);
             }
         }
+        if(user.getIncognito().isHideOriginalSkin()){
+            this.plugin.getIncognitoManager().changeSkin(user, false);
+        }
     }
 }
 

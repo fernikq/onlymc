@@ -12,6 +12,7 @@ import pl.fernikq.core.user.backup.Backup;
 import pl.fernikq.core.user.enderchest.Enderchest;
 import pl.fernikq.core.user.fight.UserFight;
 import pl.fernikq.core.user.home.Home;
+import pl.fernikq.core.user.incognito.UserIncognito;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +32,7 @@ public class User {
     private UserFight userFight;
     private Enderchest enderchest;
     private UserSidebar sidebar;
+    private UserIncognito incognito;
 
     private Map<String, Home> homes;
     private boolean godMode;
@@ -65,6 +67,7 @@ public class User {
         this.sidebar = new UserSidebar(this);
         this.backups = new HashSet<>();
         this.logout = false;
+        this.incognito = new UserIncognito(this);
     }
 
     public User(ResultSet rs){
@@ -87,6 +90,7 @@ public class User {
             this.sidebar = new UserSidebar(this);
             this.backups = new HashSet<>();
             this.logout = false;
+            this.incognito = new UserIncognito(this);
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -285,5 +289,9 @@ public class User {
 
     public void setGuild(Guild guild) {
         this.guild = guild;
+    }
+
+    public UserIncognito getIncognito() {
+        return incognito;
     }
 }

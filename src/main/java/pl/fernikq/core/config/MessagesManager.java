@@ -131,9 +131,9 @@ public class MessagesManager {
         teleportStartMessage = "&8>> {n}Zostaniesz przeteleportowany za {c}{TIME} sek.";
         teleportFinishLocationMessage = "&8>> {n}Zostales przeteleportowany na {c}{LOCATION}";
         teleportFinishPlayerMessage = "&8>> {n}Zostales przeteleportowany do gracza {c}{PLAYER}";
-        playerNametagGuildOwnFormat = "&8[&a{GUILD}&8] ";
-        playerNametagGuildAllyFormat = "&8[&e{GUILD}&8] ";
-        playerNametagGuildEnemyFormat = "&8[&c{GUILD}&8] ";
+        playerNametagGuildOwnFormat = "&a[{GUILD}] ";
+        playerNametagGuildAllyFormat = "&e[{GUILD}] ";
+        playerNametagGuildEnemyFormat = "&c[{GUILD}] ";
         playerChatGuildFormat = "&8[&c{GUILD}&8] ";
         playerChatPointsFormat = "&8[&c{POINTS}&8] ";
         playerChatFormat = "&8[&7{LVL}&8] {GUILD}{POINTS}{RANK}&f{NAME}&8: &f{MESSAGE}";

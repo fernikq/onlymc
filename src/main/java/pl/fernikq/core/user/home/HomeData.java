@@ -1,6 +1,7 @@
 package pl.fernikq.core.user.home;
 
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.LocationUtil;
 
 import java.sql.PreparedStatement;
@@ -47,6 +48,17 @@ public class HomeData {
             }
         } catch(SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateUUID(UUID oldUUID, UUID newUUID){
+        try {
+            if(!this.plugin.getMySQL().isConnected()) {
+                this.plugin.getMySQL().openConnection();
+            }
+            this.plugin.getMySQL().update("UPDATE `core_homes` SET `owner` = '"+newUUID.toString()+"' WHERE `owner` = '"+oldUUID.toString()+"';");
+        }catch(SQLException ex){
+            ex.printStackTrace();
         }
     }
 

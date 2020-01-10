@@ -126,6 +126,17 @@ public class UserStatData {
         }
     }
 
+    public void updateUUID(UUID oldUUID, UUID newUUID){
+        try {
+            if(!this.plugin.getMySQL().isConnected()) {
+                this.plugin.getMySQL().openConnection();
+            }
+            this.plugin.getMySQL().update("UPDATE `core_user_stats` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';");
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
     public void updateStats(User user){
         try {
             if(!this.plugin.getMySQL().isConnected()){

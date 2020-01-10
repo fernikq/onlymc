@@ -52,6 +52,17 @@ public class GuildMemberData {
         }
     }
 
+    public void updateUUID(UUID oldUUID, UUID newUUID){
+        try {
+            if(!this.plugin.getMySQL().isConnected()) {
+                this.plugin.getMySQL().openConnection();
+            }
+            this.plugin.getMySQL().update("UPDATE `core_guild_members` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';");
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
     public void insertMember(GuildMember member){
         try {
             this.plugin.getMySQL().openConnection();

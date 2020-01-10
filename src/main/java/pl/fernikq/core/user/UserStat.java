@@ -302,6 +302,9 @@ public class UserStat {
     }
 
     public void setPoints(int points) {
+        if(points <= 0){
+            points = 1;
+        }
         this.points = points;
     }
 

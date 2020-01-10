@@ -51,7 +51,7 @@ public class TeleportRequestCommand extends CustomCommand {
             }
             Set<User> blockedTpa = new HashSet<>(targetUser.getUserChat().getBlockedTpa());
             if(blockedTpa.contains(user) && !user.canByGroup(UserGroup.HELPER)){
-                ChatUtil.sendMessage(sender, MessagesManager.error("Podany gracz ignoruje twoje prosby o teleportacja!"));
+                ChatUtil.sendMessage(sender, MessagesManager.error("Podany gracz ignoruje twoje prosby o teleportacje!"));
                 return;
             }
             if(targetUser.getTpaRequests().asMap().containsKey(user)){

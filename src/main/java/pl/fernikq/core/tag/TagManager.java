@@ -28,14 +28,30 @@ public class TagManager {
         Guild guild = user1.getGuild();
         if(guild != null){
             if(relationType.equals(RelationType.TEAM)){
-                return MessagesManager.playerNametagGuildOwnFormat.replace("{GUILD}", guild.getTag())+"&f";
+                if(this.plugin.getIncognitoManager().changeGuildTag(user1, user2)){
+                    return MessagesManager.playerNametagGuildEnemyFormat.replace("{GUILD}", "???")+(this.plugin.getIncognitoManager().changeName(user1, user2) ? "&f&k" : "&f");
+                }
+                return MessagesManager.playerNametagGuildOwnFormat.replace("{GUILD}", guild.getTag())+(this.plugin.getIncognitoManager().changeName(user1, user2) ? "&f&k" : "&f");
             }
             if(relationType.equals(RelationType.ALLY)){
-                return MessagesManager.playerNametagGuildAllyFormat.replace("{GUILD}", guild.getTag())+"&f";
+                if(this.plugin.getIncognitoManager().changeGuildTag(user1, user2)){
+                    return MessagesManager.playerNametagGuildEnemyFormat.replace("{GUILD}", "???")+(this.plugin.getIncognitoManager().changeName(user1, user2) ? "&f&k" : "&f");
+                }
+                return MessagesManager.playerNametagGuildAllyFormat.replace("{GUILD}", guild.getTag())+(this.plugin.getIncognitoManager().changeName(user1, user2) ? "&f&k" : "&f");
             }
-            return MessagesManager.playerNametagGuildEnemyFormat.replace("{GUILD}", guild.getTag())+"&f";
+            if(this.plugin.getIncognitoManager().changeGuildTag(user1, user2)){
+                return MessagesManager.playerNametagGuildEnemyFormat.replace("{GUILD}", "???")+(this.plugin.getIncognitoManager().changeName(user1, user2) ? "&f&k" : "&f");
+            }
+            return MessagesManager.playerNametagGuildEnemyFormat.replace("{GUILD}", guild.getTag())+(this.plugin.getIncognitoManager().changeName(user1, user2) ? "&f&k" : "&f");
         }
-        return "";
+        return this.plugin.getIncognitoManager().changeName(user1, user2) ? "&k" : "";
+    }
+
+    private String getSuffixFormat(User user1, User user2){
+        if(this.plugin.getIncognitoManager().changeRank(user1, user2)){
+            return "";
+        }
+        return "&f "+user1.getGroup().getTag();
     }
 
     public void createTag(Player player){
@@ -53,8 +69,11 @@ public class TagManager {
                 String prefix;
                 prefix = getTagFormat(user, user);
                 prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8] " : prefix;
+                if(prefix.length() > 16){
+                    prefix = "&cTAG>16";
+                }
                 scoreboardTeam.setPrefix(ChatUtil.fixColor(prefix));
-                scoreboardTeam.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
+                scoreboardTeam.setSuffix(ChatUtil.fixColor(getSuffixFormat(user, user)));
                 ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardTeam, 0));
                 for(Player online : Bukkit.getOnlinePlayers()){
                     if(!online.equals(player)){
@@ -64,7 +83,12 @@ public class TagManager {
                         }
                         prefix = getTagFormat(user, onlineUser);
                         prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : prefix;
+                        if(prefix.length() > 16){
+                            prefix = "&cTAG>16";
+                        }
                         scoreboardTeam.setPrefix(ChatUtil.fixColor(prefix));
+                        String suffix = getSuffixFormat(user, onlineUser);
+                        scoreboardTeam.setSuffix(ChatUtil.fixColor(suffix));
                         ((CraftPlayer)online).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardTeam, 0));
                         ScoreboardTeam team = scoreboard.getTeam(online.getName());
                         if(team == null){
@@ -72,7 +96,12 @@ public class TagManager {
                         }
                         prefix = getTagFormat(onlineUser, user);
                         prefix = this.plugin.getVanishManager().isVanished(online) ? "&8[&bV&8]&f " : prefix;
+                        if(prefix.length() > 16){
+                            prefix = "&cTAG>16";
+                        }
                         team.setPrefix(ChatUtil.fixColor(prefix));
+                        suffix = getSuffixFormat(onlineUser, user);
+                        team.setSuffix(ChatUtil.fixColor(suffix));
                         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(team, 0));
                     }
                 }
@@ -92,8 +121,8 @@ public class TagManager {
                 if(team == null) {
                     return;
                 }
+                this.plugin.getDummyManager().updateScore(user);
                 team.setDisplayName("");
-                team.setSuffix(ChatUtil.fixColor(" "+user.getGroup().getTag()));
                 for(Player online : Bukkit.getServer().getOnlinePlayers()) {
                     User onlineUser = this.plugin.getUserManager().getUser(online.getUniqueId()).getOrNull();
                     if(onlineUser == null){
@@ -102,7 +131,12 @@ public class TagManager {
                     String prefix;
                     prefix = getTagFormat(user, onlineUser);
                     prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : prefix;
+                    if(prefix.length() > 16){
+                        prefix = "&cTAG>16";
+                    }
                     team.setPrefix(ChatUtil.fixColor(prefix));
+                    String suffix = getSuffixFormat(user, onlineUser);
+                    team.setSuffix(ChatUtil.fixColor(suffix));
                     ((CraftPlayer) online).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(team, 2));
                     ScoreboardTeam scoreboardTeam = scoreboard.getTeam(online.getName());
                     if(scoreboardTeam == null){
@@ -110,8 +144,14 @@ public class TagManager {
                     }
                     prefix = getTagFormat(onlineUser, user);
                     prefix = this.plugin.getVanishManager().isVanished(online) ? "&8[&bV&8]&f " : prefix;
+                    if(prefix.length() > 16){
+                        prefix = "&cTAG>16";
+                    }
                     scoreboardTeam.setPrefix(ChatUtil.fixColor(prefix));
+                    suffix = getSuffixFormat(onlineUser, user);
+                    scoreboardTeam.setSuffix(ChatUtil.fixColor(suffix));
                     ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardTeam, 2));
+                    this.plugin.getDummyManager().updateScore(onlineUser);
                 }
             });
         }catch(Exception e) {

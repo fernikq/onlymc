@@ -41,6 +41,7 @@ import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.UserPermissionsManager;
 import pl.fernikq.core.user.fight.FightManager;
 import pl.fernikq.core.user.home.HomeManager;
+import pl.fernikq.core.user.incognito.IncognitoManager;
 import pl.fernikq.core.user.quests.QuestManager;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.RankingUtil;
@@ -85,6 +86,7 @@ public class CorePlugin extends JavaPlugin {
     private AbyssManager abyssManager;
     private TopManager topManager;
     private QuestManager questManager;
+    private IncognitoManager incognitoManager;
 
     @Override
     public void onEnable() {
@@ -229,6 +231,7 @@ public class CorePlugin extends JavaPlugin {
         this.fightManager = new FightManager(this);
         this.abyssManager = new AbyssManager(this);
         this.questManager = new QuestManager(this);
+        this.incognitoManager = new IncognitoManager(this);
     }
 
     private void initData(){
@@ -317,6 +320,7 @@ public class CorePlugin extends JavaPlugin {
         new QuestCommand("zadania", new String[0], UserGroup.PLAYER, this).register();
         new EffectsCommand("efekty", new String[0], UserGroup.PLAYER, this).register();
         new SidebarCommand("sidebar", new String[0], UserGroup.PLAYER, this).register();
+        new IncognitoCommand("incognito", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();
@@ -469,5 +473,9 @@ public class CorePlugin extends JavaPlugin {
 
     public QuestManager getQuestManager() {
         return questManager;
+    }
+
+    public IncognitoManager getIncognitoManager() {
+        return incognitoManager;
     }
 }

@@ -92,11 +92,11 @@ public class PlayerDeathListener implements Listener {
                 if(assistPoints < 0){
                     assistPoints = 0;
                 }
-                ChatUtil.sendMessage(assistUser.asPlayer(), "&8>> {n}Asystowales w zabojstwie gracza {c}"+victimUser.getName()+" {n} i otrzymujesz &a"+assistPoints+" {n}punktow");
+                ChatUtil.sendMessage(assistUser.asPlayer(), "&8>> {n}Asystowales w zabojstwie gracza {c}"+(this.plugin.getIncognitoManager().changeName(victimUser, assistUser) ? "&k"+victimUser.getName() : victimUser.getName())+" {n} i otrzymujesz &a"+assistPoints+" {n}punktow");
                 assistUser.getUserStat().setPoints(assistUser.getUserStat().getPoints() + assistPoints);
                 assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
                 victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - assistPoints);
-                ChatUtil.sendMessage(victimUser.asPlayer(), "&8>> {n}Gracz {c}"+assistUser.getName()+" {n}asystowal przy twoim zabojstwie i przez to tracisz &c"+assistPoints+" {n}punktow");
+                ChatUtil.sendMessage(victimUser.asPlayer(), "&8>> {n}Gracz {c}"+(this.plugin.getIncognitoManager().changeName(assistUser, victimUser) ? "&k"+assistUser.getName() : assistUser.getName())+" {n}asystowal przy twoim zabojstwie i przez to tracisz &c"+assistPoints+" {n}punktow");
                 this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(assistUser, QuestType.ASSISTS));
                 this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
                 if(assistUser.hasGuild()){
@@ -121,11 +121,11 @@ public class PlayerDeathListener implements Listener {
                 if(assistPoints < 0){
                     assistPoints = 0;
                 }
-                ChatUtil.sendMessage(assistUser.asPlayer(), "&8>> {n}Asystowales w zabojstwie gracza {c}"+victimUser.getName()+" {n} i otrzymujesz &a"+assistPoints+" {n}punktow");
+                ChatUtil.sendMessage(assistUser.asPlayer(), "&8>> {n}Asystowales w zabojstwie gracza {c}"+(this.plugin.getIncognitoManager().changeName(victimUser, assistUser) ? "&k"+victimUser.getName() : victimUser.getName())+" {n} i otrzymujesz &a"+assistPoints+" {n}punktow");
                 assistUser.getUserStat().setPoints(assistUser.getUserStat().getPoints() + assistPoints);
                 assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
                 victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - assistPoints);
-                ChatUtil.sendMessage(victimUser.asPlayer(), "&8>> {n}Gracz {c}"+assistUser.getName()+" {n}asystowal przy twoim zabojstwie i przez to tracisz &c"+assistPoints+" {n}punktow");
+                ChatUtil.sendMessage(victimUser.asPlayer(), "&8>> {n}Gracz {c}"+(this.plugin.getIncognitoManager().changeName(assistUser, victimUser) ? "&k"+assistUser.getName() : assistUser.getName())+" {n}asystowal przy twoim zabojstwie i przez to tracisz &c"+assistPoints+" {n}punktow");
                 this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(assistUser, QuestType.ASSISTS));
                 this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
                 if(assistUser.hasGuild()){
@@ -163,22 +163,22 @@ public class PlayerDeathListener implements Listener {
             this.plugin.getDummyManager().updateScore(assistUser);
             this.plugin.getDummyManager().updateScore(victimUser);
             this.plugin.getDummyManager().updateScore(killerUser);
-            String message = MessagesManager.playerFightMessage;
-            String assistMessage = MessagesManager.playerFightPlusAssistMessage;
-            message = message.replace("{KILLER}", killerUser.getName());
-            message = message.replace("{KILLER-GUILD}", killerUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", killerUser.getGuild().getTag()) : "");
-            message = message.replace("{KILLER-POINTS}", Integer.toString(points));
-            message = message.replace("{VICTIM}", victimUser.getName());
-            message = message.replace("{VICTIM-GUILD}", victimUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", victimUser.getGuild().getTag()) : "");
-            message = message.replace("{VICTIM-POINTS}", Integer.toString(points));
-            assistMessage = assistMessage.replace("{ASSIST}", assistUser.getName());
-            assistMessage = assistMessage.replace("{ASSIST-GUILD}", assistUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", assistUser.getGuild().getTag()) : "");
-            assistMessage = assistMessage.replace("{ASSIST-POINTS}", Integer.toString(assistPoints));
-            String finalMessage = message;
-            String finalAssistMessage = assistMessage;
+            int finalPoints = points;
+            int finalAssistPoints = assistPoints;
             this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isFightMessages()).forEach(onlineUser -> {
-                ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage);
-                ChatUtil.sendMessage(onlineUser.asPlayer(), finalAssistMessage);
+                String message = MessagesManager.playerFightMessage;
+                message = message.replace("{KILLER}", this.plugin.getIncognitoManager().changeName(killerUser, onlineUser) ? "&k"+killerUser.getName() : killerUser.getName());
+                message = message.replace("{KILLER-GUILD}", killerUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", this.plugin.getIncognitoManager().changeGuildTag(killerUser, onlineUser) ? "???" : killerUser.getGuild().getTag()) : "");
+                message = message.replace("{KILLER-POINTS}", Integer.toString(finalPoints));
+                message = message.replace("{VICTIM}", this.plugin.getIncognitoManager().changeName(victimUser, onlineUser) ? "&k"+victimUser.getName() : victimUser.getName());
+                message = message.replace("{VICTIM-GUILD}", victimUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", this.plugin.getIncognitoManager().changeGuildTag(victimUser, onlineUser) ? "???" : victimUser.getGuild().getTag()) : "");
+                message = message.replace("{VICTIM-POINTS}", Integer.toString(finalPoints));
+                String assistMessage = MessagesManager.playerFightPlusAssistMessage;
+                assistMessage = assistMessage.replace("{ASSIST}", this.plugin.getIncognitoManager().changeName(assistUser, onlineUser) ? "&k"+assistUser.getName() : assistUser.getName());
+                assistMessage = assistMessage.replace("{ASSIST-GUILD}", assistUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", this.plugin.getIncognitoManager().changeGuildTag(assistUser, onlineUser) ? "???" : assistUser.getGuild().getTag()) : "");
+                assistMessage = assistMessage.replace("{ASSIST-POINTS}", Integer.toString(finalAssistPoints));
+                ChatUtil.sendMessage(onlineUser.asPlayer(), message);
+                ChatUtil.sendMessage(onlineUser.asPlayer(), assistMessage);
             });
         }else{
             int points = RankingUtil.calculatePoints(victimUser.getUserStat().getPoints(), killerUser.getUserStat().getPoints());
@@ -186,16 +186,15 @@ public class PlayerDeathListener implements Listener {
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
             this.plugin.getDummyManager().updateScore(victimUser);
             this.plugin.getDummyManager().updateScore(killerUser);
-            String message = MessagesManager.playerFightMessage;
-            message = message.replace("{KILLER}", killerUser.getName());
-            message = message.replace("{KILLER-GUILD}", killerUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", killerUser.getGuild().getTag()) : "");
-            message = message.replace("{KILLER-POINTS}", Integer.toString(points));
-            message = message.replace("{VICTIM}", victimUser.getName());
-            message = message.replace("{VICTIM-GUILD}", victimUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", victimUser.getGuild().getTag()) : "");
-            message = message.replace("{VICTIM-POINTS}", Integer.toString(points));
-            String finalMessage = message;
             this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isFightMessages()).forEach(onlineUser -> {
-                ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage);
+                String message = MessagesManager.playerFightMessage;
+                message = message.replace("{KILLER}", this.plugin.getIncognitoManager().changeName(killerUser, onlineUser) ? "&k"+killerUser.getName() : killerUser.getName());
+                message = message.replace("{KILLER-GUILD}", killerUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", this.plugin.getIncognitoManager().changeGuildTag(killerUser, onlineUser) ? "???" : killerUser.getGuild().getTag()) : "");
+                message = message.replace("{KILLER-POINTS}", Integer.toString(points));
+                message = message.replace("{VICTIM}", this.plugin.getIncognitoManager().changeName(victimUser, onlineUser) ? "&k"+victimUser.getName() : victimUser.getName());
+                message = message.replace("{VICTIM-GUILD}", victimUser.hasGuild() ? MessagesManager.playerChatGuildFormat.replace("{GUILD}", this.plugin.getIncognitoManager().changeGuildTag(victimUser, onlineUser) ? "???" : victimUser.getGuild().getTag()) : "");
+                message = message.replace("{VICTIM-POINTS}", Integer.toString(points));
+                ChatUtil.sendMessage(onlineUser.asPlayer(), message);
             });
         }
         killerUser.getUserFight().setKilledLastTime(victimUser);
@@ -203,6 +202,7 @@ public class PlayerDeathListener implements Listener {
             killerUser.getUserStat().getKilledWithRankUsers().add(victimUser);
             this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_USERS_WITH_RANK));
         }
+        //TODO check reward in set quests
         killerUser.getUserStat().getKilledUsers().add(victimUser);
         killerUser.getUserStat().setKills(killerUser.getUserStat().getKills() + 1);
         this.plugin.runAsync(() -> {

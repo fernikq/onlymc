@@ -30,8 +30,8 @@ public class GuildPointsCommand extends CustomCommand {
             return ChatUtil.sendMessage(sender, Lang.badIntegerFormat);
         }
         int amount = Integer.parseInt(args[2]);
-        if(amount < 0){
-            amount = 0;
+        if(amount <= 0){
+            amount = 1;
         }
         int finalAmount = amount;
         this.plugin.getUserManager().getUser(nick).peek(user -> {

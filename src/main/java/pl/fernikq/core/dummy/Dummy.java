@@ -5,9 +5,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import pl.fernikq.core.CoreAPI;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.incognito.UserIncognito;
 import pl.fernikq.core.util.ChatUtil;
 
 public class Dummy {
@@ -27,7 +29,8 @@ public class Dummy {
         if(objective == null){
             createScore(plugin);
         }else{
-            objective.getScore(user.getName()).setScore(user.getUserStat().getPoints());
+            int score = plugin.getIncognitoManager().changePoints(user, this.user) ? 1337 : user.getUserStat().getPoints();
+            objective.getScore(user.getName()).setScore(score);
         }
     }
 
@@ -45,7 +48,8 @@ public class Dummy {
         Objective finalObjective = objective;
         Bukkit.getOnlinePlayers().forEach(online -> {
             plugin.getUserManager().getUser(online.getUniqueId()).peek(onlineUser -> {
-                finalObjective.getScore(onlineUser.getName()).setScore(onlineUser.getUserStat().getPoints());
+                int score = plugin.getIncognitoManager().changePoints(onlineUser, this.user) ? 1337 : onlineUser.getUserStat().getPoints();
+                finalObjective.getScore(onlineUser.getName()).setScore(score);
             });
         });
     }

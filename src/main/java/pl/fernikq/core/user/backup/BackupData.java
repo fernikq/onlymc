@@ -1,6 +1,7 @@
 package pl.fernikq.core.user.backup;
 
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.SerializationUtil;
 
 import java.sql.PreparedStatement;
@@ -45,6 +46,17 @@ public class BackupData {
                    new Backup(user, resultSet);
                 });
             }
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void updateUUID(UUID oldUUID, UUID newUUID){
+        try {
+            if(!this.plugin.getMySQL().isConnected()) {
+                this.plugin.getMySQL().openConnection();
+            }
+            this.plugin.getMySQL().update("UPDATE `core_user_backups` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';");
         }catch(SQLException ex){
             ex.printStackTrace();
         }

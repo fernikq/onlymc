@@ -49,6 +49,7 @@ public class UserManager {
         User userByName = getUser(player.getName()).getOrNull();
         if(userByName != null){
             this.users.remove(userByName.getUuid());
+            updateUUID(userByName, userByName.getUuid(), player.getUniqueId());
             userByName.setUuid(player.getUniqueId());
             this.users.putIfAbsent(userByName.getUuid(), userByName);
             updateUserInfo(userByName);
@@ -106,6 +107,17 @@ public class UserManager {
                 sortable.removeObject(user);
                 sortable.sort();
             });
+        });
+    }
+
+    public void updateUUID(User user, UUID oldUUID, UUID newUUID){
+        this.plugin.runAsync(() -> {
+            this.userStatData.updateUUID(oldUUID, newUUID);
+            this.plugin.getHomeManager().getHomeData().updateUUID(oldUUID, newUUID);
+            this.backupData.updateUUID(oldUUID, newUUID);
+            if(user.hasGuild()){
+                this.plugin.getGuildManager().updateUUID(oldUUID, newUUID);
+            }
         });
     }
 

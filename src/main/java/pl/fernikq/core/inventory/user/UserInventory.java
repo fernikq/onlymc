@@ -32,6 +32,8 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserStat;
 import pl.fernikq.core.user.backup.Backup;
+import pl.fernikq.core.user.incognito.IncognitoType;
+import pl.fernikq.core.user.incognito.UserIncognito;
 import pl.fernikq.core.user.quests.Quest;
 import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.*;
@@ -654,6 +656,93 @@ public class UserInventory {
         gui.setItem(23, this.backGlass, new PlayerBackupAction(this.plugin, PlayerBackupActionType.OPEN_BACKUP_MENU, backup, user));
         gui.setEmptyItem(this.blank);
         user.addInventory(gui);
+        return gui;
+    }
+
+    public InventoryGUI playerIncognito(User user){
+        UserIncognito incognito = user.getIncognito();
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lMENU INCOGNITO &8]", 1, true);
+        user.addInventory(gui);
+        ItemBuilder nick = new ItemBuilder(Material.BOOK_AND_QUILL).setName(ChatUtil.fixColor("{c}&lUkrycie nicku"));
+        if(incognito.getShowNickName().equals(IncognitoType.ALL)){
+           nick.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoj nick beda mogli zobaczyc&8:", "&8>> {n}wszyscy gracze", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+        }else{
+            if(incognito.getShowNickName().equals(IncognitoType.GUILD)){
+                if(user.hasGuild()){
+                    nick.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoj nick beda mogli zobaczyc&8:", "&8>> {n}czlonkowie twojej gildii", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }else{
+                    nick.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nikt nie bedzie mogl zobaczyc twojego nicku", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }
+            }else{
+                if(user.hasGuild()){
+                    nick.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoj nick beda mogli zobaczyc&8:", "&8>> {n}sojusznicy oraz czlonkowie twojej gildii", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }else{
+                    nick.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nikt nie bedzie mogl zobaczyc twojego nicku", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }
+            }
+        }
+        ItemBuilder guildTag = new ItemBuilder(Material.ENDER_PORTAL_FRAME).setName(ChatUtil.fixColor("{c}&lUkrycie tagu"));
+        if(incognito.getShowGuildTag().equals(IncognitoType.ALL)){
+            guildTag.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoj tag beda mogli zobaczyc&8:", "&8>> {n}wszyscy gracze", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+        }else{
+            if(incognito.getShowGuildTag().equals(IncognitoType.GUILD)){
+                if(user.hasGuild()){
+                    guildTag.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoj tag beda mogli zobaczyc&8:", "&8>> {n}czlonkowie twojej gildii", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }else{
+                    guildTag.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nikt nie bedzie mogl zobaczyc twojego tagu", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }
+            }else{
+                if(user.hasGuild()){
+                    guildTag.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoj tag beda mogli zobaczyc&8:", "&8>> {n}sojusznicy oraz czlonkowie twojej gildii", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }else{
+                    guildTag.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nikt nie bedzie mogl zobaczyc twojego tagu", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }
+            }
+        }
+        ItemBuilder skin = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setSkullOwner(user.getName()).setName(ChatUtil.fixColor("{c}&lUkrycie skina"));
+        skin.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoj oryginalny skin jest&8: ", "&8>> {n}"+(incognito.isHideOriginalSkin() ? "niewidoczny" : "widoczny")+" dla innych graczy", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+        ItemBuilder points = new ItemBuilder(Material.DIAMOND_SWORD).setName(ChatUtil.fixColor("{c}&lUkrycie punktow"));
+        if(incognito.getShowPoints().equals(IncognitoType.ALL)){
+            points.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoje punkty beda mogli zobaczyc&8:", "&8>> {n}wszyscy gracze", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+        }else{
+            if(incognito.getShowPoints().equals(IncognitoType.GUILD)){
+                if(user.hasGuild()){
+                    points.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoje punkty beda mogli zobaczyc&8:", "&8>> {n}czlonkowie twojej gildii", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }else{
+                    points.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nikt nie bedzie mogl zobaczyc twoich punktow", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }
+            }else{
+                if(user.hasGuild()){
+                    points.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoje punkty beda mogli zobaczyc&8:", "&8>> {n}sojusznicy oraz czlonkowie twojej gildii", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }else{
+                    points.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nikt nie bedzie mogl zobaczyc twoich punktow", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }
+            }
+        }
+        ItemBuilder rank = new ItemBuilder(Material.PAPER).setName(ChatUtil.fixColor("{c}&lUkrycie rangi"));
+        if(incognito.getShowRank().equals(IncognitoType.ALL)){
+            rank.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoja range beda mogli zobaczyc&8:", "&8>> {n}wszyscy gracze", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+        }else{
+            if(incognito.getShowRank().equals(IncognitoType.GUILD)){
+                if(user.hasGuild()){
+                    rank.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoja range beda mogli zobaczyc&8:", "&8>> {n}czlonkowie twojej gildii", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }else{
+                    rank.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nikt nie bedzie mogl zobaczyc twojej rangi", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }
+            }else{
+                if(user.hasGuild()){
+                    rank.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Twoja range beda mogli zobaczyc&8:", "&8>> {n}sojusznicy oraz czlonkowie twojej gildii", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }else{
+                    rank.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Nikt nie bedzie mogl zobaczyc twojej rangi", " ", "&8>> {n}Kliknij aby zmienic&8!")));
+                }
+            }
+        }
+        gui.setItem(0, nick.toItemStack(), new IncognitoAction(this.plugin, IncognitoActionType.CHANGE_NICK, user));
+        gui.setItem(2, guildTag.toItemStack(), new IncognitoAction(this.plugin, IncognitoActionType.CHANGE_TAG, user));
+        gui.setItem(4, skin.toItemStack(), new IncognitoAction(this.plugin, IncognitoActionType.CHANGE_SKIN, user));
+        gui.setItem(6, points.toItemStack(), new IncognitoAction(this.plugin, IncognitoActionType.CHANGE_POINTS, user));
+        gui.setItem(8, rank.toItemStack(), new IncognitoAction(this.plugin, IncognitoActionType.CHANGE_RANK, user));
+        gui.setEmptyItem(this.blank);
         return gui;
     }
 }
