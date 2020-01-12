@@ -44,6 +44,9 @@ public class UserStat {
     private int catchedFishes;
     private int timeAwardAmount;
     private int comebackAwardAmount;
+    private int killWithRankAwardAmount;
+    private int killedUsersAwardAmount;
+    private int exploredGuildsAwardAmount;
 
     public UserStat(User user){
         this.coins = 0;
@@ -71,6 +74,9 @@ public class UserStat {
         this.minedWood = 0;
         this.catchedFishes = 0;
         this.timeAwardAmount = 0;
+        this.killWithRankAwardAmount = 0;
+        this.killedUsersAwardAmount = 0;
+        this.exploredGuildsAwardAmount = 0;
         this.killedUsers = new HashSet<>();
         this.killedWithRankUsers = new HashSet<>();
         this.exploredGuilds = new HashSet<>();
@@ -105,6 +111,9 @@ public class UserStat {
             this.catchedFishes = rs.getInt("catchedFishes");
             this.timeAwardAmount = rs.getInt("timeAwardAmount");
             this.comebackAwardAmount = rs.getInt("comebackAwardAmount");
+            this.killWithRankAwardAmount = rs.getInt("killWithRankAwardAmount");
+            this.killedUsersAwardAmount = rs.getInt("killedUsersAwardAmount");
+            this.exploredGuildsAwardAmount = rs.getInt("exploredGuildsAwardAmount");
             this.killedUsers = new HashSet<>();
             this.killedWithRankUsers = new HashSet<>();
             this.exploredGuilds = new HashSet<>();
@@ -115,6 +124,30 @@ public class UserStat {
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getKillWithRankAwardAmount() {
+        return killWithRankAwardAmount;
+    }
+
+    public void setKillWithRankAwardAmount(int killWithRankAwardAmount) {
+        this.killWithRankAwardAmount = killWithRankAwardAmount;
+    }
+
+    public int getKilledUsersAwardAmount() {
+        return killedUsersAwardAmount;
+    }
+
+    public void setKilledUsersAwardAmount(int killedUsersAwardAmount) {
+        this.killedUsersAwardAmount = killedUsersAwardAmount;
+    }
+
+    public int getExploredGuildsAwardAmount() {
+        return exploredGuildsAwardAmount;
+    }
+
+    public void setExploredGuildsAwardAmount(int exploredGuildsAwardAmount) {
+        this.exploredGuildsAwardAmount = exploredGuildsAwardAmount;
     }
 
     public int getComebackAwardAmount() {

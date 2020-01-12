@@ -359,6 +359,7 @@ public class CorePlugin extends JavaPlugin {
         new BlockMoveByPistonListener(this);
         new PlayerRespawnListener(this);
         new PlayerFishListener(this);
+        new CraftItemListener(this);
         //new GuardBlockDigListener(this);
         //TODO mcguard dig listener
     }

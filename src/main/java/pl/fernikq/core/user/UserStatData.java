@@ -52,7 +52,10 @@ public class UserStatData {
                     "`minedWood` INT NOT NULL,"+
                     "`catchedFishes` INT NOT NULL,"+
                     "`timeAwardAmount` INT NOT NULL,"+
-                    "`comebackAwardAmount` INT NOT NULL);");
+                    "`comebackAwardAmount` INT NOT NULL,"+
+                    "`killWithRankAwardAmount` INT NOT NULL,"+
+                    "`killedUsersAwardAmount` INT NOT NULL,"+
+                    "`exploredGuildsAwardAmount` INT NOT NULL);");
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -85,8 +88,9 @@ public class UserStatData {
             this.plugin.getMySQL().openConnection();
             PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_user_stats` "+
                     "(id, uuid, coins, level, depositePearls, depositeApples, depositeEnchantedApples, minedStone, miningExperience, openedCobblex, openedPremiumCase, coinsFromStone, turboDropTime, " +
-                    "turboExpTime, points, kills, deaths, assists, distanceTraveled, logouts, spentTime, exploredGuilds, killedUsers, killedWithRankUsers, comebackDaysInRow, comebackDay, minedWood, catchedFishes, timeAwardAmount, comebackAwardAmount)"+
-                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+                    "turboExpTime, points, kills, deaths, assists, distanceTraveled, logouts, spentTime, exploredGuilds, killedUsers, killedWithRankUsers, comebackDaysInRow, comebackDay, minedWood, catchedFishes, timeAwardAmount, comebackAwardAmount, " +
+                    "killWithRankAwardAmount, killedUsersAwardAmount, exploredGuildsAwardAmount)"+
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, user.getUuid().toString());
             statement.setInt(3, stat.getCoins());
@@ -120,6 +124,9 @@ public class UserStatData {
             statement.setInt(28, stat.getCatchedFishes());
             statement.setInt(29, stat.getTimeAwardAmount());
             statement.setInt(30, stat.getComebackAwardAmount());
+            statement.setInt(31, stat.getKillWithRankAwardAmount());
+            statement.setInt(32, stat.getKilledUsersAwardAmount());
+            statement.setInt(33, stat.getExploredGuildsAwardAmount());
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -147,8 +154,8 @@ public class UserStatData {
                     "`coins` = ?, `level` = ?, `depositePearls` = ?, `depositeApples` = ?, `depositeEnchantedApples` = ?, "+
                     "`minedStone` = ?, `miningExperience` = ?, `openedCobblex` = ?, `openedPremiumCase` = ?, `coinsFromStone` = ?, `turboDropTime` = ?, `turboExpTime` = ?, "+
                     "`points` = ?, `kills` = ?, `deaths` = ?, `assists` = ?, `distanceTraveled` = ?, `logouts` = ?, `spentTime` = ?, `exploredGuilds` = ?, `killedUsers` = ?, `killedWithRankUsers` = ?, "+
-                    "`comebackDaysInRow` = ?, `comebackDay` = ?, `minedWood` = ?, `catchedFishes` = ?, `timeAwardAmount` = ?, `comebackAwardAmount` = ? "+
-                    "WHERE `uuid` = '"+user.getUuid().toString()+"';");
+                    "`comebackDaysInRow` = ?, `comebackDay` = ?, `minedWood` = ?, `catchedFishes` = ?, `timeAwardAmount` = ?, `comebackAwardAmount` = ?, "+
+                    "`killWithRankAwardAmount` = ?, `killedUsersAwardAmount` = ?, `exploredGuildsAwardAmount` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
             statement.setInt(1, stat.getCoins());
             statement.setInt(2, stat.getLevel());
             statement.setInt(3, stat.getDepositePearls());
@@ -180,6 +187,9 @@ public class UserStatData {
             statement.setInt(26, stat.getCatchedFishes());
             statement.setInt(27, stat.getTimeAwardAmount());
             statement.setInt(28, stat.getComebackAwardAmount());
+            statement.setInt(29, stat.getKillWithRankAwardAmount());
+            statement.setInt(30, stat.getKilledUsersAwardAmount());
+            statement.setInt(31, stat.getExploredGuildsAwardAmount());
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

@@ -53,23 +53,23 @@ public class QuestManager {
         this.quests.add(new Quest("Zlow 128 ryb", QuestType.CATCHED_FISH, 128, 2000, 0));
         this.quests.add(new Quest("Zlow 256 ryb", QuestType.CATCHED_FISH, 256, 3000, 0));
 
-        this.quests.add(new Quest("Wejdz na teren 3 roznych gildii", QuestType.EXPLORE_GUILDS, 3, 750, 0));
-        this.quests.add(new Quest("Wejdz na teren 6 roznych gildii", QuestType.EXPLORE_GUILDS, 6, 1500, 0));
-        this.quests.add(new Quest("Wejdz na teren 9 roznych gildii", QuestType.EXPLORE_GUILDS, 9, 2000, 0));
-        this.quests.add(new Quest("Wejdz na teren 12 roznych gildii", QuestType.EXPLORE_GUILDS, 12, 2500, 0));
-        this.quests.add(new Quest("Wejdz na teren 15 roznych gildii", QuestType.EXPLORE_GUILDS, 15, 3000, 0));
+        this.quests.add(new Quest("Wejdz na teren 3 roznych gildii", QuestType.EXPLORE_GUILDS, 3, 750, 1));
+        this.quests.add(new Quest("Wejdz na teren 6 roznych gildii", QuestType.EXPLORE_GUILDS, 6, 1500, 2));
+        this.quests.add(new Quest("Wejdz na teren 9 roznych gildii", QuestType.EXPLORE_GUILDS, 9, 2000, 3));
+        this.quests.add(new Quest("Wejdz na teren 12 roznych gildii", QuestType.EXPLORE_GUILDS, 12, 2500, 4));
+        this.quests.add(new Quest("Wejdz na teren 15 roznych gildii", QuestType.EXPLORE_GUILDS, 15, 3000, 5));
 
-        this.quests.add(new Quest("Zabij 3 roznych graczy", QuestType.KILL_UNIQUE_USERS, 3, 500, 0));
-        this.quests.add(new Quest("Zabij 6 roznych graczy", QuestType.KILL_UNIQUE_USERS, 6, 1000, 0));
-        this.quests.add(new Quest("Zabij 9 roznych graczy", QuestType.KILL_UNIQUE_USERS, 9, 1500, 0));
-        this.quests.add(new Quest("Zabij 12 roznych graczy", QuestType.KILL_UNIQUE_USERS, 12, 2000, 0));
-        this.quests.add(new Quest("Zabij 15 roznych graczy", QuestType.KILL_UNIQUE_USERS, 15, 2500, 0));
+        this.quests.add(new Quest("Zabij 3 roznych graczy", QuestType.KILL_UNIQUE_USERS, 3, 500, 1));
+        this.quests.add(new Quest("Zabij 6 roznych graczy", QuestType.KILL_UNIQUE_USERS, 6, 1000, 2));
+        this.quests.add(new Quest("Zabij 9 roznych graczy", QuestType.KILL_UNIQUE_USERS, 9, 1500, 3));
+        this.quests.add(new Quest("Zabij 12 roznych graczy", QuestType.KILL_UNIQUE_USERS, 12, 2000, 4));
+        this.quests.add(new Quest("Zabij 15 roznych graczy", QuestType.KILL_UNIQUE_USERS, 15, 2500, 5));
 
-        this.quests.add(new Quest("Zabij 3 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 3, 750, 0));
-        this.quests.add(new Quest("Zabij 6 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 6, 1500, 0));
-        this.quests.add(new Quest("Zabij 9 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 9, 2000, 0));
-        this.quests.add(new Quest("Zabij 12 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 12, 2500, 0));
-        this.quests.add(new Quest("Zabij 15 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 15, 3000, 0));
+        this.quests.add(new Quest("Zabij 3 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 3, 750, 1));
+        this.quests.add(new Quest("Zabij 6 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 6, 1500, 2));
+        this.quests.add(new Quest("Zabij 9 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 9, 2000, 3));
+        this.quests.add(new Quest("Zabij 12 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 12, 2500, 4));
+        this.quests.add(new Quest("Zabij 15 graczy z ranga VIP+", QuestType.KILL_USERS_WITH_RANK, 15, 3000, 5));
 
         this.quests.add(new Quest("Przejdz 2000 kratek", QuestType.TRAVELED_DISTANCE, 2000, 500, 0));
         this.quests.add(new Quest("Przejdz 5000 kratek", QuestType.TRAVELED_DISTANCE, 5000, 1000, 0));
@@ -105,6 +105,51 @@ public class QuestManager {
     }
 
     public void checkQuest(User user, QuestType questType){
+        if(questType.equals(QuestType.SPENT_TIME)){
+            this.quests.stream().filter(quest -> quest.getQuestType().equals(QuestType.SPENT_TIME)).filter(quest -> user.getUserStat().getOnlineTime() >= TimeUnit.HOURS.toMillis(quest.getAmount())).filter(quest -> user.getUserStat().getTimeAwardAmount() < quest.getLevel()).forEach(quest -> {
+                user.getUserStat().setTimeAwardAmount(user.getUserStat().getTimeAwardAmount() + 1);
+                user.getUserStat().addCoins(quest.getReward());
+                ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
+                return;
+            });
+            return;
+        }
+        if(questType.equals(QuestType.COMEBACK)){
+            this.quests.stream().filter(quest -> quest.getQuestType().equals(QuestType.COMEBACK)).filter(quest -> quest.getAmount() == user.getUserStat().getComebackDaysInRow()).filter(quest -> user.getUserStat().getComebackAwardAmount() < quest.getLevel()).forEach(quest -> {
+                user.getUserStat().setComebackAwardAmount(user.getUserStat().getComebackAwardAmount() + 1);
+                user.getUserStat().addCoins(quest.getReward());
+                ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
+                return;
+            });
+            return;
+        }
+        if(questType.equals(QuestType.EXPLORE_GUILDS)){
+            this.quests.stream().filter(quest -> quest.getQuestType().equals(QuestType.EXPLORE_GUILDS)).filter(quest -> quest.getAmount() == getAmountByQuest(user, QuestType.EXPLORE_GUILDS)).filter(quest -> user.getUserStat().getExploredGuildsAwardAmount() < quest.getLevel()).forEach(quest -> {
+                user.getUserStat().setExploredGuildsAwardAmount(user.getUserStat().getExploredGuildsAwardAmount() + 1);
+                user.getUserStat().addCoins(quest.getReward());
+                ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
+                return;
+            });
+            return;
+        }
+        if(questType.equals(QuestType.KILL_USERS_WITH_RANK)){
+            this.quests.stream().filter(quest -> quest.getQuestType().equals(QuestType.KILL_USERS_WITH_RANK)).filter(quest -> quest.getAmount() == getAmountByQuest(user, QuestType.KILL_USERS_WITH_RANK)).filter(quest -> user.getUserStat().getKillWithRankAwardAmount() < quest.getLevel()).forEach(quest -> {
+                user.getUserStat().setKillWithRankAwardAmount(user.getUserStat().getKillWithRankAwardAmount() + 1);
+                user.getUserStat().addCoins(quest.getReward());
+                ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
+                return;
+            });
+            return;
+        }
+        if(questType.equals(QuestType.KILL_UNIQUE_USERS)){
+            this.quests.stream().filter(quest -> quest.getQuestType().equals(QuestType.KILL_UNIQUE_USERS)).filter(quest -> quest.getAmount() == getAmountByQuest(user, QuestType.KILL_UNIQUE_USERS)).filter(quest -> user.getUserStat().getKilledUsersAwardAmount() < quest.getLevel()).forEach(quest -> {
+                user.getUserStat().setKilledUsersAwardAmount(user.getUserStat().getKilledUsersAwardAmount() + 1);
+                user.getUserStat().addCoins(quest.getReward());
+                ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
+                return;
+            });
+            return;
+        }
         this.quests.stream().filter(quest -> quest.getQuestType().equals(questType)).filter(quest -> quest.getAmount() == getAmountByQuest(user, questType)).forEach(quest -> {
             user.getUserStat().addCoins(quest.getReward());
             ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
@@ -113,21 +158,10 @@ public class QuestManager {
     }
 
     public void checkTimeQuest(User user){
-        this.quests.stream().filter(quest -> quest.getQuestType().equals(QuestType.SPENT_TIME)).filter(quest -> user.getUserStat().getOnlineTime() >= TimeUnit.HOURS.toMillis(quest.getAmount())).filter(quest -> user.getUserStat().getTimeAwardAmount() < quest.getLevel()).forEach(quest -> {
-            user.getUserStat().setTimeAwardAmount(user.getUserStat().getTimeAwardAmount() + 1);
-            user.getUserStat().addCoins(quest.getReward());
-            ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
-            return;
-        });
     }
 
     public void checkComebackQuest(User user){
-        this.quests.stream().filter(quest -> quest.getQuestType().equals(QuestType.COMEBACK)).filter(quest -> quest.getAmount() == user.getUserStat().getComebackDaysInRow()).filter(quest -> user.getUserStat().getComebackAwardAmount() < quest.getLevel()).forEach(quest -> {
-            user.getUserStat().setComebackAwardAmount(user.getUserStat().getComebackAwardAmount() + 1);
-            user.getUserStat().addCoins(quest.getReward());
-            ChatUtil.sendMessage(user.asPlayer(), MessagesManager.playerQuestMessage.replace("{QUEST-NAME}", quest.getName()).replace("{QUEST-REWARD}", Integer.toString(quest.getReward())));
-            return;
-        });
+
     }
 
     public List<Quest> getQuestsByType(QuestType questType){

@@ -2,10 +2,13 @@ package pl.fernikq.core.util;
 
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import pl.fernikq.core.config.ConfigManager;
 
@@ -40,5 +43,19 @@ public class PlayerUtil {
         }catch(Exception ex){
             return 0;
         }
+    }
+
+    public static boolean randomTeleport(Player player){
+        int borderSize = (int)player.getWorld().getWorldBorder().getSize()/2;
+        Location randomLocation = new Location(player.getWorld(), RandomUtil.getRandInt(-borderSize, borderSize), 100, RandomUtil.getRandInt(-borderSize, borderSize));
+        if(randomLocation.getBlock().getBiome().equals(Biome.DEEP_OCEAN) || randomLocation.getBlock().getBiome().equals(Biome.OCEAN)){
+            return randomTeleport(player);
+        }
+        int maxY = player.getWorld().getHighestBlockYAt(randomLocation);
+        randomLocation.setY(maxY);
+        player.teleport(randomLocation);
+        ItemUtil.giveItems(player, new ItemStack(Material.COOKED_BEEF, 64), new ItemStack(Material.ENDER_CHEST), new ItemStack(Material.LOG, 16));
+        ChatUtil.sendMessage(player, "&8>> {n}Zostales przeteleportowany w {c}losowa lokalizacje!");
+        return true;
     }
 }

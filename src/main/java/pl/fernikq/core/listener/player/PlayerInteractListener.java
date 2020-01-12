@@ -1,10 +1,8 @@
 package pl.fernikq.core.listener.player;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -13,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.material.Button;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
@@ -238,6 +237,27 @@ public class PlayerInteractListener implements Listener {
             entity.setCustomNameVisible(true);
             entity.setVelocity(player.getEyeLocation().getDirection().multiply(ConfigManager.primedTNTSpeed));
             ItemUtil.removeFromHand(player, 1);
+            return;
+        }
+        if(block != null && block.getType() == Material.WOOD_BUTTON && block.getRelative(((Button)block.getState().getData()).getAttachedFace()).getType() == Material.JUKEBOX){
+            event.setCancelled(true);
+            PlayerUtil.randomTeleport(player);
+            return;
+        }
+        if(block != null && block.getType() == Material.STONE_BUTTON && block.getRelative(((Button)block.getState().getData()).getAttachedFace()).getType() == Material.JUKEBOX){
+            event.setCancelled(true);
+            if(player.getLocation().getBlock().getType() == Material.STONE_PLATE || player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.STONE_PLATE){
+                PlayerUtil.randomTeleport(player);
+                player.getWorld().getPlayers().stream().filter(online -> online.getLocation().getBlock().getType() == Material.STONE_PLATE)
+                        .filter(online -> online.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.STONE_PLATE)
+                        .filter(online -> online.getLocation().distance(block.getLocation()) <= 8).forEach(online -> {
+                            online.teleport(player);
+                             ChatUtil.sendMessage(online, "&8>> {n}Zostales przeteleportowany w {c}losowa lokalizacje!");
+                });
+            }else{
+                ChatUtil.sendMessage(player, MessagesManager.error("Aby to zrobic musisz stac na plytkach!"));
+                return;
+            }
             return;
         }
     }
