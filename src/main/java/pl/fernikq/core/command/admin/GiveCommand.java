@@ -41,7 +41,9 @@ public class GiveCommand extends CustomCommand {
         return ChatUtil.sendMessage(sender, MessagesManager.error("Podany material nie istnieje!"));
     }
     if(info.length > 1){
-        data = Short.valueOf(info[1]);
+        if(NumberUtil.isInt(info[1])) {
+            data = Short.valueOf(info[1]);
+        }
     }
     ItemStack item = null;
     if(args.length == 2){

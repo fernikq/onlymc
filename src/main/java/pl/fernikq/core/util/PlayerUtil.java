@@ -10,6 +10,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import pl.fernikq.core.CoreAPI;
 import pl.fernikq.core.config.ConfigManager;
 
 public class PlayerUtil {
@@ -45,16 +46,21 @@ public class PlayerUtil {
         }
     }
 
-    public static boolean randomTeleport(Player player){
+    public static boolean randomTeleport(Player player, boolean solo){
         int borderSize = (int)player.getWorld().getWorldBorder().getSize()/2;
         Location randomLocation = new Location(player.getWorld(), RandomUtil.getRandInt(-borderSize, borderSize), 100, RandomUtil.getRandInt(-borderSize, borderSize));
         if(randomLocation.getBlock().getBiome().equals(Biome.DEEP_OCEAN) || randomLocation.getBlock().getBiome().equals(Biome.OCEAN)){
-            return randomTeleport(player);
+            return randomTeleport(player, solo);
+        }
+        if(CoreAPI.getPlugin().getRegionManager().isOutOfBorder(randomLocation)){
+            return randomTeleport(player, solo);
         }
         int maxY = player.getWorld().getHighestBlockYAt(randomLocation);
         randomLocation.setY(maxY);
         player.teleport(randomLocation);
-        ItemUtil.giveItems(player, new ItemStack(Material.COOKED_BEEF, 64), new ItemStack(Material.ENDER_CHEST), new ItemStack(Material.LOG, 16));
+        if(solo){
+            ItemUtil.giveItems(player, new ItemStack(Material.COOKED_BEEF, 64), new ItemStack(Material.ENDER_CHEST), new ItemStack(Material.LOG, 16));
+        }
         ChatUtil.sendMessage(player, "&8>> {n}Zostales przeteleportowany w {c}losowa lokalizacje!");
         return true;
     }

@@ -25,6 +25,10 @@ public class PlayerFoodLevelListener implements Listener {
             return;
         }
         Player player = (Player)event.getEntity();
+        int foodLevel = player.getFoodLevel();
+        if(event.getFoodLevel() > foodLevel){
+            return;
+        }
         RegionFeedback regionFeedback = this.plugin.getRegionManager().canBeHungry(player.getLocation().getBlock().getLocation());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
