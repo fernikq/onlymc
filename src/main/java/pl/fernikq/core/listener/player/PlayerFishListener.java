@@ -30,7 +30,7 @@ public class PlayerFishListener implements Listener {
         if(item.getItemStack().getType() == Material.RAW_FISH){
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
                 user.getUserStat().setCatchedFishes(user.getUserStat().getCatchedFishes() + 1);
-                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.CATCHED_FISH));
+                this.plugin.getQuestManager().checkQuest(user, QuestType.CATCHED_FISH);
             });
         }
     }

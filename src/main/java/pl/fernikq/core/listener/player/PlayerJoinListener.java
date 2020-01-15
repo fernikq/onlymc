@@ -18,6 +18,7 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
+import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.ChatUtil;
 
 import java.lang.reflect.Field;
@@ -71,7 +72,7 @@ public class PlayerJoinListener implements Listener {
             if(day - user.getUserStat().getComebackDay() == 1){
                 user.getUserStat().setComebackDaysInRow(user.getUserStat().getComebackDaysInRow() + 1);
                 user.getUserStat().setComebackDay(day);
-                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkComebackQuest(user));
+                this.plugin.getQuestManager().checkQuest(user, QuestType.COMEBACK);
             }else{
                 user.getUserStat().setComebackDay(day);
                 user.getUserStat().setComebackDaysInRow(1);

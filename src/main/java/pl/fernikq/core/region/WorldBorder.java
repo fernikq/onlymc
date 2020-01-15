@@ -20,7 +20,7 @@ public class WorldBorder {
     }
 
     public void recalculateCorners(){
-        this.upperCorner = new Vector(this.world.getSpawnLocation().getBlockX() + (size / 2), 256, this.world.getSpawnLocation().getBlockZ() + (size / 2)).toLocation(this.world);
+        this.upperCorner = new Vector(this.world.getSpawnLocation().getBlockX() + (size / 2), 9000, this.world.getSpawnLocation().getBlockZ() + (size / 2)).toLocation(this.world);
         this.lowerCorner = new Vector(this.world.getSpawnLocation().getBlockX() - (size / 2), 0, this.world.getSpawnLocation().getBlockZ() - (size / 2)).toLocation(this.world);
     }
 

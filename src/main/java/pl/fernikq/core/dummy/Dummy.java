@@ -29,7 +29,7 @@ public class Dummy {
         if(objective == null){
             createScore(plugin);
         }else{
-            int score = plugin.getIncognitoManager().changePoints(user, this.user) ? 1337 : user.getUserStat().getPoints();
+            int score = plugin.getIncognitoManager().changePoints(user, this.user) ? 000 : user.getUserStat().getPoints();
             objective.getScore(user.getName()).setScore(score);
         }
     }
@@ -48,7 +48,7 @@ public class Dummy {
         Objective finalObjective = objective;
         Bukkit.getOnlinePlayers().forEach(online -> {
             plugin.getUserManager().getUser(online.getUniqueId()).peek(onlineUser -> {
-                int score = plugin.getIncognitoManager().changePoints(onlineUser, this.user) ? 1337 : onlineUser.getUserStat().getPoints();
+                int score = plugin.getIncognitoManager().changePoints(onlineUser, this.user) ? 000 : onlineUser.getUserStat().getPoints();
                 finalObjective.getScore(onlineUser.getName()).setScore(score);
             });
         });

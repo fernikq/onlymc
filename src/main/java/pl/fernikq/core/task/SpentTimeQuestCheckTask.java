@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.user.quests.QuestType;
 
 public class SpentTimeQuestCheckTask extends BukkitRunnable implements SimpleTask {
 
@@ -27,7 +28,7 @@ public class SpentTimeQuestCheckTask extends BukkitRunnable implements SimpleTas
     public void run(){
         Bukkit.getOnlinePlayers().forEach(o -> {
             this.plugin.getUserManager().getUser(o.getUniqueId()).peek(user -> {
-               this.plugin.runAsync(() -> this.plugin.getQuestManager().checkTimeQuest(user));
+                this.plugin.getQuestManager().checkQuest(user, QuestType.SPENT_TIME);
             });
         });
     }

@@ -9,6 +9,7 @@ import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
+import pl.fernikq.core.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,10 +56,10 @@ public class DistanceComparator implements Sortable<User> {
             if(topUser == null){
                 break;
             }
-            inventoryGUI.addItem(new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setName(ChatUtil.fixColor("{n}Pozycja {c}"+(i + 1))).setSkullOwner(topUser.getName()).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Gracz&8: {c}"+topUser.getName(), "&8>> {n}Przebyta odleglosc&8: {c}"+topUser.getUserStat().getDistanceTraveled()+"m"))).toItemStack());
+            inventoryGUI.addItem(new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setName(ChatUtil.fixColor("{n}Pozycja {c}"+(i + 1))).setSkullOwner(topUser.getName()).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Gracz&8: {c}"+topUser.getName(), "&8>> {n}Przebyta odleglosc&8: {c}"+ StringUtil.formatDistance(topUser.getUserStat().getDistanceTraveled())))).toItemStack());
         }
         inventoryGUI.setItem(49, new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3).setName(ChatUtil.fixColor("{n}Twoja pozycja&8: {c}"+(getPositionByObject(object)+1))).setSkullOwner(object.getName())
-                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Przebyta odleglosc&8: {c}"+object.getUserStat().getDistanceTraveled()+"m"))).toItemStack());
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Przebyta odleglosc&8: {c}"+StringUtil.formatDistance(object.getUserStat().getDistanceTraveled())))).toItemStack());
         return inventoryGUI;
     }
 

@@ -33,7 +33,7 @@ public class QuestAction implements InventoryAction {
         }
         if(questActionType.equals(QuestActionType.OPEN_QUEST_GUI)){
             if(questType.equals(QuestType.SPENT_TIME)){
-                this.plugin.getQuestManager().checkTimeQuest(user);
+                this.plugin.getQuestManager().checkQuest(user, QuestType.SPENT_TIME);
             }
             this.plugin.getUserInventory().playerQuest(user, questType).openInventory(player);
             return;

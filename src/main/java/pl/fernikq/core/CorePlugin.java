@@ -288,6 +288,8 @@ public class CorePlugin extends JavaPlugin {
         new HeadCommand("head", new String[0], UserGroup.HELPER, this).register();
         new WhoisCommand("whois", new String[0], UserGroup.HELPER, this).register();
         new BackupCommand("backup", new String[0], UserGroup.ADMIN, this).register();
+        new SpeedCommand("speed", new String[0], UserGroup.HELPER, this).register();
+        new FlySpeedCommand("fspeed", new String[0], UserGroup.HELPER, this).register();
         new ReloadPermissionsCommand("reloadpermissions", new String[0], UserGroup.ROOT, this).register();
 
         //PLAYER

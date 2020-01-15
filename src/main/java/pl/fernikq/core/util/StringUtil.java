@@ -48,4 +48,21 @@ public class StringUtil {
     public static boolean isAlphaNumeric(String s) {
         return s.matches("^[a-zA-Z0-9_]*$");
     }
+
+    public static String formatDistance(int distance){
+        int kilometer = 0;
+        int meters = distance;
+        while(meters >= 1000){
+            kilometer++;
+            meters -= 1000;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        if(kilometer > 0){
+            stringBuilder.append(kilometer+"km");
+        }
+        if(meters > 0){
+            stringBuilder.append(" "+meters+"m");
+        }
+        return stringBuilder.toString();
+    }
 }

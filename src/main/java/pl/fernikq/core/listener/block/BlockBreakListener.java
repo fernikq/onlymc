@@ -86,7 +86,7 @@ public class BlockBreakListener implements Listener {
                 ItemUtil.recalculateDurability(player, player.getItemInHand());
             }
             user.getUserStat().addMinedStone(1);
-            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.MINED_STONE));
+            this.plugin.getQuestManager().checkQuest(user, QuestType.MINED_STONE);
             user.getUserStat().addMiningExperience(1);
             player.giveExp(user.getUserStat().isTurboExp() ? (ConfigManager.dropStoneExp * (int)ConfigManager.turboExpMultiplier) : ConfigManager.dropStoneExp);
             if(user.getUserStat().getMiningExperience() == user.getUserStat().getLevel() * 260){
@@ -105,7 +105,7 @@ public class BlockBreakListener implements Listener {
         }
         if(block.getType() == Material.LOG_2 || block.getType() == Material.LOG){
             user.getUserStat().setMinedWood(user.getUserStat().getMinedWood() + 1);
-            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.MINED_WOOD));
+            this.plugin.getQuestManager().checkQuest(user, QuestType.MINED_WOOD);
         }
     }
 

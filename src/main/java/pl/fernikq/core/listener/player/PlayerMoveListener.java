@@ -38,10 +38,8 @@ public class PlayerMoveListener implements Listener {
             if(user == null){
                 return;
             }
-            this.plugin.runAsync(() -> {
-                user.getUserStat().setDistanceTraveled(user.getUserStat().getDistanceTraveled() + 1);
-                this.plugin.getQuestManager().checkQuest(user, QuestType.TRAVELED_DISTANCE);
-            });
+            user.getUserStat().setDistanceTraveled(user.getUserStat().getDistanceTraveled() + 1);
+            this.plugin.getQuestManager().checkQuest(user, QuestType.TRAVELED_DISTANCE);
             RegionFeedback regionFeedback = this.plugin.getRegionManager().canMoveCauseOfBorder(event.getTo(), event.getFrom());
             if(!regionFeedback.isPermit()){
                 player.teleport(event.getFrom());
@@ -68,11 +66,11 @@ public class PlayerMoveListener implements Listener {
                     if(user.hasGuild()){
                         if(!user.getGuild().equals(guildTo)) {
                             user.getUserStat().getExploredGuilds().add(guildTo.getTag());
-                            this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.EXPLORE_GUILDS));
+                            this.plugin.getQuestManager().checkQuest(user, QuestType.EXPLORE_GUILDS);
                         }
                     }else{
                         user.getUserStat().getExploredGuilds().add(guildTo.getTag());
-                        this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.EXPLORE_GUILDS));
+                        this.plugin.getQuestManager().checkQuest(user, QuestType.EXPLORE_GUILDS);
                     }
                     if((user.hasGuild() && user.getGuild().equals(guildTo)) || (user.hasGuild() && this.plugin.getAllianceManager().hasAlliance(user.getGuild(), guildTo))){
                         return;

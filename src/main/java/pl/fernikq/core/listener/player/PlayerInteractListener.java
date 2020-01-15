@@ -84,7 +84,7 @@ public class PlayerInteractListener implements Listener {
             event.setCancelled(true);
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
                 user.getUserStat().addOpenedCobblex(1);
-                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_COBBLEX));
+                this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_COBBLEX);
             });
             ItemUtil.removeFromHand(player, 1);
 
@@ -121,7 +121,7 @@ public class PlayerInteractListener implements Listener {
             });
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
                 user.getUserStat().addOpenedPremiumCase(1);
-                this.plugin.runAsync(() -> this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_PREMIUMCASE));
+                this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_PREMIUMCASE);
             });
             return;
         }
