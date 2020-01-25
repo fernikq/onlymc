@@ -51,7 +51,7 @@ public class UserManager {
             this.users.remove(userByName.getUuid());
             updateUUID(userByName, userByName.getUuid(), player.getUniqueId());
             userByName.setUuid(player.getUniqueId());
-            this.users.putIfAbsent(userByName.getUuid(), userByName);
+            this.users.put(userByName.getUuid(), userByName);
             updateUserInfo(userByName);
             return userByName;
         }

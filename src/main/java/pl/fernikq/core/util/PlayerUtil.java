@@ -58,6 +58,9 @@ public class PlayerUtil {
         int maxY = player.getWorld().getHighestBlockYAt(randomLocation);
         randomLocation.setY(maxY);
         player.teleport(randomLocation);
+        if(randomLocation.getBlock().getType() != Material.AIR || randomLocation.getBlock() != null){
+            return randomTeleport(player, solo);
+        }
         if(solo){
             ItemUtil.giveItems(player, new ItemStack(Material.COOKED_BEEF, 64), new ItemStack(Material.ENDER_CHEST), new ItemStack(Material.LOG, 16));
         }
