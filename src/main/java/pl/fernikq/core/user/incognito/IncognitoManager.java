@@ -2,12 +2,12 @@ package pl.fernikq.core.user.incognito;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_8_R3.PacketPlayOutNamedEntitySpawn;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.user.User;
@@ -108,6 +108,7 @@ public class IncognitoManager {
 
     public void changeSkin(User user, boolean restore){
         Player player = user.asPlayer();
+        final EntityPlayer ep = ((CraftPlayer) player).getHandle();
         if(player == null || !player.isOnline()){
             return;
         }
@@ -123,13 +124,10 @@ public class IncognitoManager {
             gameProfile.getProperties().put("textures", new Property("textures", skingInfo[0], skingInfo[1]));
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getOnlinePlayers().forEach(o -> o.hidePlayer(player));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer)player).getHandle()));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftPlayer)player).getEntityId()));
             }, 1);
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getOnlinePlayers().forEach(o -> o.showPlayer(player));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer)player).getHandle()));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)player).getHandle()));
+                reloadSkinForSelf(player);
             }, 2);
             incognito.setHideOriginalSkin(false);
             return;
@@ -145,16 +143,26 @@ public class IncognitoManager {
             gameProfile.getProperties().put("textures", new Property("textures", skin, signature));
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getOnlinePlayers().forEach(o -> o.hidePlayer(player));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer)player).getHandle()));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftPlayer)player).getEntityId()));
             }, 1);
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getOnlinePlayers().forEach(o -> o.showPlayer(player));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer)player).getHandle()));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)player).getHandle()));
+                reloadSkinForSelf(player);
             }, 2);
             incognito.setHideOriginalSkin(true);
             return;
         }
+    }
+
+    private  void reloadSkinForSelf(Player player) {
+        final EntityPlayer ep = ((CraftPlayer) player).getHandle();
+        final PacketPlayOutPlayerInfo removeInfo = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ep);
+        final PacketPlayOutPlayerInfo addInfo = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ep);
+        final Location loc = player.getLocation().clone();
+        ep.playerConnection.sendPacket(removeInfo);
+        ep.playerConnection.sendPacket(addInfo);
+        player.teleport(Bukkit.getWorlds().get(1).getSpawnLocation());
+        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
+            player.teleport(loc);
+        }, 1);
     }
 }
