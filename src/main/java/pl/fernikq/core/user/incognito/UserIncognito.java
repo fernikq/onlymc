@@ -13,6 +13,7 @@ public class UserIncognito {
     private IncognitoType showPoints;
     private boolean hideOriginalSkin;
     private String originalSkin;
+    private long skinChangeTime;
 
     public UserIncognito(User user){
         this.user = user;
@@ -83,5 +84,13 @@ public class UserIncognito {
 
     public void setShowPoints(IncognitoType showPoints) {
         this.showPoints = showPoints;
+    }
+
+    public long getSkinChangeTime() {
+        return skinChangeTime;
+    }
+
+    public void setSkinChangeTime(long skinChangeTime) {
+        this.skinChangeTime = skinChangeTime;
     }
 }

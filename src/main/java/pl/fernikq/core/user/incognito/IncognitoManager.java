@@ -158,9 +158,10 @@ public class IncognitoManager {
         final PacketPlayOutPlayerInfo removeInfo = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ep);
         final PacketPlayOutPlayerInfo addInfo = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ep);
         final Location loc = player.getLocation().clone();
+        int world = Bukkit.getWorlds().indexOf(loc.getWorld());
         ep.playerConnection.sendPacket(removeInfo);
         ep.playerConnection.sendPacket(addInfo);
-        player.teleport(Bukkit.getWorlds().get(1).getSpawnLocation());
+        player.teleport(Bukkit.getWorlds().get(world == 0 ? 1 : 0).getSpawnLocation());
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
             player.teleport(loc);
         }, 1);

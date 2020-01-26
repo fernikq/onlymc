@@ -14,6 +14,8 @@ import pl.fernikq.core.user.incognito.IncognitoType;
 import pl.fernikq.core.user.incognito.UserIncognito;
 import pl.fernikq.core.util.ChatUtil;
 
+import java.util.concurrent.TimeUnit;
+
 public class IncognitoAction implements InventoryAction {
 
     private User user;
@@ -34,6 +36,11 @@ public class IncognitoAction implements InventoryAction {
                 ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz zmienic skina, poniewaz go nie posiadasz!"));
                 return;
             }
+            if(user.getIncognito().getSkinChangeTime() > System.currentTimeMillis()){
+                ChatUtil.sendMessage(player, MessagesManager.error("Odczekaj chwile przed kolejna zmiana!"));
+                return;
+            }
+            user.getIncognito().setSkinChangeTime(System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(20));
             this.plugin.getIncognitoManager().changeSkin(user, incognito.isHideOriginalSkin());
             ChatUtil.sendMessage(player, "&8>> {n}Twoj skin zostal zmieniony!");
             this.plugin.getUserInventory().playerIncognito(user).openInventory(player);
