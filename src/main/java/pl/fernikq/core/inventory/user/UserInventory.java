@@ -507,7 +507,7 @@ public class UserInventory {
                 "&8>> {n}Wykopany kamien&8: {c}"+stat.getMinedStone(), "&8>> {n}Poziom&8: {c}"+stat.getLevel(), "&8>> {n}Otworzone "+this.plugin.getDropManager().getPremiumCaseNameInGUI()+"&8: {c}"+stat.getOpenedPremiumCase(),
                 "&8>> {n}Otworzone "+this.plugin.getDropManager().getCobblexNameInGUI()+"&8: {c}"+stat.getOpenedCobblex())));
         ItemBuilder coins = new ItemBuilder(Material.DOUBLE_PLANT).setName(ChatUtil.fixColor("{c}&lMonety")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiada&8: {c}"+stat.getCoins()+" {n}monet", "&8>> {n}Wykopanych z kamienia&8: {c}"+stat.getCoinsFromStone())));
-        ItemBuilder distance = new ItemBuilder(Material.GOLD_BOOTS).setName(ChatUtil.fixColor("{c}&lDystans")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Przebyty dystans&8: {c}"+stat.getDistanceTraveled()+"m")));
+        ItemBuilder distance = new ItemBuilder(Material.GOLD_BOOTS).setName(ChatUtil.fixColor("{c}&lDystans")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Przebyty dystans&8: {c}"+StringUtil.formatDistance(stat.getDistanceTraveled()))));
         ItemBuilder online = new ItemBuilder(Material.WATCH).setName(ChatUtil.fixColor("{c}&lCzas Online")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
                  "&8>> {n}Online&8: "+(target.asPlayer() != null ? "&aTak" : "&cNie"), "&8>> {n}Spedzil&8: {c}"+TimeUtil.getTimeToString(stat.getOnlineTime()))));
         gui.setItem(22, playerName.toItemStack());

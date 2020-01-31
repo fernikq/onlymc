@@ -109,6 +109,10 @@ public class PlayerInteractListener implements Listener {
             event.setCancelled(true);
             ItemUtil.removeFromHand(player, 1);
             if(items == 0){
+                this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
+                    user.getUserStat().addOpenedPremiumCase(1);
+                    this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_PREMIUMCASE);
+                });
                 ChatUtil.sendMessage(player, "&8>> {n}Otworzyles "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}ale niestety nic nie wypadlo :(");
                 return;
             }
