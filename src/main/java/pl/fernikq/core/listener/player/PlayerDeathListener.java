@@ -44,6 +44,8 @@ public class PlayerDeathListener implements Listener {
         if(victimUser == null){
             return;
         }
+        victimUser.getEnderPearls().forEach(entity -> entity.remove());
+        victimUser.getEnderPearls().clear();
         String reason = "Brak";
         if(victimUser.getUserFight().isDuringFight()){
             reason = "Zabity przez "+victimUser.getUserFight().getLastAttacker().getName();

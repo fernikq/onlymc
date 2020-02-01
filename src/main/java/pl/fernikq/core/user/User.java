@@ -3,6 +3,7 @@ package pl.fernikq.core.user;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import pl.fernikq.core.dummy.Dummy;
@@ -45,6 +46,7 @@ public class User {
     private Dummy dummy;
     private Guild guild;
     private boolean logout;
+    private Set<Entity> enderPearls;
 
     public User(Player player){
         this.uuid = player.getUniqueId();
@@ -68,6 +70,7 @@ public class User {
         this.backups = new HashSet<>();
         this.logout = false;
         this.incognito = new UserIncognito(this);
+        this.enderPearls = new HashSet<>();
     }
 
     public User(ResultSet rs){
@@ -91,6 +94,7 @@ public class User {
             this.backups = new HashSet<>();
             this.logout = false;
             this.incognito = new UserIncognito(this);
+            this.enderPearls = new HashSet<>();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -105,6 +109,14 @@ public class User {
             }
         });
         return backups;
+    }
+
+    public Set<Entity> getEnderPearls() {
+        return enderPearls;
+    }
+
+    public void setEnderPearls(Set<Entity> enderPearls) {
+        this.enderPearls = enderPearls;
     }
 
     public boolean isLogout() {
