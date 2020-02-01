@@ -11,6 +11,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
@@ -39,6 +40,34 @@ public class AsyncPlayerChatListener implements Listener {
            if(this.cache.asMap().containsKey(user)){
                event.setCancelled(true);
                ChatUtil.sendMessage(player, MessagesManager.error("Poczekaj chwile przed ponownym napisaniem wiadomosci!"));
+               return;
+           }
+           if(user.hasGuild() && event.getMessage().startsWith("!!")){
+               Guild guild = user.getGuild();
+               String message = ConfigManager.guildAlliesChatFormat;
+               message = message.replace("{PLAYER}", player.getName());
+               message = message.replace("{TAG}", guild.getTag());
+               String finalMessage = message;
+               this.plugin.getAllianceManager().getAllies(guild).forEach(allie -> {
+                    allie.getOnlineMembers().forEach(member -> {
+                        member.getUser().asPlayer().sendMessage(ChatUtil.fixColor(finalMessage) + event.getMessage().replaceFirst("!!", ""));
+                    });
+               });
+               guild.getOnlineMembers().forEach(member -> {
+                   member.getUser().asPlayer().sendMessage(ChatUtil.fixColor(finalMessage) + event.getMessage().replaceFirst("!!", ""));
+               });
+               event.setCancelled(true);
+               return;
+           }
+           if(user.hasGuild() && event.getMessage().startsWith("!")){
+               Guild guild = user.getGuild();
+               String message = ConfigManager.guildOwnChatFormat;
+               message = message.replace("{PLAYER}", player.getName());
+               String finalMessage = message;
+               guild.getOnlineMembers().forEach(member -> {
+                   member.getUser().asPlayer().sendMessage(ChatUtil.fixColor(finalMessage) + event.getMessage().replaceFirst("!", ""));
+               });
+               event.setCancelled(true);
                return;
            }
            String format = user.canByGroup(UserGroup.HELPER) ? MessagesManager.playerChatAdminFormat : MessagesManager.playerChatFormat;

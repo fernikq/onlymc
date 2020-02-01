@@ -74,6 +74,8 @@ public class ConfigManager {
     public static int enderchestSizeSecondLevelCost;
     public static int enderchestSizeThirdLevelCost;
     public static String guildMaxTimeRenew;
+    public static String guildOwnChatFormat;
+    public static String guildAlliesChatFormat;
     public static int guildTimeRenewCost;
     public static int playerFightTime;
     public static int blockBuildingBelowYDuringFight;
@@ -201,5 +203,7 @@ public class ConfigManager {
         playerPointsResetCost = 500;
         minimalDistanceFromBorder = 120;
         primedTNTSpeed = 1.2;
+        guildOwnChatFormat = "&8[&aGILDIA&8] &a{PLAYER} &8>> &f";
+        guildAlliesChatFormat = "&8[&eSOJUSZ&8] &8[&e{TAG}&8] &e{PLAYER} &8>> &f";
     }
 }
