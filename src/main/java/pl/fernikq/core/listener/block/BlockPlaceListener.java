@@ -17,6 +17,7 @@ import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.TimeUtil;
 
@@ -46,6 +47,11 @@ public class BlockPlaceListener implements Listener {
                 return;
             }
             ChatUtil.sendMessage(player, regionFeedback.getFeedbackMessage());
+            return;
+        }
+        if((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && block.getLocation().getBlockY() > ConfigManager.chestPlaceMaxY && !user.canByGroup(UserGroup.ADMIN)){
+            ChatUtil.sendMessage(player, MessagesManager.error("Stawianie skrzynek zostalo zablokowane powyzej "+ConfigManager.chestPlaceMaxY+" poziomu!"));
+            event.setCancelled(true);
             return;
         }
         Generator generator = this.plugin.getGeneratorManager().getGenerator(player.getItemInHand());

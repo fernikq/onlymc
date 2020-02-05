@@ -19,7 +19,7 @@ public enum GuildPermission {
     BREAK("{c}&lNiszczenie blokow", Material.STONE),
     TREASURE_OPEN("{c}&lDostep do skarbca", Material.CHEST),
     SET_BASE("{c}&lUstawianie bazy", Material.ARMOR_STAND),
-    BASE_TELEPORT("{c}&lTeleporacja na bazea", Material.BED),
+    BASE_TELEPORT("{c}&lTeleporacja na baze", Material.BED),
     TIME_RENEW("{c}&lOdnawianie waznosci", Material.WATCH),
     CUBOID_ENLARGE("{c}&lPowiekszanie terenu", Material.GRASS),
     ALLIANCES_ENLARGE("{c}&lPowiekszanie ilosci sojuszy", Material.PAPER),

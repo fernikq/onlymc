@@ -64,6 +64,7 @@ public class ConfigManager {
     public static int minimalDistanceFromSpawn;
     public static int minimalDistanceFromBorder;
     public static int guildCenterY;
+    public static int chestPlaceMaxY;
     public static List<Integer> guildAlliesSizeEnlargeCost;
     public static List<Integer> guildMembersSizeEnlargeCost;
     public static List<Integer> guildCuboidSizeEnlargeCost;
@@ -133,6 +134,7 @@ public class ConfigManager {
         teleportTpaTime = 10;
         teleportGuildTime = 10;
         autoMessageTime = 60;
+        chestPlaceMaxY = 50;
         chatEnabled = true;
         spawnLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
         limitInventoryClicks = false;
