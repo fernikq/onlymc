@@ -88,7 +88,6 @@ public class ConfigManager {
     public static List<String> guildVipItemsToCreate;
     public static boolean usePremiumHeadsInGUI;
     public static boolean blockOpeningEnderchestDuringFight;
-    public static boolean isServerRunningInOnlineModeOrHasPremiumLogin;
 
     public void load(){
         try{
@@ -193,7 +192,6 @@ public class ConfigManager {
                 "anvil:0:16:Kowadla",
                 "book:0:16:Ksiazki",
                 "bookshelf:0:32:Biblioteczki");
-        isServerRunningInOnlineModeOrHasPremiumLogin = false;
         usePremiumHeadsInGUI = true;
         guildMaxTimeRenew = "7d";
         guildTimeRenewCost = 2500;
