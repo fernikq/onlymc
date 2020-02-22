@@ -62,6 +62,16 @@ public class UserPermissionsManager {
         }
     }
 
+    public void removePermissions(User user){
+        if(user.asPlayer() == null){
+            return;
+        }
+        PermissionAttachment permissionAttachment = user.asPlayer().addAttachment(this.plugin);
+        for(String permission : user.getGroup().getPermissions()){
+            permissionAttachment.setPermission(permission, false);
+        }
+    }
+
     public YamlConfiguration getPermissionsFile() {
         return YamlConfiguration.loadConfiguration(permissionFile);
     }

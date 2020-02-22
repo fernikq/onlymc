@@ -27,6 +27,11 @@ public class ReloadPermissionsCommand extends CustomCommand {
         if(group == null){
             return ChatUtil.sendMessage(sender, "&8>> {n}Dostepne rangi&8: "+UserGroup.getPrefixesToString());
         }
+        Bukkit.getOnlinePlayers().forEach(online -> {
+            this.plugin.getUserManager().getUser(online.getUniqueId()).filter(user -> user.getGroup().equals(group)).peek(user -> {
+                this.plugin.getUserPermissionsManager().removePermissions(user);
+            });
+        });
         this.plugin.getUserPermissionsManager().reload();
         Bukkit.getOnlinePlayers().forEach(online -> {
             this.plugin.getUserManager().getUser(online.getUniqueId()).filter(user -> user.getGroup().equals(group)).peek(user -> {
