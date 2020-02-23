@@ -18,6 +18,7 @@ public enum RegionFeedback {
     DENY_PVP_OTHER_REGION(false,  MessagesManager.error("Nie mozesz atakowac graczy, znajdujac sie na na tym terenie!")),
     DENY_PROCCESS_COMMAND(false,  MessagesManager.error("Podana komenda zostala zablokowana!")),
     DENY_PROCCESS_COMMAND_FIGHT(false,  MessagesManager.error("Podana komenda nie jest dostepna podczas walki!")),
+    DENY_PROCCESS_COMMAND_CAUSE_CHECK(false,  MessagesManager.error("Podana komenda nie jest dostepna podczas sprawdzania!")),
     DENY_PROCCESS_COMMAND_REGION(false,  MessagesManager.error("Podana komenda zostala zablokowana na tym terenie!")),
     DENY_PROCCESS_COMMAND_GUILD(false,  MessagesManager.error("Nie mozesz uzyc tej komendy na terenie wrogiej gildii!")),
     DENY_BUILD_GUILD(false,  MessagesManager.error("Nie mozesz budowac na terenie wrogiej gildii")),

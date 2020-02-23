@@ -10,6 +10,7 @@ import org.bukkit.help.HelpTopic;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
 public class PlayerCommandPreprocessListener implements Listener {
@@ -35,7 +36,9 @@ public class PlayerCommandPreprocessListener implements Listener {
         HelpTopic helpTopic = Bukkit.getHelpMap().getHelpTopic(command);
         if(helpTopic == null){
             ChatUtil.sendMessage(player, this.plugin.getSimpleCommandManager().getHelpCommandMessage());
-            event.setCancelled(true);
+            if(!user.canByGroup(UserGroup.HELPER)){
+                event.setCancelled(true);
+            }
             return;
         }
     }

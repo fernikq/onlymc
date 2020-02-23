@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.yaml.snakeyaml.Yaml;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.check.PlayerCheckUtil;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.member.GuildMember;
@@ -645,6 +646,10 @@ public class RegionManager {
         }
         if(this.plugin.getSimpleCommandManager().getBlockedCommands().contains(command.toLowerCase())){
             return RegionFeedback.DENY_PROCCESS_COMMAND;
+        }
+        List<String> allowedDuringCheck = Arrays.asList("/msg", "/r", "/helpop");
+        if(PlayerCheckUtil.getPlayerSet().contains(user.asPlayer()) && !allowedDuringCheck.contains(command.toLowerCase())){
+            return RegionFeedback.DENY_PROCCESS_COMMAND_CAUSE_CHECK;
         }
         if(user.getUserFight().isDuringFight()){
             if(!this.plugin.getSimpleCommandManager().getAllowedDuringPVP().contains(command.toLowerCase())){

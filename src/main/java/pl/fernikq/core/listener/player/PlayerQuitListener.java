@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.check.PlayerCheckUtil;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
@@ -52,5 +54,9 @@ public class PlayerQuitListener implements Listener {
         });
         this.plugin.getTagManager().removeTag(player);
         this.plugin.getVanishManager().removeVanished(player);
+        if(PlayerCheckUtil.getPlayerSet().contains(player)){
+            this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), ConfigManager.playerCheckLogoutCommand.replace("{PLAYER}", player.getName()));
+            PlayerCheckUtil.getPlayerSet().remove(player);
+        }
     }
 }

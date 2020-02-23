@@ -292,6 +292,7 @@ public class CorePlugin extends JavaPlugin {
         new SpeedCommand("speed", new String[0], UserGroup.HELPER, this).register();
         new FlySpeedCommand("fspeed", new String[0], UserGroup.HELPER, this).register();
         new ReloadPermissionsCommand("reloadpermissions", new String[0], UserGroup.ROOT, this).register();
+        new CheckPlayerCommand("sprawdz", new String[0], UserGroup.HELPER, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
