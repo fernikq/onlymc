@@ -207,7 +207,7 @@ public class ConfigManager {
         primedTNTSpeed = 1.2;
         guildOwnChatFormat = "&8[&aGILDIA&8] &a{PLAYER} &8>> &f";
         guildAlliesChatFormat = "&8[&eSOJUSZ&8] &8[&e{TAG}&8] &e{PLAYER} &8>> &f";
-        playerCheckLogoutCommand = "/bungeecommand ban {PLAYER} Logout podczas sprawdzania!";
+        playerCheckLogoutCommand = "bungeecommand ban {PLAYER} Logout podczas sprawdzania!";
         playerCheckPlaceLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
     }
 }
