@@ -106,6 +106,9 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addEnchant(Enchantment enchantment, int level){
+        if(this.itemStack.containsEnchantment(enchantment)){
+            this.itemStack.removeEnchantment(enchantment);
+        }
         this.itemStack.addUnsafeEnchantment(enchantment, level);
         return this;
     }

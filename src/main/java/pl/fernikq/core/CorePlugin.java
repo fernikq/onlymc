@@ -365,6 +365,7 @@ public class CorePlugin extends JavaPlugin {
         new PlayerFishListener(this);
         new CraftItemListener(this);
         new ProjectileLaunchListener(this);
+        new EnchantItemListener(this);
         //new GuardBlockDigListener(this);
         //TODO mcguard dig listener
     }

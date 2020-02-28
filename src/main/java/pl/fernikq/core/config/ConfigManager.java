@@ -3,12 +3,18 @@ package pl.fernikq.core.config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.util.EnchantManager;
 import pl.fernikq.core.util.LocationUtil;
+import pl.fernikq.core.util.NumberUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConfigManager {
 
@@ -86,16 +92,22 @@ public class ConfigManager {
     public static String guildDenyBuildTimeAfterExplosion;
     public static List<String> guildPlayerItemsToCreate;
     public static List<String> guildVipItemsToCreate;
+    public static List<String> enchantmentLimits;
     public static boolean usePremiumHeadsInGUI;
     public static boolean blockOpeningEnderchestDuringFight;
     public static String playerCheckLogoutCommand;
     public static String playerCheckPlaceLocation;
+
+    private static Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
 
     public void load(){
         try{
             this.plugin.saveDefaultConfig();
             FileConfiguration fileConfiguration = this.plugin.getConfig();
             for(Field field : ConfigManager.class.getFields()){
+                if(Modifier.isPrivate(field.getModifiers())){
+                    continue;
+                }
                 if(fileConfiguration.isSet("Config."+field.getName())){
                     field.set(null, fileConfiguration.get("Config."+field.getName()));
                 }
@@ -109,6 +121,9 @@ public class ConfigManager {
         try{
             FileConfiguration fileConfiguration = this.plugin.getConfig();
             for(Field field : ConfigManager.class.getFields()){
+                if(Modifier.isPrivate(field.getModifiers())){
+                    continue;
+                }
                 fileConfiguration.set("Config."+field.getName(), field.get(null));
             }
             this.plugin.saveConfig();
@@ -121,6 +136,7 @@ public class ConfigManager {
         this.plugin.reloadConfig();
         load();
         save();
+        setEnchantmentIntegerMap();
     }
 
     private void setValues(){
@@ -209,5 +225,16 @@ public class ConfigManager {
         guildAlliesChatFormat = "&8[&eSOJUSZ&8] &8[&e{TAG}&8] &e{PLAYER} &8>> &f";
         playerCheckLogoutCommand = "bungeecommand ban {PLAYER} Logout podczas sprawdzania!";
         playerCheckPlaceLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
+        enchantmentLimits = Arrays.asList("protection:3", "durability:2");
+    }
+
+    public static Map<Enchantment, Integer> getEnchantmentIntegerMap(){
+        return enchantmentIntegerMap;
+    }
+
+    private void setEnchantmentIntegerMap(){
+        Map<Enchantment, Integer> limits = new HashMap<>();
+        ConfigManager.enchantmentLimits.stream().filter(s -> EnchantManager.get(s.split(":")[0]) != null && NumberUtil.isInt(s.split(":")[1])).forEach(s -> limits.put(EnchantManager.get(s.split(":")[0]), Integer.parseInt(s.split(":")[1])));
+        enchantmentIntegerMap = limits;
     }
 }
