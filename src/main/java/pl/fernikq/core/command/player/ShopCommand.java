@@ -5,9 +5,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.command.CustomCommand;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.Lang;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.TimeUtil;
+
+import java.util.concurrent.TimeUnit;
 
 public class ShopCommand extends CustomCommand {
 
@@ -24,6 +29,9 @@ public class ShopCommand extends CustomCommand {
             return ChatUtil.sendMessage(sender, Lang.mustBePlayer);
         }
         Player player = (Player) sender;
+        if(ConfigManager.shopBlockTime > System.currentTimeMillis()){
+            return ChatUtil.sendMessage(player, MessagesManager.error("Sklep wylaczony jest jeszcze przez "+ TimeUtil.getTimeToString(ConfigManager.shopBlockTime - System.currentTimeMillis())));
+        }
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
             this.plugin.getUserInventory().shopMenu(user).openInventory(player);
         });

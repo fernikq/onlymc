@@ -5,10 +5,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.inventory.InventoryAction;
 import pl.fernikq.core.inventory.enums.user.KitActionType;
 import pl.fernikq.core.kit.Kit;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.TimeUtil;
 
@@ -50,6 +53,10 @@ public class KitAction implements InventoryAction {
             }
             if(!this.plugin.getKitManager().canTakeByTime(user, kit)){
                 ChatUtil.sendMessage(player, "&8>> {n}Zestaw mozesz odebrac za&8: {c}"+ TimeUtil.getTimeToString(user.getKitTimes().get(kit.getName()) - System.currentTimeMillis()));
+                return;
+            }
+            if(ConfigManager.kitsBlockTime > System.currentTimeMillis() && this.kit.getGroup().getLevel() > UserGroup.PLAYER.getLevel() && !user.canByGroup(UserGroup.ADMIN)){
+                ChatUtil.sendMessage(player, MessagesManager.error("Ten zestaw wylaczony jest jeszcze przez "+ TimeUtil.getTimeToString(ConfigManager.kitsBlockTime - System.currentTimeMillis())));
                 return;
             }
             this.plugin.getKitManager().giveItems(player, kit);

@@ -97,6 +97,10 @@ public class ConfigManager {
     public static boolean blockOpeningEnderchestDuringFight;
     public static String playerCheckLogoutCommand;
     public static String playerCheckPlaceLocation;
+    public static long shopBlockTime;
+    public static long diamondItemsBlockTime;
+    public static long kitsBlockTime;
+    public static long premiumCaseBlockTime;
 
     private static Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
 
@@ -226,6 +230,10 @@ public class ConfigManager {
         playerCheckLogoutCommand = "bungeecommand ban {PLAYER} Logout podczas sprawdzania!";
         playerCheckPlaceLocation = LocationUtil.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation());
         enchantmentLimits = Arrays.asList("protection:3", "durability:2");
+        shopBlockTime = 0L;
+        diamondItemsBlockTime = 0L;
+        kitsBlockTime = 0L;
+        premiumCaseBlockTime = 0L;
     }
 
     public static Map<Enchantment, Integer> getEnchantmentIntegerMap(){

@@ -222,6 +222,6 @@ public class MessagesManager {
                 "&8>> {n}Do kolejnego poziomu&8: {c}{TO-NEXT-LEVEL}",
                 "&e",
                 "&8>> {n}Ping&8: {c}{PING}");
-        sidebarName = "&8[ &c&lSztos serwer &8]";
+        sidebarName = "&8[ &c&lserwer &8]";
     }
 }

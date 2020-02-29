@@ -92,6 +92,11 @@ public class PlayerInteractListener implements Listener {
         }
         if(this.plugin.getDropManager().getPremiumCaseItem().isSimilar(player.getItemInHand())){
             int items = 0;
+            if(ConfigManager.premiumCaseBlockTime > System.currentTimeMillis()){
+                ChatUtil.sendMessage(player, "&8>> {n}"+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+"'y {n}wylaczone sa jeszcze przez "+ TimeUtil.getTimeToString(ConfigManager.premiumCaseBlockTime - System.currentTimeMillis()));
+                event.setCancelled(true);
+                return;
+            }
             List<String> dropMessages = new ArrayList<>();
             for(Drop drop : this.plugin.getDropManager().getDrops(DropType.PREMIUMCASE)){
                 if(items >= this.plugin.getDropManager().getMaxItemsInOneCase()){
