@@ -47,10 +47,6 @@ public class PlayerJoinListener implements Listener {
             this.plugin.getUserPermissionsManager().reloadPermissions(user);
         },60);
         user.setLastAddress(player.getAddress().getAddress().getHostAddress());
-        if(!user.getName().equals(player.getName())){
-            user.setName(player.getName());
-            this.plugin.getUserManager().updateUserInfo(user);
-        }
         if(user.getScoreboard() == null){
             user.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         }

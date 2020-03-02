@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.user.backup.BackupData;
+import pl.fernikq.core.util.PlayerUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,16 @@ import java.util.concurrent.ConcurrentMap;
 public class UserManager {
 
     private final CorePlugin plugin;
-    private ConcurrentMap<UUID, User> users;
+    private ConcurrentMap<UUID, User> usersByUUID;
+    private ConcurrentMap<String, User> usersByName;
     private UserData userData;
     private UserStatData userStatData;
     private BackupData backupData;
 
     public UserManager(CorePlugin plugin){
         this.plugin = plugin;
-        this.users = new ConcurrentHashMap<>();
+        this.usersByUUID = new ConcurrentHashMap<>();
+        this.usersByName = new ConcurrentHashMap<>();
     }
 
     public void init(){
@@ -43,27 +46,41 @@ public class UserManager {
     }
 
     public User getUser(Player player){
-        if(this.users.containsKey(player.getUniqueId())){
-            return this.users.get(player.getUniqueId());
+        if(this.usersByUUID.containsKey(player.getUniqueId())){
+            User user = this.usersByUUID.get(player.getUniqueId());
+            if(!user.getName().equals(player.getName())){
+                this.usersByName.remove(user.getName().toLowerCase());
+                user.setName(player.getName());
+                this.usersByName.put(player.getName().toLowerCase(), user);
+                this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                    this.updateUserInfo(user);
+                });
+            }
+            return user;
         }
-        User userByName = getUser(player.getName()).getOrNull();
-        if(userByName != null){
-            this.users.remove(userByName.getUuid());
-            updateUUID(userByName, userByName.getUuid(), player.getUniqueId());
-            userByName.setUuid(player.getUniqueId());
-            this.users.put(userByName.getUuid(), userByName);
-            updateUserInfo(userByName);
-            return userByName;
-        }
-        return this.users.computeIfAbsent(player.getUniqueId(), uuid -> {
-            User user = new User(player);
-            insertUser(user);
-            this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> {
-                sortable.addObject(user);
-                sortable.sort();
+        Option<User> userByName = getUser(player.getName());
+        if(userByName.isDefined()){
+            User user = userByName.get();
+            this.usersByUUID.remove(user.getUuid());
+            UUID oldUUID = user.getUuid();
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                updateUUID(user, oldUUID, player.getUniqueId());
+            });
+            user.setUuid(player.getUniqueId());
+            this.usersByUUID.put(player.getUniqueId(), user);
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                this.updateUserInfo(user);
             });
             return user;
+        }
+        User user = new User(player);
+        this.usersByUUID.put(player.getUniqueId(), user);
+        this.usersByName.put(player.getName().toLowerCase(), user);
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            this.insertUser(user);
         });
+        PlayerUtil.randomTeleport(player, true);
+        return user;
     }
 
     public List<String> getUsersNames(List<User> userList){
@@ -122,24 +139,26 @@ public class UserManager {
     }
 
     public Option<User> getUser(String name){
-        return getUsers().find(user -> user.getName().equalsIgnoreCase(name));
+        return Option.of(this.usersByName.get(name.toLowerCase()));
     }
 
     public Option<User> getUser(UUID uuid){
-        return Option.of(this.users.get(uuid));
+        return Option.of(this.usersByUUID.get(uuid));
     }
 
     public void registerUser(User user){
-        this.users.putIfAbsent(user.getUuid(), user);
+        this.usersByUUID.putIfAbsent(user.getUuid(), user);
+        this.usersByName.put(user.getName().toLowerCase(), user);
     }
 
     public void deleteUser(User user){
         removeUser(user);
-        this.users.remove(user.getUuid());
+        this.usersByUUID.remove(user.getUuid());
+        this.usersByName.remove(user.getName().toLowerCase());
     }
 
     public Set<User> getUsers(){
-        return HashSet.ofAll(new ConcurrentHashMap<UUID, User>(this.users).values());
+        return HashSet.ofAll(new ConcurrentHashMap<UUID, User>(this.usersByUUID).values());
     }
 
     public BackupData getBackupData() {
