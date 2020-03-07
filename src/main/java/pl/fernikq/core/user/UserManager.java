@@ -79,6 +79,10 @@ public class UserManager {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
             this.insertUser(user);
         });
+        this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> {
+            sortable.addObject(user);
+            sortable.sort();
+        });
         PlayerUtil.randomTeleport(player, true);
         return user;
     }
