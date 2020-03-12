@@ -3,6 +3,7 @@ package pl.fernikq.core.guild.treasure;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.util.SerializationUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,23 +19,21 @@ public class GuildTreasureData {
     }
 
     public void checkTable(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_guild_treasures` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_guild_treasures` ("+
                     "`id` INT(16) NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
                     "`guild` VARCHAR(128) NOT NULL UNIQUE,"+
                     "`level` INT NOT NULL,"+
                     "`coins` INT NOT NULL,"+
-                    "`items` TEXT NOT NULL);");
+                    "`items` TEXT NOT NULL);").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void loadTreasures(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            ResultSet resultSet = this.plugin.getMySQL().query("SELECT * FROM `core_guild_treasures`");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            ResultSet resultSet = connection.prepareStatement("SELECT * FROM `core_guild_treasures`").executeQuery();
             while(resultSet.next()){
                 this.plugin.getGuildManager().getGuildByTag(resultSet.getString("guild")).peek(guild -> {
                     new GuildTreasure(guild, resultSet);
@@ -46,9 +45,8 @@ public class GuildTreasureData {
     }
 
     public void insertTreasure(GuildTreasure treasure){
-        try {
-            this.plugin.getMySQL().openConnection();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_guild_treasures` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_guild_treasures` ("+
                     "id, guild, level, coins, items) VALUES (?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, treasure.getGuild().getTag());
@@ -62,11 +60,8 @@ public class GuildTreasureData {
     }
 
     public void updateTreasure(GuildTreasure treasure){
-        try {
-            if(!this.plugin.getMySQL().isConnected()){
-                this.plugin.getMySQL().openConnection();
-            }
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_guild_treasures` SET `level` = ?, "+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            PreparedStatement statement = connection.prepareStatement("UPDATE `core_guild_treasures` SET `level` = ?, "+
                     "`coins` = ?, `items` = ? WHERE `guild` = '"+treasure.getGuild().getTag()+"';");
             statement.setInt(1, treasure.getLevel());
             statement.setInt(2, treasure.getCoins());
@@ -78,9 +73,8 @@ public class GuildTreasureData {
     }
 
     public void deleteTreasure(GuildTreasure treasure){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("DELETE FROM `core_guild_treasures` WHERE `guild` = '"+treasure.getGuild().getTag()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("DELETE FROM `core_guild_treasures` WHERE `guild` = '"+treasure.getGuild().getTag()+"';").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }

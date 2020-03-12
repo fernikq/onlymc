@@ -15,6 +15,8 @@
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/shop.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/drop.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/permissions.yml" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/zaxxer/HikariCP/3.4.1/HikariCP-3.4.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

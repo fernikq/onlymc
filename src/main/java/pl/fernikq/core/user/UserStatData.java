@@ -2,6 +2,7 @@ package pl.fernikq.core.user;
 
 import pl.fernikq.core.CorePlugin;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,9 +21,8 @@ public class UserStatData {
     }
 
     private void checkTable(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_user_stats` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_user_stats` ("+
                     "`id` INT(16) NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
                     "`uuid` VARCHAR(128) NOT NULL UNIQUE,"+
                     "`coins` INT NOT NULL,"+
@@ -55,16 +55,15 @@ public class UserStatData {
                     "`comebackAwardAmount` INT NOT NULL,"+
                     "`killWithRankAwardAmount` INT NOT NULL,"+
                     "`killedUsersAwardAmount` INT NOT NULL,"+
-                    "`exploredGuildsAwardAmount` INT NOT NULL);");
+                    "`exploredGuildsAwardAmount` INT NOT NULL);").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
 
     private void loadStats(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            ResultSet resultSet = this.plugin.getMySQL().query("SELECT * FROM `core_user_stats`");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            ResultSet resultSet = connection.prepareStatement("SELECT * FROM `core_user_stats`").executeQuery();
             while(resultSet.next()){
                 this.plugin.getUserManager().getUser(UUID.fromString(resultSet.getString("uuid"))).peek(user -> {
                    UserStat userStat = new UserStat(user, resultSet);
@@ -83,10 +82,9 @@ public class UserStatData {
     }
 
     public void insertStats(User user){
-        try {
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
             UserStat stat = user.getUserStat();
-            this.plugin.getMySQL().openConnection();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_user_stats` "+
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_user_stats` "+
                     "(id, uuid, coins, level, depositePearls, depositeApples, depositeEnchantedApples, minedStone, miningExperience, openedCobblex, openedPremiumCase, coinsFromStone, turboDropTime, " +
                     "turboExpTime, points, kills, deaths, assists, distanceTraveled, logouts, spentTime, exploredGuilds, killedUsers, killedWithRankUsers, comebackDaysInRow, comebackDay, minedWood, catchedFishes, timeAwardAmount, comebackAwardAmount, " +
                     "killWithRankAwardAmount, killedUsersAwardAmount, exploredGuildsAwardAmount)"+
@@ -134,23 +132,17 @@ public class UserStatData {
     }
 
     public void updateUUID(UUID oldUUID, UUID newUUID){
-        try {
-            if(!this.plugin.getMySQL().isConnected()) {
-                this.plugin.getMySQL().openConnection();
-            }
-            this.plugin.getMySQL().update("UPDATE `core_user_stats` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("UPDATE `core_user_stats` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';").executeUpdate();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
     }
 
     public void updateStats(User user){
-        try {
-            if(!this.plugin.getMySQL().isConnected()){
-                this.plugin.getMySQL().openConnection();
-            }
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
             UserStat stat = user.getUserStat();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_user_stats` SET "+
+            PreparedStatement statement = connection.prepareStatement("UPDATE `core_user_stats` SET "+
                     "`coins` = ?, `level` = ?, `depositePearls` = ?, `depositeApples` = ?, `depositeEnchantedApples` = ?, "+
                     "`minedStone` = ?, `miningExperience` = ?, `openedCobblex` = ?, `openedPremiumCase` = ?, `coinsFromStone` = ?, `turboDropTime` = ?, `turboExpTime` = ?, "+
                     "`points` = ?, `kills` = ?, `deaths` = ?, `assists` = ?, `distanceTraveled` = ?, `logouts` = ?, `spentTime` = ?, `exploredGuilds` = ?, `killedUsers` = ?, `killedWithRankUsers` = ?, "+
@@ -197,9 +189,8 @@ public class UserStatData {
     }
 
     public void deleteUser(User user){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("DELETE FROM `core_user_stats` WHERE `uuid` = '"+user.getUuid().toString()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("DELETE FROM `core_user_stats` WHERE `uuid` = '"+user.getUuid().toString()+"';").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }

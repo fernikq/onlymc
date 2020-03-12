@@ -3,6 +3,7 @@ package pl.fernikq.core.warp;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.util.LocationUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,22 +19,20 @@ public class WarpData {
     }
 
     public void checkTable(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_warps` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_warps` ("+
                     "`id` INT(16) NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
                     "`name` VARCHAR(128) NOT NULL UNIQUE,"+
                     "`location` TEXT NOT NULL,"+
-                    "`requiredGroup` TEXT NOT NULL);");
+                    "`requiredGroup` TEXT NOT NULL);").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void loadWarps(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            ResultSet resultSet = this.plugin.getMySQL().query("SELECT * FROM `core_warps`");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            ResultSet resultSet = connection.prepareStatement("SELECT * FROM `core_warps`").executeQuery();
             while(resultSet.next()){
                 Warp warp = new Warp(resultSet);
                 this.plugin.getWarpManager().registerWarp(warp);
@@ -44,9 +43,8 @@ public class WarpData {
     }
 
     public void insertWarp(Warp warp){
-        try {
-            this.plugin.getMySQL().openConnection();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement(
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            PreparedStatement statement = connection.prepareStatement(
                         "INSERT INTO `core_warps` (id, name, location, requiredGroup) VALUES (?, ?, ?, ?)");
             statement.setString(1, null);
             statement.setString(2, warp.getName());
@@ -59,18 +57,16 @@ public class WarpData {
     }
 
     public void deleteWarp(Warp warp){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("DELETE FROM `core_warps` WHERE `name` = '"+warp.getName()+"'");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("DELETE FROM `core_warps` WHERE `name` = '"+warp.getName()+"'").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void updateWarp(Warp warp){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("UPDATE `core_warps` SET `location` = '"+LocationUtil.locationToString(warp.getLocation())+"', `requiredGroup` = '"+warp.getRequiredGroup().name()+"' WHERE `name` = '"+warp.getName()+"'");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("UPDATE `core_warps` SET `location` = '"+LocationUtil.locationToString(warp.getLocation())+"', `requiredGroup` = '"+warp.getRequiredGroup().name()+"' WHERE `name` = '"+warp.getName()+"'").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }

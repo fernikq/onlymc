@@ -4,6 +4,7 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.SerializationUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,9 +21,8 @@ public class BackupData {
     }
 
     private void checkTable(){
-        try{
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_user_backups` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_user_backups` ("+
                     "`id` INT(16) NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
                     "`uuid` VARCHAR(128) NOT NULL,"+
                     "`items` TEXT NOT NULL,"+
@@ -31,16 +31,15 @@ public class BackupData {
                     "`deaths` INT NOT NULL,"+
                     "`creationTime` LONG NOT NULL,"+
                     "`reason` TEXT NOT NULL,"+
-                    "`ping` INT NOT NULL);");
+                    "`ping` INT NOT NULL);").executeUpdate();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
     }
 
     private void loadBackups(){
-        try{
-            this.plugin.getMySQL().openConnection();
-            ResultSet resultSet = this.plugin.getMySQL().query("SELECT * FROM `core_user_backups`");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            ResultSet resultSet = connection.prepareStatement("SELECT * FROM `core_user_backups`").executeQuery();
             while(resultSet.next()){
                 this.plugin.getUserManager().getUser(UUID.fromString(resultSet.getString("uuid"))).peek(user -> {
                    new Backup(user, resultSet);
@@ -52,29 +51,24 @@ public class BackupData {
     }
 
     public void updateUUID(UUID oldUUID, UUID newUUID){
-        try {
-            if(!this.plugin.getMySQL().isConnected()) {
-                this.plugin.getMySQL().openConnection();
-            }
-            this.plugin.getMySQL().update("UPDATE `core_user_backups` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("UPDATE `core_user_backups` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';").executeUpdate();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
     }
 
     public void deleteBackup(Backup backup){
-        try{
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("DELETE FROM `core_user_backups` WHERE `uuid` = '"+backup.getUser().getUuid().toString()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("DELETE FROM `core_user_backups` WHERE `uuid` = '"+backup.getUser().getUuid().toString()+"';").executeUpdate();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
     }
 
     public void insertBackup(Backup backup){
-        try{
-            this.plugin.getMySQL().openConnection();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_user_backups` (id, uuid, items, armor, points, deaths, creationTime, reason, ping) "+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_user_backups` (id, uuid, items, armor, points, deaths, creationTime, reason, ping) "+
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, backup.getUser().getUuid().toString());

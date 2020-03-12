@@ -1,5 +1,7 @@
 package pl.fernikq.core.mysql;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 import pl.fernikq.core.CorePlugin;
@@ -11,85 +13,36 @@ import java.sql.*;
 public class MySQL {
 
     private final CorePlugin plugin;
-    private Connection connection;
-    private BukkitTask connectionTask;
+    private HikariConfig hikariConfig;
+    private HikariDataSource hikariDataSource;
 
     public MySQL(CorePlugin plugin){
         this.plugin = plugin;
-        openConnection();
-        closeConnection();
+        this.hikariConfig = new HikariConfig();
+        this.hikariConfig.setUsername(ConfigManager.mysqlUser);
+        this.hikariConfig.setPassword(ConfigManager.mysqlPassword);
+        this.hikariConfig.setJdbcUrl("jdbc:mysql://"+ConfigManager.mysqlHost+":"+ConfigManager.mysqlPort+"/"+ConfigManager.mysqlBase+"?useSSL=false");
+        this.hikariConfig.setDriverClassName("com.mysql.jdbc.Driver");
+        this.hikariConfig.setPoolName("Core-MySQL");
+        this.hikariConfig.setMaximumPoolSize(Runtime.getRuntime().availableProcessors() * 2 + 1);
+        this.hikariConfig.addDataSourceProperty("cachePrepStmts", true);
+        this.hikariConfig.addDataSourceProperty("prepStmtCacheSize", 250);
+        this.hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
+        this.hikariConfig.addDataSourceProperty("useServerPrepStmts", true);
+        this.hikariDataSource = new HikariDataSource(this.hikariConfig);
     }
 
-    public void openConnection(){
-        try {
-            if(isConnected()){
-                if(this.connectionTask != null){
-                    this.connectionTask.cancel();
-                }
-                this.connectionTask = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                    closeConnection();
-                }, 3600);
-                return;
-            }
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            this.connection = DriverManager.getConnection("jdbc:mysql://" + ConfigManager.mysqlHost + ":" + ConfigManager.mysqlPort + "/" + ConfigManager.mysqlBase, ConfigManager.mysqlUser, ConfigManager.mysqlPassword);
-            this.connectionTask = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                closeConnection();
-            }, 3600);
-        }catch(SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            ex.printStackTrace();
+    public void close(){
+        if(isRunning()){
+            this.hikariDataSource.close();
         }
     }
 
-    public void openWithoutTask(){
-        try{
-            if(isConnected()){
-                return;
-            }
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            this.connection = DriverManager.getConnection("jdbc:mysql://" + ConfigManager.mysqlHost + ":" + ConfigManager.mysqlPort + "/" + ConfigManager.mysqlBase, ConfigManager.mysqlUser, ConfigManager.mysqlPassword);
-        }catch(SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            ex.printStackTrace();
-        }
+    public Connection getConnection() throws SQLException {
+        return this.hikariDataSource.getConnection();
     }
 
-
-    public void closeConnection(){
-        try {
-            if(this.connection == null){
-                return;
-            }
-            if(!this.connection.isClosed()){
-                this.connection.close();
-            }
-            this.connection = null;
-            if(this.connectionTask != null){
-                this.connectionTask.cancel();
-                this.connectionTask = null;
-            }
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean isConnected(){
-        try {
-            return this.connection != null && !this.connection.isClosed();
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public ResultSet query(String string) throws SQLException {
-        return this.connection.prepareStatement(string).executeQuery();
-    }
-
-    public int update(String string) throws SQLException {
-        return this.connection.prepareStatement(string).executeUpdate();
-    }
-
-    public PreparedStatement generateStatement(String string) throws SQLException {
-        return this.connection.prepareStatement(string);
+    public boolean isRunning() {
+        return this.hikariDataSource.isRunning();
     }
 }

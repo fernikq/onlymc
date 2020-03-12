@@ -4,6 +4,7 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.user.User;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,22 +22,20 @@ public class GuildMemberData {
     }
 
     private void checkTable(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_guild_members` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_guild_members` ("+
                     "`id` INT(16) PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
                     "`uuid` VARCHAR(128) NOT NULL UNIQUE,"+
                     "`guild` TEXT NOT NULL,"+
-                    "`permissions` TEXT NOT NULL);");
+                    "`permissions` TEXT NOT NULL);").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void loadMembers(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            ResultSet resultSet = this.plugin.getMySQL().query("SELECT * FROM `core_guild_members`");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            ResultSet resultSet = connection.prepareStatement("SELECT * FROM `core_guild_members`").executeQuery();
             while(resultSet.next()){
                 String tag = resultSet.getString("guild");
                 UUID uuid = UUID.fromString(resultSet.getString("uuid"));
@@ -53,20 +52,16 @@ public class GuildMemberData {
     }
 
     public void updateUUID(UUID oldUUID, UUID newUUID){
-        try {
-            if(!this.plugin.getMySQL().isConnected()) {
-                this.plugin.getMySQL().openConnection();
-            }
-            this.plugin.getMySQL().update("UPDATE `core_guild_members` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("UPDATE `core_guild_members` SET `uuid` = '"+newUUID.toString()+"' WHERE `uuid` = '"+oldUUID.toString()+"';").executeUpdate();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
     }
 
     public void insertMember(GuildMember member){
-        try {
-            this.plugin.getMySQL().openConnection();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_guild_members` (id, uuid, guild, permissions) "+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_guild_members` (id, uuid, guild, permissions) "+
                     "VALUES (?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, member.getUser().getUuid().toString());
@@ -79,11 +74,8 @@ public class GuildMemberData {
     }
 
     public void updateMember(GuildMember member){
-        try{
-            if(!this.plugin.getMySQL().isConnected()){
-                this.plugin.getMySQL().openConnection();
-            }
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_guild_members` SET `permissions` = ? WHERE `uuid` = '"+member.getUser().getUuid().toString()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            PreparedStatement statement = connection.prepareStatement("UPDATE `core_guild_members` SET `permissions` = ? WHERE `uuid` = '"+member.getUser().getUuid().toString()+"';");
             statement.setString(1, GuildPermission.getMemberPermissionsToString(member));
             statement.executeUpdate();
         }catch(SQLException e){
@@ -92,9 +84,8 @@ public class GuildMemberData {
     }
 
     public void deleteMember(GuildMember member){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("DELETE FROM `core_guild_members` WHERE `uuid` = '"+member.getUser().getUuid().toString()+"' AND `guild` = '"+member.getGuild().getTag()+"'");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("DELETE FROM `core_guild_members` WHERE `uuid` = '"+member.getUser().getUuid().toString()+"' AND `guild` = '"+member.getGuild().getTag()+"'").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }

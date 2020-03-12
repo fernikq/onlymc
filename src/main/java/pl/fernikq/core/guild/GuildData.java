@@ -5,6 +5,7 @@ import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.User;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,12 +23,11 @@ public class GuildData {
     }
 
     public void checkTable(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_guilds` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_guilds` ("+
                     "`id` INT(16) NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
                     "`tag` VARCHAR(128) NOT NULL UNIQUE,"+
-                    "`name` VARCHAR(256) NOT NULL UNIQUE,"+
+                    "`name` VARCHAR(128) NOT NULL UNIQUE,"+
                     "`owner` VARCHAR(128) NOT NULL UNIQUE,"+
                     "`creationTime` LONG NOT NULL,"+
                     "`lastAttackTime` LONG NOT NULL,"+
@@ -36,16 +36,15 @@ public class GuildData {
                     "`expireTime` LONG NOT NULL,"+
                     "`health` INT NOT NULL,"+
                     "`enlargeAlliesLevel` INT NOT NULL,"+
-                    "`enlargeMembersLevel` INT NOT NULL);");
+                    "`enlargeMembersLevel` INT NOT NULL);").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void loadGuilds(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            ResultSet resultSet = this.plugin.getMySQL().query("SELECT * FROM `core_guilds`");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            ResultSet resultSet = connection.prepareStatement("SELECT * FROM `core_guilds`").executeQuery();
             while(resultSet.next()){
                 this.plugin.getUserManager().getUser(UUID.fromString(resultSet.getString("owner"))).peek(user -> {
                    Guild guild = new Guild(user, resultSet);
@@ -59,20 +58,16 @@ public class GuildData {
     }
 
     public void updateUUID(UUID oldUUID, UUID newUUID){
-        try {
-            if(!this.plugin.getMySQL().isConnected()) {
-                this.plugin.getMySQL().openConnection();
-            }
-            this.plugin.getMySQL().update("UPDATE `core_guilds` SET `owner` = '"+newUUID.toString()+"' WHERE `owner` = '"+oldUUID.toString()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("UPDATE `core_guilds` SET `owner` = '"+newUUID.toString()+"' WHERE `owner` = '"+oldUUID.toString()+"';").executeUpdate();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
     }
 
     public void insertGuild(Guild guild){
-        try {
-            this.plugin.getMySQL().openConnection();
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_guilds` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_guilds` ("+
                     "id, tag, name, owner, creationTime, lastAttackTime, maxMembers, maxAllies, expireTime, health, enlargeAlliesLevel, enlargeMembersLevel) "+
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
@@ -94,11 +89,8 @@ public class GuildData {
     }
 
     public void updateGuild(Guild guild){
-        try {
-            if(!this.plugin.getMySQL().isConnected()){
-                this.plugin.getMySQL().openConnection();
-            }
-            PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_guilds` SET `owner` = ?, `lastAttackTime` = ?, "+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            PreparedStatement statement = connection.prepareStatement("UPDATE `core_guilds` SET `owner` = ?, `lastAttackTime` = ?, "+
                     "`maxMembers` = ?, `maxAllies` = ?, `expireTime` = ?, `health` = ?, `enlargeAlliesLevel` = ?, `enlargeMembersLevel` = ? "+
                     "WHERE `tag` = '"+guild.getTag()+"';");
             statement.setString(1, guild.getOwner().getUuid().toString());
@@ -116,9 +108,8 @@ public class GuildData {
     }
 
     public void deleteGuild(Guild guild){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("DELETE FROM `core_guilds` WHERE `tag` = '"+guild.getTag()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("DELETE FROM `core_guilds` WHERE `tag` = '"+guild.getTag()+"';").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }

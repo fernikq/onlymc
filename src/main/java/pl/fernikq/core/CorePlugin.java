@@ -105,8 +105,6 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable(){
-        this.mySQL.closeConnection();
-        this.mySQL.openWithoutTask();
         Bukkit.getOnlinePlayers().forEach(player -> {
             this.userManager.getUser(player.getUniqueId()).peek(user -> {
                 user.getUserStat().setSpentTime(user.getUserStat().getSpentTime() + (System.currentTimeMillis() - user.getUserStat().getJoinTime()));
@@ -119,7 +117,6 @@ public class CorePlugin extends JavaPlugin {
         this.guildManager.getGuilds().forEach(guild -> this.guildManager.updateGuild(guild));
         Bukkit.getWorlds().forEach(world -> world.save());
         simpleTasks.forEach(SimpleTask::stop);
-        this.mySQL.closeConnection();
         Bukkit.shutdown();
         unregisterTablistVariables();
     }

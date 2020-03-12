@@ -7,6 +7,7 @@ import pl.fernikq.core.user.enderchest.Enderchest;
 import pl.fernikq.core.util.Logger;
 import pl.fernikq.core.util.SerializationUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,9 +23,8 @@ public class UserData {
     }
 
     private void checkTable(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("CREATE TABLE IF NOT EXISTS `core_users` ("+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_users` ("+
                     "`id` INT(16) NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,"+
                     "`uuid` VARCHAR(128) NOT NULL UNIQUE,"+
                     "`name` VARCHAR(32) NOT NULL UNIQUE,"+
@@ -33,16 +33,15 @@ public class UserData {
                     "`groupName` TEXT NOT NULL,"+
                     "`kitTimes` TEXT NOT NULL,"+
                     "`enderchestItems` TEXT NOT NULL,"+
-                    "`enderchestLevel` INT NOT NULL);");
+                    "`enderchestLevel` INT NOT NULL);").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
 
     private void loadUsers(){
-        try {
-            this.plugin.getMySQL().openConnection();
-            ResultSet rs = this.plugin.getMySQL().query("SELECT * FROM `core_users`");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            ResultSet rs = connection.prepareStatement("SELECT * FROM `core_users`").executeQuery();
             while(rs.next()){
                 User user = new User(rs);
                 user.setKitTimes(this.plugin.getKitManager().kitsFromString(rs.getString("kitTimes")));
@@ -56,9 +55,8 @@ public class UserData {
     }
 
     public void insertUser(User user){
-        try {
-            this.plugin.getMySQL().openConnection();
-            final PreparedStatement statement = this.plugin.getMySQL().generateStatement("INSERT INTO `core_users` "+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            final PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_users` "+
                     "(id, uuid, name, firstAddress, lastAddress, groupName, kitTimes, enderchestItems, enderchestLevel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, user.getUuid().toString());
@@ -76,11 +74,8 @@ public class UserData {
     }
 
     public void updateUser(User user){
-        try {
-            if(!this.plugin.getMySQL().isConnected()){
-                this.plugin.getMySQL().openConnection();
-            }
-            final PreparedStatement statement = this.plugin.getMySQL().generateStatement("UPDATE `core_users` SET `uuid` = ?, `name` = ?, `lastAddress` = ?, "+
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            final PreparedStatement statement = connection.prepareStatement("UPDATE `core_users` SET `uuid` = ?, `name` = ?, `lastAddress` = ?, "+
                     "`groupName` = ?, `kitTimes` = ?, enderchestItems = ?, enderchestLevel = ? WHERE `uuid` = '"+user.getUuid().toString()+"' OR `name` = '"+user.getName()+"';");
             statement.setString(1, user.getUuid().toString());
             statement.setString(2, user.getName());
@@ -96,9 +91,8 @@ public class UserData {
     }
 
     public void deleteUser(User user){
-        try {
-            this.plugin.getMySQL().openConnection();
-            this.plugin.getMySQL().update("DELETE FROM `core_users` WHERE `uuid` = '"+user.getUuid().toString()+"';");
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("DELETE FROM `core_users` WHERE `uuid` = '"+user.getUuid().toString()+"';").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
