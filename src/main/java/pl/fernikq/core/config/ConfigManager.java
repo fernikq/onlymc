@@ -102,6 +102,12 @@ public class ConfigManager {
     public static long kitsBlockTime;
     public static long premiumCaseBlockTime;
 
+    public static boolean discordEnableDiscordBot;
+    public static String discordBotToken;
+    public static String discordBotChannelID;
+    public static String discordBotMessagePrefix;
+    public static String discordBotRewardTime;
+
     private static Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
 
     public void load(){
@@ -234,6 +240,11 @@ public class ConfigManager {
         diamondItemsBlockTime = 0L;
         kitsBlockTime = 0L;
         premiumCaseBlockTime = 0L;
+        discordEnableDiscordBot = true;
+        discordBotToken = "NjkxMzQ3MDY4ODc0MjYwNTEw.XnepJg.j04AISO7gF1dyaEgKt_GB2Ym1XM";
+        discordBotChannelID = "673928220021882891";
+        discordBotMessagePrefix = "!";
+        discordBotRewardTime = "1d";
     }
 
     public static Map<Enchantment, Integer> getEnchantmentIntegerMap(){

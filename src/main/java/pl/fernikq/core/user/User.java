@@ -47,6 +47,7 @@ public class User {
     private Guild guild;
     private boolean logout;
     private Set<Entity> enderPearls;
+    private long discordRewardTime;
 
     public User(Player player){
         this.uuid = player.getUniqueId();
@@ -80,6 +81,7 @@ public class User {
             this.firstAddress = rs.getString("firstAddress");
             this.lastAddress = rs.getString("lastAddress");
             this.group = UserGroup.getByName(rs.getString("groupName"));
+            this.discordRewardTime = rs.getLong("discordRewardTime");
             this.inventories = new HashMap<>();
             this.homes = new HashMap<>();
             this.godMode = false;
@@ -121,6 +123,14 @@ public class User {
 
     public boolean isLogout() {
         return logout;
+    }
+
+    public long getDiscordRewardTime() {
+        return discordRewardTime;
+    }
+
+    public void setDiscordRewardTime(long discordRewardTime) {
+        this.discordRewardTime = discordRewardTime;
     }
 
     public void setLogout(boolean logout) {

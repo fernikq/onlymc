@@ -33,7 +33,8 @@ public class UserData {
                     "`groupName` TEXT NOT NULL,"+
                     "`kitTimes` TEXT NOT NULL,"+
                     "`enderchestItems` TEXT NOT NULL,"+
-                    "`enderchestLevel` INT NOT NULL);").executeUpdate();
+                    "`enderchestLevel` INT NOT NULL,"+
+                    "`discordRewardTime` LONG NOT NULL);").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -57,7 +58,7 @@ public class UserData {
     public void insertUser(User user){
         try (Connection connection = this.plugin.getMySQL().getConnection()){
             final PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_users` "+
-                    "(id, uuid, name, firstAddress, lastAddress, groupName, kitTimes, enderchestItems, enderchestLevel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+                    "(id, uuid, name, firstAddress, lastAddress, groupName, kitTimes, enderchestItems, enderchestLevel, discordRewardTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, user.getUuid().toString());
             statement.setString(3, user.getName());
@@ -67,6 +68,7 @@ public class UserData {
             statement.setString(7, this.plugin.getKitManager().kitsToString(user.getKitTimes()));
             statement.setString(8, SerializationUtil.itemStackToString(user.getEnderchest().getItems()));
             statement.setInt(9, user.getEnderchest().getLevel());
+            statement.setLong(10, user.getDiscordRewardTime());
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -76,7 +78,7 @@ public class UserData {
     public void updateUser(User user){
         try (Connection connection = this.plugin.getMySQL().getConnection()){
             final PreparedStatement statement = connection.prepareStatement("UPDATE `core_users` SET `uuid` = ?, `name` = ?, `lastAddress` = ?, "+
-                    "`groupName` = ?, `kitTimes` = ?, enderchestItems = ?, enderchestLevel = ? WHERE `uuid` = '"+user.getUuid().toString()+"' OR `name` = '"+user.getName()+"';");
+                    "`groupName` = ?, `kitTimes` = ?, `enderchestItems` = ?, `enderchestLevel` = ?, `discordRewardTime` = ? WHERE `uuid` = '"+user.getUuid().toString()+"' OR `name` = '"+user.getName()+"';");
             statement.setString(1, user.getUuid().toString());
             statement.setString(2, user.getName());
             statement.setString(3, user.getLastAddress());
@@ -84,8 +86,17 @@ public class UserData {
             statement.setString(5, this.plugin.getKitManager().kitsToString(user.getKitTimes()));
             statement.setString(6, SerializationUtil.itemStackToString(user.getEnderchest().getItems()));
             statement.setInt(7, user.getEnderchest().getLevel());
+            statement.setLong(8, user.getDiscordRewardTime());
             statement.executeUpdate();
         } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateDiscordRewardTime(User user){
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("UPDATE `core_users` SET `discordRewardTime` = '"+user.getDiscordRewardTime()+"' WHERE `uuid` = '"+user.getUuid().toString()+"' OR `name` = '"+user.getName()+"';").executeUpdate();
+        }catch(SQLException e){
             e.printStackTrace();
         }
     }

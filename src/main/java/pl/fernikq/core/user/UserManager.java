@@ -168,4 +168,8 @@ public class UserManager {
     public BackupData getBackupData() {
         return backupData;
     }
+
+    public UserData getUserData() {
+        return userData;
+    }
 }

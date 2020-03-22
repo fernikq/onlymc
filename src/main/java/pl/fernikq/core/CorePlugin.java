@@ -16,6 +16,7 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.GeneratorManager;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGeneratorManager;
+import pl.fernikq.core.discord.DiscordManager;
 import pl.fernikq.core.drop.DropManager;
 import pl.fernikq.core.dummy.DummyManager;
 import pl.fernikq.core.guild.GuildManager;
@@ -87,6 +88,7 @@ public class CorePlugin extends JavaPlugin {
     private TopManager topManager;
     private QuestManager questManager;
     private IncognitoManager incognitoManager;
+    private DiscordManager discordManager;
 
     @Override
     public void onEnable() {
@@ -229,6 +231,7 @@ public class CorePlugin extends JavaPlugin {
         this.abyssManager = new AbyssManager(this);
         this.questManager = new QuestManager(this);
         this.incognitoManager = new IncognitoManager(this);
+        this.discordManager = new DiscordManager(this);
     }
 
     private void initData(){
