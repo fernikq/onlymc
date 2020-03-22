@@ -1,6 +1,6 @@
 package pl.fernikq.core.listener.block;
 
-/*import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.packetWrapper.WrapperPlayClientBlockDig;
 import pl.fernikq.core.CorePlugin;
 
@@ -41,7 +42,7 @@ public class BlockDigListener extends PacketAdapter {
                 return;
             }
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-            RegionFeedback regionFeedback = this.plugin.getRegionManager().canDestroy(user, block.getLocation());
+            RegionFeedback regionFeedback = this.plugin.getRegionManager().fakeBlockCanDestroy(user, block.getLocation());
             if(!regionFeedback.isPermit()){
                 player.sendBlockChange(location, Material.BEDROCK, (byte) 1);
             }
@@ -49,4 +50,4 @@ public class BlockDigListener extends PacketAdapter {
             ex.printStackTrace();
         }
     }
-}*/
+}

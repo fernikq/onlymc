@@ -198,7 +198,7 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private void initPacketReceiving(){
-        //new BlockDigListener(this);
+        new BlockDigListener(this);
         //TODO if not mcguard
     }
 
@@ -364,6 +364,7 @@ public class CorePlugin extends JavaPlugin {
         new CraftItemListener(this);
         new ProjectileLaunchListener(this);
         new EnchantItemListener(this);
+        new SignChangeListener(this);
         //new GuardBlockDigListener(this);
         //TODO mcguard dig listener
     }

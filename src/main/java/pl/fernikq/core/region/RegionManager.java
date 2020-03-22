@@ -224,6 +224,35 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
+    public RegionFeedback fakeBlockCanDestroy(User user, Location location){
+        if(user == null){
+            return RegionFeedback.DENY_ERROR;
+        }
+        if(user.canByGroup(UserGroup.ADMIN)){
+            return RegionFeedback.ALLOW;
+        }
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(guild != null){
+            if(!user.hasGuild()){
+                return RegionFeedback.DENY_DESTROY_GUILD;
+            }
+            if(!user.getGuild().equals(guild)){
+                return RegionFeedback.DENY_DESTROY_GUILD;
+            }
+            GuildMember member = user.getGuild().getMemberByName(user.getName()).orElse(null);
+            if(member == null){
+                return RegionFeedback.DENY_ERROR;
+            }
+            if(!member.hasPermission(GuildPermission.BREAK)){
+                return RegionFeedback.DENY_DESTROY_GUILD_PERMISSION;
+            }
+            if(guild.getRegion().isInCenter(location)){
+                return RegionFeedback.DENY_DESTROY_GUILD_CENTER;
+            }
+        }
+        return RegionFeedback.ALLOW;
+    }
+
     public RegionFeedback canDestroy(User user, Location location){
         if(user == null){
             return RegionFeedback.DENY_ERROR;

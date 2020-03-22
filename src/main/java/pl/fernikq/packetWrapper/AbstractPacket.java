@@ -2,7 +2,7 @@ package pl.fernikq.packetWrapper;
 
 import java.lang.reflect.InvocationTargetException;
 
-/*import org.bukkit.entity.Player;
+import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -61,4 +61,4 @@ public abstract class AbstractPacket {
             throw new RuntimeException("Cannot receive packet.", e);
         }
     }
-}*/
+}

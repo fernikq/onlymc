@@ -325,4 +325,8 @@ public class GuildManager {
     public Set<Guild> getGuilds(){
         return HashSet.ofAll(this.guilds.values());
     }
+
+    public GuildData getGuildData() {
+        return guildData;
+    }
 }

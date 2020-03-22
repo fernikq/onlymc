@@ -107,6 +107,14 @@ public class GuildData {
         }
     }
 
+    public void updateLeader(Guild guild){
+        try (Connection connection = this.plugin.getMySQL().getConnection()){
+            connection.prepareStatement("UPDATE `core_guilds` SET `owner` = '"+guild.getOwner().getUuid().toString()+"' WHERE `tag` = '"+guild.getTag()+"';").executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
     public void deleteGuild(Guild guild){
         try (Connection connection = this.plugin.getMySQL().getConnection()){
             connection.prepareStatement("DELETE FROM `core_guilds` WHERE `tag` = '"+guild.getTag()+"';").executeUpdate();

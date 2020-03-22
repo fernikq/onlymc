@@ -60,6 +60,9 @@ public class GuildLeaderCommand extends CustomCommand {
                 return;
             }
             guild.setOwner(targetUser);
+            Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+               this.plugin.getGuildManager().getGuildData().updateLeader(guild);
+            });
             String message = MessagesManager.guildLeaderMessage;
             message = message.replace("{TAG}", guild.getTag());
             message = message.replace("{PLAYER}", targetUser.getName());
