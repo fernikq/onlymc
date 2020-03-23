@@ -100,7 +100,7 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
-        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this));
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this));
         simpleTasks.forEach(SimpleTask::start);
         registerTablistVariables();
     }
@@ -369,6 +369,7 @@ public class CorePlugin extends JavaPlugin {
         new ProjectileLaunchListener(this);
         new EnchantItemListener(this);
         new SignChangeListener(this);
+        new WeatherChangeListener(this);
         //new GuardBlockDigListener(this);
         //TODO mcguard dig listener
     }

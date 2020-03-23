@@ -196,7 +196,12 @@ public class GuildManager {
     }
 
     public boolean isNearBorder(Location location){
-        return !location.toVector().isInSphere(LocationUtil.locationFromString(ConfigManager.spawnLocation).toVector(), (location.getWorld().getWorldBorder().getSize() / 2) - ConfigManager.minimalDistanceFromBorder);
+        Location spawn = LocationUtil.locationFromString(ConfigManager.spawnLocation);
+        Location min = spawn.clone().add(-((spawn.getWorld().getWorldBorder().getSize()/2) - ConfigManager.minimalDistanceFromBorder), 0, -((spawn.getWorld().getWorldBorder().getSize()/2) - ConfigManager.minimalDistanceFromBorder));
+        min.setY(0);
+        Location max = spawn.clone().add(((spawn.getWorld().getWorldBorder().getSize()/2) - ConfigManager.minimalDistanceFromBorder), 0, ((spawn.getWorld().getWorldBorder().getSize()/2) - ConfigManager.minimalDistanceFromBorder));
+        max.setY(300);
+        return !location.toVector().isInAABB(min.toVector(), max.toVector());
     }
 
     public boolean hasItems(Player player){
