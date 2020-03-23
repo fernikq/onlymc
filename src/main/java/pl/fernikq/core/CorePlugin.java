@@ -317,6 +317,7 @@ public class CorePlugin extends JavaPlugin {
         new IgnoreCommand("ignore", new String[0], UserGroup.PLAYER, this).register();
         new EnderCommand("ender", new String[0], UserGroup.PLAYER, this).register();
         new EnderChestCommand("enderchest", new String[]{"ec"}, UserGroup.VIP, this).register();
+        new WorkbenchCommand("workbench", new String[]{"wb", "craft"}, UserGroup.VIP, this).register();
         new ChatSettingsCommand("ustawienia", new String[]{"cc"}, UserGroup.PLAYER, this).register();
         new PlayerInfoCommand("gracz", new String[0], UserGroup.PLAYER, this).register();
         new ResetPointsCommand("resetuj", new String[0], UserGroup.PLAYER, this).register();

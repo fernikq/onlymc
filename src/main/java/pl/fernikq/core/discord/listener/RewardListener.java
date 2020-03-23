@@ -12,7 +12,9 @@ import org.bukkit.Bukkit;
 import pl.fernikq.core.CoreAPI;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.discord.util.DiscordUserUtil;
+import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.TimeUtil;
@@ -77,6 +79,7 @@ public class RewardListener extends ListenerAdapter {
             Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
                 this.plugin.getUserManager().getUserData().updateDiscordRewardTime(user);
             });
+            Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, "&8[&4&lDISCORD&8] &8>> &fGracz &c"+user.getName()+" &fodebral nagrode za wejscie na discorda! Ty tez mozesz ja otrzymac, wszystkie informacje znajduja sie pod komenda &c/discord"));
             return;
         }
     }
