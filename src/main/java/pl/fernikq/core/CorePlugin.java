@@ -370,6 +370,7 @@ public class CorePlugin extends JavaPlugin {
         new EnchantItemListener(this);
         new SignChangeListener(this);
         new WeatherChangeListener(this);
+        new BlockRedstoneListener(this);
         //new GuardBlockDigListener(this);
         //TODO mcguard dig listener
     }
