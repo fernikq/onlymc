@@ -1,5 +1,7 @@
 package pl.fernikq.core.listener.player;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -11,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
@@ -29,18 +32,21 @@ import pl.fernikq.core.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("deprecation")
 public class PlayerInteractListener implements Listener {
 
     private final CorePlugin plugin;
-    List<Material> vehicles;
+    private List<Material> vehicles;
+    private Cache<Location, Boolean> leverClicks;
 
     public PlayerInteractListener(CorePlugin plugin){
         this.plugin = plugin;
         this.vehicles = Arrays.asList(Material.BOAT, Material.MINECART, Material.COMMAND_MINECART, Material.EXPLOSIVE_MINECART,
                 Material.HOPPER_MINECART, Material.POWERED_MINECART, Material.STORAGE_MINECART);
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        this.leverClicks = CacheBuilder.newBuilder().expireAfterWrite(500, TimeUnit.MILLISECONDS).build();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -266,6 +272,15 @@ public class PlayerInteractListener implements Listener {
                 ChatUtil.sendMessage(player, MessagesManager.error("Aby to zrobic musisz stac na plytkach!"));
                 return;
             }
+            return;
+        }
+        if(block != null && block.getType() == Material.LEVER){
+            if(this.leverClicks.asMap().containsKey(block.getLocation())){
+                event.setCancelled(true);
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie tak szybko kolego!"));
+                return;
+            }
+            this.leverClicks.put(block.getLocation(), true);
             return;
         }
     }

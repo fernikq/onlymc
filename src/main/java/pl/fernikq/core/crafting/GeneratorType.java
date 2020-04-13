@@ -10,7 +10,9 @@ public enum GeneratorType {
     SAND_GENERATOR("sandfarmer"),
     BLOCK_BREAKER("kopacz"),
     ENDERCHEST("enderchest"),
-    RZUCANE("rzucane");
+    RZUCANE("rzucane"),
+    ANTITRAP("antynogi"),
+    MAGIC_ROD("wedka");
 
     private final String name;
 

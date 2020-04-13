@@ -102,3 +102,43 @@ Generators:
       - 'stone'
       - 'stone'
       - 'stone'
+  wedka:
+    item:
+      item: 'fishing_rod:44'
+      amount: 1
+      name: '&cMagiczna wedka'
+      lore:
+        - ' '
+        - '&8>> &fPrzyciaga gracza do ciebie'
+      enchant: 'efficiency:5'
+    guiName: '&8[ &fCrafting &cWedki &8]'
+    ingredients:
+      - 'slime_ball'
+      - 'slime_ball'
+      - 'slime_ball'
+      - 'slime_ball'
+      - 'fishing_rod'
+      - 'slime_ball'
+      - 'slime_ball'
+      - 'slime_ball'
+      - 'slime_ball'
+  antynogi:
+    item:
+      item: 'potion:0'
+      amount: 1
+      name: '&e&lAntyNogi'
+      lore:
+        - ' '
+        - '&8>> &fPo wypiciu, teleportuje cie do gracza, ktory cie uderzy'
+      enchant: 'efficiency:5'
+    guiName: '&8[ &fCrafting &eAntynog &8]'
+    ingredients:
+      - 'gold_block'
+      - 'slime_ball'
+      - 'emerald_block'
+      - 'gold_block'
+      - 'gold_boots'
+      - 'emerald_block'
+      - 'gold_block'
+      - 'slime_ball'
+      - 'emerald_block'

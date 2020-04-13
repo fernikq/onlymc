@@ -9,6 +9,7 @@ import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
 import pl.fernikq.core.command.guild.GuildAdminCommand;
 import pl.fernikq.core.command.guild.GuildCommand;
+import pl.fernikq.core.command.guild.player.GuildFightCommand;
 import pl.fernikq.core.command.player.*;
 import pl.fernikq.core.command.premium.RepairCommand;
 import pl.fernikq.core.command.simpleCommand.SimpleCommandManager;
@@ -44,15 +45,15 @@ import pl.fernikq.core.user.fight.FightManager;
 import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.user.incognito.IncognitoManager;
 import pl.fernikq.core.user.quests.QuestManager;
+import pl.fernikq.core.util.BlockUtil;
 import pl.fernikq.core.util.ChatUtil;
-import pl.fernikq.core.util.RankingUtil;
 import pl.fernikq.core.util.TeleportManager;
 import pl.fernikq.core.vanish.VanishManager;
 import pl.fernikq.core.variable.guild.*;
+import pl.fernikq.core.variable.server.RegisteredUsersVariable;
 import pl.fernikq.core.variable.user.*;
 import pl.fernikq.core.warp.WarpManager;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -103,6 +104,14 @@ public class CorePlugin extends JavaPlugin {
         this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this));
         simpleTasks.forEach(SimpleTask::start);
         registerTablistVariables();
+        try{
+            BlockUtil.setDurability("obsidian", 72.2F);
+            BlockUtil.setDurability("anvil", 72.2F);
+            BlockUtil.setDurability("ender_chest", 72.2F);
+            BlockUtil.setDurability("enchanting_table", 72.2F);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -151,6 +160,7 @@ public class CorePlugin extends JavaPlugin {
         BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildSizeVariable("guild-size", this));
         BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildOnlineVariable("guild-online", this));
         BungeeTabListPlusBukkitAPI.registerVariable(this, new GuildLeaderVariable("guild-owner", this));
+        BungeeTabListPlusBukkitAPI.registerVariable(this, new RegisteredUsersVariable("server-users", this));
 
         for(int i = 0; i < 32; i++){
             BungeeTabListPlusBukkitAPI.registerVariable(this, new UserTopVariable("user-top-"+i, this, i));
@@ -163,37 +173,7 @@ public class CorePlugin extends JavaPlugin {
 
     private void unregisterTablistVariables(){
         try {
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserNameVariable("user-name", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserRankVariable("user-rank", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserPointsVariable("user-points", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserKillsVariable("user-kills", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserDeathsVariable("user-deaths", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserAssistsVariable("user-assists", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserLogoutsVariable("user-logouts", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserCoinsVariable("user-coins", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserDistanceVariable("user-distance", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserTimeVariable("user-time", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserLevelVariable("user-level", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new UserDaysInRowVariable("user-days-in-row", this));
-
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildTagVariable("guild-tag", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildNameVariable("guild-name", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildPointsVariable("guild-points", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildKillsVariable("guild-kills", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildDeathsVariable("guild-deaths", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildLogoutsVariable("guild-logouts", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildCoinsVariable("guild-coins", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildSizeVariable("guild-size", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildOnlineVariable("guild-online", this));
-            BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildLeaderVariable("guild-owner", this));
-
-            for(int i = 0; i < 32; i++){
-                BungeeTabListPlusBukkitAPI.unregisterVariable(new UserTopVariable("user-top-"+i, this, i));
-            }
-
-            for(int i = 0; i < 32; i++){
-                BungeeTabListPlusBukkitAPI.unregisterVariable(new GuildTopVariable("guild-top-"+i, this, i));
-            }
+            BungeeTabListPlusBukkitAPI.unregisterVariables(this);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -371,6 +351,7 @@ public class CorePlugin extends JavaPlugin {
         new SignChangeListener(this);
         new WeatherChangeListener(this);
         new BlockRedstoneListener(this);
+        new PlayerItemConsumeListener(this);
         //new GuardBlockDigListener(this);
         //TODO mcguard dig listener
     }

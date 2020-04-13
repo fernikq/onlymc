@@ -27,6 +27,7 @@ public enum RegionFeedback {
     DENY_BUILD_GUILD_CENTER(false,  MessagesManager.error("Nie mozesz budowac w centrum gildii!")),
     DENY_DESTROY_GUILD(false,  MessagesManager.error("Nie mozesz niszczyc blokow na terenie wrogiej gildii!")),
     DENY_DESTROY_GUILD_PERMISSION(false,  MessagesManager.error("Nie posiadasz uprawnienia do niszczenia blokow na terenie swojej gildii!")),
+    DENY_DESTROY_BEACON_GUILD_PERMISSION(false,  MessagesManager.error("Nie posiadasz uprawnienia do niszczenia beacona na terenie swojej gildii!")),
     DENY_DESTROY_GUILD_CENTER(false,  MessagesManager.error("Nie mozesz niszczyc blokow w centrum gildii")),
     DENY_BUCKETS_GUILD(false,  MessagesManager.error("Nie mozesz uzywac wiaderek na terenie wrogiej gildii!")),
     DENY_BUCKETS_GUILD_CENTER(false,  MessagesManager.error("Nie mozesz uzywac wiaderek w centrum gildii!")),

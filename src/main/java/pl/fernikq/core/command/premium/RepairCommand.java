@@ -10,9 +10,13 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.command.CustomCommand;
 import pl.fernikq.core.config.Lang;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.crafting.GeneratorType;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.EnchantManager;
+import pl.fernikq.core.util.ItemUtil;
+
+import java.util.Objects;
 
 public class RepairCommand extends CustomCommand {
 
@@ -33,6 +37,9 @@ public class RepairCommand extends CustomCommand {
             if(!EnchantManager.canRepair(player.getItemInHand())){
                 return ChatUtil.sendMessage(sender, MessagesManager.error("Podany przedmiot nie moze zostac naprawiony!"));
             }
+            if(ItemUtil.isSimilar(player.getItemInHand(), this.plugin.getGeneratorManager().getGenerator(GeneratorType.MAGIC_ROD).getItemStack(), false)){
+                return ChatUtil.sendMessage(sender, MessagesManager.error("Nie mozesz naprawic magicznej wedki!"));
+            }
             player.getItemInHand().setDurability((short)0);
             player.playSound(player.getLocation(), Sound.ANVIL_USE, 20.0F, 20.0F);
             return ChatUtil.sendMessage(sender, "&8>> &aPomyslnie {n}naprawiles przedmiot&8!");
@@ -46,6 +53,9 @@ public class RepairCommand extends CustomCommand {
                return;
            }
            for(ItemStack itemStack : player.getInventory().getContents()){
+               if(ItemUtil.isSimilar(itemStack, this.plugin.getGeneratorManager().getGenerator(GeneratorType.MAGIC_ROD).getItemStack(), false)){
+                   continue;
+               }
                if(EnchantManager.canRepair(itemStack)){
                    itemStack.setDurability((short)0);
                }

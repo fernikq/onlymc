@@ -48,7 +48,7 @@ public class PlayerMoveListener implements Listener {
                 return;
             }
             if(user.getUserFight().isDuringFight()){
-                regionFeedback = this.plugin.getRegionManager().canJoinDuringPVP(user, event.getTo(), event.getFrom());
+                regionFeedback = this.plugin.getRegionManager().canJoinDuringPVP(user, event.getTo().getBlock().getLocation(), event.getFrom().getBlock().getLocation());
                 if(!regionFeedback.isPermit()){
                     player.teleport(event.getFrom());
                     PlayerUtil.punchPlayer(player, event.getTo(), event.getFrom());

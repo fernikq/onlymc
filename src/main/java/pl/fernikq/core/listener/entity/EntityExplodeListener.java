@@ -33,7 +33,7 @@ public class EntityExplodeListener implements Listener {
         int maxHour = Integer.parseInt(tntHours[1]);
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        if(currentHour < minHour || currentHour > maxHour){
+        if(currentHour < minHour || currentHour >= maxHour){
             event.setCancelled(true);
             return;
         }

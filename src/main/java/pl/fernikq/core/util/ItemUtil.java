@@ -1,5 +1,6 @@
 package pl.fernikq.core.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -77,7 +78,21 @@ public class ItemUtil {
         return enchantments;
     }
 
-    public static void recalculateDurability(Player player, ItemStack item) {
+    public static boolean isSimilar(ItemStack itemStack, ItemStack itemStack2, boolean useDurability){
+        if((itemStack == null && itemStack2 != null) || (itemStack2 == null && itemStack != null)){
+            return false;
+        }
+        if(Objects.equals(itemStack, itemStack2)){
+            return true;
+        }
+        if(useDurability) {
+            return itemStack.getTypeId() == itemStack2.getTypeId() && itemStack.getDurability() == itemStack2.getDurability() && itemStack.hasItemMeta() == itemStack2.hasItemMeta() && (!itemStack.hasItemMeta() || Bukkit.getItemFactory().equals(itemStack.getItemMeta(), itemStack2.getItemMeta()));
+        }else{
+            return itemStack.getTypeId() == itemStack2.getTypeId() && itemStack.hasItemMeta() == itemStack2.hasItemMeta() && (!itemStack.hasItemMeta() || Bukkit.getItemFactory().equals(itemStack.getItemMeta(), itemStack2.getItemMeta()));
+        }
+    }
+
+    public static void recalculateDurability(Player player, ItemStack item, boolean useEnchant) {
         if(item == null){
             return;
         }
@@ -86,7 +101,7 @@ public class ItemUtil {
         }
         int enchantLevel = item.getEnchantmentLevel(Enchantment.DURABILITY);
         short d = item.getDurability();
-        if (enchantLevel > 0){
+        if (enchantLevel > 0 && useEnchant){
             if (100 / (enchantLevel + 1) > RandomUtil.getRandInt(0, 100)) {
                 if (d == item.getType().getMaxDurability()) {
                     player.getItemInHand().setItemMeta(null);

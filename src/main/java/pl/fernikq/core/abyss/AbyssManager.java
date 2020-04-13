@@ -21,11 +21,13 @@ public class AbyssManager {
 
     private final CorePlugin plugin;
     private Map<String, InventoryGUI> inventories;
+    private List<InventoryGUI> inventoryList;
     private boolean opened;
 
     public AbyssManager(CorePlugin plugin){
         this.plugin = plugin;
         this.inventories = new HashMap<>();
+        this.inventoryList = new ArrayList<>();
         this.opened = false;
     }
 
@@ -48,11 +50,13 @@ public class AbyssManager {
 
     public void createInventories(List<ItemStack> itemStacks){
         this.inventories.clear();
+        this.inventoryList.clear();
         this.opened = true;
         int page = 1;
         while(!itemStacks.isEmpty()){
             InventoryGUI inventoryGUI = createInventoryGui(itemStacks, page);
             this.inventories.putIfAbsent(inventoryGUI.getInventory().getName(), inventoryGUI);
+            this.inventoryList.add(inventoryGUI);
             page++;
         }
     }
@@ -70,6 +74,6 @@ public class AbyssManager {
     }
 
     public List<InventoryGUI> getInventoriesToList(){
-        return new ArrayList<>(this.inventories.values());
+        return new ArrayList<>(this.inventoryList);
     }
 }

@@ -24,7 +24,8 @@ public enum GuildPermission {
     CUBOID_ENLARGE("{c}&lPowiekszanie terenu", Material.GRASS),
     ALLIANCES_ENLARGE("{c}&lPowiekszanie ilosci sojuszy", Material.PAPER),
     MEMBERS_ENLARGE("{c}&lPowiekszanie ilosci czlonkow", Material.BOOK_AND_QUILL),
-    TREASURE_ENLARGE("{c}&lPowiekszanie skarbca", Material.ENDER_CHEST);
+    TREASURE_ENLARGE("{c}&lPowiekszanie skarbca", Material.ENDER_CHEST),
+    DESTROY_BEACON("{c}&lNiszczenie beacona", Material.BEACON);
 
     private String name;
     private Material material;

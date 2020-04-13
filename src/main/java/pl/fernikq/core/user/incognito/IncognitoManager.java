@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 
 import java.util.Collection;
 
@@ -24,6 +25,9 @@ public class IncognitoManager {
 
     public boolean changeName(User user, User target){
         if(user.equals(target)){
+            return false;
+        }
+        if(target.canByGroup(UserGroup.HELPER)){
             return false;
         }
         UserIncognito incognito = user.getIncognito();

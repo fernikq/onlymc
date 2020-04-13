@@ -23,9 +23,6 @@ public class AntylogoutTask extends BukkitRunnable implements SimpleTask {
             if(!user.getUserFight().isDuringFight()) {
                 if(user.getUserFight().wasDuringFight(5)) {
                     TitleUtil.sendActionBar(user.asPlayer(), ChatUtil.fixColor(MessagesManager.playerFightFinishMessage));
-                    return;
-                }
-                if(!user.getUserFight().wasDuringFight(30)) {
                     this.plugin.getFightManager().removeFight(user);
                     return;
                 }

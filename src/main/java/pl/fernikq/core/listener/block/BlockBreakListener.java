@@ -83,7 +83,7 @@ public class BlockBreakListener implements Listener {
             if(this.plugin.getDropManager().getDisabledCobblestone().contains(user)){
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                ItemUtil.recalculateDurability(player, player.getItemInHand());
+                ItemUtil.recalculateDurability(player, player.getItemInHand(), true);
             }
             user.getUserStat().addMinedStone(1);
             this.plugin.getQuestManager().checkQuest(user, QuestType.MINED_STONE);

@@ -36,6 +36,14 @@ public class PlayerUtil {
         player.setVelocity(vector.multiply(ConfigManager.punchingLinePower).setY(0.5));
     }
 
+    public static void punchPlayer(Player player, Location to, Location from, double power){
+        Vector vectorFrom = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
+        Vector vectorTo = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
+        Vector vectorSubtract = vectorTo.subtract(vectorFrom);
+        Vector vector = new Vector(vectorSubtract.getBlockX(), vectorSubtract.getY(), vectorSubtract.getBlockZ());
+        player.setVelocity(vector.multiply(power).setY(0.5));
+    }
+
     public static int getPing(Player p) {
         try {
             CraftPlayer cp = (CraftPlayer) p;

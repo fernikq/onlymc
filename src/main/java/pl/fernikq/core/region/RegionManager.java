@@ -114,7 +114,7 @@ public class RegionManager {
             }
             int size = Integer.parseInt(borderInfo[1]);
             Location lowerCorner = new Vector(world.getSpawnLocation().getBlockX() - (size / 2), 0, world.getSpawnLocation().getBlockZ() - (size / 2)).toLocation(world);
-            Location upperCorner = new Vector(world.getSpawnLocation().getBlockX() + (size / 2), 256, world.getSpawnLocation().getBlockZ() + (size / 2)).toLocation(world);
+            Location upperCorner = new Vector(world.getSpawnLocation().getBlockX() + (size / 2), 300, world.getSpawnLocation().getBlockZ() + (size / 2)).toLocation(world);
             this.worldBorders.put(world.getName(), new WorldBorder(world, upperCorner, lowerCorner, size));
             world.getWorldBorder().setCenter(world.getSpawnLocation());
             world.getWorldBorder().setSize(size);
@@ -275,6 +275,9 @@ public class RegionManager {
             if(!member.hasPermission(GuildPermission.BREAK)){
                 return RegionFeedback.DENY_DESTROY_GUILD_PERMISSION;
             }
+            if(location.getBlock().getType() == Material.BEACON && !member.hasPermission(GuildPermission.DESTROY_BEACON)){
+                return RegionFeedback.DENY_DESTROY_BEACON_GUILD_PERMISSION;
+            }
             if(guild.getRegion().isInCenter(location)){
                 return RegionFeedback.DENY_DESTROY_GUILD_CENTER;
             }
@@ -287,6 +290,9 @@ public class RegionManager {
                 if(region.isStoneGeneratorRegion()){
                     if(user.asPlayer().getItemInHand() != null && user.asPlayer().getItemInHand().getType() == Material.GOLD_PICKAXE){
                         return RegionFeedback.DENY_DESTROY_GOLD_PICKAXE;
+                    }
+                    if(location.getBlock().getType() != Material.STONE){
+                        return RegionFeedback.DENY_DESTROY_SPAWN;
                     }
                 }
                 return RegionFeedback.ALLOW;
