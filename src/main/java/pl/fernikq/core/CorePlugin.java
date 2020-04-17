@@ -9,7 +9,6 @@ import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
 import pl.fernikq.core.command.guild.GuildAdminCommand;
 import pl.fernikq.core.command.guild.GuildCommand;
-import pl.fernikq.core.command.guild.player.GuildFightCommand;
 import pl.fernikq.core.command.player.*;
 import pl.fernikq.core.command.premium.RepairCommand;
 import pl.fernikq.core.command.simpleCommand.SimpleCommandManager;
