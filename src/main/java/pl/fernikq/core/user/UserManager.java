@@ -81,7 +81,7 @@ public class UserManager {
         });
         this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> {
             sortable.addObject(user);
-            sortable.sort();
+            sortable.setSorted(false);
         });
         PlayerUtil.randomTeleport(player, true);
         return user;
@@ -126,7 +126,7 @@ public class UserManager {
             this.userStatData.deleteUser(user);
             this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> {
                 sortable.removeObject(user);
-                sortable.sort();
+                sortable.setSorted(false);
             });
         });
     }

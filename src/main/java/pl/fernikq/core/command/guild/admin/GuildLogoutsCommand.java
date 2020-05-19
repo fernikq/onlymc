@@ -39,9 +39,9 @@ public class GuildLogoutsCommand extends CustomCommand {
         this.plugin.getUserManager().getUser(nick).peek(user -> {
             user.getUserStat().setLogouts(finalAmount);
             this.plugin.runAsync(() -> {
-                this.plugin.getTopManager().getTopByType(TopType.USER_LOGOUTS).sort();
+                this.plugin.getTopManager().getTopByType(TopType.USER_LOGOUTS).setSorted(false);
                 if(user.hasGuild()){
-                    this.plugin.getTopManager().getTopByType(TopType.GUILD_LOGOUTS).sort();
+                    this.plugin.getTopManager().getTopByType(TopType.GUILD_LOGOUTS).setSorted(false);
                 }
                 ChatUtil.sendMessage(sender, "&8>> {n}Ustawiles ilosc logoutow gracza {c}"+user.getName()+" {n}na {c}"+finalAmount);
             });

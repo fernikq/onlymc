@@ -11,24 +11,25 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class GuildAssistsComparator implements Sortable<Guild> {
 
     private final CorePlugin plugin;
-    private List<Guild> guildList;
+    private List<Guild> sortedList;
+    private Set<Guild> guilds;
     private TopType topType;
     private TopKind topKind;
+    private boolean isSorted;
     private Comparator<Guild> guildComparator;
 
     public GuildAssistsComparator(CorePlugin plugin, TopType topType, TopKind topKind){
         this.plugin = plugin;
         this.topType = topType;
         this.topKind = topKind;
-        this.guildList = new ArrayList<>();
+        this.isSorted = true;
+        this.guilds = new HashSet<>();
+        this.sortedList = new ArrayList<>();
         this.guildComparator = new Comparator<Guild>() {
             @Override
             public int compare(Guild o1, Guild o2) {
@@ -64,33 +65,41 @@ public class GuildAssistsComparator implements Sortable<Guild> {
 
     @Override
     public void sort() {
-        this.guildList.sort(this.guildComparator);
+        if(this.guilds.isEmpty()){
+            return;
+        }
+        this.sortedList = new ArrayList<>(this.guilds);
+        this.sortedList.sort(this.guildComparator);
     }
 
     @Override
     public Guild getObjectByPosition(int position){
-        return this.guildList.size() > position ? this.guildList.get(position) : null;
+        List<Guild> sortedList = new ArrayList<>(this.sortedList);
+        return sortedList.size() > position ? sortedList.get(position) : null;
     }
 
     @Override
-    public int getPositionByObject(Guild user){
-        return this.guildList.indexOf(user);
+    public int getPositionByObject(Guild guild){
+        return new ArrayList<>(this.sortedList).indexOf(guild);
     }
 
     @Override
-    public void addObject(Guild user){
-        if(this.guildList.contains(user)){
-            return;
-        }
-        this.guildList.add(user);
+    public boolean isSorted() {
+        return this.isSorted;
+    }
+
+    public void setSorted(boolean sorted) {
+        this.isSorted = sorted;
     }
 
     @Override
-    public void removeObject(Guild user){
-        if(!this.guildList.contains(user)){
-            return;
-        }
-        this.guildList.remove(user);
+    public void addObject(Guild guild){
+        this.guilds.add(guild);
+    }
+
+    @Override
+    public void removeObject(Guild guild){
+        this.guilds.remove(guild);
     }
 
     @Override

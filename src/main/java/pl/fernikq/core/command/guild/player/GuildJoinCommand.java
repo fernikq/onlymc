@@ -59,7 +59,7 @@ public class GuildJoinCommand extends CustomCommand {
            String finalMessage = message;
            this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isGuildMessages()).forEach(onlineUser -> ChatUtil.sendMessage(onlineUser.asPlayer(), finalMessage));
            this.plugin.getGuildManager().addMember(user, guild, GuildPermission.PLACE, GuildPermission.BREAK, GuildPermission.BASE_TELEPORT);
-           this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).stream().filter(sortable -> !sortable.getTopType().equals(TopType.GUILD_COINS)).forEach(Sortable::sort));
+           this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).stream().filter(sortable -> !sortable.getTopType().equals(TopType.GUILD_COINS)).forEach(sortable -> sortable.setSorted(false)));
         });
         return true;
     }

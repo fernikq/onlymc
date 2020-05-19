@@ -567,7 +567,7 @@ public class UserInventory {
 
     public InventoryGUI playerQuestsMenu(User user){
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lZADANIA &8]", 3, true);
-        this.plugin.getQuestManager().getQuestTypes().forEach(quest -> {
+        this.plugin.getQuestManager().getQuests().keySet().forEach(quest -> {
             gui.addItem(new ItemBuilder(quest.getMaterial()).setName(ChatUtil.fixColor("{c}&l"+quest.getName())).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zobaczyc!"))).toItemStack(), new QuestAction(this.plugin, QuestActionType.OPEN_QUEST_GUI, quest, user));
         });
         gui.setEmptyItem(this.blank);

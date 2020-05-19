@@ -4,9 +4,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ChatUtil {
+
+    private static List<String> colors = Arrays.asList("&a", "&b", "&c", "&e", "&2", "&3", "&4", "&6", "&f");
 
     public static String fixColor(String message){
         message = StringUtil.replace(message, "{c}", "&c");
@@ -24,6 +28,12 @@ public class ChatUtil {
         message = StringUtil.replace(message, "«", "<<");
         message = StringUtil.replace(message, "♥", "<3");
         return ChatColor.stripColor(message);
+    }
+
+    public static String getRainbowString(String string, boolean bolt){
+        StringBuilder stringBuilder = new StringBuilder(string.length());
+        string.chars().forEach(value -> stringBuilder.append(colors.get(ThreadLocalRandom.current().nextInt(colors.size()))+(bolt ? "&l" : "")).append((char)value));
+        return stringBuilder.toString();
     }
 
     public static List<String> fixColor(List<String> list) {

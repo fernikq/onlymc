@@ -37,9 +37,9 @@ public class GuildKillsCommand extends CustomCommand {
         this.plugin.getUserManager().getUser(nick).peek(user -> {
             user.getUserStat().setKills(finalAmount);
             this.plugin.runAsync(() -> {
-                this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).sort();
+                this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).setSorted(false);
                 if(user.hasGuild()){
-                    this.plugin.getTopManager().getTopByType(TopType.GUILD_KILLS).sort();
+                    this.plugin.getTopManager().getTopByType(TopType.GUILD_KILLS).setSorted(false);
                 }
                 ChatUtil.sendMessage(sender, "&8>> {n}Ustawiles ilosc zabojstw gracza {c}"+user.getName()+" {n}na {c}"+finalAmount);
             });

@@ -82,8 +82,8 @@ public class AsyncPlayerChatListener implements Listener {
            }
            format = StringUtil.replace(format, "{RANK}", user.getGroup().getPrefix());
            format = StringUtil.replace(format, "{POINTS}", MessagesManager.playerChatPointsFormat.replace("{POINTS}", Integer.toString(user.getUserStat().getPoints())));
-           format = StringUtil.replace(format, "{NAME}", player.getName());
-           format = StringUtil.replace(format, "{MESSAGE}", "%2$s");
+           format = StringUtil.replace(format, "{NAME}", user.isRainbowNickname() ? ChatUtil.getRainbowString(player.getName(), false) : user.getGroup().getNickColor()+player.getName());
+           format = StringUtil.replace(format, "{MESSAGE}", user.getGroup().getMessageColor()+"%2$s");
            event.setFormat(ChatUtil.fixColor(format));
            if(!user.canByGroup(UserGroup.HELPER)){
                this.cache.put(user, 100L);

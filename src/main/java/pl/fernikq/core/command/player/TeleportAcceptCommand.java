@@ -12,6 +12,8 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
+import java.util.List;
+
 public class TeleportAcceptCommand extends CustomCommand {
 
     private final CorePlugin plugin;
@@ -33,7 +35,12 @@ public class TeleportAcceptCommand extends CustomCommand {
                    ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz aktywnych prosb o teleportacje!"));
                    return;
                }
-               User target = user.getTpaRequestsList().get(0);
+               List<User> requests = user.getTpaRequestsList();
+                if(requests.isEmpty()){
+                    ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz aktywnych prosb o teleportacje!"));
+                    return;
+                }
+               User target = requests.get(0);
                if(target.asPlayer() == null){
                    ChatUtil.sendMessage(player, Lang.playerOffline);
                    user.getTpaRequests().asMap().remove(target);

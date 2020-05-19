@@ -11,17 +11,14 @@ import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DropManager {
 
     private final CorePlugin plugin;
     private File dropFile;
-    private List<Drop> drops;
+    private Map<DropType, List<Drop>> drops;
 
     public ItemStack premiumCaseItem;
     public ItemStack cobblexItem;
@@ -35,7 +32,7 @@ public class DropManager {
 
     public DropManager(CorePlugin plugin){
         this.plugin = plugin;
-        this.drops = new ArrayList<>();
+        this.drops = new HashMap<>();
         this.disabledCobblestone = new HashSet<>();
         checkFile();
         loadDrops();
@@ -58,6 +55,9 @@ public class DropManager {
 
     public void loadDrops(){
         this.drops.clear();
+        this.drops.put(DropType.STONE, new ArrayList<>());
+        this.drops.put(DropType.PREMIUMCASE, new ArrayList<>());
+        this.drops.put(DropType.COBBLEX, new ArrayList<>());
         YamlConfiguration configuration = getDropFile();
         ItemBuilder premiumCase = new ItemBuilder(ItemUtil.getMaterial(configuration.getString("PremiumCase.item").split(":")[0]))
                 .setDurability((short) Short.parseShort(configuration.getString("PremiumCase.item").split(":")[1]))
@@ -111,7 +111,7 @@ public class DropManager {
                 drop.setName(section.getString("nameInGUI"));
             }
             drop.setItemStack(itemBuilder.toItemStack());
-            this.drops.add(drop);
+            this.drops.get(DropType.STONE).add(drop);
         }
         configurationSection = configuration.getConfigurationSection("CobblexDrop");
         for(String s : configurationSection.getKeys(false)){
@@ -137,7 +137,7 @@ public class DropManager {
                 drop.setName(section.getString("nameInGUI"));
             }
             drop.setItemStack(itemBuilder.toItemStack());
-            this.drops.add(drop);
+            this.drops.get(DropType.COBBLEX).add(drop);
         }
         configurationSection = configuration.getConfigurationSection("PremiumCaseDrop");
         for(String s : configurationSection.getKeys(false)){
@@ -164,12 +164,12 @@ public class DropManager {
                 drop.setName(section.getString("nameInGUI"));
             }
             drop.setItemStack(itemBuilder.toItemStack());
-            this.drops.add(drop);
+            this.drops.get(DropType.PREMIUMCASE).add(drop);
         }
     }
 
     public List<Drop> getDrops(DropType dropType){
-        return new ArrayList<>(this.drops).stream().filter(drop -> drop.getDropType().equals(dropType)).collect(Collectors.toList());
+        return new ArrayList<>(this.drops.get(dropType));
     }
 
     public YamlConfiguration getDropFile() {

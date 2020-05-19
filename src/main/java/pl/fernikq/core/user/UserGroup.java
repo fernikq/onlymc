@@ -9,29 +9,42 @@ import java.util.List;
 
 public enum UserGroup {
 
-    PLAYER(0, 1, "", "", new ArrayList<>()),
-    VIP(1, 2, "&8[&eVIP&8] ", "&e[VIP]", new ArrayList<>()),
-    SV(2, 3, "&8[&6SV&8] ", "&6[SV]", new ArrayList<>()),
-    MVP(3, 4, "&8[&3MVP&8] ", "&3[MVP]", new ArrayList<>()),
-    YT(4, 4, "&8[&4Y&fT&8] ", "&4Y&fT", new ArrayList<>()),
-    HELPER(5, 5, "&8[&bHelper&8] ", "&b[Helper]", new ArrayList<>()),
-    MOD(6, 10, "&8[&aMod&8] ", "&a[Mod]", new ArrayList<>()),
-    ADMIN(7, 100, "&8[&cAdmin&8] ", "&c[Admin]", new ArrayList<>()),
-    ROOT(8, 100, "&8[&4ROOT&8] ", "&4[ROOT]", new ArrayList<>()),
-    DEV(9, 100, "&8[&9DEV&8] ", "&9[DEV]", new ArrayList<>());
+    PLAYER(0, 1, "", "", "&f", "&f", new ArrayList<>()),
+    VIP(1, 2, "&8[&eVIP&8] ", "&e[VIP]", "&e", "&f", new ArrayList<>()),
+    SV(2, 3, "&8[&6SV&8] ", "&6[SV]", "&6", "&f", new ArrayList<>()),
+    MVP(3, 4, "&8[&3MVP&8] ", "&3[MVP]", "&3", "&f", new ArrayList<>()),
+    YT(4, 4, "&8[&4Y&fT&8] ", "&4Y&fT", "&b", "&f", new ArrayList<>()),
+    TEST_HELPER(5, 5, "&8[&3THelper&8] ", "&3[THelper]", "&3", "&f", new ArrayList<>()),
+    HELPER(5, 5, "&8[&bHelper&8] ", "&b[Helper]", "&b", "&f", new ArrayList<>()),
+    MOD(6, 10, "&8[&aMod&8] ", "&a[Mod]", "&a", "&f", new ArrayList<>()),
+    ADMIN(7, 100, "&8[&cAdmin&8] ", "&c[Admin]", "&c", "&c", new ArrayList<>()),
+    ROOT(8, 100, "&8[&4ROOT&8] ", "&4[ROOT]", "&c", "&c", new ArrayList<>()),
+    DEV(9, 100, "&8[&9DEV&8] ", "&9[DEV]", "&3", "&f", new ArrayList<>());
 
     private int level;
     private int homes;
     private String prefix;
     private String tag;
+    private String nickColor;
+    private String messageColor;
     private List<String> permissions;
 
-    private UserGroup(int level, int homes, String prefix, String tag, List<String> permissions){
+    private UserGroup(int level, int homes, String prefix, String tag, String nickColor, String messageColor, List<String> permissions){
         this.level = level;
         this.homes = homes;
         this.prefix = prefix;
         this.tag = tag;
+        this.messageColor = messageColor;
+        this.nickColor = nickColor;
         this.permissions = permissions;
+    }
+
+    public String getNickColor() {
+        return nickColor;
+    }
+
+    public String getMessageColor() {
+        return messageColor;
     }
 
     public static Set<UserGroup> getGroups(){

@@ -37,9 +37,9 @@ public class GuildPointsCommand extends CustomCommand {
         this.plugin.getUserManager().getUser(nick).peek(user -> {
             user.getUserStat().setPoints(finalAmount);
             this.plugin.runAsync(() -> {
-                this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).sort();
+                this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).setSorted(false);
                 if(user.hasGuild()){
-                    this.plugin.getTopManager().getTopByType(TopType.GUILD_POINTS).sort();
+                    this.plugin.getTopManager().getTopByType(TopType.GUILD_POINTS).setSorted(false);
                 }
                 ChatUtil.sendMessage(sender, "&8>> {n}Ustawiles ilosc punktow gracza {c}"+user.getName()+" {n}na {c}"+finalAmount);
                 this.plugin.getDummyManager().updateScore(user);

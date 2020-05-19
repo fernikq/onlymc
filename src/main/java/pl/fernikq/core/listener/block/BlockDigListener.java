@@ -34,6 +34,9 @@ public class BlockDigListener extends PacketAdapter {
             final WrapperPlayClientBlockDig packet = new WrapperPlayClientBlockDig(event.getPacket());
             final World world = player.getWorld();
             final Location location = packet.getLocation().toLocation(world);
+            if(location == null){
+                return;
+            }
             Block block = location.getBlock();
             if(block == null){
                 return;

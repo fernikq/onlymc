@@ -34,6 +34,7 @@ public class User {
     private Enderchest enderchest;
     private UserSidebar sidebar;
     private UserIncognito incognito;
+    private boolean rainbowNickname;
 
     private Map<String, Home> homes;
     private boolean godMode;
@@ -72,6 +73,7 @@ public class User {
         this.logout = false;
         this.incognito = new UserIncognito(this);
         this.enderPearls = new HashSet<>();
+        this.rainbowNickname = false;
     }
 
     public User(ResultSet rs){
@@ -111,6 +113,14 @@ public class User {
             }
         });
         return backups;
+    }
+
+    public boolean isRainbowNickname() {
+        return rainbowNickname;
+    }
+
+    public void setRainbowNickname(boolean rainbowNickname) {
+        this.rainbowNickname = rainbowNickname;
     }
 
     public Set<Entity> getEnderPearls() {

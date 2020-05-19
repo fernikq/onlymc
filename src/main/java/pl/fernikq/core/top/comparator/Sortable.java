@@ -10,6 +10,8 @@ public interface Sortable<T> {
     void addObject(T object);
     void removeObject(T object);
     int getPositionByObject(T object);
+    boolean isSorted();
+    void setSorted(boolean isSorted);
     T getObjectByPosition(int position);
     TopType getTopType();
     TopKind getTopKind();

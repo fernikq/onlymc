@@ -46,7 +46,7 @@ public class ResetPointsCommand extends CustomCommand {
            if(this.cache.asMap().containsKey(user)){
                user.getUserStat().setPoints(ConfigManager.playerStartPoints);
                ChatUtil.sendMessage(player, "&8>> {n}Twoje punkty zostaly zresetowane do {c}"+ConfigManager.playerStartPoints);
-               this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).sort());
+               this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).setSorted(false));
                this.plugin.getDummyManager().updateScore(user);
                return;
            }

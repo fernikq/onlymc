@@ -100,7 +100,7 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
-        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this));
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this), new TopsSortTask(this));
         simpleTasks.forEach(SimpleTask::start);
         registerTablistVariables();
         try{
@@ -219,8 +219,8 @@ public class CorePlugin extends JavaPlugin {
         this.warpManager.init();
         this.guildManager.init();
         this.allianceManager.init();
-        this.topManager.getTopsByKind(TopKind.USER).forEach(Sortable::sort);
-        this.topManager.getTopsByKind(TopKind.GUILD).forEach(Sortable::sort);
+        this.topManager.getTopsByKind(TopKind.USER).forEach(sortable -> sortable.setSorted(false));
+        this.topManager.getTopsByKind(TopKind.GUILD).forEach(sortable -> sortable.setSorted(false));
     }
 
     private void initDatabase(){
@@ -306,6 +306,7 @@ public class CorePlugin extends JavaPlugin {
         new EffectsCommand("efekty", new String[0], UserGroup.PLAYER, this).register();
         new SidebarCommand("sidebar", new String[0], UserGroup.PLAYER, this).register();
         new IncognitoCommand("incognito", new String[0], UserGroup.PLAYER, this).register();
+        new RainbowNicknameCommand("teczowy", new String[0], UserGroup.VIP, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();

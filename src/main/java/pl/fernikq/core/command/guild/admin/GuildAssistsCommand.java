@@ -37,9 +37,9 @@ public class GuildAssistsCommand extends CustomCommand {
         this.plugin.getUserManager().getUser(nick).peek(user -> {
             user.getUserStat().setAssists(finalAmount);
             this.plugin.runAsync(() -> {
-                this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort();
+                this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).setSorted(false);
                 if(user.hasGuild()){
-                    this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).sort();
+                    this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).setSorted(false);
                 }
                 ChatUtil.sendMessage(sender, "&8>> {n}Ustawiles ilosc asyst gracza {c}"+user.getName()+" {n}na {c}"+finalAmount);
             });

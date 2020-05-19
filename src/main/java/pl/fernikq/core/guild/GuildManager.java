@@ -105,7 +105,7 @@ public class GuildManager {
             registerGuild(guild);
             this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(sortable -> {
                 sortable.addObject(guild);
-                sortable.sort();
+                sortable.setSorted(false);
             }));
             addMember(user, guild, GuildPermission.values());
             createGuildRoom(guild);
@@ -126,7 +126,7 @@ public class GuildManager {
         });
         this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(sortable -> {
             sortable.removeObject(guild);
-            sortable.sort();
+            sortable.setSorted(false);
         }));
         guild.getMembers().forEach(member -> removeMember(member));
         this.plugin.getAllianceManager().getAllies(guild).forEach(ally -> this.plugin.getAllianceManager().removeAlliance(ally, guild));

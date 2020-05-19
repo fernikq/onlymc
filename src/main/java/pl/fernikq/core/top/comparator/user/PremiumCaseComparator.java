@@ -10,24 +10,24 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class PremiumCaseComparator implements Sortable<User> {
 
     private final CorePlugin plugin;
-    private List<User> userList;
+    private List<User> sortedList;
+    private Set<User> users;
     private TopType topType;
     private TopKind topKind;
+    private boolean isSorted;
     private Comparator<User> userComparator;
 
     public PremiumCaseComparator(CorePlugin plugin, TopType topType, TopKind topKind){
         this.plugin = plugin;
         this.topType = topType;
         this.topKind = topKind;
-        this.userList = new ArrayList<>();
+        this.sortedList = new ArrayList<>();
+        this.users = new HashSet<>();
         this.userComparator = new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
@@ -48,7 +48,6 @@ public class PremiumCaseComparator implements Sortable<User> {
 
     @Override
     public InventoryGUI getInventory(User object) {
-        sort();
         InventoryGUI inventoryGUI = new InventoryGUI("{c}&lTOPKA "+this.plugin.getDropManager().getPremiumCaseNameInGUI().toUpperCase(), 6, true);
         for(int i = 0; i < 45; i++){
             User topUser = this.getObjectByPosition(i);
@@ -64,33 +63,41 @@ public class PremiumCaseComparator implements Sortable<User> {
 
     @Override
     public void sort() {
-        this.userList.sort(this.userComparator);
+        if(this.users.isEmpty()){
+            return;
+        }
+        this.sortedList = new ArrayList<>(this.users);
+        this.sortedList.sort(this.userComparator);
     }
 
     @Override
     public User getObjectByPosition(int position){
-        return this.userList.size() > position ? this.userList.get(position) : null;
+        List<User> sortedList = new ArrayList<>(this.sortedList);
+        return sortedList.size() > position ? sortedList.get(position) : null;
     }
 
     @Override
     public int getPositionByObject(User user){
-        return this.userList.indexOf(user);
+        return new ArrayList<>(this.sortedList).indexOf(user);
+    }
+
+    @Override
+    public boolean isSorted() {
+        return this.isSorted;
+    }
+
+    public void setSorted(boolean sorted) {
+        this.isSorted = sorted;
     }
 
     @Override
     public void addObject(User user){
-        if(this.userList.contains(user)){
-            return;
-        }
-        this.userList.add(user);
+        this.users.add(user);
     }
 
     @Override
     public void removeObject(User user){
-        if(!this.userList.contains(user)){
-            return;
-        }
-        this.userList.remove(user);
+        this.users.remove(user);
     }
 
     @Override

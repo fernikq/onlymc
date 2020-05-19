@@ -46,7 +46,7 @@ public class GuildRemoveMemberCommand extends CustomCommand {
                 return;
             }
             this.plugin.getGuildManager().removeMember(guildMember);
-            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).stream().filter(sortable -> !sortable.getTopType().equals(TopType.GUILD_COINS)).forEach(Sortable::sort));
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).stream().filter(sortable -> !sortable.getTopType().equals(TopType.GUILD_COINS)).forEach(sortable -> sortable.setSorted(false)));
             ChatUtil.sendMessage(sender, "&8>> {n}Wyrzuciles gracza {c}"+user.getName()+" {n}z gildii &8[&f"+guild.getTag()+"&8]");
         }).onEmpty(() -> ChatUtil.sendMessage(sender, Lang.userNotExists));
         return true;

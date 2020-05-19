@@ -60,9 +60,9 @@ public class PlayerDeathListener implements Listener {
                 .setPing(PlayerUtil.getPing(player)).setReason(reason).build();
         this.plugin.runAsync(() -> this.plugin.getUserManager().getBackupData().insertBackup(backup));
         victimUser.getUserStat().setDeaths(victimUser.getUserStat().getDeaths() + 1);
-        this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_DEATHS).sort());
+        this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_DEATHS).setSorted(false));
         if(victimUser.hasGuild()){
-            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_DEATHS).sort());
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_DEATHS).setSorted(false));
         }
         UserFight victimFight = victimUser.getUserFight();
         if(victimFight.getDamageMap().isEmpty() && victimFight.getLastAttacker() == null){
@@ -100,9 +100,9 @@ public class PlayerDeathListener implements Listener {
                 victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - assistPoints);
                 ChatUtil.sendMessage(victimUser.asPlayer(), "&8>> {n}Gracz {c}"+(this.plugin.getIncognitoManager().changeName(assistUser, victimUser) ? "&k"+assistUser.getName() : assistUser.getName())+" {n}asystowal przy twoim zabojstwie i przez to tracisz &c"+assistPoints+" {n}punktow");
                 this.plugin.getQuestManager().checkQuest(assistUser, QuestType.ASSISTS);
-                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
+                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).setSorted(false));
                 if(assistUser.hasGuild()){
-                    this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).sort());
+                    this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).setSorted(false));
                 }
             }
             this.plugin.getFightManager().removeFight(victimUser);
@@ -129,9 +129,9 @@ public class PlayerDeathListener implements Listener {
                 victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - assistPoints);
                 ChatUtil.sendMessage(victimUser.asPlayer(), "&8>> {n}Gracz {c}"+(this.plugin.getIncognitoManager().changeName(assistUser, victimUser) ? "&k"+assistUser.getName() : assistUser.getName())+" {n}asystowal przy twoim zabojstwie i przez to tracisz &c"+assistPoints+" {n}punktow");
                 this.plugin.getQuestManager().checkQuest(assistUser, QuestType.ASSISTS);
-                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
+                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).setSorted(false));
                 if(assistUser.hasGuild()){
-                    this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).sort());
+                    this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).setSorted(false));
                 }
             }
             this.plugin.getFightManager().removeFight(victimUser);
@@ -158,9 +158,9 @@ public class PlayerDeathListener implements Listener {
             assistUser.getUserStat().setAssists(assistUser.getUserStat().getAssists() + 1);
             this.plugin.getQuestManager().checkQuest(assistUser, QuestType.ASSISTS);
             victimUser.getUserStat().setPoints(victimUser.getUserStat().getPoints() - points);
-            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).sort());
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_ASSISTS).setSorted(false));
             if(assistUser.hasGuild()){
-                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).sort());
+                this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_ASSISTS).setSorted(false));
             }
             this.plugin.getDummyManager().updateScore(assistUser);
             this.plugin.getDummyManager().updateScore(victimUser);
@@ -209,12 +209,12 @@ public class PlayerDeathListener implements Listener {
         this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_USER);
         this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_UNIQUE_USERS);
         this.plugin.runAsync(() -> {
-            this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).sort();
-            this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).sort();
+            this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).setSorted(false);
+            this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).setSorted(false);
         });
         if(killerUser.hasGuild() || victimUser.hasGuild()){
-            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_POINTS).sort());
-            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_KILLS).sort());
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_POINTS).setSorted(false));
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.GUILD_KILLS).setSorted(false));
         }
         this.plugin.getFightManager().removeFight(victimUser);
     }
