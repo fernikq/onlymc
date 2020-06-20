@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.command.CustomCommand;
 import pl.fernikq.core.config.Lang;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
@@ -25,7 +26,11 @@ public class RainbowNicknameCommand extends CustomCommand {
         }
         Player player = (Player)sender;
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
-            ChatUtil.sendMessage(player, "&8>> "+(user.isRainbowNickname() ? "&cWylaczyles" : "&aWlaczyles") + " "+ChatUtil.getRainbowString("teczowy nick", false));
+            if(!user.isRainbowNicknamePermission()){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz uprawnien do teczowego nicku!"));
+                return;
+            }
+            ChatUtil.sendMessage(player, "&8>> "+(user.isRainbowNickname() ? "&cWylaczyles" : "&aWlaczyles") + " "+" &fteczowy nick!");
             user.setRainbowNickname(!user.isRainbowNickname());
         });
         return true;

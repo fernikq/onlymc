@@ -35,6 +35,9 @@ public class User {
     private UserSidebar sidebar;
     private UserIncognito incognito;
     private boolean rainbowNickname;
+    private boolean rainbowNicknamePermission;
+    private boolean discoArmor;
+    private boolean discoArmorPermission;
 
     private Map<String, Home> homes;
     private boolean godMode;
@@ -84,6 +87,8 @@ public class User {
             this.lastAddress = rs.getString("lastAddress");
             this.group = UserGroup.getByName(rs.getString("groupName"));
             this.discordRewardTime = rs.getLong("discordRewardTime");
+            this.discoArmorPermission = rs.getBoolean("discoArmor");
+            this.rainbowNicknamePermission = rs.getBoolean("rainbowNickname");
             this.inventories = new HashMap<>();
             this.homes = new HashMap<>();
             this.godMode = false;
@@ -121,6 +126,30 @@ public class User {
 
     public void setRainbowNickname(boolean rainbowNickname) {
         this.rainbowNickname = rainbowNickname;
+    }
+
+    public boolean isRainbowNicknamePermission() {
+        return rainbowNicknamePermission;
+    }
+
+    public void setRainbowNicknamePermission(boolean rainbowNicknamePermission) {
+        this.rainbowNicknamePermission = rainbowNicknamePermission;
+    }
+
+    public boolean isDiscoArmor() {
+        return discoArmor;
+    }
+
+    public void setDiscoArmor(boolean discoArmor) {
+        this.discoArmor = discoArmor;
+    }
+
+    public boolean isDiscoArmorPermission() {
+        return discoArmorPermission;
+    }
+
+    public void setDiscoArmorPermission(boolean discoArmorPermission) {
+        this.discoArmorPermission = discoArmorPermission;
     }
 
     public Set<Entity> getEnderPearls() {

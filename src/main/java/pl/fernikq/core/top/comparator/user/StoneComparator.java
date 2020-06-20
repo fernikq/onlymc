@@ -88,7 +88,7 @@ public class StoneComparator implements Sortable<User> {
     }
 
     public void setSorted(boolean sorted) {
-        this.isSorted = sorted;
+        this.isSorted = false;
     }
 
     @Override

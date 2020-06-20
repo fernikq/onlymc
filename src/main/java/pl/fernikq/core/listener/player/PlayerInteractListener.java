@@ -23,7 +23,11 @@ import pl.fernikq.core.crafting.GeneratorType;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.guild.drill.GuildDrill;
+import pl.fernikq.core.guild.member.GuildMember;
+import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.region.RegionFeedback;
+import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.quests.QuestType;
@@ -91,9 +95,9 @@ public class PlayerInteractListener implements Listener {
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
                 user.getUserStat().addOpenedCobblex(1);
                 this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_COBBLEX);
+                this.plugin.getTopManager().getTopByType(TopType.USER_COBBLEX).setSorted(false);
             });
             ItemUtil.removeFromHand(player, 1);
-
             return;
         }
         if(this.plugin.getDropManager().getPremiumCaseItem().isSimilar(player.getItemInHand())){
@@ -119,6 +123,7 @@ public class PlayerInteractListener implements Listener {
             }
             event.setCancelled(true);
             ItemUtil.removeFromHand(player, 1);
+            this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_CASE).setSorted(false));
             if(items == 0){
                 this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
                     user.getUserStat().addOpenedPremiumCase(1);
@@ -232,6 +237,37 @@ public class PlayerInteractListener implements Listener {
                 return;
             }
             return;
+        }
+        if(block != null && block.getType() == Material.CAULDRON){
+            this.plugin.getGuildManager().getGuildByLocation(block.getLocation()).peek(guild -> {
+                GuildDrill guildDrill = guild.getDrillByLocation(block.getLocation());
+                User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+                if(user == null) {
+                    ChatUtil.sendMessage(player, MessagesManager.errorMessage);
+                    return;
+                }
+                if(guildDrill == null){
+                    return;
+                }
+                if(guild.equals(user.getGuild())) {
+                    if(guild.getOwner().equals(user)) {
+                        this.plugin.getGuildInventory().guildDrillMenu(user, guildDrill, guild).openInventory(player);
+                        return;
+                    }
+                    GuildMember member = guild.getMemberByName(user.getName()).orElse(null);
+                    if(member == null) {
+                        ChatUtil.sendMessage(player, MessagesManager.errorMessage);
+                        return;
+                    }
+                    if(!member.hasPermission(GuildPermission.OPEN_DRILL_INVENTORY)) {
+                        ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz uprawnienia do otwierania magazynu wiertla!"));
+                        return;
+                    }
+                    player.openInventory(guildDrill.getInventory());
+                }else{
+                    //todo in future
+                }
+            });
         }
         if(event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.ENDER_CHEST){
             event.setCancelled(true);

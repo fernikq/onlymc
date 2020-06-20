@@ -64,10 +64,10 @@ public class GuildCoinsComparator implements Sortable<Guild> {
 
     @Override
     public void sort() {
+        this.sortedList = new ArrayList<>(this.guilds);
         if(this.guilds.isEmpty()){
             return;
         }
-        this.sortedList = new ArrayList<>(this.guilds);
         this.sortedList.sort(this.guildComparator);
     }
 
@@ -88,7 +88,7 @@ public class GuildCoinsComparator implements Sortable<Guild> {
     }
 
     public void setSorted(boolean sorted) {
-        this.isSorted = sorted;
+        this.isSorted = false;
     }
 
     @Override

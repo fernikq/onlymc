@@ -1,4 +1,4 @@
-package pl.fernikq.packetWrapper;
+/*package pl.fernikq.packetWrapper;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -62,3 +62,4 @@ public abstract class AbstractPacket {
         }
     }
 }
+*/

@@ -1,4 +1,4 @@
-package pl.fernikq.core.listener.block;
+/*package pl.fernikq.core.listener.block;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -54,3 +54,4 @@ public class BlockDigListener extends PacketAdapter {
         }
     }
 }
+*/

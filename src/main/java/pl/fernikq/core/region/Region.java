@@ -37,6 +37,7 @@ public class Region {
     private boolean allowFireSpread;
     private boolean allowMobSpawning;
     private boolean allowLeavesDecay;
+    private boolean allowPistons;
 
     public boolean isIn(Location location){
         if(!StringUtils.equals(location.getWorld().getName(), this.lowerCorner.getWorld().getName())){
@@ -67,6 +68,15 @@ public class Region {
 
     public Region setRegionName(String regionName) {
         this.regionName = regionName;
+        return this;
+    }
+
+    public boolean isAllowPistons() {
+        return allowPistons;
+    }
+
+    public Region setAllowPistons(boolean allowPistons) {
+        this.allowPistons = allowPistons;
         return this;
     }
 

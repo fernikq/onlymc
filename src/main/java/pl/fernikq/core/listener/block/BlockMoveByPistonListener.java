@@ -10,6 +10,7 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.region.GuildRegion;
 import pl.fernikq.core.region.Region;
+import pl.fernikq.core.region.RegionFeedback;
 
 public class BlockMoveByPistonListener implements Listener {
 
@@ -44,6 +45,14 @@ public class BlockMoveByPistonListener implements Listener {
             for(Block blockFromList : event.getBlocks()){
                 guild = this.plugin.getGuildManager().getGuildByLocation(blockFromList.getRelative(direction).getLocation()).getOrNull();
                 if(guild != null && guild.getRegion().isInCenter(blockFromList.getRelative(direction).getLocation())) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
+        for(Block blockFromList : event.getBlocks()) {
+            for(Region region : this.plugin.getRegionManager().getRegionsByLocation(blockFromList.getRelative(direction).getLocation())) {
+                if(!region.isAllowPistons()){
                     event.setCancelled(true);
                     return;
                 }

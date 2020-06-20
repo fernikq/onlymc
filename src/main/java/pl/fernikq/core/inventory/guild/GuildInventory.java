@@ -7,12 +7,15 @@ import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.guild.drill.GuildDrill;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.inventory.actions.TopsAction;
+import pl.fernikq.core.inventory.actions.guild.GuildDrillAction;
 import pl.fernikq.core.inventory.actions.guild.GuildPanelAction;
 import pl.fernikq.core.inventory.enums.TopsActionType;
+import pl.fernikq.core.inventory.enums.guild.GuildDrillActionType;
 import pl.fernikq.core.inventory.enums.guild.GuildPanelActionType;
 import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.top.comparator.Sortable;
@@ -229,5 +232,45 @@ public class GuildInventory {
         inventoryGUI.setEmptyItem(this.blank);
         user.addInventory(inventoryGUI);
         return inventoryGUI;
+    }
+
+    public InventoryGUI guildDrillMenu(User user, GuildDrill guildDrill, Guild guild){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lZarzadzanie wiertlem &8]", 1, true);
+        gui.setItem(8, new ItemBuilder(Material.CHEST).setName(ChatUtil.fixColor("&8[ {c}&lMagazyn &8]")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby otworzyc magazyn"))).toItemStack(), new GuildDrillAction(this.plugin, guildDrill, GuildDrillActionType.OPEN_TREASURE, null, guild, user));
+        ItemBuilder upgradeItem = new ItemBuilder(Material.EXP_BOTTLE).setName(ChatUtil.fixColor("&8[ {c}&lUlepszenie &8]"));
+        if(guildDrill.getLevel() >= 3){
+            upgradeItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fCzas wydobycia&8: {c}"+(guildDrill.getSpeedByLevel()/1200)+" &fmin", "&8>> &fPotencjalna ilosc surowca&8: {c}"+guildDrill.getAmountByLevel()[0]+"-"+guildDrill.getAmountByLevel()[1], " ", "&8>> &fWiertlo posiada maksymalny poziom ulepszenia")));
+        }else{
+            upgradeItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fCzas wydobycia&8: {c}"+(guildDrill.getSpeedByLevel()/1200)+" &fmin", "&8>> &fPotencjalna ilosc surowca&8: {c}"+guildDrill.getAmountByLevel()[0]+"-"+guildDrill.getAmountByLevel()[1], " ", "&8>> &fPoziom&8: {c}"+guildDrill.getLevel(), "&8>> &fKoszt&8: {c}"+ConfigManager.guildDrillUpgradeCost.get(guildDrill.getLevel())+" &fmonet", " ", "&8>> &fKliknij aby ulepszyc!")));
+        }
+        gui.setItem(2, upgradeItem.toItemStack(), new GuildDrillAction(this.plugin, guildDrill, GuildDrillActionType.UPGRADE_DRILL, null, guild, user));
+        gui.setItem(4, new ItemBuilder(Material.HOPPER).setName(ChatUtil.fixColor("&8[ {c}&lPraca wiertla &8]")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fStan&8: "+(this.plugin.getDrillManager().getDrills().containsKey(guildDrill) ? "&awlaczone" : "&cwylaczone"), " ", "&8>> &fKliknij aby zmienic stan wiertla"))).toItemStack()
+                , new GuildDrillAction(this.plugin, guildDrill, GuildDrillActionType.SWITCH_DRILL_WORK, null, guild, user));
+        gui.setItem(6, new ItemBuilder(Material.COAL).setName(ChatUtil.fixColor("&8[ {c}&lSurowiec &8]")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fSurowiec&8: {c}"+guildDrill.getMaterial().name(), " ", "&8>> &fKliknij aby zmienic wydobywany surowiec"))).toItemStack(), new GuildDrillAction(this.plugin, guildDrill, GuildDrillActionType.CHANGE_MATERIAL_MENU, null, guild, user));
+        gui.setItem(0, new ItemBuilder(Material.BARRIER).setName(ChatUtil.fixColor("&8[ {c}&lUsuwanie &8]")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby usunac wiertlo!"))).toItemStack(), new GuildDrillAction(this.plugin, guildDrill, GuildDrillActionType.REMOVE_DRILL, null, guild, user));
+        user.addInventory(gui);
+        return gui;
+    }
+
+    public InventoryGUI guildDrillMaterialSwitch(User user, GuildDrill guildDrill, Guild guild){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lWydobycie surowcow &8]", 3, true);
+        List<Material> materials = Arrays.asList(Material.COAL, Material.IRON_INGOT, Material.GOLD_INGOT, Material.EMERALD, Material.DIAMOND, Material.REDSTONE, Material.OBSIDIAN, Material.SLIME_BALL);
+        int slot = 9;
+        for(Material material : materials){
+            gui.setItem(slot, new ItemBuilder(material).setName(ChatUtil.fixColor("&8[ {c}&l"+material.name()+" &8]")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby wybrac"))).toItemStack(),
+                    new GuildDrillAction(this.plugin, guildDrill, GuildDrillActionType.CHANGE_MATERIAL, material, guild, user));
+            if(guildDrill.getMaterial() == material){
+                gui.setItem(slot-9, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 5).setName(" ").toItemStack());
+                gui.setItem(slot+9, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 5).setName(" ").toItemStack());
+            }else{
+                gui.setItem(slot-9, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 14).setName(" ").toItemStack());
+                gui.setItem(slot+9, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 14).setName(" ").toItemStack());
+            }
+            slot++;
+        }
+        gui.setItem(17, new ItemBuilder(Material.BARRIER).setName(ChatUtil.fixColor("&8[ &c&lPowrot &8]")).toItemStack(), new GuildDrillAction(this.plugin, guildDrill, GuildDrillActionType.OPEN_MENU, null, guild, user));
+        gui.setEmptyItem(this.blank.clone());
+        user.addInventory(gui);
+        return gui;
     }
 }

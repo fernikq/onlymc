@@ -25,7 +25,8 @@ public enum GuildPermission {
     ALLIANCES_ENLARGE("{c}&lPowiekszanie ilosci sojuszy", Material.PAPER),
     MEMBERS_ENLARGE("{c}&lPowiekszanie ilosci czlonkow", Material.BOOK_AND_QUILL),
     TREASURE_ENLARGE("{c}&lPowiekszanie skarbca", Material.ENDER_CHEST),
-    DESTROY_BEACON("{c}&lNiszczenie beacona", Material.BEACON);
+    DESTROY_BEACON("{c}&lNiszczenie beacona", Material.BEACON),
+    OPEN_DRILL_INVENTORY("{c}&lOtwieranie magazynu wiertla", Material.HOPPER);
 
     private String name;
     private Material material;

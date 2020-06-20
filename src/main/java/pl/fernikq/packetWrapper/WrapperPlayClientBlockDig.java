@@ -1,4 +1,4 @@
-package pl.fernikq.packetWrapper;
+/*package pl.fernikq.packetWrapper;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
@@ -42,3 +42,4 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
         handle.getPlayerDigTypes().write(0, value);
     }
 }
+*/

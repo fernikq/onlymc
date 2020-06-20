@@ -2,7 +2,9 @@ package pl.fernikq.core.guild;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import org.bukkit.Location;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.guild.drill.GuildDrill;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.region.GuildRegion;
 import pl.fernikq.core.guild.treasure.GuildTreasure;
@@ -11,9 +13,7 @@ import pl.fernikq.core.util.TimeUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -35,6 +35,7 @@ public class Guild {
     private long expireTime;
     private int health;
     private Cache<Guild, Long> preDeleted;
+    private Map<Location, GuildDrill> guildDrills;
 
     private int enlargeMembersLevel;
     private int enlargeAlliesLevel;
@@ -57,6 +58,7 @@ public class Guild {
         this.health = ConfigManager.guildStartHealth;
         this.enlargeAlliesLevel = 0;
         this.enlargeMembersLevel = 0;
+        this.guildDrills = new HashMap<>();
     }
 
     public Guild(User owner, ResultSet resultSet){
@@ -77,6 +79,7 @@ public class Guild {
             this.enlargeAlliesLevel = resultSet.getInt("enlargeAlliesLevel");
             this.enlargeMembersLevel = resultSet.getInt("enlargeMembersLevel");
             this.friendlyFire = false;
+            this.guildDrills = new HashMap<>();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -108,6 +111,22 @@ public class Guild {
 
     public List<GuildMember> getMembers() {
         return new ArrayList<>(this.members);
+    }
+
+    public Map<Location, GuildDrill> getGuildDrills() {
+        return new HashMap<>(this.guildDrills);
+    }
+
+    public void addDrill(GuildDrill guildDrill){
+        this.guildDrills.put(guildDrill.getCenter(), guildDrill);
+    }
+
+    public void removeDrill(GuildDrill guildDrill){
+        this.guildDrills.remove(guildDrill.getCenter());
+    }
+
+    public GuildDrill getDrillByLocation(Location location){
+        return this.guildDrills.get(location);
     }
 
     public void addMember(GuildMember member){
@@ -227,6 +246,9 @@ public class Guild {
     }
 
     public int getPoints(){
+        if(this.members.isEmpty()){
+            return -1;
+        }
         int points = this.members.stream().mapToInt(member -> member.getUser().getUserStat().getPoints()).sum();
         return points / this.members.size();
     }

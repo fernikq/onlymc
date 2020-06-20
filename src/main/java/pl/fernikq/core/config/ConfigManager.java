@@ -74,6 +74,7 @@ public class ConfigManager {
     public static List<Integer> guildAlliesSizeEnlargeCost;
     public static List<Integer> guildMembersSizeEnlargeCost;
     public static List<Integer> guildCuboidSizeEnlargeCost;
+    public static List<Integer> guildDrillUpgradeCost;
     public static int guildTreasureSizeFirstLevelCost;
     public static int guildTreasureSizeSecondLevelCost;
     public static int guildTreasureSizeThirdLevelCost;
@@ -199,6 +200,7 @@ public class ConfigManager {
         guildCuboidSizeAddByEnlarge = 5;
         guildStartCuboidSize = 50;
         guildCuboidSizeEnlargeCost = Arrays.asList(200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000);
+        guildDrillUpgradeCost = Arrays.asList(1500, 2000, 3000);
         minimalDistanceBetweenGuilds = 50;
         minimalDistanceFromSpawn = 400;
         guildCenterY = 40;

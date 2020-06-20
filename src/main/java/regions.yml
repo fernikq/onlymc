@@ -44,3 +44,4 @@ Regions:
       allowFireSpread: false
       allowMobSpawning: false
       allowLeavesDecay: false
+      allowPistons: false

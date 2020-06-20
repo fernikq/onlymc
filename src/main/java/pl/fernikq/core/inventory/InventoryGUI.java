@@ -118,6 +118,10 @@ public class InventoryGUI {
         return (this.inventory.getItem(0) == null || this.inventory.getItem(0).getType() == Material.AIR);
     }
 
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     public Inventory getInventory() {
         return inventory;
     }

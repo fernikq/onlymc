@@ -63,10 +63,10 @@ public class GuildKillsComparator implements Sortable<Guild> {
 
     @Override
     public void sort() {
+        this.sortedList = new ArrayList<>(this.guilds);
         if(this.guilds.isEmpty()){
             return;
         }
-        this.sortedList = new ArrayList<>(this.guilds);
         this.sortedList.sort(this.guildComparator);
     }
 

@@ -7,15 +7,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.yaml.snakeyaml.Yaml;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.check.PlayerCheckUtil;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.guild.drill.GuildDrill;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.user.User;
@@ -96,7 +99,7 @@ public class RegionManager {
                     .setCanEntityChangePaintings(c.getBoolean("entities.canChangePaintings")).setCanEntityChangeFrames(c.getBoolean("entities.canChangeFrames"))
                     .setCanEntityExplode(c.getBoolean("entities.canExplode")).setCanEntityIgniteTNT(c.getBoolean("entities.canIgniteTNT")).setStoneGeneratorRegion(c.getBoolean("other.isStoneGeneratorRegion"))
                     .setAllowFireSpread(c.getBoolean("other.allowFireSpread")).setAllowLeavesDecay(c.getBoolean("other.allowLeavesDecay")).setAllowMobSpawning(c.getBoolean("other.allowMobSpawning"))
-                    .setCanEntityIgniteBlocks(c.getBoolean("entities.canIgniteBlocks"));
+                    .setCanEntityIgniteBlocks(c.getBoolean("entities.canIgniteBlocks")).setAllowPistons(c.getBoolean("other.allowPistons"));
             this.regions.add(region);
         }
 
@@ -173,6 +176,11 @@ public class RegionManager {
             if(guild.getRegion().isInCenter(location)){
                 return RegionFeedback.DENY;
             }
+            for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                if(guildDrill.isIn(location)){
+                    return RegionFeedback.DENY;
+                }
+            }
         }
         if(checkRegions() != null){
             return checkRegions();
@@ -183,7 +191,7 @@ public class RegionManager {
         return RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canBuild(User user, Location location){
+    public RegionFeedback canBuild(User user, Location location, ItemStack itemStack){
         if(user == null){
             return RegionFeedback.DENY_ERROR;
         }
@@ -213,6 +221,18 @@ public class RegionManager {
             }
             if(guild.getRegion().getLastExplodeTime() > System.currentTimeMillis()){
                 return RegionFeedback.DENY_BUILD_GUILD_CAUSE_EXPLOSION;
+            }
+            for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                if(guildDrill.isIn(location)){
+                    return RegionFeedback.DENY_BUILD_GUILD_DRILL_AREA;
+                }
+            }
+            if(this.plugin.getDrillManager().isSimilar(itemStack) && !guild.getOwner().equals(user)){
+                return RegionFeedback.DENY_BUILD_GUILD_DRILL_OWNER;
+            }
+        }else{
+            if(this.plugin.getDrillManager().isSimilar(itemStack)){
+                return RegionFeedback.DENY_BUILD_GUILD_DRILL;
             }
         }
         if(checkRegions() != null){
@@ -277,6 +297,11 @@ public class RegionManager {
             }
             if(location.getBlock().getType() == Material.BEACON && !member.hasPermission(GuildPermission.DESTROY_BEACON)){
                 return RegionFeedback.DENY_DESTROY_BEACON_GUILD_PERMISSION;
+            }
+            for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                if(guildDrill.isIn(location)){
+                    return RegionFeedback.DENY_DESTROY_DRILL_GUILD;
+                }
             }
             if(guild.getRegion().isInCenter(location)){
                 return RegionFeedback.DENY_DESTROY_GUILD_CENTER;
@@ -365,6 +390,11 @@ public class RegionManager {
             if(guild.getRegion().isInCenter(location)){
                 return RegionFeedback.DENY_BUCKETS_GUILD_CENTER;
             }
+            for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                if(guildDrill.isIn(location)){
+                    return RegionFeedback.DENY_BUCKETS_GUILD_DRILL;
+                }
+            }
         }
         if(checkRegions() != null){
             return checkRegions();
@@ -422,6 +452,11 @@ public class RegionManager {
                 if(guild.getRegion().isInCenter(location)){
                     return RegionFeedback.DENY;
                 }
+                for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                    if(guildDrill.isIn(location)){
+                        return RegionFeedback.DENY;
+                    }
+                }
             }
             if(checkRegions() != null){
                 return checkRegions();
@@ -458,6 +493,11 @@ public class RegionManager {
                 }
                 if(guild.getRegion().isInCenter(location)){
                     return RegionFeedback.DENY;
+                }
+                for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                    if(guildDrill.isIn(location)){
+                        return RegionFeedback.DENY;
+                    }
                 }
             }
             if(checkRegions() != null){
@@ -496,6 +536,11 @@ public class RegionManager {
                 if(guild.getRegion().isInCenter(location)){
                     return RegionFeedback.DENY;
                 }
+                for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                    if(guildDrill.isIn(location)){
+                        return RegionFeedback.DENY;
+                    }
+                }
             }
             if(checkRegions() != null){
                 return checkRegions();
@@ -532,6 +577,11 @@ public class RegionManager {
                 }
                 if(guild.getRegion().isInCenter(location)){
                     return RegionFeedback.DENY;
+                }
+                for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                    if(guildDrill.isIn(location)){
+                        return RegionFeedback.DENY;
+                    }
                 }
             }
             if(checkRegions() != null){

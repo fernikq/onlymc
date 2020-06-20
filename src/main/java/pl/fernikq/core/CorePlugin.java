@@ -21,6 +21,7 @@ import pl.fernikq.core.drop.DropManager;
 import pl.fernikq.core.dummy.DummyManager;
 import pl.fernikq.core.guild.GuildManager;
 import pl.fernikq.core.guild.alliances.AllianceManager;
+import pl.fernikq.core.guild.drill.DrillManager;
 import pl.fernikq.core.inventory.guild.GuildInventory;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
@@ -31,12 +32,12 @@ import pl.fernikq.core.listener.inventory.InventoryCloseListener;
 import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.mysql.MySQL;
 import pl.fernikq.core.region.RegionManager;
+import pl.fernikq.core.rguard.RguardListener;
 import pl.fernikq.core.shop.ShopManager;
 import pl.fernikq.core.tag.TagManager;
 import pl.fernikq.core.task.*;
 import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.top.TopManager;
-import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.UserPermissionsManager;
@@ -89,6 +90,7 @@ public class CorePlugin extends JavaPlugin {
     private QuestManager questManager;
     private IncognitoManager incognitoManager;
     private DiscordManager discordManager;
+    private DrillManager drillManager;
 
     @Override
     public void onEnable() {
@@ -103,6 +105,7 @@ public class CorePlugin extends JavaPlugin {
         this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this), new TopsSortTask(this));
         simpleTasks.forEach(SimpleTask::start);
         registerTablistVariables();
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "", new RguardListener(this));
         try{
             BlockUtil.setDurability("obsidian", 72.2F);
             BlockUtil.setDurability("anvil", 72.2F);
@@ -129,6 +132,7 @@ public class CorePlugin extends JavaPlugin {
         simpleTasks.forEach(SimpleTask::stop);
         Bukkit.shutdown();
         unregisterTablistVariables();
+        this.mySQL.close();
     }
 
     public void runAsync(final Runnable runnable) {
@@ -179,7 +183,7 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private void initPacketReceiving(){
-        new BlockDigListener(this);
+        //new BlockDigListener(this);
         //TODO if not mcguard
     }
 
@@ -211,6 +215,7 @@ public class CorePlugin extends JavaPlugin {
         this.questManager = new QuestManager(this);
         this.incognitoManager = new IncognitoManager(this);
         this.discordManager = new DiscordManager(this);
+        this.drillManager = new DrillManager(this);
     }
 
     private void initData(){
@@ -219,6 +224,7 @@ public class CorePlugin extends JavaPlugin {
         this.warpManager.init();
         this.guildManager.init();
         this.allianceManager.init();
+        this.drillManager.init();
         this.topManager.getTopsByKind(TopKind.USER).forEach(sortable -> sortable.setSorted(false));
         this.topManager.getTopsByKind(TopKind.GUILD).forEach(sortable -> sortable.setSorted(false));
     }
@@ -273,6 +279,7 @@ public class CorePlugin extends JavaPlugin {
         new ReloadPermissionsCommand("reloadpermissions", new String[0], UserGroup.ROOT, this).register();
         new CheckPlayerCommand("sprawdz", new String[0], UserGroup.HELPER, this).register();
         new ServiceCommand("service", new String[0], UserGroup.ADMIN, this).register();
+        new FeaturesCommand("features", new String[]{"dodatki", "dodatek"}, UserGroup.ADMIN, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -352,6 +359,7 @@ public class CorePlugin extends JavaPlugin {
         new WeatherChangeListener(this);
         new BlockRedstoneListener(this);
         new PlayerItemConsumeListener(this);
+        new pl.fernikq.core.listener.custom.BlockDigListener(this);
         //new GuardBlockDigListener(this);
         //TODO mcguard dig listener
     }
@@ -394,6 +402,10 @@ public class CorePlugin extends JavaPlugin {
 
     public WarpManager getWarpManager() {
         return warpManager;
+    }
+
+    public DrillManager getDrillManager() {
+        return drillManager;
     }
 
     public UserInventory getUserInventory() {

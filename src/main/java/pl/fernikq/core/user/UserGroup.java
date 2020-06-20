@@ -10,16 +10,17 @@ import java.util.List;
 public enum UserGroup {
 
     PLAYER(0, 1, "", "", "&f", "&f", new ArrayList<>()),
-    VIP(1, 2, "&8[&eVIP&8] ", "&e[VIP]", "&e", "&f", new ArrayList<>()),
-    SV(2, 3, "&8[&6SV&8] ", "&6[SV]", "&6", "&f", new ArrayList<>()),
-    MVP(3, 4, "&8[&3MVP&8] ", "&3[MVP]", "&3", "&f", new ArrayList<>()),
-    YT(4, 4, "&8[&4Y&fT&8] ", "&4Y&fT", "&b", "&f", new ArrayList<>()),
-    TEST_HELPER(5, 5, "&8[&3THelper&8] ", "&3[THelper]", "&3", "&f", new ArrayList<>()),
-    HELPER(5, 5, "&8[&bHelper&8] ", "&b[Helper]", "&b", "&f", new ArrayList<>()),
-    MOD(6, 10, "&8[&aMod&8] ", "&a[Mod]", "&a", "&f", new ArrayList<>()),
-    ADMIN(7, 100, "&8[&cAdmin&8] ", "&c[Admin]", "&c", "&c", new ArrayList<>()),
-    ROOT(8, 100, "&8[&4ROOT&8] ", "&4[ROOT]", "&c", "&c", new ArrayList<>()),
-    DEV(9, 100, "&8[&9DEV&8] ", "&9[DEV]", "&3", "&f", new ArrayList<>());
+    VIP(1, 2, "&8[&e&LVIP&8] ", "&eVIP", "&7", "&e", new ArrayList<>()),
+    SV(2, 3, "&8[&6&LS&E&LV&8] ", "&6S&EV", "&7", "&6", new ArrayList<>()),
+    MVP(3, 4, "&8[&3&LM&e&LVP&8] ", "&3M&EVP", "&7", "&3", new ArrayList<>()),
+    UVIP(4, 10, "&8[&d&lU&5&lVIP&8] ", "&dU&5VIP", "&f", "&5", new ArrayList<>()),
+    YT(5, 4, "&8[&4&lY&f&lT&8] ", "&4Y&fT", "&7", "&f", new ArrayList<>()),
+    TEST_HELPER(6, 5, "&8[&3&lTHelper&8] ", "&3THelper", "&f&l", "&3", new ArrayList<>()),
+    HELPER(6, 5, "&8[&b&lHelper&8] ", "&bHelper", "&f&l", "&b", new ArrayList<>()),
+    MOD(7, 10, "&8[&a&lMod&8] ", "&aMod", "&f&l", "&a&l", new ArrayList<>()),
+    ADMIN(8, 100, "&8[&c&lAdmin&8] ", "&cAdmin", "&f&l", "&c&l", new ArrayList<>()),
+    ROOT(9, 100, "&8[&4&lROOT&8] ", "&4ROOT", "&f&l", "&4&l", new ArrayList<>()),
+    DEV(10, 100, "&8[&9&lDEV&8] ", "&9DEV", "&f&l", "&3&l", new ArrayList<>());
 
     private int level;
     private int homes;

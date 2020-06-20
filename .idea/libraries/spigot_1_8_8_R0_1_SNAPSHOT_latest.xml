@@ -2,7 +2,6 @@
   <library name="spigot-1.8.8-R0.1-SNAPSHOT-latest">
     <CLASSES>
       <root url="jar://D:/bukki/bukkit/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar!/" />
-      <root url="jar://D:/bukki/bukkit/ProtocolLib.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

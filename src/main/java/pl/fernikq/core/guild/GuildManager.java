@@ -5,11 +5,15 @@ import io.vavr.collection.Set;
 import io.vavr.control.Option;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Lever;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.guild.drill.GuildDrill;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildMemberData;
 import pl.fernikq.core.guild.member.GuildPermission;
@@ -132,6 +136,11 @@ public class GuildManager {
         this.plugin.getAllianceManager().getAllies(guild).forEach(ally -> this.plugin.getAllianceManager().removeAlliance(ally, guild));
         this.guilds.remove(guild.getTag().toUpperCase());
         deleteGuildRoom(guild);
+        for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+            guild.removeDrill(guildDrill);
+            this.plugin.getDrillManager().unregisterDrillTask(guildDrill);
+            this.plugin.getDrillManager().deleteGuildDrill(guildDrill);
+        }
     }
 
     private void deleteGuildRoom(Guild guild){

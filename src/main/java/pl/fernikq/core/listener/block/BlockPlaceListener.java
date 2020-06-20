@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
@@ -15,10 +16,12 @@ import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.guild.drill.GuildDrill;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.TimeUtil;
 
 public class BlockPlaceListener implements Listener {
@@ -35,7 +38,7 @@ public class BlockPlaceListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        RegionFeedback regionFeedback = this.plugin.getRegionManager().canBuild(user, block.getLocation());
+        RegionFeedback regionFeedback = this.plugin.getRegionManager().canBuild(user, block.getLocation(), player.getItemInHand());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
             if(regionFeedback.equals(RegionFeedback.DENY_BUILD_GUILD_CAUSE_EXPLOSION)){
@@ -52,6 +55,45 @@ public class BlockPlaceListener implements Listener {
         if((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && block.getLocation().getBlockY() > ConfigManager.chestPlaceMaxY && !user.canByGroup(UserGroup.ADMIN)){
             ChatUtil.sendMessage(player, MessagesManager.error("Stawianie skrzynek zostalo zablokowane powyzej "+ConfigManager.chestPlaceMaxY+" poziomu!"));
             event.setCancelled(true);
+            return;
+        }
+        if(this.plugin.getDrillManager().isSimilar(player.getItemInHand())){
+            event.setCancelled(true);
+            if(user.canByGroup(UserGroup.ADMIN)){
+                if(!user.hasGuild()){
+                    ChatUtil.sendMessage(player, MessagesManager.error("Aby postawic wiertlo musisz miec gildie"));
+                    return;
+                }
+                if(!user.getGuild().getRegion().isIn(block.getLocation())){
+                    ChatUtil.sendMessage(player, MessagesManager.error("Musisz byc na terenie gildii aby postawic wiertlo"));
+                    return;
+                }
+            }
+            if(!this.plugin.getDrillManager().canPlaceDrill(block.getLocation())){
+                ChatUtil.sendMessage(player, MessagesManager.error("Aby postawic wiertlo musisz znalezc wiecej wolnego miejsca!"));
+                return;
+            }
+            Guild guild = user.getGuild();
+            if(!this.plugin.getDrillManager().canPlaceDrillCauseGuildRegion(block.getLocation(), guild)){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz postawic wiertla tak blisko granicy regionu gildii!"));
+                return;
+            }
+            if(!this.plugin.getDrillManager().canPlaceDrillCauseGuildCenter(block.getLocation(), guild)){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz postawic wiertla tak blisko centrum gildii!"));
+                return;
+            }
+            if(guild.getGuildDrills().size() >= 2){
+                ChatUtil.sendMessage(player, MessagesManager.error("Gildia moze posiadac maksymalnie 2 wiertla!"));
+                return;
+            }
+            this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
+                this.plugin.getDrillManager().createGuildDrill(block.getLocation());
+            }, 1);
+            GuildDrill guildDrill = new GuildDrill(guild, block.getLocation().add(0, 1, 0), Material.GOLD_INGOT);
+            guild.addDrill(guildDrill);
+            this.plugin.getDrillManager().registerDrillTask(guildDrill);
+            ChatUtil.sendMessage(player, "&8>> &fPostawiles wiertlo, kliknij na kociol aby nim zarzadzac!");
+            ItemUtil.removeFromHand(player, 1);
             return;
         }
         Generator generator = this.plugin.getGeneratorManager().getGenerator(player.getItemInHand());
@@ -71,6 +113,14 @@ public class BlockPlaceListener implements Listener {
                             if(guild != null && guild.getRegion().isInCenter(toChange.getLocation())){
                                 cancel();
                                 return;
+                            }
+                            if(guild != null){
+                                for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                                    if(guildDrill.isIn(toChange.getLocation())){
+                                        cancel();
+                                        return;
+                                    }
+                                }
                             }
                             toChange.setType(Material.SAND);
                         }
@@ -92,6 +142,14 @@ public class BlockPlaceListener implements Listener {
                                 cancel();
                                 return;
                             }
+                            if(guild != null){
+                                for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                                    if(guildDrill.isIn(toChange.getLocation())){
+                                        cancel();
+                                        return;
+                                    }
+                                }
+                            }
                             toChange.setType(Material.OBSIDIAN);
                         }
                     }.runTaskTimer(this.plugin, 0, 0);
@@ -111,6 +169,14 @@ public class BlockPlaceListener implements Listener {
                             if(guild != null && guild.getRegion().isInCenter(toChange.getLocation())){
                                 cancel();
                                 return;
+                            }
+                            if(guild != null){
+                                for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+                                    if(guildDrill.isIn(toChange.getLocation())){
+                                        cancel();
+                                        return;
+                                    }
+                                }
                             }
                             toChange.setType(Material.AIR);
                         }
