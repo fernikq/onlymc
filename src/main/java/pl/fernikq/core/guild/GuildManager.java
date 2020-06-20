@@ -72,6 +72,7 @@ public class GuildManager {
         this.guildData.updateGuild(guild);
         this.guildRegionData.updateRegion(guild.getRegion());
         this.guildTreasureData.updateTreasure(guild.getTreasure());
+        guild.getGuildDrills().values().forEach(guildDrill -> this.plugin.getDrillManager().getData().update(guildDrill));
         guild.getMembers().forEach(member -> this.guildMemberData.updateMember(member));
     }
 
@@ -140,6 +141,7 @@ public class GuildManager {
             guild.removeDrill(guildDrill);
             this.plugin.getDrillManager().unregisterDrillTask(guildDrill);
             this.plugin.getDrillManager().deleteGuildDrill(guildDrill);
+            this.plugin.runAsync(() -> this.plugin.getDrillManager().getData().delete(guildDrill));
         }
     }
 

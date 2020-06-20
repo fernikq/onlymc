@@ -39,11 +39,12 @@ public class GuildDrill {
     public GuildDrill(Guild guild, ResultSet resultSet){
         try {
             this.guild = guild;
-            this.center = LocationUtil.locationFromString(resultSet.getString("center"));
+            this.center = LocationUtil.locationFromString(resultSet.getString("location"));
             this.lowerCorner = new Vector(this.center.getBlockX() - 2, this.center.getBlockY() - 2, this.center.getBlockZ() - 2).toLocation(this.center.getWorld());
             this.upperCorner = new Vector(this.center.getBlockX() + 2, this.center.getBlockY() + 2, this.center.getBlockZ() + 2).toLocation(this.center.getWorld());
             this.inventory = Bukkit.createInventory(null, 54, ChatUtil.fixColor("&8[ {c}&lMagazyn wiertla &8]"));
             this.inventory.setContents(SerializationUtil.itemStackFromString(resultSet.getString("inventory")));
+            this.material = Material.getMaterial(resultSet.getString("material"));
             this.level = resultSet.getInt("level");
         } catch(SQLException e) {
             e.printStackTrace();

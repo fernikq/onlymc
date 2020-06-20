@@ -41,7 +41,6 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        ItemUtil.giveItems(player, this.plugin.getDrillManager().getDrill().clone());
         if(player.isOnline() && player.isDead()) {
             player.spigot().respawn();
         }

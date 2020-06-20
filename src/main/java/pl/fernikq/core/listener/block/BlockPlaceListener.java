@@ -82,6 +82,10 @@ public class BlockPlaceListener implements Listener {
                 ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz postawic wiertla tak blisko centrum gildii!"));
                 return;
             }
+            if(!this.plugin.getDrillManager().canPlaceDrillCauseOtherGuildDrill(block.getLocation(), guild)){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz postawic wiertla tak blisko innego wiertla!"));
+                return;
+            }
             if(guild.getGuildDrills().size() >= 2){
                 ChatUtil.sendMessage(player, MessagesManager.error("Gildia moze posiadac maksymalnie 2 wiertla!"));
                 return;
@@ -93,6 +97,7 @@ public class BlockPlaceListener implements Listener {
             guild.addDrill(guildDrill);
             this.plugin.getDrillManager().registerDrillTask(guildDrill);
             ChatUtil.sendMessage(player, "&8>> &fPostawiles wiertlo, kliknij na kociol aby nim zarzadzac!");
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> this.plugin.getDrillManager().getData().insert(guildDrill));
             ItemUtil.removeFromHand(player, 1);
             return;
         }

@@ -58,6 +58,7 @@ public class DrillManager {
         for(Location loc : SpaceUtil.getSquare(guildDrill.getCenter().clone().subtract(0, 2, 0), 2, 6)){
             loc.getBlock().setType(Material.AIR);
         }
+        guildDrill.getCenter().getWorld().save();
     }
 
     public boolean canPlaceDrill(Location location){
@@ -79,7 +80,16 @@ public class DrillManager {
         return true;
     }
 
-    public void createGuildDrill(Location location){//TODO
+    public boolean canPlaceDrillCauseOtherGuildDrill(Location location, Guild guild){
+        for(GuildDrill guildDrill : guild.getGuildDrills().values()){
+            for(Location loc : SpaceUtil.getSquare(location.clone().subtract(0, 1, 0), 2, 5)){
+                if(guildDrill.isIn(loc)) return false;
+            }
+        }
+        return true;
+    }
+
+    public void createGuildDrill(Location location){
         Location drillLocation = location.clone();
         for(Location loc : SpaceUtil.getSquare(drillLocation, 2, 4)){
             loc.getBlock().setType(Material.AIR);
@@ -118,6 +128,7 @@ public class DrillManager {
         Material material = Material.IRON_FENCE;
         drillLocation.setY(drillLocation.getY() - 1);
         drillLocation.getBlock().setType(Material.COBBLE_WALL);
+        location.getWorld().save();
     }
 
     public boolean isSimilar(ItemStack itemStack){
@@ -130,5 +141,9 @@ public class DrillManager {
 
     public Map<GuildDrill, BukkitTask> getDrills() {
         return new HashMap<>(this.drills);
+    }
+
+    public GuildDrillData getData() {
+        return data;
     }
 }

@@ -183,8 +183,7 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private void initPacketReceiving(){
-        //new BlockDigListener(this);
-        //TODO if not mcguard
+
     }
 
     private void initManagers(){
@@ -360,8 +359,6 @@ public class CorePlugin extends JavaPlugin {
         new BlockRedstoneListener(this);
         new PlayerItemConsumeListener(this);
         new pl.fernikq.core.listener.custom.BlockDigListener(this);
-        //new GuardBlockDigListener(this);
-        //TODO mcguard dig listener
     }
 
     public ConfigManager getConfigManager() {

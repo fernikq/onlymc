@@ -84,7 +84,7 @@ public class GuildDrillAction implements InventoryAction {
                 this.guildDrill.getCenter().getWorld().dropItemNaturally(this.guildDrill.getCenter(), content);
             }
             ChatUtil.sendMessage(player, "&8>> &fPomyslnie usunales wiertlo gildii");
-            //TODO mysql
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> this.plugin.getDrillManager().getData().delete(this.guildDrill));
             player.closeInventory();
             return;
         }

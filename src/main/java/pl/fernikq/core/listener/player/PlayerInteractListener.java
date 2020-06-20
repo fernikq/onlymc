@@ -265,7 +265,7 @@ public class PlayerInteractListener implements Listener {
                     }
                     player.openInventory(guildDrill.getInventory());
                 }else{
-                    //todo in future
+
                 }
             });
         }
