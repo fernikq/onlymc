@@ -15,6 +15,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
@@ -318,6 +320,24 @@ public class PlayerInteractListener implements Listener {
             }
             this.leverClicks.put(block.getLocation(), true);
             return;
+        }
+        ItemStack magicSoup = this.plugin.getGeneratorManager().getGenerator(GeneratorType.MAGIC_SOUP).getItemStack();
+        if(ItemUtil.isSimilar(player.getItemInHand(), magicSoup, true) && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)) {
+            event.setCancelled(true);
+            player.setItemInHand(new ItemStack(Material.BOWL));
+            if(!player.hasPotionEffect(PotionEffectType.SPEED)){
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*10, 1));
+            }
+            if(!player.hasPotionEffect(PotionEffectType.ABSORPTION)){
+                player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*120, 0));
+            }
+            if(!player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)){
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20*30, 0));
+            }
+            if(!player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)){
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20*2, 0));
+            }
+            ChatUtil.sendMessage(player, "&8>> &eWypiles magiczna zupe i zostales wzmocniony!");
         }
     }
 }

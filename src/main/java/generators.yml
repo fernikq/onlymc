@@ -6,7 +6,7 @@ Generators:
       name: '&c&lRzucane TNT'
       lore:
         - ' '
-        - '&8>> &fKliknij aby uzyc'
+        - '&8>> &fKliknij aby uzyc!'
     guiName: ''
     ingredients: []
     canCraft: false
@@ -142,3 +142,23 @@ Generators:
       - 'gold_block'
       - 'slime_ball'
       - 'emerald_block'
+  zupka:
+    item:
+      item: 'mushroom_soup:0'
+      amount: 1
+      name: '&e&lMagiczna Zupka'
+      lore:
+        - ' '
+        - '&8>> &fWypij aby otrzymac magiczne efekty'
+      enchant: 'efficiency:10'
+    guiName: '&8[ &fCrafting &eZupki &8]'
+    ingredients:
+      - 'golden_apple'
+      - 'golden_apple'
+      - 'golden_apple'
+      - 'golden_apple'
+      - 'bowl'
+      - 'golden_apple'
+      - 'golden_apple'
+      - 'golden_apple'
+      - 'golden_apple'

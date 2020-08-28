@@ -61,7 +61,7 @@ public class GuildInventory {
                 int have = ItemUtil.getAmountOfMaterial(user.asPlayer().getInventory(), material, data);
                 String name = itemInfo[3];
                 gui.setItem(slot, new ItemBuilder(material, amount, data).setName(ChatUtil.fixColor("{c}"+name)).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Posiadasz {c}"+have+"&8/{c}"+amount))).toItemStack());
-                if(have > amount){
+                if(have >= amount){
                     gui.setItem(slot - 9, new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short) 5).setName(ChatUtil.fixColor("&aPosiadasz")).toItemStack());
                     gui.setItem(slot + 9, new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short) 5).setName(ChatUtil.fixColor("&aPosiadasz")).toItemStack());
                 }else{
@@ -79,7 +79,7 @@ public class GuildInventory {
                 int have = ItemUtil.getAmountOfMaterial(user.asPlayer().getInventory(), material, data);
                 String name = itemInfo[3];
                 gui.setItem(slot, new ItemBuilder(material, amount, data).setName(ChatUtil.fixColor("{c}"+name)).toItemStack());
-                if(have > amount){
+                if(have >= amount){
                     gui.setItem(slot - 9, new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short) 5).setName(ChatUtil.fixColor("&aPosiadasz")).toItemStack());
                     gui.setItem(slot + 9, new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short) 5).setName(ChatUtil.fixColor("&aPosiadasz")).toItemStack());
                 }else{

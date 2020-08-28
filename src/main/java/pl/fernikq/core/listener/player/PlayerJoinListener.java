@@ -85,7 +85,7 @@ public class PlayerJoinListener implements Listener {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
-                if(packet instanceof PacketPlayInBlockDig) {
+                if(packet instanceof PacketPlayInBlockDig && ((PacketPlayInBlockDig) packet).c() == PacketPlayInBlockDig.EnumPlayerDigType.START_DESTROY_BLOCK) {
                     CoreAPI.getPlugin().getServer().getScheduler().runTask(CoreAPI.getPlugin(), () -> {
                         BlockPosition blockPosition = (BlockPosition) PacketUtil.getField(packet, "a");
                         Location location = new Location(player.getWorld(), blockPosition.getX(), blockPosition.getY(), blockPosition.getZ());

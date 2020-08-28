@@ -279,6 +279,7 @@ public class CorePlugin extends JavaPlugin {
         new CheckPlayerCommand("sprawdz", new String[0], UserGroup.HELPER, this).register();
         new ServiceCommand("service", new String[0], UserGroup.ADMIN, this).register();
         new FeaturesCommand("features", new String[]{"dodatki", "dodatek"}, UserGroup.ADMIN, this).register();
+        new MemoryCommand("memory", new String[0], UserGroup.ADMIN, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();

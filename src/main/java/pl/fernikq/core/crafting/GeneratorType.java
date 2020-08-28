@@ -12,7 +12,8 @@ public enum GeneratorType {
     ENDERCHEST("enderchest"),
     RZUCANE("rzucane"),
     ANTITRAP("antynogi"),
-    MAGIC_ROD("wedka");
+    MAGIC_ROD("wedka"),
+    MAGIC_SOUP("zupka");
 
     private final String name;
 
