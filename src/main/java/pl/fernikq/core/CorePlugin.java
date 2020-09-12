@@ -313,6 +313,7 @@ public class CorePlugin extends JavaPlugin {
         new EffectsCommand("efekty", new String[0], UserGroup.PLAYER, this).register();
         new SidebarCommand("sidebar", new String[0], UserGroup.PLAYER, this).register();
         new IncognitoCommand("incognito", new String[0], UserGroup.PLAYER, this).register();
+        new BlocksCommand("bloki", new String[0], UserGroup.PLAYER, this).register();
         new RainbowNicknameCommand("teczowy", new String[0], UserGroup.VIP, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();

@@ -142,9 +142,11 @@ public class UserInventory {
     public InventoryGUI shopMenu(User user){
         InventoryGUI gui = new InventoryGUI("&8[ {c}&lSKLEP &8]", 1, true);
         user.addInventory(gui);
-        gui.setItem(2, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 5).setName(ChatUtil.fixColor("&a&lKupno"))
+        gui.setItem(1, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 5).setName(ChatUtil.fixColor("&a&lKupno"))
                 .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby kupic przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_BUY, user));
-        gui.setItem(6, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 14).setName(ChatUtil.fixColor("&c&lSprzedaz"))
+        gui.setItem(4, new ItemBuilder(Material.TRIPWIRE_HOOK).setName(ChatUtil.fixColor("&c&lSprzedaj wszystko"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby sprzedac wszystkie przedmioty&8!"))).toItemStack(), new SellAllAction(this.plugin, user));
+        gui.setItem(7, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 14).setName(ChatUtil.fixColor("&c&lSprzedaz"))
                 .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby sprzedac przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_SELL, user));
         gui.setEmptyItem(this.blank);
         return gui;
@@ -214,7 +216,7 @@ public class UserInventory {
                 itemBuilder.setName(ChatUtil.fixColor(shopItem.getName()));
             }
             itemBuilder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Ilosc&8: {c}"+shopItem.getAmount(),
-                    "&8>> {n}Cena&8: {c}"+shopItem.getPrice())));
+                    "&8>> {n}Cena&8: {c}"+shopItem.getPrice(), " ", "&eKliknij LPM + Shift", "&eaby sprzedac wszystko!")));
             gui.addItem(itemBuilder.toItemStack(), new ShopAction(this.plugin, shopItem, shop, ShopActionType.SELL_ITEM, user));
         }
         gui.setItem(53, this.backGlass, new ShopAction(this.plugin, ShopActionType.BACK_SELL_MENU, user));
@@ -745,6 +747,28 @@ public class UserInventory {
         gui.setItem(4, skin.toItemStack(), new IncognitoAction(this.plugin, IncognitoActionType.CHANGE_SKIN, user));
         gui.setItem(6, points.toItemStack(), new IncognitoAction(this.plugin, IncognitoActionType.CHANGE_POINTS, user));
         gui.setItem(8, rank.toItemStack(), new IncognitoAction(this.plugin, IncognitoActionType.CHANGE_RANK, user));
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI blocksExchange(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lWYMIANA BLOKOW &8]", 1, true);
+        user.addInventory(gui);
+        ItemBuilder diamond = new ItemBuilder(Material.DIAMOND_BLOCK).setName(ChatUtil.fixColor("&8[ &3&lDiamenty &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby wymienic &bdiamenty", "&8>> &fna &3diamentowe &fbloki")));
+        ItemBuilder emerald = new ItemBuilder(Material.EMERALD_BLOCK).setName(ChatUtil.fixColor("&8[ &b&lEmeraldy &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby wymienic &aemeraldy", "&8>> &fna &2emeraldowe &fbloki")));
+        ItemBuilder redstone = new ItemBuilder(Material.REDSTONE_BLOCK).setName(ChatUtil.fixColor("&8[ &c&lRedstone &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby wymienic &credstone", "&8>> &fna &4redstone'owe &fbloki")));
+        ItemBuilder iron = new ItemBuilder(Material.IRON_BLOCK).setName(ChatUtil.fixColor("&8[ &f&lZelazo &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby wymienic sztabki &7zelaza", "&8>> &fna &f&lzelazne &fbloki")));
+        ItemBuilder gold = new ItemBuilder(Material.GOLD_BLOCK).setName(ChatUtil.fixColor("&8[ &6&lZloto &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby wymienic sztabki &ezlota", "&8>> &fna &6zlote &fbloki")));
+        gui.setItem(0, diamond.toItemStack(), new BlocksExchangeAction(this.plugin, Material.DIAMOND, user));
+        gui.setItem(2, emerald.toItemStack(), new BlocksExchangeAction(this.plugin, Material.EMERALD, user));
+        gui.setItem(4, gold.toItemStack(), new BlocksExchangeAction(this.plugin, Material.GOLD_INGOT, user));
+        gui.setItem(6, iron.toItemStack(), new BlocksExchangeAction(this.plugin, Material.IRON_INGOT, user));
+        gui.setItem(8, redstone.toItemStack(), new BlocksExchangeAction(this.plugin, Material.REDSTONE, user));
         gui.setEmptyItem(this.blank);
         return gui;
     }

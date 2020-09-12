@@ -162,4 +162,8 @@ public class ShopManager {
     public List<Shop> getShops(ShopType type) {
         return new ArrayList<>(this.shops).stream().filter(shop -> shop.getShopType().equals(type)).collect(Collectors.toList());
     }
+
+    public List<Shop> getShops() {
+        return new ArrayList<>(this.shops);
+    }
 }
