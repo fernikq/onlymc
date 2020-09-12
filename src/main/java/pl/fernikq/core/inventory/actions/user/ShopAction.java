@@ -96,6 +96,10 @@ public class ShopAction implements InventoryAction {
                 ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz odpowiedniej ilosci tego przedmiotu!"));
                 return;
             }
+            //if(event.isShiftClick()){
+
+             //   return;
+            //}
             ItemUtil.remove(shopItem.getItemStack().clone(), player, shopItem.getAmount());
             ChatUtil.sendMessage(player, StringUtil.replace(MessagesManager.shopSellItem, "{AMOUNT}", shopItem.getPrice()));
             user.getUserStat().addCoins(shopItem.getPrice());

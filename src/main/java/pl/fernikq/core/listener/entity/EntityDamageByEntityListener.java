@@ -52,7 +52,6 @@ public class EntityDamageByEntityListener implements Listener {
             return;
         }
         if(!damager.equals(victim)){
-            victim.setVelocity(damager.getLocation().getDirection().setY(0.5).multiply(-0.03D));
             UserFight victimFight = victimUser.getUserFight();
             UserFight damagerFight = damagerUser.getUserFight();
             victimFight.setLastAttacker(damagerUser);

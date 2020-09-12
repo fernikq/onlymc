@@ -6,6 +6,7 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.command.CustomCommand;
 import pl.fernikq.core.config.Lang;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 
@@ -38,6 +39,11 @@ public class CoreCommand extends CustomCommand {
                 user.getSidebar().create();
             });
             return ChatUtil.sendMessage(sender, "&8>> {c}Core {n}zostal przeladowany&8!");
+        }
+        else if(args[0].equalsIgnoreCase("tops")){
+            this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).forEach(sortable -> sortable.setSorted(false));
+            this.plugin.getTopManager().getTopsByKind(TopKind.USER).forEach(sortable -> sortable.setSorted(false));
+            return ChatUtil.sendMessage(sender, "&8>> {c}Topki {n}zostaly odswiezone!");
         }
         return ChatUtil.sendMessage(sender, MessagesManager.usage("/core <reload>"));
     }
