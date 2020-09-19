@@ -7,6 +7,7 @@ public class RandomUtil {
     private static final Random rand = new Random();
 
     public static int getRandInt(int min, int max){
+        if(max == min) return max;
         return rand.nextInt(max - min + 1) + min;
     }
 

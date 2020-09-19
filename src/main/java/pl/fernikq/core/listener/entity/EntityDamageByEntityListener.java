@@ -1,9 +1,9 @@
 package pl.fernikq.core.listener.entity;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,13 +17,19 @@ import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.fight.Damage;
 import pl.fernikq.core.user.fight.UserFight;
-import pl.fernikq.core.util.ChatUtil;
-import pl.fernikq.core.util.ItemUtil;
-import pl.fernikq.core.util.PlayerUtil;
+import pl.fernikq.core.util.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntityDamageByEntityListener implements Listener {
 
     private final CorePlugin plugin;
+
+    private ItemStack[] littleZombiesArmor = new ItemStack[]{new ItemBuilder(Material.IRON_HELMET).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
+            new ItemBuilder(Material.IRON_CHESTPLATE).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
+            new ItemBuilder(Material.IRON_LEGGINGS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
+            new ItemBuilder(Material.IRON_BOOTS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack()};
 
     public EntityDamageByEntityListener(CorePlugin plugin){
         this.plugin = plugin;
@@ -107,6 +113,50 @@ public class EntityDamageByEntityListener implements Listener {
         RegionFeedback regionFeedback = this.plugin.getRegionManager().canChangeFrames(damagerUser, event.getEntity().getLocation(), true);
         if(!regionFeedback.isPermit()) {
             event.setCancelled(true);
+            return;
+        }
+    }
+
+    @EventHandler
+    public void onBoss(EntityDamageByEntityEvent event){
+        Entity victim = event.getEntity();
+        Entity damager = event.getDamager();
+        if(victim.getType() != EntityType.GIANT){
+            return;
+        }
+        if(damager.getType() != EntityType.PLAYER){
+            return;
+        }
+        if(StringUtils.equalsIgnoreCase(victim.getCustomName(), ChatUtil.fixColor(this.plugin.getBossManager().getGiantBossName()))){
+            Player player = (Player)damager;
+            if(RandomUtil.getChance(35) && !player.isDead()){
+                player.playEffect(EntityEffect.HURT);
+                player.damage(RandomUtil.getRandInt(2, 5));
+            }
+            if(RandomUtil.getChance(8)){
+                victim.getNearbyEntities(8, 5, 8).stream().filter(entity -> entity.getType() == EntityType.PLAYER && !entity.isDead()).forEach(entity -> {
+                    PlayerUtil.punchEntity(entity, victim.getLocation());
+                    ((Player)entity).playSound(victim.getLocation(), Sound.EXPLODE, 10, 1);
+                });
+            }
+            if(RandomUtil.getChance(3)){
+                int count = 1;
+                List<Entity> players = victim.getNearbyEntities(8, 5, 8).stream().filter(entity -> entity.getType() == EntityType.PLAYER).collect(Collectors.toList());
+                if(players.size() > count) count = players.size();
+                players.forEach(entity -> ((Player)entity).playSound(entity.getLocation(), Sound.AMBIENCE_THUNDER, 10, 1));
+                for(int i = 0; i < RandomUtil.getRandInt(count, count * 2); i++){
+                    Zombie zombie = (Zombie) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ZOMBIE);
+                    zombie.setBaby(true);
+                    zombie.setCustomName(ChatUtil.fixColor("&c&lObronca Bossa"));
+                    zombie.setCustomNameVisible(true);
+                    zombie.setMaxHealth(40.0);
+                    zombie.setHealth(40.0);
+                    zombie.setCanPickupItems(false);
+                    zombie.getEquipment().setArmorContents(this.littleZombiesArmor);
+                    zombie.getEquipment().setBootsDropChance(100);
+                    zombie.getEquipment().setItemInHand(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.FIRE_ASPECT, 1).addEnchant(Enchantment.DAMAGE_ALL, 3).toItemStack());
+                }
+            }
             return;
         }
     }

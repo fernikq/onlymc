@@ -4,6 +4,7 @@ public enum DropActionType {
 
     BACK_TO_MENU,
     OPEN_STONE_DROP,
+    OPEN_BOSS_DROP,
     OPEN_COBBLEX_DROP,
     OPEN_LEVEL_SHOP,
     OPEN_PREMIUMCASE_DROP,

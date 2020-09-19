@@ -50,7 +50,7 @@ public class PlayerDeathListener implements Listener {
         if(victimUser.getUserFight().isDuringFight()){
             reason = "Zabity przez "+victimUser.getUserFight().getLastAttacker().getName();
         }else{
-            reason = player.getLastDamageCause().getCause().name();
+            reason = (player.getLastDamageCause() != null && player.getLastDamageCause().getCause() != null) ? player.getLastDamageCause().getCause().name() : "Brak danych";
         }
         if(victimUser.isLogout()){
             reason = "Logout";

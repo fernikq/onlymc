@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.abyss.AbyssManager;
 import pl.fernikq.core.automessage.AutoMessageManager;
+import pl.fernikq.core.boss.BossManager;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
 import pl.fernikq.core.command.guild.GuildAdminCommand;
@@ -91,6 +92,7 @@ public class CorePlugin extends JavaPlugin {
     private IncognitoManager incognitoManager;
     private DiscordManager discordManager;
     private DrillManager drillManager;
+    private BossManager bossManager;
 
     @Override
     public void onEnable() {
@@ -215,6 +217,7 @@ public class CorePlugin extends JavaPlugin {
         this.incognitoManager = new IncognitoManager(this);
         this.discordManager = new DiscordManager(this);
         this.drillManager = new DrillManager(this);
+        this.bossManager = new BossManager(this);
     }
 
     private void initData(){
@@ -280,6 +283,7 @@ public class CorePlugin extends JavaPlugin {
         new ServiceCommand("service", new String[0], UserGroup.ADMIN, this).register();
         new FeaturesCommand("features", new String[]{"dodatki", "dodatek"}, UserGroup.ADMIN, this).register();
         new MemoryCommand("memory", new String[0], UserGroup.ADMIN, this).register();
+        new AdminBossCommand("aboss", new String[0], UserGroup.ADMIN, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -361,6 +365,7 @@ public class CorePlugin extends JavaPlugin {
         new BlockRedstoneListener(this);
         new PlayerItemConsumeListener(this);
         new pl.fernikq.core.listener.custom.BlockDigListener(this);
+        new EntityDeathListener(this);
     }
 
     public ConfigManager getConfigManager() {
@@ -481,5 +486,9 @@ public class CorePlugin extends JavaPlugin {
 
     public IncognitoManager getIncognitoManager() {
         return incognitoManager;
+    }
+
+    public BossManager getBossManager() {
+        return bossManager;
     }
 }
