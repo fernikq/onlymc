@@ -1,0 +1,47 @@
+DropChance:
+  normal:
+    killing: 33.3
+    mining: 0.02
+  premium:
+    killing: 11.0
+    mining: 0.001
+Key:
+  normal:
+    fragmentsRequiredToCreate: 2
+    item: 'tripwire_hook:0'
+    name: '&b&lMagiczny klucz'
+    lore:
+      - ' '
+      - '&8>> &fKluczem tym mozesz otworzyc'
+      - '&8>> &b&lStandardowa magiczna skrzynke!'
+      - '&8>> &fDostac z niej mozesz'
+      - '&8>> &fwiele cennych &bprzedmiotow'
+      - ' '
+    enchant: 'fortune:10'
+  premium:
+    fragmentsRequiredToCreate: 4
+    item: 'tripwire_hook:0'
+    name: '&5&lMagiczny klucz'
+    lore:
+      - ' '
+      - '&8>> &fKluczem tym mozesz otworzyc'
+      - '&8>> &5&lWyjatkowa magiczna skrzynke!'
+      - '&8>> &fDostac z niej mozesz'
+      - '&8>> &fwiele cennych &5przedmiotow'
+      - ' '
+    enchant: 'fortune:10'
+Drop:
+  normal:
+    1:
+      item: 'diamond:0'
+      amount:
+        min: 1
+        max: 10
+      nameInGUI: 'Diament'
+  premium:
+    1:
+      item: 'gold_ingot:0'
+      amount:
+        min: 1
+        max: 20
+      nameInGUI: 'Zloto'

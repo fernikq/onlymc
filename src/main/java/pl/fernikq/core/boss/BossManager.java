@@ -27,7 +27,7 @@ public class BossManager {
         this.plugin = plugin;
         this.bossDrops = new ArrayList<>();
         checkFile();
-        loadBossInfo();
+        loadBoss();
     }
 
     public void checkFile(){
@@ -42,10 +42,10 @@ public class BossManager {
 
     public void reload(){
         checkFile();
-        loadBossInfo();
+        loadBoss();
     }
 
-    private void loadBossInfo(){
+    private void loadBoss(){
         this.bossDrops.clear();
         YamlConfiguration configuration = this.getBossFile();
         this.giantBossName = configuration.getString("BossName");

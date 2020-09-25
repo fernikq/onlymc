@@ -37,7 +37,7 @@ public class AdminBossCommand extends CustomCommand {
         }
         Player player = (Player) sender;
         if(args.length < 1) {
-            return ChatUtil.sendMessage(player, MessagesManager.usage("/aboss <respawn>"));
+            return ChatUtil.sendMessage(player, MessagesManager.usage("/aboss <spawn, reload>"));
         }
         if(args[0].equalsIgnoreCase("spawn")){
             Giant giant = (Giant) player.getWorld().spawnEntity(player.getLocation(), EntityType.GIANT);

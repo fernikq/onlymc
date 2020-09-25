@@ -93,11 +93,11 @@ public class QuestManager {
 
         List<Quest> openedPremiumCaseQuests = new ArrayList<>();
         this.quests.put(QuestType.OPENED_PREMIUMCASE, openedPremiumCaseQuests);
-        openedPremiumCaseQuests.add(new Quest("Otworz 5 "+plugin.getDropManager().getPremiumCaseNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 5, 250, 0));
-        openedPremiumCaseQuests.add(new Quest("Otworz 10 "+plugin.getDropManager().getPremiumCaseNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 10, 750, 0));
-        openedPremiumCaseQuests.add(new Quest("Otworz 25 "+plugin.getDropManager().getPremiumCaseNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 25, 1000, 0));
-        openedPremiumCaseQuests.add(new Quest("Otworz 50 "+plugin.getDropManager().getPremiumCaseNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 50, 1750, 0));
-        openedPremiumCaseQuests.add(new Quest("Otworz 100 "+plugin.getDropManager().getPremiumCaseNameInGUI()+"'ow", QuestType.OPENED_PREMIUMCASE, 100, 2500, 0));
+        openedPremiumCaseQuests.add(new Quest("Otworz 5 "+plugin.getDropManager().getPremiumCaseNameInGUI(), QuestType.OPENED_PREMIUMCASE, 5, 250, 0));
+        openedPremiumCaseQuests.add(new Quest("Otworz 10 "+plugin.getDropManager().getPremiumCaseNameInGUI(), QuestType.OPENED_PREMIUMCASE, 10, 750, 0));
+        openedPremiumCaseQuests.add(new Quest("Otworz 25 "+plugin.getDropManager().getPremiumCaseNameInGUI(), QuestType.OPENED_PREMIUMCASE, 25, 1000, 0));
+        openedPremiumCaseQuests.add(new Quest("Otworz 50 "+plugin.getDropManager().getPremiumCaseNameInGUI(), QuestType.OPENED_PREMIUMCASE, 50, 1750, 0));
+        openedPremiumCaseQuests.add(new Quest("Otworz 100 "+plugin.getDropManager().getPremiumCaseNameInGUI(), QuestType.OPENED_PREMIUMCASE, 100, 2500, 0));
 
         List<Quest> openedCobblexQuests = new ArrayList<>();
         this.quests.put(QuestType.OPENED_COBBLEX, openedCobblexQuests);

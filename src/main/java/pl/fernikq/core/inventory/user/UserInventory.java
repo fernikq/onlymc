@@ -23,6 +23,9 @@ import pl.fernikq.core.inventory.enums.TopsActionType;
 import pl.fernikq.core.inventory.enums.user.*;
 import pl.fernikq.core.kit.Kit;
 import pl.fernikq.core.kit.KitItem;
+import pl.fernikq.core.magiccase.MagicCase;
+import pl.fernikq.core.magiccase.MagicCaseDrop;
+import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.shop.Shop;
 import pl.fernikq.core.shop.ShopItem;
 import pl.fernikq.core.shop.ShopType;
@@ -793,6 +796,24 @@ public class UserInventory {
         gui.setItem(6, iron.toItemStack(), new BlocksExchangeAction(this.plugin, Material.IRON_INGOT, user));
         gui.setItem(8, redstone.toItemStack(), new BlocksExchangeAction(this.plugin, Material.REDSTONE, user));
         gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI magicCaseDraw(User user, MagicCaseType magicCaseType){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lLOSOWANIE... &8]", 3, true);
+        user.addInventory(gui);
+        for(int i = 9; i < 18; i++){
+            MagicCaseDrop magicCaseDrop = this.plugin.getMagicCaseManager().getCaseDrop(magicCaseType).get(RandomUtil.getRandInt(0, this.plugin.getMagicCaseManager().getCaseDrop(magicCaseType).size() - 1));
+            ItemStack itemStack = new ItemBuilder(magicCaseDrop.getItemStack()).setAmount(RandomUtil.getRandInt(magicCaseDrop.getMinAmount(), magicCaseDrop.getMaxAmount())).toItemStack();
+            gui.setItem(i, itemStack);
+        }
+        gui.setItem(4, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("&6&lWygrana")).toItemStack());
+        gui.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)5).setName(ChatUtil.fixColor("&6&lWygrana")).toItemStack());
+        gui.setItem(3, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)13).toItemStack());
+        gui.setItem(5, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)13).toItemStack());
+        gui.setItem(21, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)13).toItemStack());
+        gui.setItem(23, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)13).toItemStack());
+        gui.setEmptyItem(new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)7).toItemStack());
         return gui;
     }
 }

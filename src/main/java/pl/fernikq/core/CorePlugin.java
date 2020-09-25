@@ -31,6 +31,7 @@ import pl.fernikq.core.listener.entity.*;
 import pl.fernikq.core.listener.inventory.InventoryClickListener;
 import pl.fernikq.core.listener.inventory.InventoryCloseListener;
 import pl.fernikq.core.listener.player.*;
+import pl.fernikq.core.magiccase.MagicCaseManager;
 import pl.fernikq.core.mysql.MySQL;
 import pl.fernikq.core.region.RegionManager;
 import pl.fernikq.core.rguard.RguardListener;
@@ -93,6 +94,7 @@ public class CorePlugin extends JavaPlugin {
     private DiscordManager discordManager;
     private DrillManager drillManager;
     private BossManager bossManager;
+    private MagicCaseManager magicCaseManager;
 
     @Override
     public void onEnable() {
@@ -218,6 +220,7 @@ public class CorePlugin extends JavaPlugin {
         this.discordManager = new DiscordManager(this);
         this.drillManager = new DrillManager(this);
         this.bossManager = new BossManager(this);
+        this.magicCaseManager = new MagicCaseManager(this);
     }
 
     private void initData(){
@@ -268,9 +271,9 @@ public class CorePlugin extends JavaPlugin {
         new SetSpawnCommand("setspawn", new String[0], UserGroup.ADMIN, this).register();
         new TitleBroadcastCommand("tbc", new String[0], UserGroup.MOD, this).register();
         new BroadcastCommand("bc", new String[0], UserGroup.MOD, this).register();
-        new CaseCommand("case", new String[0], UserGroup.MOD, this).register();
+        new PandoraCommand("pandora", new String[0], UserGroup.MOD, this).register();
         new RzucaneCommand("rzucane", new String[]{"rzucak"}, UserGroup.ADMIN, this).register();
-        new CaseAllCommand("caseall", new String[0], UserGroup.MOD, this).register();
+        new PandoraAllCommand("pandoraall", new String[0], UserGroup.MOD, this).register();
         new TurboAllCommand("turboall", new String[0], UserGroup.MOD, this).register();
         new TurboCommand("turbo", new String[0], UserGroup.MOD, this).register();
         new HeadCommand("head", new String[0], UserGroup.HELPER, this).register();
@@ -319,6 +322,7 @@ public class CorePlugin extends JavaPlugin {
         new IncognitoCommand("incognito", new String[0], UserGroup.PLAYER, this).register();
         new BlocksCommand("bloki", new String[0], UserGroup.PLAYER, this).register();
         new RainbowNicknameCommand("teczowy", new String[0], UserGroup.VIP, this).register();
+        new CaseCommand("case", new String[0], UserGroup.VIP, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();
@@ -490,5 +494,9 @@ public class CorePlugin extends JavaPlugin {
 
     public BossManager getBossManager() {
         return bossManager;
+    }
+
+    public MagicCaseManager getMagicCaseManager() {
+        return magicCaseManager;
     }
 }

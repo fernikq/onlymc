@@ -9,9 +9,9 @@ Cobblex:
   enchant: 'fortune:10'
 PremiumCase:
   maxItemsInOneCase: 6
-  item: 'chest:0'
-  name: '&c&lPremiumCase'
-  nameInGUI: 'PremiumCase'
+  item: 'dragon_egg:0'
+  name: '&3&lPandora'
+  nameInGUI: 'Pandora'
   lore:
     - ' '
     - '&8>> &fPostaw aby otworzyc&8!'

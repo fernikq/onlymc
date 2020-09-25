@@ -20,6 +20,7 @@
       <element id="extracted-dir" path="D:/dc bot/JDA-4.1.1_101-withDependencies.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/jars/jnbt-1.1.jar" path-in-jar="/" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/boss.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/magiccase.yml" />
     </root>
   </artifact>
 </component>
