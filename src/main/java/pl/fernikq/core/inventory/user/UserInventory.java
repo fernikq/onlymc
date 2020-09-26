@@ -816,4 +816,47 @@ public class UserInventory {
         gui.setEmptyItem(new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)7).toItemStack());
         return gui;
     }
+
+    public InventoryGUI magicCaseMenu(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lMAGICZNA SKRZYNIA &8]", 3, true);
+        user.addInventory(gui);
+        ItemStack redPane = new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short)14).setName(" ").toItemStack();
+        gui.setItem(1, redPane);
+        gui.setItem(3, redPane);
+        gui.setItem(5, redPane);
+        gui.setItem(7, redPane);
+        gui.setItem(11, redPane);
+        gui.setItem(15, redPane);
+        gui.setItem(19, redPane);
+        gui.setItem(21, redPane);
+        gui.setItem(23, redPane);
+        gui.setItem(25, redPane);
+        gui.setItem(2, new ItemBuilder(Material.TRIPWIRE_HOOK).setName(ChatUtil.fixColor("&b&lFragmenty standardowego klucza"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fPosiadasz&8: &b"+user.getUserStat().getKeyFragmentsByMagicCaseType(MagicCaseType.NORMAL)
+                , "&8>> &fWymagane do utworzenia klucza&8: &b"+this.plugin.getMagicCaseManager().getFragmentsRequiredByMagicCaseType(MagicCaseType.NORMAL),
+                        " ", "&8>> &fKliknij aby utworzyc klucz!"))).toItemStack(), new MagicCaseAction(this.plugin, MagicCaseActionType.CHANGE_FRAGMENTS, MagicCaseType.NORMAL, user));
+        gui.setItem(6, new ItemBuilder(Material.TRIPWIRE_HOOK).setName(ChatUtil.fixColor("&5&lFragmenty standardowego klucza"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fPosiadasz&8: &5"+user.getUserStat().getKeyFragmentsByMagicCaseType(MagicCaseType.PREMIUM)
+                        , "&8>> &fWymagane do utworzenia klucza&8: &5"+this.plugin.getMagicCaseManager().getFragmentsRequiredByMagicCaseType(MagicCaseType.PREMIUM),
+                        " ", "&8>> &fKliknij aby utworzyc klucz!"))).toItemStack(), new MagicCaseAction(this.plugin, MagicCaseActionType.CHANGE_FRAGMENTS, MagicCaseType.PREMIUM, user));
+        gui.setItem(20, new ItemBuilder(Material.CHEST).setName(ChatUtil.fixColor("&b&lDrop ze standardowej skrzyni")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby zobaczyc!"))).toItemStack(), new MagicCaseAction(this.plugin, MagicCaseActionType.OPEN_DROP, MagicCaseType.NORMAL, user));
+        gui.setItem(24, new ItemBuilder(Material.ENDER_CHEST).setName(ChatUtil.fixColor("&5&lDrop z wyjatkowej skrzyni")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby zobaczyc!"))).toItemStack(), new MagicCaseAction(this.plugin, MagicCaseActionType.OPEN_DROP, MagicCaseType.PREMIUM, user));
+        gui.setEmptyItem(this.blank);
+        return gui;
+    }
+
+    public InventoryGUI magicCaseDrop(User user, MagicCaseType magicCaseType){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lDROP ZE SKRZYNI &8]", 5, true);
+        for(MagicCaseDrop magicCaseDrop : this.plugin.getMagicCaseManager().getCaseDrop(magicCaseType)){
+            ItemBuilder dropItem = new ItemBuilder(magicCaseDrop.getItemStack().clone());
+            if(magicCaseDrop.getName() != null){
+                dropItem.setName(ChatUtil.fixColor(magicCaseDrop.getName()));
+            }
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fWypada w ilosci&8: {c}"+(magicCaseDrop.getMinAmount() == magicCaseDrop.getMaxAmount() ? magicCaseDrop.getMaxAmount() : magicCaseDrop.getMinAmount()+"&8-{c}"+magicCaseDrop.getMaxAmount()))));
+            gui.addItem(dropItem.toItemStack());
+        }
+        gui.setItem(44, this.backGlass, new MagicCaseAction(this.plugin, MagicCaseActionType.BACK_TO_MENU, null, user));
+        user.addInventory(gui);
+        return gui;
+    }
 }

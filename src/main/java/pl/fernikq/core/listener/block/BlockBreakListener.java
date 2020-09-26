@@ -18,6 +18,7 @@ import pl.fernikq.core.crafting.GeneratorType;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
+import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.quests.QuestType;
@@ -25,6 +26,8 @@ import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.RandomUtil;
+
+import java.util.Map;
 
 public class BlockBreakListener implements Listener {
 
@@ -98,6 +101,13 @@ public class BlockBreakListener implements Listener {
                 user.getUserStat().addCoinsFromStone(amount);
                 user.getUserStat().addCoins(amount);
                 ChatUtil.sendMessage(player, MessagesManager.coinsDropFromStoneMessage.replace("{AMOUNT}", Integer.toString(amount)));
+            }
+            for(Map.Entry map : this.plugin.getMagicCaseManager().getMiningChance().entrySet()){
+                MagicCaseType magicCaseType = (MagicCaseType)map.getKey();
+                if(RandomUtil.getChance((double)map.getValue())){
+                    user.getUserStat().addKeyFragmentsByMagicCaseType(magicCaseType, 1);
+                    ChatUtil.sendMessage(player, "&8>> &fOtrzymales fragment klucza do skrzyni o typie&8: "+magicCaseType.getName());
+                }
             }
         }
         if(block.getType() == Material.OBSIDIAN){

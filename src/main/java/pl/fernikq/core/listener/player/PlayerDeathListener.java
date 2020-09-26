@@ -10,6 +10,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
+import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
@@ -20,9 +21,11 @@ import pl.fernikq.core.user.fight.UserFight;
 import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.PlayerUtil;
+import pl.fernikq.core.util.RandomUtil;
 import pl.fernikq.core.util.RankingUtil;
 
 import java.util.List;
+import java.util.Map;
 
 public class PlayerDeathListener implements Listener {
 
@@ -208,6 +211,13 @@ public class PlayerDeathListener implements Listener {
         killerUser.getUserStat().setKills(killerUser.getUserStat().getKills() + 1);
         this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_USER);
         this.plugin.getQuestManager().checkQuest(killerUser, QuestType.KILL_UNIQUE_USERS);
+        for(Map.Entry map : this.plugin.getMagicCaseManager().getKillingChance().entrySet()){
+            MagicCaseType magicCaseType = (MagicCaseType)map.getKey();
+            if(RandomUtil.getChance((double)map.getValue())){
+                killerUser.getUserStat().addKeyFragmentsByMagicCaseType(magicCaseType, 1);
+                ChatUtil.sendMessage(killerUser.asPlayer(), "&8>> &fOtrzymales fragment klucza do skrzyni o typie&8: "+magicCaseType.getName());
+            }
+        }
         this.plugin.runAsync(() -> {
             this.plugin.getTopManager().getTopByType(TopType.USER_POINTS).setSorted(false);
             this.plugin.getTopManager().getTopByType(TopType.USER_KILLS).setSorted(false);

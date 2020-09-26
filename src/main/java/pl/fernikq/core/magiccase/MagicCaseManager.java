@@ -24,32 +24,26 @@ public class MagicCaseManager {
 
     private final CorePlugin plugin;
     private File magicCaseFile;
+    private MagicCaseData magicCaseData;
 
-    private ConcurrentMap<Location, MagicCase> magicCaseMap;
-
-    private double normalKillingChance;
-    private double normalMiningChance;
-    private double premiumKillingChance;
-    private double premiumMiningChance;
-    private int normalFragmentsRequiredToCreate;
-    private int premiumFragmentsRequiredToCreate;
-
-    private ItemStack premiumKey;
-    private ItemStack normalKey;
-
-    private Map<MagicCaseType, List<MagicCaseDrop>> caseDrop;
-
-    private Set<UUID> playerInDraw;
+    private ConcurrentMap<Location, MagicCase> magicCaseMap = new ConcurrentHashMap<>();
+    private Map<MagicCaseType, Double> killingChance = new HashMap<>();
+    private Map<MagicCaseType, Double> miningChance = new HashMap<>();
+    private Map<MagicCaseType, Integer> fragmentsRequiredToCreate = new HashMap<>();
+    private Map<MagicCaseType, ItemStack> keyItem = new HashMap<>();
+    private Map<MagicCaseType, List<MagicCaseDrop>> caseDrop = new HashMap<>();
+    private Set<UUID> playerInDraw = new HashSet<>();
 
     public MagicCaseManager(CorePlugin plugin){
         this.plugin = plugin;
-        this.magicCaseMap = new ConcurrentHashMap<>();
-        this.caseDrop = new HashMap<>();
         this.caseDrop.put(MagicCaseType.NORMAL, new ArrayList<>());
         this.caseDrop.put(MagicCaseType.PREMIUM, new ArrayList<>());
-        this.playerInDraw = new HashSet<>();
         checkFile();
         load();
+    }
+
+    public void init(){
+        this.magicCaseData = new MagicCaseData(this.plugin);
     }
 
     public void checkFile(){
@@ -87,7 +81,7 @@ public class MagicCaseManager {
                     cancel();
                     return;
                 }
-                if(!player.getInventory().containsAtLeast(magicCase.getType() == MagicCaseType.NORMAL ? normalKey : premiumKey, 1)){
+                if(!player.getInventory().containsAtLeast(getKeyByMagicCaseType(magicCase.getType()), 1)){
                     cancel();
                     if(player.getInventory() != null && Objects.equals(player.getOpenInventory().getTopInventory(), magicCaseDraw.getInventoryGUI().getInventory())){
                         player.closeInventory();
@@ -97,10 +91,10 @@ public class MagicCaseManager {
                     return;
                 }
                 if(repetitions.get() >= magicCaseDraw.getRepetitions()){
-                    player.getInventory().removeItem(magicCase.getType() == MagicCaseType.NORMAL ? normalKey : premiumKey);
+                    player.getInventory().removeItem(getKeyByMagicCaseType(magicCase.getType()));
                     ItemStack itemStack = magicCaseDraw.getInventoryGUI().getInventory().getItem(13);
                     ItemUtil.giveItems(player, itemStack);
-                    ChatUtil.sendMessage(player, "&8>> &fOtworzyles "+(magicCase.getType() == MagicCaseType.NORMAL ? "&bStandardowa" : "&5Wyjatkowa")+" &fi otrzymales wygrany przedmiot!");
+                    ChatUtil.sendMessage(player, "&8>> &fOtworzyles "+magicCase.getType().getName()+" &fi otrzymales wygrany przedmiot!");
                     cancel();
                     playerInDraw.remove(uuid);
                     new BukkitRunnable(){
@@ -157,23 +151,31 @@ public class MagicCaseManager {
         this.magicCaseMap.remove(location);
     }
 
+    public boolean isMagicCaseAtLocation(Location location){
+        return this.magicCaseMap.containsKey(location);
+    }
+
     public void load(){
+        this.killingChance.clear();
+        this.miningChance.clear();
+        this.fragmentsRequiredToCreate.clear();
+        this.keyItem.clear();
         this.caseDrop.forEach((magicCaseType, magicCaseDrops) -> magicCaseDrops.clear());
         YamlConfiguration configuration = this.getCaseFille();
-        this.normalKillingChance = configuration.getDouble("DropChance.normal.killing");
-        this.normalMiningChance = configuration.getDouble("DropChance.normal.mining");
-        this.premiumKillingChance = configuration.getDouble("DropChance.premium.killing");
-        this.premiumMiningChance = configuration.getDouble("DropChance.premium.mining");
-        this.normalFragmentsRequiredToCreate = configuration.getInt("Key.normal.fragmentsRequiredToCreate");
-        this.premiumFragmentsRequiredToCreate = configuration.getInt("Key.premium.fragmentsRequiredToCreate");
-        this.normalKey = new ItemBuilder(ItemUtil.getMaterial(configuration.getString("Key.normal.item").split(":")[0]))
+        this.killingChance.put(MagicCaseType.NORMAL, configuration.getDouble("DropChance.normal.killing"));
+        this.killingChance.put(MagicCaseType.PREMIUM, configuration.getDouble("DropChance.premium.killing"));
+        this.miningChance.put(MagicCaseType.NORMAL, configuration.getDouble("DropChance.normal.mining"));
+        this.miningChance.put(MagicCaseType.PREMIUM, configuration.getDouble("DropChance.premium.mining"));
+        this.fragmentsRequiredToCreate.put(MagicCaseType.NORMAL, configuration.getInt("Key.normal.fragmentsRequiredToCreate"));
+        this.fragmentsRequiredToCreate.put(MagicCaseType.PREMIUM, configuration.getInt("Key.premium.fragmentsRequiredToCreate"));
+        this.keyItem.put(MagicCaseType.NORMAL, new ItemBuilder(ItemUtil.getMaterial(configuration.getString("Key.normal.item").split(":")[0]))
                 .setDurability(Short.parseShort(configuration.getString("Key.normal.item").split(":")[1]))
                 .setName(ChatUtil.fixColor(configuration.getString("Key.normal.name"))).setLore(ChatUtil.fixColor(configuration.getStringList("Key.normal.lore")))
-                .setEnchant(ItemUtil.getEnchantsFromString(configuration.getString("Key.normal.enchant"))).toItemStack();
-        this.premiumKey = new ItemBuilder(ItemUtil.getMaterial(configuration.getString("Key.premium.item").split(":")[0]))
+                .setEnchant(ItemUtil.getEnchantsFromString(configuration.getString("Key.normal.enchant"))).toItemStack());
+        this.keyItem.put(MagicCaseType.PREMIUM, new ItemBuilder(ItemUtil.getMaterial(configuration.getString("Key.premium.item").split(":")[0]))
                 .setDurability(Short.parseShort(configuration.getString("Key.premium.item").split(":")[1]))
                 .setName(ChatUtil.fixColor(configuration.getString("Key.premium.name"))).setLore(ChatUtil.fixColor(configuration.getStringList("Key.premium.lore")))
-                .setEnchant(ItemUtil.getEnchantsFromString(configuration.getString("Key.premium.enchant"))).toItemStack();
+                .setEnchant(ItemUtil.getEnchantsFromString(configuration.getString("Key.premium.enchant"))).toItemStack());
         ConfigurationSection configurationSection = configuration.getConfigurationSection("Drop.normal");
         for(String s : configurationSection.getKeys(false)){
             ConfigurationSection section = configurationSection.getConfigurationSection(s);
@@ -216,36 +218,20 @@ public class MagicCaseManager {
         }
     }
 
-    public double getNormalKillingChance() {
-        return normalKillingChance;
+    public ItemStack getKeyByMagicCaseType(MagicCaseType magicCaseType){
+        return this.keyItem.get(magicCaseType);
     }
 
-    public double getNormalMiningChance() {
-        return normalMiningChance;
+    public Map<MagicCaseType, Double> getKillingChance() {
+        return new HashMap<>(this.killingChance);
     }
 
-    public double getPremiumKillingChance() {
-        return premiumKillingChance;
+    public Map<MagicCaseType, Double> getMiningChance() {
+        return new HashMap<>(this.miningChance);
     }
 
-    public double getPremiumMiningChance() {
-        return premiumMiningChance;
-    }
-
-    public int getNormalFragmentsRequiredToCreate() {
-        return normalFragmentsRequiredToCreate;
-    }
-
-    public int getPremiumFragmentsRequiredToCreate() {
-        return premiumFragmentsRequiredToCreate;
-    }
-
-    public ItemStack getPremiumKey() {
-        return premiumKey;
-    }
-
-    public ItemStack getNormalKey() {
-        return normalKey;
+    public int getFragmentsRequiredByMagicCaseType(MagicCaseType magicCaseType){
+        return this.fragmentsRequiredToCreate.get(magicCaseType);
     }
 
     private void addDrop(MagicCaseType magicCaseType, MagicCaseDrop magicCaseDrop){
@@ -266,5 +252,9 @@ public class MagicCaseManager {
 
     public Set<UUID> getPlayerInDraw() {
         return new HashSet<>(this.playerInDraw);
+    }
+
+    public MagicCaseData getMagicCaseData() {
+        return magicCaseData;
     }
 }

@@ -1,12 +1,15 @@
 package pl.fernikq.core.user;
 
+import org.omg.CORBA.MARSHAL;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.magiccase.MagicCaseType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -55,7 +58,8 @@ public class UserStatData {
                     "`comebackAwardAmount` INT NOT NULL,"+
                     "`killWithRankAwardAmount` INT NOT NULL,"+
                     "`killedUsersAwardAmount` INT NOT NULL,"+
-                    "`exploredGuildsAwardAmount` INT NOT NULL);").executeUpdate();
+                    "`exploredGuildsAwardAmount` INT NOT NULL,"+
+                    "`keyFragments` TEXT NOT NULL);").executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -68,6 +72,10 @@ public class UserStatData {
                 this.plugin.getUserManager().getUser(UUID.fromString(resultSet.getString("uuid"))).peek(user -> {
                    UserStat userStat = new UserStat(user, resultSet);
                     try {
+                        Arrays.stream(resultSet.getString("keyFragments").split(";")).filter(s -> !s.isEmpty()).forEach(s -> {
+                            String[] data = s.split(":");
+                            userStat.addKeyFragmentsByMagicCaseType(MagicCaseType.getMagicCaseTypeByName(data[0]), Integer.parseInt(data[1]));
+                        });
                         Arrays.stream(resultSet.getString("exploredGuilds").split(":")).filter(s -> !s.isEmpty()).forEach(s -> userStat.getExploredGuilds().add(s));
                         Arrays.stream(resultSet.getString("killedUsers").split(":")).filter(s -> this.plugin.getUserManager().getUser(s).isDefined()).forEach(s -> userStat.getKilledUsers().add(this.plugin.getUserManager().getUser(s).get()));
                         Arrays.stream(resultSet.getString("killedWithRankUsers").split(":")).filter(s -> this.plugin.getUserManager().getUser(s).isDefined()).forEach(s -> userStat.getKilledWithRankUsers().add(this.plugin.getUserManager().getUser(s).get()));
@@ -87,8 +95,8 @@ public class UserStatData {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_user_stats` "+
                     "(id, uuid, coins, level, depositePearls, depositeApples, depositeEnchantedApples, minedStone, miningExperience, openedCobblex, openedPremiumCase, coinsFromStone, turboDropTime, " +
                     "turboExpTime, points, kills, deaths, assists, distanceTraveled, logouts, spentTime, exploredGuilds, killedUsers, killedWithRankUsers, comebackDaysInRow, comebackDay, minedWood, catchedFishes, timeAwardAmount, comebackAwardAmount, " +
-                    "killWithRankAwardAmount, killedUsersAwardAmount, exploredGuildsAwardAmount)"+
-                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+                    "killWithRankAwardAmount, killedUsersAwardAmount, exploredGuildsAwardAmount, keyFragments)"+
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, user.getUuid().toString());
             statement.setInt(3, stat.getCoins());
@@ -125,10 +133,25 @@ public class UserStatData {
             statement.setInt(31, stat.getKillWithRankAwardAmount());
             statement.setInt(32, stat.getKilledUsersAwardAmount());
             statement.setInt(33, stat.getExploredGuildsAwardAmount());
+            statement.setString(34, this.getKeyFragmentsToString(stat.getKeyFragments()));
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getKeyFragmentsToString(Map<MagicCaseType, Integer> caseMap){
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 0;
+        for(Map.Entry map : caseMap.entrySet()){
+            if(i == 0) {
+                stringBuilder.append(((MagicCaseType)map.getKey()).name() + ":" + Integer.toString((int)map.getValue()));
+            }else {
+                stringBuilder.append(";" + ((MagicCaseType)map.getKey()).name() + ":" + Integer.toString((int)map.getValue()));
+            }
+            i++;
+        }
+        return stringBuilder.toString();
     }
 
     public void updateUUID(UUID oldUUID, UUID newUUID){
@@ -147,7 +170,7 @@ public class UserStatData {
                     "`minedStone` = ?, `miningExperience` = ?, `openedCobblex` = ?, `openedPremiumCase` = ?, `coinsFromStone` = ?, `turboDropTime` = ?, `turboExpTime` = ?, "+
                     "`points` = ?, `kills` = ?, `deaths` = ?, `assists` = ?, `distanceTraveled` = ?, `logouts` = ?, `spentTime` = ?, `exploredGuilds` = ?, `killedUsers` = ?, `killedWithRankUsers` = ?, "+
                     "`comebackDaysInRow` = ?, `comebackDay` = ?, `minedWood` = ?, `catchedFishes` = ?, `timeAwardAmount` = ?, `comebackAwardAmount` = ?, "+
-                    "`killWithRankAwardAmount` = ?, `killedUsersAwardAmount` = ?, `exploredGuildsAwardAmount` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
+                    "`killWithRankAwardAmount` = ?, `killedUsersAwardAmount` = ?, `exploredGuildsAwardAmount` = ?, `keyFragments` = ? WHERE `uuid` = '"+user.getUuid().toString()+"';");
             statement.setInt(1, stat.getCoins());
             statement.setInt(2, stat.getLevel());
             statement.setInt(3, stat.getDepositePearls());
@@ -182,6 +205,7 @@ public class UserStatData {
             statement.setInt(29, stat.getKillWithRankAwardAmount());
             statement.setInt(30, stat.getKilledUsersAwardAmount());
             statement.setInt(31, stat.getExploredGuildsAwardAmount());
+            statement.setString(32, this.getKeyFragmentsToString(stat.getKeyFragments()));
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

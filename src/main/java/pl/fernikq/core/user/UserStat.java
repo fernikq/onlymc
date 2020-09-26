@@ -2,13 +2,12 @@ package pl.fernikq.core.user;
 
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.util.TimeUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class UserStat {
@@ -47,6 +46,7 @@ public class UserStat {
     private int killWithRankAwardAmount;
     private int killedUsersAwardAmount;
     private int exploredGuildsAwardAmount;
+    private Map<MagicCaseType, Integer> keyFragments = new HashMap<>();
 
     public UserStat(User user){
         this.coins = 0;
@@ -423,5 +423,25 @@ public class UserStat {
 
     public long getTurboExpTime() {
         return turboExpTime;
+    }
+
+    public void addKeyFragmentsByMagicCaseType(MagicCaseType magicCaseType, int amount){
+        Integer fragments = this.keyFragments.get(magicCaseType);
+        if(fragments == null) fragments = 0;
+        this.keyFragments.put(magicCaseType, fragments+amount);
+    }
+
+    public void removeKeyFragmentsByMagicCaseType(MagicCaseType magicCaseType, int amount){
+        Integer fragments = this.keyFragments.get(magicCaseType);
+        if(fragments == null) fragments = 0;
+        this.keyFragments.put(magicCaseType, fragments-amount);
+    }
+
+    public int getKeyFragmentsByMagicCaseType(MagicCaseType magicCaseType){
+        return this.keyFragments.get(magicCaseType);
+    }
+
+    public Map<MagicCaseType, Integer> getKeyFragments() {
+        return new HashMap<>(this.keyFragments);
     }
 }

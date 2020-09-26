@@ -8,6 +8,7 @@ import pl.fernikq.core.automessage.AutoMessageManager;
 import pl.fernikq.core.boss.BossManager;
 import pl.fernikq.core.command.CommandManager;
 import pl.fernikq.core.command.admin.*;
+import pl.fernikq.core.command.admin.magicCase.AdminCaseCommand;
 import pl.fernikq.core.command.guild.GuildAdminCommand;
 import pl.fernikq.core.command.guild.GuildCommand;
 import pl.fernikq.core.command.player.*;
@@ -230,6 +231,7 @@ public class CorePlugin extends JavaPlugin {
         this.guildManager.init();
         this.allianceManager.init();
         this.drillManager.init();
+        this.magicCaseManager.init();
         this.topManager.getTopsByKind(TopKind.USER).forEach(sortable -> sortable.setSorted(false));
         this.topManager.getTopsByKind(TopKind.GUILD).forEach(sortable -> sortable.setSorted(false));
     }
@@ -287,6 +289,7 @@ public class CorePlugin extends JavaPlugin {
         new FeaturesCommand("features", new String[]{"dodatki", "dodatek"}, UserGroup.ADMIN, this).register();
         new MemoryCommand("memory", new String[0], UserGroup.ADMIN, this).register();
         new AdminBossCommand("aboss", new String[0], UserGroup.ADMIN, this).register();
+        new AdminCaseCommand("acase", new String[0], UserGroup.ADMIN, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
@@ -322,7 +325,7 @@ public class CorePlugin extends JavaPlugin {
         new IncognitoCommand("incognito", new String[0], UserGroup.PLAYER, this).register();
         new BlocksCommand("bloki", new String[0], UserGroup.PLAYER, this).register();
         new RainbowNicknameCommand("teczowy", new String[0], UserGroup.VIP, this).register();
-        new CaseCommand("case", new String[0], UserGroup.VIP, this).register();
+        new CaseCommand("case", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();

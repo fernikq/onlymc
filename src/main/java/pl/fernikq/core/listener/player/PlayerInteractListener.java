@@ -28,6 +28,8 @@ import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.drill.GuildDrill;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
+import pl.fernikq.core.magiccase.MagicCase;
+import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
@@ -38,6 +40,7 @@ import pl.fernikq.core.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("deprecation")
@@ -338,6 +341,20 @@ public class PlayerInteractListener implements Listener {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20*2, 0));
             }
             ChatUtil.sendMessage(player, "&8>> &eWypiles magiczna zupe i zostales wzmocniony!");
+        }
+        MagicCase magicCase = block == null ? null : this.plugin.getMagicCaseManager().getMagicCaseMap().get(block.getLocation());
+        if(Objects.nonNull(magicCase)){
+            event.setCancelled(true);
+            if(!player.getInventory().containsAtLeast(this.plugin.getMagicCaseManager().getKeyByMagicCaseType(magicCase.getType()), 1)){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz klucza wymaganego do otworzenia tej skrzyni!"));
+                return;
+            }
+            if(this.plugin.getMagicCaseManager().getPlayerInDraw().contains(player.getUniqueId())){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz otwierac wiecej niz jeden skrzyni w jednym momencie!"));
+                return;
+            }
+            this.plugin.getMagicCaseManager().openCase(player, magicCase);
+            return;
         }
     }
 }
