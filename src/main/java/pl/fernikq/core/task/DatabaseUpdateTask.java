@@ -32,6 +32,7 @@ public class DatabaseUpdateTask extends BukkitRunnable implements SimpleTask  {
        Set<Guild> guilds = new HashSet<>();
        this.plugin.getUserManager().getOnlineUsers().forEach(user -> {
            user.getUserStat().setSpentTime(user.getUserStat().getSpentTime() + (System.currentTimeMillis() - user.getUserStat().getJoinTime()));
+           user.getUserStat().setJoinTime(System.currentTimeMillis());
            this.plugin.getUserManager().updateUser(user);
            if(user.hasGuild()) guilds.add(user.getGuild());
        });

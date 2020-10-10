@@ -274,7 +274,7 @@ public class PlayerInteractListener implements Listener {
                 }
             });
         }
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.ENDER_CHEST){
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.ENDER_CHEST && !this.plugin.getMagicCaseManager().isMagicCaseAtLocation(block.getLocation())){
             event.setCancelled(true);
             this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
                 if(user.getUserFight().isDuringFight() && ConfigManager.blockOpeningEnderchestDuringFight && !user.canByGroup(UserGroup.ADMIN)){

@@ -638,15 +638,15 @@ public class UserInventory {
                 "&8>> {n}Cena&8: {c}1000 {n}monet", "&8>> {n}Czas&8: {c}120 {n}sek")));
         ItemBuilder jump = new ItemBuilder(Material.GOLD_BOOTS).setName(ChatUtil.fixColor("{c}&lWysokie skakanie")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
                 "&8>> {n}Cena&8: {c}450 {n}monet", "&8>> {n}Czas&8: {c}120 {n}sek")));
-        ItemBuilder damage = new ItemBuilder(Material.DIAMOND_SWORD).setName(ChatUtil.fixColor("{c}&lSila I")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
-                "&8>> {n}Cena&8: {c}1750 {n}monet", "&8>> {n}Czas&8: {c}35 {n}sek")));
+        ItemBuilder damage = new ItemBuilder(Material.BLAZE_POWDER).setName(ChatUtil.fixColor("{c}&lOdpornosc na ogien I")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
+                "&8>> {n}Cena&8: {c}800 {n}monet", "&8>> {n}Czas&8: {c}60 {n}sek")));
         ItemBuilder vision = new ItemBuilder(Material.EYE_OF_ENDER).setName(ChatUtil.fixColor("{c}&lWidzenie w ciemnosci")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
                 "&8>> {n}Cena&8: {c}125 {n}monet", "&8>> {n}Czas&8: {c}260 {n}sek")));
         ItemBuilder speed = new ItemBuilder(Material.FEATHER).setName(ChatUtil.fixColor("{c}&lSzybkosc")).setLore(ChatUtil.fixColor(Arrays.asList(" ",
                 "&8>> {n}Cena&8: {c}975 {n}monet", "&8>> {n}Czas&8: {c}60 {n}sek")));
         gui.setItem(0, haste.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.FAST_DIGGING, 20 * 120, 1), 1000, "Szybkie kopanie II", user));
         gui.setItem(1, jump.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.JUMP, 20 * 120, 0), 450, "Wysokie skakanie", user));
-        gui.setItem(2, damage.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * 35, 0), 1750, "Sila I", user));
+        gui.setItem(2, damage.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20 * 60, 0), 800, "Odpornosc na ogien I", user));
         gui.setItem(3, vision.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.NIGHT_VISION, 20 * 260, 0), 125, "Widzenie w ciemnosci", user));
         gui.setItem(4, speed.toItemStack(), new CustomEffectsAction(this.plugin, new PotionEffect(PotionEffectType.SPEED, 20 * 60, 0), 975, "Szybkosc", user));
         return gui;

@@ -438,7 +438,9 @@ public class UserStat {
     }
 
     public int getKeyFragmentsByMagicCaseType(MagicCaseType magicCaseType){
-        return this.keyFragments.get(magicCaseType);
+        Integer fragments = this.keyFragments.get(magicCaseType);
+        if(fragments == null) fragments = 0;
+        return fragments;
     }
 
     public Map<MagicCaseType, Integer> getKeyFragments() {
