@@ -13,6 +13,7 @@ import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.top.comparator.Sortable;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.TitleUtil;
 
 public class GuildAddMemberCommand extends CustomCommand {
 
@@ -35,6 +36,10 @@ public class GuildAddMemberCommand extends CustomCommand {
                 if(user.hasGuild()) {
                     ChatUtil.sendMessage(sender, MessagesManager.error("Podany gracz posiada juz gildie!"));
                     return;
+                }
+                if(user.isOnline() && this.plugin.getProtectionManager().isProtected(user.getUuid())){
+                    this.plugin.getProtectionManager().removeUser(user.getUuid());
+                    TitleUtil.sendActionBar(user.asPlayer(), ChatUtil.fixColor("&4Twoja ochrona wlasnie wygasla!"));
                 }
                 this.plugin.getGuildManager().addMember(user, guild, GuildPermission.PLACE, GuildPermission.BREAK, GuildPermission.BASE_TELEPORT);
                 this.plugin.runAsync(() -> this.plugin.getTopManager().getTopsByKind(TopKind.GUILD).stream().filter(sortable -> !sortable.getTopType().equals(TopType.GUILD_COINS)).forEach(sortable -> sortable.setSorted(false)));

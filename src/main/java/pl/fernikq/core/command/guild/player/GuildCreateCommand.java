@@ -12,6 +12,7 @@ import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.StringUtil;
+import pl.fernikq.core.util.TitleUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -90,6 +91,10 @@ public class GuildCreateCommand extends CustomCommand {
                 return;
             }
             this.plugin.getGuildManager().removeItems(player);
+            if(user.isOnline() && this.plugin.getProtectionManager().isProtected(user.getUuid())){
+                this.plugin.getProtectionManager().removeUser(user.getUuid());
+                TitleUtil.sendActionBar(player, ChatUtil.fixColor("&4Twoja ochrona wlasnie wygasla!"));
+            }
             this.plugin.getGuildManager().createGuild(player, tag, name);
             String message = MessagesManager.guildCreateMessage;
             message = message.replace("{TAG}", tag);

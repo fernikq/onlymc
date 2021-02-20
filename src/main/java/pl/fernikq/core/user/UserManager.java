@@ -6,6 +6,7 @@ import io.vavr.control.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.protection.ProtectedUser;
 import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.user.backup.BackupData;
 import pl.fernikq.core.util.PlayerUtil;
@@ -84,6 +85,7 @@ public class UserManager {
             sortable.setSorted(false);
         });
         PlayerUtil.randomTeleport(player, true);
+        this.plugin.getProtectionManager().addUser(new ProtectedUser(player.getUniqueId(), 300));
         return user;
     }
 

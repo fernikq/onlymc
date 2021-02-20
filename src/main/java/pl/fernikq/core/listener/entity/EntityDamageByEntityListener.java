@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.GeneratorType;
 import pl.fernikq.core.listener.player.PlayerItemConsumeListener;
 import pl.fernikq.core.region.RegionFeedback;
@@ -26,7 +27,7 @@ public class EntityDamageByEntityListener implements Listener {
 
     private final CorePlugin plugin;
 
-    private ItemStack[] littleZombiesArmor = new ItemStack[]{new ItemBuilder(Material.IRON_HELMET).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
+    private final ItemStack[] littleZombiesArmor = new ItemStack[]{new ItemBuilder(Material.IRON_HELMET).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
             new ItemBuilder(Material.IRON_CHESTPLATE).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
             new ItemBuilder(Material.IRON_LEGGINGS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
             new ItemBuilder(Material.IRON_BOOTS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack()};
@@ -57,15 +58,25 @@ public class EntityDamageByEntityListener implements Listener {
             ChatUtil.sendMessage(damager, regionFeedback.getFeedbackMessage());
             return;
         }
+        if(this.plugin.getProtectionManager().isProtected(damager.getUniqueId())){
+            ChatUtil.sendMessage(damager, MessagesManager.error("Nie mozesz zaatakowac tego gracza, poniewaz posiadasz ochrone! Wylacz ja poprzez komende /ochrona"));
+            event.setCancelled(true);
+            return;
+        }
+        if(this.plugin.getProtectionManager().isProtected(victim.getUniqueId())){
+            ChatUtil.sendMessage(damager, MessagesManager.error("Podany gracz posiada ochrone startowa!"));
+            event.setCancelled(true);
+            return;
+        }
         if(!damager.equals(victim)){
             UserFight victimFight = victimUser.getUserFight();
             UserFight damagerFight = damagerUser.getUserFight();
             victimFight.setLastAttacker(damagerUser);
-            victimFight.setLastAttackTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000));
-            victimFight.setAntylogoutTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000));
+            victimFight.setLastAttackTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000L));
+            victimFight.setAntylogoutTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000L));
             damagerFight.setLastAttacker(victimUser);
-            damagerFight.setLastAttackTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000));
-            damagerFight.setAntylogoutTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000));
+            damagerFight.setLastAttackTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000L));
+            damagerFight.setAntylogoutTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000L));
             this.plugin.getFightManager().getUsersDuringFight().add(damagerUser);
             this.plugin.getFightManager().getUsersDuringFight().add(victimUser);
             Damage damage = victimFight.getDamageByUser(damagerUser);

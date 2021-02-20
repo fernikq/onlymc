@@ -16,7 +16,7 @@ import pl.fernikq.core.util.ChatUtil;
 public class TagManager {
 
     private final CorePlugin plugin;
-    private Scoreboard scoreboard;
+    private final Scoreboard scoreboard;
 
     public TagManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -44,7 +44,7 @@ public class TagManager {
             }
             return MessagesManager.playerNametagGuildEnemyFormat.replace("{GUILD}", guild.getTag())+(this.plugin.getIncognitoManager().changeName(user1, user2) ? "&f&k" : "&f");
         }
-        return this.plugin.getIncognitoManager().changeName(user1, user2) ? "&k" : "";
+        return this.plugin.getIncognitoManager().changeName(user1, user2) ? this.plugin.getProtectionManager().isProtected(user1.getUuid()) ? "&e[OCHRONA] &k" : "&k" : this.plugin.getProtectionManager().isProtected(user1.getUuid()) ? "&e[OCHRONA] " : "";
     }
 
     private String getSuffixFormat(User user1, User user2){
@@ -81,6 +81,7 @@ public class TagManager {
                         if(onlineUser == null){
                             continue;
                         }
+                        prefix = this.plugin.getProtectionManager().isProtected(player.getUniqueId()) ? "&" : "";
                         prefix = getTagFormat(user, onlineUser);
                         prefix = this.plugin.getVanishManager().isVanished(player) ? "&8[&bV&8]&f " : prefix;
                         if(prefix.length() > 16){

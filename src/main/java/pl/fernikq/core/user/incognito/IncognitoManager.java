@@ -120,7 +120,7 @@ public class IncognitoManager {
         if(!incognito.hasSkin()){
             return;
         }
-        String originalSkin = incognito.getOriginalSkin();//ale to ci i tka nie podpasuje xD
+        String originalSkin = incognito.getOriginalSkin();
         GameProfile gameProfile = ((CraftPlayer)player).getProfile();
         if(restore){
             String[] skingInfo = originalSkin.split(";");

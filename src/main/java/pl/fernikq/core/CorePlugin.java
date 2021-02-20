@@ -34,6 +34,7 @@ import pl.fernikq.core.listener.inventory.InventoryCloseListener;
 import pl.fernikq.core.listener.player.*;
 import pl.fernikq.core.magiccase.MagicCaseManager;
 import pl.fernikq.core.mysql.MySQL;
+import pl.fernikq.core.protection.ProtectionManager;
 import pl.fernikq.core.region.RegionManager;
 import pl.fernikq.core.rguard.RguardListener;
 import pl.fernikq.core.shop.ShopManager;
@@ -96,6 +97,7 @@ public class CorePlugin extends JavaPlugin {
     private DrillManager drillManager;
     private BossManager bossManager;
     private MagicCaseManager magicCaseManager;
+    private ProtectionManager protectionManager;
 
     @Override
     public void onEnable() {
@@ -107,7 +109,7 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
-        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this), new TopsSortTask(this), new DatabaseUpdateTask(this));
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this), new TopsSortTask(this), new DatabaseUpdateTask(this), new PlayerProtectionTask(this));
         simpleTasks.forEach(SimpleTask::start);
         registerTablistVariables();
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "", new RguardListener(this));
@@ -222,6 +224,7 @@ public class CorePlugin extends JavaPlugin {
         this.drillManager = new DrillManager(this);
         this.bossManager = new BossManager(this);
         this.magicCaseManager = new MagicCaseManager(this);
+        this.protectionManager = new ProtectionManager(this);
     }
 
     private void initData(){
@@ -397,6 +400,10 @@ public class CorePlugin extends JavaPlugin {
 
     public TagManager getTagManager() {
         return tagManager;
+    }
+
+    public ProtectionManager getProtectionManager() {
+        return protectionManager;
     }
 
     public HomeManager getHomeManager() {

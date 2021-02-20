@@ -20,8 +20,8 @@ import java.util.Map;
 public class AbyssManager {
 
     private final CorePlugin plugin;
-    private Map<String, InventoryGUI> inventories;
-    private List<InventoryGUI> inventoryList;
+    private final Map<String, InventoryGUI> inventories;
+    private final List<InventoryGUI> inventoryList;
     private boolean opened;
 
     public AbyssManager(CorePlugin plugin){

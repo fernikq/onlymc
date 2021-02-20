@@ -7,7 +7,7 @@ public class LocationUtil {
 
     public static Location locationFromString(String s) {
         String[] ss = s.split(",");
-        Location l = new Location(Bukkit.getWorlds().get(0),0.0,0.0,0.0,0.0f,0.0f);
+        Location l = new Location(Bukkit.getWorlds().get(0), 0.0, 0.0, 0.0, 0.0f, 0.0f);
         l.setWorld(Bukkit.getWorld(ss[0]));
         l.setX(Double.parseDouble(ss[1]));
         l.setY(Double.parseDouble(ss[2]));
@@ -16,6 +16,7 @@ public class LocationUtil {
         l.setPitch(Float.parseFloat(ss[5]));
         return l;
     }
+    
     public static String locationToString(Location l) {
         return l.getWorld().getName() + "," + l.getX() + "," + l.getY() + "," + l.getZ() + "," + l.getYaw() + "," + l.getPitch();
     }

@@ -71,6 +71,46 @@ public class TimeUtil {
         final String st = dt.format(date.getTime());
         return st;
     }
+
+    public static String getTimeFromSeconds(int seconds){
+        if(seconds <= 0){
+            return "0s";
+        }
+        final long days = TimeUnit.SECONDS.toDays(seconds);
+        if(days > 0){
+            seconds -= TimeUnit.DAYS.toSeconds(days);
+        }
+        final long hours = TimeUnit.SECONDS.toHours(seconds);
+        if(hours > 0){
+            seconds -= TimeUnit.HOURS.toSeconds(hours);
+        }
+        final long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+        if(minutes > 0){
+            seconds -= TimeUnit.MINUTES.toSeconds(minutes);
+        }
+        final StringBuilder sb = new StringBuilder();
+        if (days > 0L) {
+            sb.append(days);
+            sb.append("d ");
+        }
+        if (hours > 0L) {
+            sb.append(hours);
+            sb.append("h ");
+        }
+        if (minutes > 0L) {
+            sb.append(minutes);
+            sb.append("m ");
+        }
+        if(seconds > 0){
+            sb.append(seconds);
+            sb.append("s");
+        }
+        if(sb.toString().isEmpty()){
+            return "0s";
+        }
+        return sb.toString();
+    }
+
     public static String getTimeToString(long millis) {
         if (millis <= 0L) {
             return "0s";

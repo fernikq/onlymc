@@ -21,6 +21,13 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>spigot</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>D:\jars\spigot.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>1.0.0-alpha-2</version>
