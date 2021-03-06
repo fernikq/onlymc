@@ -23,4 +23,12 @@ public class NumberUtil {
             return false;
         }
     }
+
+    public static Integer getIntegerFromString(String string){
+        try{
+            return Integer.parseInt(string);
+        }catch(NumberFormatException ex){
+            return null;
+        }
+    }
 }

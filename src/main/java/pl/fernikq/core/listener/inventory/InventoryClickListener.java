@@ -22,6 +22,7 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.inventory.InventoryAction;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.inventory.custom.CustomInventory;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
@@ -29,6 +30,7 @@ import pl.fernikq.core.util.ItemUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -78,6 +80,17 @@ public class InventoryClickListener implements Listener {
                 return;
             }
         });
+        CustomInventory customInventory = this.plugin.getCustomInventoryManager().getCustomInventoryByName(ChatUtil.fixColor(event.getInventory().getName()));
+        if(Objects.nonNull(customInventory)){
+            if(customInventory.getInventoryGUI().isCancelling()){
+                event.setCancelled(true);
+            }
+            String command = customInventory.getCommandAtSlot(event.getRawSlot());
+            if(Objects.nonNull(command)){
+                this.plugin.getServer().dispatchCommand(player, command);
+            }
+            return;
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

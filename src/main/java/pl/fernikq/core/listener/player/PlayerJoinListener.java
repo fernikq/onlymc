@@ -84,7 +84,7 @@ public class PlayerJoinListener implements Listener {
         }
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override
-            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) {
                 if(packet instanceof PacketPlayInBlockDig && ((PacketPlayInBlockDig) packet).c() == PacketPlayInBlockDig.EnumPlayerDigType.START_DESTROY_BLOCK) {
                     CoreAPI.getPlugin().getServer().getScheduler().runTask(CoreAPI.getPlugin(), () -> {
                         BlockPosition blockPosition = (BlockPosition) PacketUtil.getField(packet, "a");
@@ -93,11 +93,15 @@ public class PlayerJoinListener implements Listener {
                         Bukkit.getPluginManager().callEvent(blockDigEvent);
                     });
                 }
-                super.channelRead(channelHandlerContext, packet);
+                try {
+                    super.channelRead(channelHandlerContext, packet);
+                } catch(Exception ex) {}
             }
             @Override
-            public void write(ChannelHandlerContext channelHandlerContext, Object packet, ChannelPromise channelPromise) throws Exception {
-                super.write(channelHandlerContext, packet, channelPromise);
+            public void write(ChannelHandlerContext channelHandlerContext, Object packet, ChannelPromise channelPromise) {
+                try {
+                    super.write(channelHandlerContext, packet, channelPromise);
+                } catch(Exception ex) {}
             }
         };
         ((CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline().addBefore("packet_handler", player.getName(), channelDuplexHandler);

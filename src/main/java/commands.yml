@@ -13,32 +13,6 @@ AllowedDuringPVP:
   - '/r'
 Commands:
   1:
-    name: 'help'
-    aliases:
-      - 'pomoc'
-    group: 'PLAYER'
-    feedback:
-      - '&8&m--------&8[ {c}&lPomoc &8]&m--------'
-      - ' '
-      - '&8>> {c}/drop &8- {n}Drop dostepny na serwerze'
-      - '&8>> {c}/kit &8- {n}Zestawy dostepne na serwerze'
-      - '&8>> {c}/craftingi &8- {n}Craftingi dostepne na serwerze'
-      - '&8>> {c}/gildie &8- {n}Pomoc dotyczaca gildii'
-      - '&8>> {c}/zadania &8- {n}Zadania dostepne na serwerze'
-      - '&8>> {c}/ender &8- {n}Zarzadzanie enderchestem'
-      - '&8>> {c}/topki &8- {n}Ranking graczy i gildii'
-      - '&8>> {c}/helpop &8- {n}Wiadomosc do administracji'
-      - '&8>> {c}/sklep &8- {n}Sklep za monety'
-      - '&8>> {c}/ustawienia &8- {n}Ustawienia dotyczace wiadomosci'
-      - '&8>> {c}/gracz &8- {n}Informacje o graczu'
-      - '&8>> {c}/ignore &8- {n}Mozliwosc zablokowania gracza'
-      - '&8>> {c}/efekty &8- {n}Efekty dostepne na serwerze'
-      - '&8>> {c}/otchlan &8- {n}Przedmioty usuniete z ziemi'
-      - '&8>> {c}/resetuj &8- {n}Resetowanie punktow do poczatkowej wartosci'
-      - '&8>> {c}/warp &8- {n}Warpy dostepne na serwerze'
-      - ' '
-      - '&8&m--------&8[ {c}&lPomoc &8]&m--------'
-  2:
     name: 'vip'
     aliases: []
     group: 'PLAYER'

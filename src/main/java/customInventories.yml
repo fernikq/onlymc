@@ -1,0 +1,17 @@
+Inventories:
+  1:
+    commandName: 'pomoc'
+    inventoryName: '&8[ &c&lPOMOC &8]'
+    inventoryRows: 1
+    slots:
+      1:
+        item: 'diamond:0'
+        amount: 1
+        command: 'spawn'
+        itemName: '&aSpawn'
+        itemLore:
+          - '&aKliknij aby przeteleportowac sie na spawn'
+      2:
+        item: 'diamond:0'
+        amount: 1
+    blankSlots: 'STAINED_GLASS_PANE:7'

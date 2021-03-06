@@ -24,6 +24,7 @@ import pl.fernikq.core.dummy.DummyManager;
 import pl.fernikq.core.guild.GuildManager;
 import pl.fernikq.core.guild.alliances.AllianceManager;
 import pl.fernikq.core.guild.drill.DrillManager;
+import pl.fernikq.core.inventory.custom.CustomInventoryManager;
 import pl.fernikq.core.inventory.guild.GuildInventory;
 import pl.fernikq.core.inventory.user.UserInventory;
 import pl.fernikq.core.kit.KitManager;
@@ -98,6 +99,7 @@ public class CorePlugin extends JavaPlugin {
     private BossManager bossManager;
     private MagicCaseManager magicCaseManager;
     private ProtectionManager protectionManager;
+    private CustomInventoryManager customInventoryManager;
 
     @Override
     public void onEnable() {
@@ -225,6 +227,7 @@ public class CorePlugin extends JavaPlugin {
         this.bossManager = new BossManager(this);
         this.magicCaseManager = new MagicCaseManager(this);
         this.protectionManager = new ProtectionManager(this);
+        this.customInventoryManager = new CustomInventoryManager(this);
     }
 
     private void initData(){
@@ -329,6 +332,7 @@ public class CorePlugin extends JavaPlugin {
         new BlocksCommand("bloki", new String[0], UserGroup.PLAYER, this).register();
         new RainbowNicknameCommand("teczowy", new String[0], UserGroup.VIP, this).register();
         new CaseCommand("case", new String[0], UserGroup.PLAYER, this).register();
+        new ProtectionCommand("ochrona", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();
@@ -396,6 +400,10 @@ public class CorePlugin extends JavaPlugin {
 
     public MessagesManager getMessagesManager() {
         return messagesManager;
+    }
+
+    public CustomInventoryManager getCustomInventoryManager() {
+        return customInventoryManager;
     }
 
     public TagManager getTagManager() {

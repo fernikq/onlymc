@@ -31,7 +31,7 @@ public class GuildLeaderCommand extends CustomCommand {
         String name = args[1];
         this.plugin.getUserManager().getUser(name).peek(user -> {
             if(!user.hasGuild()) {
-                ChatUtil.sendMessage(sender, MessagesManager.error("Podany gracz posiada juz gildie!"));
+                ChatUtil.sendMessage(sender, MessagesManager.error("Podany gracz nie posiada gildii!"));
                 return;
             }
             Guild guild = user.getGuild();
