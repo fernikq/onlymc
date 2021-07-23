@@ -39,6 +39,10 @@ public class PlayerMoveListener implements Listener {
                 return;
             }
             user.getUserStat().setDistanceTraveled(user.getUserStat().getDistanceTraveled() + 1);
+            if(player.getLocation().getBlockY() <= 0){
+                //TODO bo nie wiem co tu dac w sumie (co zrobic z graczem).
+                ChatUtil.sendMessage(player, "Siwy dym");
+            }
             this.plugin.getQuestManager().checkQuest(user, QuestType.TRAVELED_DISTANCE);
             RegionFeedback regionFeedback = this.plugin.getRegionManager().canMoveCauseOfBorder(event.getTo(), event.getFrom());
             if(!regionFeedback.isPermit()){

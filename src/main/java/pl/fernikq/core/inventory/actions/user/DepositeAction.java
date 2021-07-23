@@ -88,12 +88,56 @@ public class DepositeAction implements InventoryAction {
             this.plugin.getUserInventory().deposite(user).openInventory(player);
             return;
         }
+        if(depositeActionType.equals(DepositeActionType.TAKE_ARROWS)) {
+            int arrowsInInventory = ItemUtil.getAmountOfMaterial(player.getInventory(), Material.ARROW, (short) 0);
+            if(user.getUserStat().getDepositeArrows() <= 0){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz strzal w schowku!"));
+                return;
+            }
+            int toGive = ConfigManager.maxArrowsInInventory - arrowsInInventory;
+            if(toGive <= 0){
+                ChatUtil.sendMessage(player, MessagesManager.error("Posiadasz maksymalna ilosc strzal w ekwipunku!"));
+                return;
+            }
+            if(toGive > user.getUserStat().getDepositeArrows()){
+                toGive = user.getUserStat().getDepositeArrows();
+            }
+            ItemUtil.giveItems(player, new ItemStack(Material.ARROW, toGive));
+            user.getUserStat().setDepositeArrows(user.getUserStat().getDepositeArrows() - toGive);
+            ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+toGive+" {n}"+correctName(toGive, DepositeActionType.TAKE_ARROWS)+" ze schowka&8!");
+            this.plugin.getUserInventory().deposite(user).openInventory(player);
+            return;
+        }
+        if(depositeActionType.equals(DepositeActionType.TAKE_SNOWBALLS)) {
+            int snowballsInInventory = ItemUtil.getAmountOfMaterial(player.getInventory(), Material.SNOW_BALL, (short) 0);
+            if(user.getUserStat().getDepositeSnowballs() <= 0){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz sniezek w schowku!"));
+                return;
+            }
+            int toGive = ConfigManager.maxSnowballsInInventory - snowballsInInventory;
+            if(toGive <= 0){
+                ChatUtil.sendMessage(player, MessagesManager.error("Posiadasz maksymalna ilosc sniezek w ekwipunku!"));
+                return;
+            }
+            if(toGive > user.getUserStat().getDepositeSnowballs()){
+                toGive = user.getUserStat().getDepositeSnowballs();
+            }
+            ItemUtil.giveItems(player, new ItemStack(Material.SNOW_BALL, toGive));
+            user.getUserStat().setDepositeSnowballs(user.getUserStat().getDepositeSnowballs() - toGive);
+            ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+toGive+" {n}"+correctName(toGive, DepositeActionType.TAKE_SNOWBALLS)+" ze schowka&8!");
+            this.plugin.getUserInventory().deposite(user).openInventory(player);
+            return;
+        }
         if(depositeActionType.equals(DepositeActionType.TAKE_ALL)) {
             int applesInInventory = ItemUtil.getAmountOfMaterial(player.getInventory(), Material.GOLDEN_APPLE, (short) 0);
             int pearlsInInventory = ItemUtil.getAmountOfMaterial(player.getInventory(), Material.ENDER_PEARL, (short) 0);
+            int arrowsInInventory = ItemUtil.getAmountOfMaterial(player.getInventory(), Material.ARROW, (short) 0);
+            int snowballsInInventory = ItemUtil.getAmountOfMaterial(player.getInventory(), Material.SNOW_BALL, (short) 0);
             int enchantedApplesInInventory = ItemUtil.getAmountOfMaterial(player.getInventory(), Material.GOLDEN_APPLE, (short) 1);
             int applesToGive = 0;
             int pearlsToGive = 0;
+            int arrowsToGive = 0;
+            int snowballsToGive = 0;
             int enchantedApplesToGive = 0;
 
             if(user.getUserStat().getDepositeEnchantedApples() > 0){
@@ -123,7 +167,25 @@ public class DepositeAction implements InventoryAction {
                 }
             }
 
-            if(enchantedApplesToGive == 0 && applesToGive == 0 && pearlsToGive == 0){
+            if(user.getUserStat().getDepositeSnowballs() > 0) {
+                snowballsToGive = ConfigManager.maxSnowballsInInventory - snowballsInInventory;
+                if(snowballsToGive > 0) {
+                    if(snowballsToGive > user.getUserStat().getDepositeSnowballs()) {
+                        snowballsToGive = user.getUserStat().getDepositeSnowballs();
+                    }
+                }
+            }
+
+            if(user.getUserStat().getDepositeArrows() > 0) {
+                arrowsToGive = ConfigManager.maxArrowsInInventory - arrowsInInventory;
+                if(arrowsToGive > 0) {
+                    if(arrowsToGive > user.getUserStat().getDepositeArrows()) {
+                        arrowsToGive = user.getUserStat().getDepositeArrows();
+                    }
+                }
+            }
+
+            if(enchantedApplesToGive == 0 && applesToGive == 0 && pearlsToGive == 0 && arrowsToGive == 0 && snowballsToGive == 0){
                 ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz niczego wyplacic!"));
                 return;
             }
@@ -142,6 +204,16 @@ public class DepositeAction implements InventoryAction {
                 ItemUtil.giveItems(player, new ItemStack(Material.ENDER_PEARL, pearlsToGive));
                 user.getUserStat().removeDepositePearls(pearlsToGive);
                 ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+pearlsToGive+" {n}"+correctName(pearlsToGive, DepositeActionType.TAKE_PEARLS)+" ze schowka&8!");
+            }
+            if(arrowsToGive > 0){
+                ItemUtil.giveItems(player, new ItemStack(Material.ARROW, arrowsToGive));
+                user.getUserStat().setDepositeArrows(user.getUserStat().getDepositeArrows() - arrowsToGive);
+                ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+arrowsToGive+" {n}"+correctName(arrowsToGive, DepositeActionType.TAKE_ARROWS)+" ze schowka&8!");
+            }
+            if(snowballsToGive > 0){
+                ItemUtil.giveItems(player, new ItemStack(Material.SNOW_BALL, snowballsToGive));
+                user.getUserStat().setDepositeSnowballs(user.getUserStat().getDepositeSnowballs() - snowballsToGive);
+                ChatUtil.sendMessage(player, "&8>> {n}Wyplaciles {c}"+snowballsToGive+" {n}"+correctName(snowballsToGive, DepositeActionType.TAKE_SNOWBALLS)+" ze schowka&8!");
             }
             this.plugin.getUserInventory().deposite(user).openInventory(player);
             return;
@@ -175,6 +247,24 @@ public class DepositeAction implements InventoryAction {
                 return "koxy";
             }
             return "koxow";
+        }
+        if(type.equals(DepositeActionType.TAKE_ARROWS)) {
+            if(amount == 1){
+                return "strzale";
+            }
+            if(amount < 5){
+                return "strzal";
+            }
+            return "strzal";
+        }
+        if(type.equals(DepositeActionType.TAKE_SNOWBALLS)) {
+            if(amount == 1){
+                return "sniezke";
+            }
+            if(amount < 5){
+                return "sniezek";
+            }
+            return "sniezek";
         }
         return "";
     }

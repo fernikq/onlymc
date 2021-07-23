@@ -36,6 +36,8 @@ public class DepositeTask extends BukkitRunnable implements SimpleTask {
                 int apples = ItemUtil.getAmountOfMaterial(online.getInventory(), Material.GOLDEN_APPLE, (short) 0);
                 int enchantedApples = ItemUtil.getAmountOfMaterial(online.getInventory(), Material.GOLDEN_APPLE, (short) 1);
                 int pearls = ItemUtil.getAmountOfMaterial(online.getInventory(), Material.ENDER_PEARL);
+                int arrows = ItemUtil.getAmountOfMaterial(online.getInventory(), Material.ARROW);
+                int snowballs = ItemUtil.getAmountOfMaterial(online.getInventory(), Material.SNOW_BALL);
                 if(apples > ConfigManager.maxGoldenApplesInInventory){
                     int toRemove = apples - ConfigManager.maxGoldenApplesInInventory;
                     ItemUtil.remove(new ItemStack(Material.GOLDEN_APPLE), online, toRemove);
@@ -55,6 +57,20 @@ public class DepositeTask extends BukkitRunnable implements SimpleTask {
                     ItemUtil.remove(new ItemStack(Material.ENDER_PEARL), online, toRemove);
                     user.getUserStat().addDepositePearls(toRemove);
                     String message = StringUtil.replace(MessagesManager.depositePearlsMessage, "{AMOUNT}", toRemove);
+                    ChatUtil.sendMessage(online, message);
+                }
+                if(arrows > ConfigManager.maxArrowsInInventory){
+                    int toRemove = arrows - ConfigManager.maxArrowsInInventory;
+                    ItemUtil.remove(new ItemStack(Material.ARROW), online, toRemove);
+                    user.getUserStat().setDepositeArrows(user.getUserStat().getDepositeArrows() + toRemove);
+                    String message = StringUtil.replace(MessagesManager.depositeArrowsMessage, "{AMOUNT}", toRemove);
+                    ChatUtil.sendMessage(online, message);
+                }
+                if(snowballs > ConfigManager.maxSnowballsInInventory){
+                    int toRemove = snowballs - ConfigManager.maxSnowballsInInventory;
+                    ItemUtil.remove(new ItemStack(Material.SNOW_BALL), online, toRemove);
+                    user.getUserStat().setDepositeSnowballs(user.getUserStat().getDepositeSnowballs() + toRemove);
+                    String message = StringUtil.replace(MessagesManager.depositeSnowballsMessage, "{AMOUNT}", toRemove);
                     ChatUtil.sendMessage(online, message);
                 }
             });

@@ -71,7 +71,7 @@ public class CustomInventoryManager {
             }
             if(Objects.nonNull(blankSlots)){
                 String[] itemInfo = blankSlots.split(":");
-                inventoryGUI.setEmptyItem(new ItemBuilder(ItemUtil.getMaterial(itemInfo[0])).setDurability(Short.parseShort(itemInfo[1])).toItemStack());
+                inventoryGUI.setEmptyItem(new ItemBuilder(ItemUtil.getMaterial(itemInfo[0])).setDurability(Short.parseShort(itemInfo[1])).setName(" ").toItemStack());
             }
             CustomInventory customInventory = new CustomInventory(inventoryGUI, commandMap);
             CustomInventoryCommand customInventoryCommand = new CustomInventoryCommand(commandName, Arrays.asList(), UserGroup.PLAYER, this.plugin, customInventory);

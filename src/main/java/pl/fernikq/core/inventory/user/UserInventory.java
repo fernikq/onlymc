@@ -105,6 +105,7 @@ public class UserInventory {
             builder.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby zobaczyc crafting")));
             gui.addItem(builder.toItemStack(), new CraftingAction(plugin, CraftingActionType.CHOOSE, generator, user));
         }
+        gui.setEmptyItem(this.blank);
         return gui;
     }
 
@@ -229,7 +230,7 @@ public class UserInventory {
     }
 
     public InventoryGUI deposite(User user){
-        InventoryGUI gui = new InventoryGUI("&8[ {c}&lSCHOWEK &8]", 1, true);
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lSCHOWEK &8]", 3, true);
         user.addInventory(gui);
         ItemBuilder apples = new ItemBuilder(Material.GOLDEN_APPLE).setName(ChatUtil.fixColor("&8[ {c}&lRefile &8]"))
                 .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Limit&8: {c}" + ConfigManager.maxGoldenApplesInInventory,
@@ -240,12 +241,20 @@ public class UserInventory {
         ItemBuilder pearls = new ItemBuilder(Material.ENDER_PEARL).setName(ChatUtil.fixColor("&8[ {c}&lPerly &8]"))
                 .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Limit&8: {c}" + ConfigManager.maxPearlsInInventory,
                         "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getDepositePearls())));
+        ItemBuilder arrows = new ItemBuilder(Material.ARROW).setName(ChatUtil.fixColor("&8[ {c}&lStrzaly &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Limit&8: {c}" + ConfigManager.maxArrowsInInventory,
+                        "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getDepositeArrows())));
+        ItemBuilder snowballs = new ItemBuilder(Material.SNOW_BALL).setName(ChatUtil.fixColor("&8[ {c}&lSniezki &8]"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Limit&8: {c}" + ConfigManager.maxSnowballsInInventory,
+                        "&8>> {n}Posiadasz&8: {c}"+user.getUserStat().getDepositeSnowballs())));
         ItemBuilder all = new ItemBuilder(Material.HOPPER).setName(ChatUtil.fixColor("&8[ {c}&lWszystko &8]"))
                 .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby wyplacic wszystko&8!")));
-        gui.setItem(1, enchantedApples.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_ENCHANTED_APPLES, user));
-        gui.setItem(3, apples.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_APPLES, user));
-        gui.setItem(5, pearls.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_PEARLS, user));
-        gui.setItem(7, all.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_ALL, user));
+        gui.setItem(10, enchantedApples.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_ENCHANTED_APPLES, user));
+        gui.setItem(11, apples.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_APPLES, user));
+        gui.setItem(15, pearls.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_PEARLS, user));
+        gui.setItem(16, snowballs.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_SNOWBALLS, user));
+        gui.setItem(13, arrows.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_ARROWS, user));
+        gui.setItem(22, all.toItemStack(), new DepositeAction(this.plugin, DepositeActionType.TAKE_ALL, user));
         gui.setEmptyItem(this.blank);
         return gui;
     }

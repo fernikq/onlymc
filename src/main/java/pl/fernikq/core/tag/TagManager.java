@@ -44,7 +44,7 @@ public class TagManager {
             }
             return MessagesManager.playerNametagGuildEnemyFormat.replace("{GUILD}", guild.getTag())+(this.plugin.getIncognitoManager().changeName(user1, user2) ? "&f&k" : "&f");
         }
-        return this.plugin.getIncognitoManager().changeName(user1, user2) ? this.plugin.getProtectionManager().isProtected(user1.getUuid()) ? "&e[OCHRONA] &k" : "&k" : this.plugin.getProtectionManager().isProtected(user1.getUuid()) ? "&e[OCHRONA] " : "";
+        return this.plugin.getIncognitoManager().changeName(user1, user2) ? this.plugin.getProtectionManager().isProtected(user1.getUuid()) ? "&e[OCHRONA] &f&k" : "&k" : this.plugin.getProtectionManager().isProtected(user1.getUuid()) ? "&e[OCHRONA] &f" : "";
     }
 
     private String getSuffixFormat(User user1, User user2){

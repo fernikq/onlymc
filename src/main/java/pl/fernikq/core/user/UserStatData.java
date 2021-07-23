@@ -33,6 +33,8 @@ public class UserStatData {
                     "`depositePearls` INT NOT NULL,"+
                     "`depositeApples` INT NOT NULL,"+
                     "`depositeEnchantedApples` INT NOT NULL,"+
+                    "`depositeArrows` INT NOT NULL,"+
+                    "`depositeSnowballs` INT NOT NULL,"+
                     "`minedStone` INT NOT NULL,"+
                     "`miningExperience` INT NOT NULL,"+
                     "`openedCobblex` INT NOT NULL,"+
@@ -93,10 +95,10 @@ public class UserStatData {
         try (Connection connection = this.plugin.getMySQL().getConnection()){
             UserStat stat = user.getUserStat();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO `core_user_stats` "+
-                    "(id, uuid, coins, level, depositePearls, depositeApples, depositeEnchantedApples, minedStone, miningExperience, openedCobblex, openedPremiumCase, coinsFromStone, turboDropTime, " +
+                    "(id, uuid, coins, level, depositePearls, depositeApples, depositeEnchantedApples, depositeArrows, depositeSnowballs, minedStone, miningExperience, openedCobblex, openedPremiumCase, coinsFromStone, turboDropTime, " +
                     "turboExpTime, points, kills, deaths, assists, distanceTraveled, logouts, spentTime, exploredGuilds, killedUsers, killedWithRankUsers, comebackDaysInRow, comebackDay, minedWood, catchedFishes, timeAwardAmount, comebackAwardAmount, " +
                     "killWithRankAwardAmount, killedUsersAwardAmount, exploredGuildsAwardAmount, keyFragments)"+
-                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, null);
             statement.setString(2, user.getUuid().toString());
             statement.setInt(3, stat.getCoins());
@@ -104,36 +106,38 @@ public class UserStatData {
             statement.setInt(5, stat.getDepositePearls());
             statement.setInt(6, stat.getDepositeApples());
             statement.setInt(7, stat.getDepositeEnchantedApples());
-            statement.setInt(8, stat.getMinedStone());
-            statement.setInt(9, stat.getMiningExperience());
-            statement.setInt(10, stat.getOpenedCobblex());
-            statement.setInt(11, stat.getOpenedPremiumCase());
-            statement.setInt(12, stat.getCoinsFromStone());
-            statement.setLong(13, stat.getTurboDropTime());
-            statement.setLong(14, stat.getTurboExpTime());
-            statement.setInt(15, stat.getPoints());
-            statement.setInt(16, stat.getKills());
-            statement.setInt(17, stat.getDeaths());
-            statement.setInt(18, stat.getAssists());
-            statement.setInt(19, stat.getDistanceTraveled());
-            statement.setInt(20, stat.getLogouts());
-            statement.setLong(21, stat.getSpentTime());
+            statement.setInt(8, stat.getDepositeArrows());
+            statement.setInt(9, stat.getDepositeSnowballs());
+            statement.setInt(10, stat.getMinedStone());
+            statement.setInt(11, stat.getMiningExperience());
+            statement.setInt(12, stat.getOpenedCobblex());
+            statement.setInt(13, stat.getOpenedPremiumCase());
+            statement.setInt(14, stat.getCoinsFromStone());
+            statement.setLong(15, stat.getTurboDropTime());
+            statement.setLong(16, stat.getTurboExpTime());
+            statement.setInt(17, stat.getPoints());
+            statement.setInt(18, stat.getKills());
+            statement.setInt(19, stat.getDeaths());
+            statement.setInt(20, stat.getAssists());
+            statement.setInt(21, stat.getDistanceTraveled());
+            statement.setInt(22, stat.getLogouts());
+            statement.setLong(23, stat.getSpentTime());
             String string = String.join(":", stat.getExploredGuilds());
-            statement.setString(22, string);
-            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledUsers().stream().collect(Collectors.toList())));
-            statement.setString(23, string);
-            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledWithRankUsers().stream().collect(Collectors.toList())));
             statement.setString(24, string);
-            statement.setInt(25, stat.getComebackDaysInRow());
-            statement.setInt(26, stat.getComebackDay());
-            statement.setInt(27, stat.getMinedWood());
-            statement.setInt(28, stat.getCatchedFishes());
-            statement.setInt(29, stat.getTimeAwardAmount());
-            statement.setInt(30, stat.getComebackAwardAmount());
-            statement.setInt(31, stat.getKillWithRankAwardAmount());
-            statement.setInt(32, stat.getKilledUsersAwardAmount());
-            statement.setInt(33, stat.getExploredGuildsAwardAmount());
-            statement.setString(34, this.getKeyFragmentsToString(stat.getKeyFragments()));
+            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledUsers().stream().collect(Collectors.toList())));
+            statement.setString(25, string);
+            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledWithRankUsers().stream().collect(Collectors.toList())));
+            statement.setString(26, string);
+            statement.setInt(27, stat.getComebackDaysInRow());
+            statement.setInt(28, stat.getComebackDay());
+            statement.setInt(29, stat.getMinedWood());
+            statement.setInt(30, stat.getCatchedFishes());
+            statement.setInt(31, stat.getTimeAwardAmount());
+            statement.setInt(32, stat.getComebackAwardAmount());
+            statement.setInt(33, stat.getKillWithRankAwardAmount());
+            statement.setInt(34, stat.getKilledUsersAwardAmount());
+            statement.setInt(35, stat.getExploredGuildsAwardAmount());
+            statement.setString(36, this.getKeyFragmentsToString(stat.getKeyFragments()));
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -166,7 +170,7 @@ public class UserStatData {
         try (Connection connection = this.plugin.getMySQL().getConnection()){
             UserStat stat = user.getUserStat();
             PreparedStatement statement = connection.prepareStatement("UPDATE `core_user_stats` SET "+
-                    "`coins` = ?, `level` = ?, `depositePearls` = ?, `depositeApples` = ?, `depositeEnchantedApples` = ?, "+
+                    "`coins` = ?, `level` = ?, `depositePearls` = ?, `depositeApples` = ?, `depositeEnchantedApples` = ?, `depositeArrows` = ?, `depositeSnowballs` = ?, "+
                     "`minedStone` = ?, `miningExperience` = ?, `openedCobblex` = ?, `openedPremiumCase` = ?, `coinsFromStone` = ?, `turboDropTime` = ?, `turboExpTime` = ?, "+
                     "`points` = ?, `kills` = ?, `deaths` = ?, `assists` = ?, `distanceTraveled` = ?, `logouts` = ?, `spentTime` = ?, `exploredGuilds` = ?, `killedUsers` = ?, `killedWithRankUsers` = ?, "+
                     "`comebackDaysInRow` = ?, `comebackDay` = ?, `minedWood` = ?, `catchedFishes` = ?, `timeAwardAmount` = ?, `comebackAwardAmount` = ?, "+
@@ -176,36 +180,38 @@ public class UserStatData {
             statement.setInt(3, stat.getDepositePearls());
             statement.setInt(4, stat.getDepositeApples());
             statement.setInt(5, stat.getDepositeEnchantedApples());
-            statement.setInt(6, stat.getMinedStone());
-            statement.setInt(7, stat.getMiningExperience());
-            statement.setInt(8, stat.getOpenedCobblex());
-            statement.setInt(9, stat.getOpenedPremiumCase());
-            statement.setInt(10, stat.getCoinsFromStone());
-            statement.setLong(11, stat.getTurboDropTime());
-            statement.setLong(12, stat.getTurboExpTime());
-            statement.setInt(13, stat.getPoints());
-            statement.setInt(14, stat.getKills());
-            statement.setInt(15, stat.getDeaths());
-            statement.setInt(16, stat.getAssists());
-            statement.setInt(17, stat.getDistanceTraveled());
-            statement.setInt(18, stat.getLogouts());
-            statement.setLong(19, stat.getSpentTime());
+            statement.setInt(6, stat.getDepositeArrows());
+            statement.setInt(7, stat.getDepositeSnowballs());
+            statement.setInt(8, stat.getMinedStone());
+            statement.setInt(9, stat.getMiningExperience());
+            statement.setInt(10, stat.getOpenedCobblex());
+            statement.setInt(11, stat.getOpenedPremiumCase());
+            statement.setInt(12, stat.getCoinsFromStone());
+            statement.setLong(13, stat.getTurboDropTime());
+            statement.setLong(14, stat.getTurboExpTime());
+            statement.setInt(15, stat.getPoints());
+            statement.setInt(16, stat.getKills());
+            statement.setInt(17, stat.getDeaths());
+            statement.setInt(18, stat.getAssists());
+            statement.setInt(19, stat.getDistanceTraveled());
+            statement.setInt(20, stat.getLogouts());
+            statement.setLong(21, stat.getSpentTime());
             String string = String.join(":", stat.getExploredGuilds());
-            statement.setString(20, string);
-            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledUsers().stream().collect(Collectors.toList())));
-            statement.setString(21, string);
-            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledWithRankUsers().stream().collect(Collectors.toList())));
             statement.setString(22, string);
-            statement.setInt(23, stat.getComebackDaysInRow());
-            statement.setInt(24, stat.getComebackDay());
-            statement.setInt(25, stat.getMinedWood());
-            statement.setInt(26, stat.getCatchedFishes());
-            statement.setInt(27, stat.getTimeAwardAmount());
-            statement.setInt(28, stat.getComebackAwardAmount());
-            statement.setInt(29, stat.getKillWithRankAwardAmount());
-            statement.setInt(30, stat.getKilledUsersAwardAmount());
-            statement.setInt(31, stat.getExploredGuildsAwardAmount());
-            statement.setString(32, this.getKeyFragmentsToString(stat.getKeyFragments()));
+            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledUsers().stream().collect(Collectors.toList())));
+            statement.setString(23, string);
+            string = String.join(":", this.plugin.getUserManager().getUsersNames(stat.getKilledWithRankUsers().stream().collect(Collectors.toList())));
+            statement.setString(24, string);
+            statement.setInt(25, stat.getComebackDaysInRow());
+            statement.setInt(26, stat.getComebackDay());
+            statement.setInt(27, stat.getMinedWood());
+            statement.setInt(28, stat.getCatchedFishes());
+            statement.setInt(29, stat.getTimeAwardAmount());
+            statement.setInt(30, stat.getComebackAwardAmount());
+            statement.setInt(31, stat.getKillWithRankAwardAmount());
+            statement.setInt(32, stat.getKilledUsersAwardAmount());
+            statement.setInt(33, stat.getExploredGuildsAwardAmount());
+            statement.setString(34, this.getKeyFragmentsToString(stat.getKeyFragments()));
             statement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

@@ -17,6 +17,8 @@ public class UserStat {
     private int depositePearls;
     private int depositeApples;
     private int depositeEnchantedApples;
+    private int depositeArrows;
+    private int depositeSnowballs;
     private int miningExperience;
     private int minedStone;
     private int openedCobblex;
@@ -54,6 +56,8 @@ public class UserStat {
         this.depositeApples = 0;
         this.depositeEnchantedApples = 0;
         this.depositePearls = 0;
+        this.depositeArrows = 0;
+        this.depositeSnowballs = 0;
         this.miningExperience = 0;
         this.minedStone = 0;
         this.openedCobblex = 0;
@@ -90,6 +94,8 @@ public class UserStat {
             this.depositePearls = rs.getInt("depositePearls");
             this.depositeApples = rs.getInt("depositeApples");
             this.depositeEnchantedApples = rs.getInt("depositeEnchantedApples");
+            this.depositeArrows = rs.getInt("depositeArrows");
+            this.depositeSnowballs = rs.getInt("depositeSnowballs");
             this.miningExperience = rs.getInt("miningExperience");
             this.minedStone = rs.getInt("minedStone");
             this.openedCobblex = rs.getInt("openedCobblex");
@@ -423,6 +429,22 @@ public class UserStat {
 
     public long getTurboExpTime() {
         return turboExpTime;
+    }
+
+    public int getDepositeArrows() {
+        return depositeArrows;
+    }
+
+    public void setDepositeArrows(int depositeArrows) {
+        this.depositeArrows = depositeArrows;
+    }
+
+    public int getDepositeSnowballs() {
+        return depositeSnowballs;
+    }
+
+    public void setDepositeSnowballs(int depositeSnowballs) {
+        this.depositeSnowballs = depositeSnowballs;
     }
 
     public void addKeyFragmentsByMagicCaseType(MagicCaseType magicCaseType, int amount){
