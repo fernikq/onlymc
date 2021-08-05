@@ -353,7 +353,7 @@ public class CorePlugin extends JavaPlugin {
         new BlockBreakListener(this);
         new EntityExplodeListener(this);
         new BucketListener(this);
-        new TeleportListener(this);
+        new PlayerTeleportListener(this);
         new PlayerInteractListener(this);
         new EntityDamageByEntityListener(this);
         new BlockBurnListener(this);
@@ -384,6 +384,7 @@ public class CorePlugin extends JavaPlugin {
         new PlayerItemConsumeListener(this);
         new pl.fernikq.core.listener.custom.BlockDigListener(this);
         new EntityDeathListener(this);
+        new PlayerToggleSneakListener(this);
     }
 
     public ConfigManager getConfigManager() {

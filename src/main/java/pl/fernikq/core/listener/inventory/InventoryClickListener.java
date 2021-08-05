@@ -164,4 +164,29 @@ public class InventoryClickListener implements Listener {
         event.setCancelled(true);
         ChatUtil.sendMessage((Player)who, MessagesManager.error("Handel z wiesniakami zostal wylaczony!"));
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onDiscoArmor(InventoryClickEvent event) {
+        HumanEntity who = event.getWhoClicked();
+        InventoryType.SlotType slotType = event.getSlotType();
+        if(event.isCancelled()) {
+            return;
+        }
+        if(!(who instanceof Player)) {
+            return;
+        }
+        Player player = (Player) who;
+        if(!player.isSneaking()){
+            return;
+        }
+        if(slotType != InventoryType.SlotType.ARMOR){
+            return;
+        }
+        if(!this.plugin.getDiscoArmorManager().isWorking(player.getUniqueId())){
+            return;
+        }
+        event.setCancelled(true);
+        player.closeInventory();
+        ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz tego zrobic, gdy disco zbroja jest aktywna!"));
+    }
 }

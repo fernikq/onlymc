@@ -15,11 +15,11 @@ import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemUtil;
 
-public class TeleportListener implements Listener {
+public class PlayerTeleportListener implements Listener {
 
     private final CorePlugin plugin;
 
-    public TeleportListener(CorePlugin plugin){
+    public PlayerTeleportListener(CorePlugin plugin){
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

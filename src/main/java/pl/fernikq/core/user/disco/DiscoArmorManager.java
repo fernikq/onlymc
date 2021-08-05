@@ -15,9 +15,6 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.RandomUtil;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -27,6 +24,7 @@ public class DiscoArmorManager {
     private final CorePlugin plugin;
 
     private final ConcurrentMap<UUID, BukkitTask> discoRunnables = new ConcurrentHashMap<>();
+    private final ConcurrentMap<UUID, ItemStack[]> originalArmor = new ConcurrentHashMap<>();
 
     public DiscoArmorManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -40,17 +38,29 @@ public class DiscoArmorManager {
             @Override
             public void run() {
                 if(!user.isDiscoArmorPermission() || !user.isDiscoArmor() || !user.isOnline()){
+                    user.setDiscoArmor(false);
                     stopTask(player);
                     return;
                 }
                 Color nextColor = DiscoArmorColorUtil.nextColor(discoArmor.getLastColor());
+                for(int i = 0; i < 4; i++){
+                    LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta)coloredArmor[i].getItemMeta();
+                    leatherArmorMeta.setColor(nextColor);
+                    coloredArmor[i].setItemMeta(leatherArmorMeta);
+                }
                 player.getLocation().getWorld().getNearbyEntities(player.getLocation(), 30, 50, 30).stream().filter(entity -> entity.getType() == EntityType.PLAYER)
                     .forEach(entity -> {
-                        if(entity.getUniqueId().equals(player.getUniqueId())) return;
+                        if(entity.getUniqueId().equals(player.getUniqueId())) {
+                            if(!player.isSneaking()){
+                                return;
+                            }
+                            if(user.getUserFight().isDuringFight()){
+                                return;
+                            }
+                            player.getInventory().setArmorContents(coloredArmor);
+                            return;
+                        }
                         for(int i = 0; i < 4; i++){
-                            LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta)coloredArmor[i].getItemMeta();
-                            leatherArmorMeta.setColor(nextColor);
-                            coloredArmor[i].setItemMeta(leatherArmorMeta);
                             sendChange((Player) entity, coloredArmor[i], player.getEntityId(), i + 1);
                         }
                     });
@@ -78,5 +88,17 @@ public class DiscoArmorManager {
     public void sendChange(Player player, ItemStack itemStack, int entityID, int armorSlot){
         PacketPlayOutEntityEquipment packetPlayOutEntityEquipment = new PacketPlayOutEntityEquipment(entityID, armorSlot, CraftItemStack.asNMSCopy(itemStack));
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packetPlayOutEntityEquipment);
+    }
+
+    public boolean isWorking(UUID uuid){
+        return this.discoRunnables.containsKey(uuid);
+    }
+
+    public void restoreOriginalArmor(Player player){
+        player.getInventory().setArmorContents(this.originalArmor.get(player.getUniqueId()));
+    }
+
+    public ConcurrentMap<UUID, ItemStack[]> getOriginalArmor() {
+        return originalArmor;
     }
 }

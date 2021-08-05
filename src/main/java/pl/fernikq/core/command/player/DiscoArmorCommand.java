@@ -34,9 +34,13 @@ public class DiscoArmorCommand extends CustomCommand {
             user.setDiscoArmor(!user.isDiscoArmor());
             if(user.isDiscoArmor()){
                 this.plugin.getDiscoArmorManager().startTask(user);
+                this.plugin.getDiscoArmorManager().getOriginalArmor().put(player.getUniqueId(), player.getInventory().getArmorContents());
                 return;
             }
             this.plugin.getDiscoArmorManager().stopTask(player);
+            if(this.plugin.getDiscoArmorManager().getOriginalArmor().containsKey(player.getUniqueId())){
+                this.plugin.getDiscoArmorManager().restoreOriginalArmor(player);
+            }
         });
         return true;
     }

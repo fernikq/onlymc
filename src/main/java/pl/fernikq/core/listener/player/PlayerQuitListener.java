@@ -37,6 +37,7 @@ public class PlayerQuitListener implements Listener {
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
             user.getUserStat().setSpentTime(user.getUserStat().getSpentTime() + (System.currentTimeMillis() - user.getUserStat().getJoinTime()));
             user.getUserStat().setJoinTime(0L);
+            user.setDiscoArmor(false);
             if(user.getUserFight().isDuringFight()){
                 user.setLogout(true);
                 player.setHealth(0.0);
@@ -72,5 +73,20 @@ public class PlayerQuitListener implements Listener {
            channel.pipeline().remove(player.getName());
            return null;
         });
+    }
+
+    @EventHandler
+    public void onDiscoArmor(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if(!player.isSneaking()){
+            return;
+        }
+        if(!this.plugin.getDiscoArmorManager().isWorking(player.getUniqueId())){
+            return;
+        }
+        if(this.plugin.getDiscoArmorManager().getOriginalArmor().containsKey(player.getUniqueId())){
+            this.plugin.getDiscoArmorManager().restoreOriginalArmor(player);
+            this.plugin.getDiscoArmorManager().getOriginalArmor().remove(player.getUniqueId());
+        }
     }
 }

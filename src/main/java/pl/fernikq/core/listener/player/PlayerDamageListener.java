@@ -35,4 +35,24 @@ public class PlayerDamageListener implements Listener {
            }
         });
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onDiscoArmor(EntityDamageEvent event){
+        if(event.isCancelled()){
+            return;
+        }
+        if(!(event.getEntity() instanceof Player)){
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        if(!player.isSneaking()){
+            return;
+        }
+        if(!this.plugin.getDiscoArmorManager().isWorking(player.getUniqueId())){
+            return;
+        }
+        if(this.plugin.getDiscoArmorManager().getOriginalArmor().containsKey(player.getUniqueId())){
+            this.plugin.getDiscoArmorManager().restoreOriginalArmor(player);
+        }
+    }
 }

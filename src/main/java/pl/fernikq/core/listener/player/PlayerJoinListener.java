@@ -82,9 +82,6 @@ public class PlayerJoinListener implements Listener {
         if(user.getIncognito().isHideOriginalSkin()) {
             this.plugin.getIncognitoManager().changeSkin(user, false);
         }
-        if(user.isDiscoArmor()){
-            this.plugin.getDiscoArmorManager().startTask(user);
-        }
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) {
