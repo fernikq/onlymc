@@ -28,6 +28,7 @@ public class FeaturesCommand extends CustomCommand {
                 this.plugin.getUserManager().getUser(args[1]).peek(user -> {
                     if(args[2].equalsIgnoreCase("off")){
                         user.setDiscoArmorPermission(false);
+                        user.setDiscoArmor(false);
                         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> this.plugin.getUserManager().getUserData().updateDiscoArmor(user));
                         ChatUtil.sendMessage(sender, "&8>> &fGracz {c}"+user.getName()+" &fstracil dostep do DiscoZbroi.");
                         return;
@@ -48,6 +49,7 @@ public class FeaturesCommand extends CustomCommand {
                 this.plugin.getUserManager().getUser(args[1]).peek(user -> {
                     if(args[2].equalsIgnoreCase("off")){
                         user.setRainbowNicknamePermission(false);
+                        user.setRainbowNickname(false);
                         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> this.plugin.getUserManager().getUserData().updateRainbowNick(user));
                         ChatUtil.sendMessage(sender, "&8>> &fGracz {c}"+user.getName()+" &fstracil dostep do Teczowego Nicku.");
                         return;

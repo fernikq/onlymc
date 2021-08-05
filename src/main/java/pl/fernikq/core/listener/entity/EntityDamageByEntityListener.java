@@ -1,13 +1,20 @@
 package pl.fernikq.core.listener.entity;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import net.minecraft.server.v1_8_R3.PacketPlayInArmAnimation;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
@@ -21,6 +28,9 @@ import pl.fernikq.core.user.fight.UserFight;
 import pl.fernikq.core.util.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class EntityDamageByEntityListener implements Listener {
@@ -31,10 +41,12 @@ public class EntityDamageByEntityListener implements Listener {
             new ItemBuilder(Material.IRON_CHESTPLATE).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
             new ItemBuilder(Material.IRON_LEGGINGS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack(),
             new ItemBuilder(Material.IRON_BOOTS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack()};
+    private final Cache<UUID, Integer> clicksPerSecond;
 
     public EntityDamageByEntityListener(CorePlugin plugin){
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        this.clicksPerSecond = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.SECONDS).build();
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -97,6 +109,13 @@ public class EntityDamageByEntityListener implements Listener {
                    }
                }
             }
+            /*Integer clicksPerSecond = this.clicksPerSecond.asMap().getOrDefault(damager.getUniqueId(), null);
+            if(clicksPerSecond != null && clicksPerSecond.intValue() >= ConfigManager.allowedClickPerSecond){
+                ChatUtil.sendMessage(damager, MessagesManager.error("Za szybko uderzasz!"));
+                event.setCancelled(true);
+                return;
+            }
+            this.clicksPerSecond.put(damager.getUniqueId(), Objects.isNull(clicksPerSecond) ? 1 : (clicksPerSecond.intValue() + 1));*/
             if(PlayerItemConsumeListener.cache.asMap().containsKey(victim.getUniqueId())){
                 ChatUtil.sendMessage(victim, "&8[&eAntynogi&8] &fZostales przeteleportowany do gracza &e"+(this.plugin.getIncognitoManager().changeName(damagerUser, victimUser) ? "&k"+damagerUser.getName()+"&f" : damagerUser.getName()+"&f")+" przez antynogi!");
                 ChatUtil.sendMessage(damager, "&8[&eAntynogi&8] &fGracz &e"+(this.plugin.getIncognitoManager().changeName(victimUser, damagerUser) ? "&k"+victimUser.getName()+"&f" : victimUser.getName()+"&f")+" zostal do ciebie przeteleportowany przez antynogi!");
@@ -141,6 +160,8 @@ public class EntityDamageByEntityListener implements Listener {
         if(StringUtils.equalsIgnoreCase(victim.getCustomName(), ChatUtil.fixColor(this.plugin.getBossManager().getGiantBossName()))){
             Player player = (Player)damager;
             if(RandomUtil.getChance(35) && !player.isDead()){
+                PacketPlayOutAnimation packetPlayOutAnimation = new PacketPlayOutAnimation(((CraftEntity)victim).getHandle(), 0);
+                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packetPlayOutAnimation);
                 player.playEffect(EntityEffect.HURT);
                 player.damage(RandomUtil.getRandInt(2, 5));
             }

@@ -46,6 +46,7 @@ import pl.fernikq.core.top.TopManager;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.UserManager;
 import pl.fernikq.core.user.UserPermissionsManager;
+import pl.fernikq.core.user.disco.DiscoArmorManager;
 import pl.fernikq.core.user.fight.FightManager;
 import pl.fernikq.core.user.home.HomeManager;
 import pl.fernikq.core.user.incognito.IncognitoManager;
@@ -100,6 +101,7 @@ public class CorePlugin extends JavaPlugin {
     private MagicCaseManager magicCaseManager;
     private ProtectionManager protectionManager;
     private CustomInventoryManager customInventoryManager;
+    private DiscoArmorManager discoArmorManager;
 
     @Override
     public void onEnable() {
@@ -228,6 +230,7 @@ public class CorePlugin extends JavaPlugin {
         this.magicCaseManager = new MagicCaseManager(this);
         this.protectionManager = new ProtectionManager(this);
         this.customInventoryManager = new CustomInventoryManager(this);
+        this.discoArmorManager = new DiscoArmorManager(this);
     }
 
     private void initData(){
@@ -333,6 +336,7 @@ public class CorePlugin extends JavaPlugin {
         new RainbowNicknameCommand("teczowy", new String[0], UserGroup.VIP, this).register();
         new CaseCommand("case", new String[0], UserGroup.PLAYER, this).register();
         new ProtectionCommand("ochrona", new String[0], UserGroup.PLAYER, this).register();
+        new DiscoArmorCommand("disco", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();
@@ -516,5 +520,9 @@ public class CorePlugin extends JavaPlugin {
 
     public MagicCaseManager getMagicCaseManager() {
         return magicCaseManager;
+    }
+
+    public DiscoArmorManager getDiscoArmorManager() {
+        return discoArmorManager;
     }
 }

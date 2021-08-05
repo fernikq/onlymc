@@ -137,6 +137,7 @@ public class PlayerInteractListener implements Listener {
                 ChatUtil.sendMessage(player, "&8>> {n}Otworzyles "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}ale niestety nic nie wypadlo :(");
                 return;
             }
+            player.playSound(player.getLocation(), Sound.EXPLODE, 10, 10);
             this.plugin.getUserManager().getOnlineUsers().stream().filter(onlineUser -> onlineUser.getUserChat().isPremiumCaseMessages()).forEach(onlineUser -> {
                 ChatUtil.sendMessage(onlineUser.asPlayer(), "{n}Gracz {c}"+player.getName()+" {n}otworzyl "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}i otrzymal&8:", " ");
                 for(String string : dropMessages){

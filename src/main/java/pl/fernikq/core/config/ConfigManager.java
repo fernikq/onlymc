@@ -38,6 +38,7 @@ public class ConfigManager {
     public static int teleportGuildTime;
     public static int teleportTpaTime;
     public static int autoMessageTime;
+    public static int allowedClickPerSecond;
     public static boolean chatEnabled;
     public static String spawnLocation;
     public static boolean limitInventoryClicks;
@@ -251,6 +252,7 @@ public class ConfigManager {
         discordBotChannelID = "673928220021882891";
         discordBotMessagePrefix = "!";
         discordBotRewardTime = "1d";
+        allowedClickPerSecond = 10;
     }
 
     public static Map<Enchantment, Integer> getEnchantmentIntegerMap(){

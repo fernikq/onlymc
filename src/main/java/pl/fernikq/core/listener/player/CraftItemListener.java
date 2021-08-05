@@ -66,4 +66,21 @@ public class CraftItemListener implements Listener {
             return;
         }
     }
+
+    @EventHandler
+    public void onBrewingStand(CraftItemEvent event) {
+        if(event.getInventory().getType() != InventoryType.WORKBENCH) {
+            return;
+        }
+        if(event.getInventory().getResult() == null) {
+            return;
+        }
+        ItemStack result = event.getInventory().getResult();
+        Player player = (Player) event.getWhoClicked();
+        if(result.getType() == Material.BREWING_STAND_ITEM){
+            ChatUtil.sendMessage(player, MessagesManager.error("Stol alchemiczny zostal zablokowany!"));
+            event.setCancelled(true);
+            return;
+        }
+    }
 }

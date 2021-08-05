@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ChatUtil {
 
-    private static List<String> colors = Arrays.asList("&a", "&b", "&c", "&e", "&2", "&3", "&4", "&6", "&f");
+    private static List<String> colors = Arrays.asList("&a", "&b", "&e", "&2", "&3", "&6", "&f");
 
     public static String fixColor(String message){
         message = StringUtil.replace(message, "{c}", "&c");
