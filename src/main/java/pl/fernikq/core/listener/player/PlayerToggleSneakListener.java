@@ -33,13 +33,11 @@ public class PlayerToggleSneakListener implements Listener {
             return;
         }
         if(!isSneaking && this.plugin.getDiscoArmorManager().getOriginalArmor().containsKey(player.getUniqueId())){
-            System.out.println("usuwanie toggle");
             this.plugin.getDiscoArmorManager().restoreOriginalArmor(player);
             this.plugin.getDiscoArmorManager().getOriginalArmor().remove(player.getUniqueId());
             return;
         }
         if(isSneaking){
-            System.out.println("putowanie toggle");
             this.plugin.getDiscoArmorManager().getOriginalArmor().put(player.getUniqueId(), player.getInventory().getArmorContents());
         }
     }
