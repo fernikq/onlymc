@@ -1,10 +1,8 @@
 package pl.fernikq.core.command.simpleCommand;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.fernikq.core.CorePlugin;
-import pl.fernikq.core.command.CustomCommand;
 import pl.fernikq.core.user.UserGroup;
 
 import java.io.File;

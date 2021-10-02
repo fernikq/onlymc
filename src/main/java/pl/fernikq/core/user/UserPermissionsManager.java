@@ -2,11 +2,8 @@ package pl.fernikq.core.user;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import pl.fernikq.core.CorePlugin;
-import pl.fernikq.core.config.ConfigManager;
-import pl.fernikq.core.shop.Shop;
 
 import java.io.File;
 import java.util.ArrayList;

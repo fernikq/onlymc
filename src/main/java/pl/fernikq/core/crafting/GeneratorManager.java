@@ -2,15 +2,12 @@ package pl.fernikq.core.crafting;
 
 import io.vavr.collection.HashSet;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import pl.fernikq.core.CorePlugin;
-import pl.fernikq.core.kit.Kit;
-import pl.fernikq.core.kit.KitItem;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;

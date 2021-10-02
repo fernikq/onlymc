@@ -2,9 +2,7 @@ package pl.fernikq.core.inventory.custom;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
-import pl.fernikq.core.command.simpleCommand.SimpleCustomCommand;
 import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
@@ -14,7 +12,6 @@ import pl.fernikq.core.util.NumberUtil;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class CustomInventoryManager {
 

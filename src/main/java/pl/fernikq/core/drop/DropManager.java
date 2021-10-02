@@ -6,13 +6,11 @@ import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
-import pl.fernikq.core.util.EnchantManager;
 import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DropManager {
 

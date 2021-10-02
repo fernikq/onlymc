@@ -1,12 +1,9 @@
 package pl.fernikq.core.automessage;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
-import pl.fernikq.core.user.User;
 import pl.fernikq.core.util.ChatUtil;
 
 import java.io.File;

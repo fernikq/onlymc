@@ -91,6 +91,11 @@ public class EntityDamageByEntityListener implements Listener {
             damagerFight.setAntylogoutTime(System.currentTimeMillis() + (ConfigManager.playerFightTime * 1000L));
             this.plugin.getFightManager().getUsersDuringFight().add(damagerUser);
             this.plugin.getFightManager().getUsersDuringFight().add(victimUser);
+            if(damager.isSneaking() && this.plugin.getDiscoArmorManager().isWorking(damager.getUniqueId())){
+                if(this.plugin.getDiscoArmorManager().getOriginalArmor().containsKey(damager.getUniqueId())){
+                    this.plugin.getDiscoArmorManager().restoreOriginalArmor(damager);
+                }
+            }
             Damage damage = victimFight.getDamageByUser(damagerUser);
             if(damage == null){
                 damage = new Damage(damagerUser, event.getDamage());
