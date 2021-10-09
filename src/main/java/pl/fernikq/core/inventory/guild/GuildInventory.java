@@ -1,5 +1,7 @@
 package pl.fernikq.core.inventory.guild;
 
+import org.apache.commons.lang.time.DateUtils;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -8,14 +10,20 @@ import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.drill.GuildDrill;
+import pl.fernikq.core.guild.logblock.LogBlock;
+import pl.fernikq.core.guild.logblock.LogBlockActionType;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.inventory.InventoryGUI;
+import pl.fernikq.core.inventory.actions.AbyssAction;
 import pl.fernikq.core.inventory.actions.TopsAction;
 import pl.fernikq.core.inventory.actions.guild.GuildDrillAction;
+import pl.fernikq.core.inventory.actions.guild.GuildLogblockAction;
 import pl.fernikq.core.inventory.actions.guild.GuildPanelAction;
+import pl.fernikq.core.inventory.enums.AbyssActionType;
 import pl.fernikq.core.inventory.enums.TopsActionType;
 import pl.fernikq.core.inventory.enums.guild.GuildDrillActionType;
+import pl.fernikq.core.inventory.enums.guild.GuildLogblockActionType;
 import pl.fernikq.core.inventory.enums.guild.GuildPanelActionType;
 import pl.fernikq.core.top.TopKind;
 import pl.fernikq.core.top.comparator.Sortable;
@@ -26,7 +34,9 @@ import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.TimeUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -271,6 +281,29 @@ public class GuildInventory {
         gui.setItem(17, new ItemBuilder(Material.BARRIER).setName(ChatUtil.fixColor("&8[ &c&lPowrot &8]")).toItemStack(), new GuildDrillAction(this.plugin, guildDrill, GuildDrillActionType.OPEN_MENU, null, guild, user));
         gui.setEmptyItem(this.blank.clone());
         user.addInventory(gui);
+        return gui;
+    }
+
+    public InventoryGUI guildLogBlockInventory(User user, Location location, Guild guild, int page){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lLOGBLOCK &8]", 6, true);
+        List<LogBlock> logBlocks = guild.getLogBlocksAtLocation(location);
+        for(int i = page * 45; i < 45 * (page + 1); i++) {
+            if(logBlocks.size() > 0 && i <= logBlocks.size() - 1){
+                LogBlock logBlock = logBlocks.get(i);
+                ItemBuilder itemBuilder = new ItemBuilder(ItemUtil.getMaterial(logBlock.getBlockType()))
+                        .setName(" ")
+                        .setLore(ChatUtil.fixColor(Arrays.asList("&8>> {n}Gracz&8: {c}" + logBlock.getUserName(),
+                                "&8>> {n}Akcja&8: {c}" + (logBlock.getLogBlockActionType() == LogBlockActionType.DESTROY_BLOCK ? "Zniszczyl" : "Postawil"),
+                                "&8>> {n}Blok&8: {c}" + logBlock.getBlockType(),
+                                "&8>> {n}Data&8: {c}" + TimeUtil.getDate(logBlock.getTime()),
+                                " ")));
+                gui.addItem(itemBuilder.toItemStack());
+                continue;
+            }
+            break;
+        }
+        gui.setItem(53, new ItemBuilder(Material.SKULL_ITEM).setDurability((short)3).setSkullOwner("MHF_ArrowRight").setName(ChatUtil.fixColor("&a&lDalej")).toItemStack(), new GuildLogblockAction(this.plugin, user, guild, location, GuildLogblockActionType.NEXT.NEXT, page));
+        gui.setItem(52, new ItemBuilder(Material.SKULL_ITEM).setDurability((short)3).setSkullOwner("MHF_ArrowLeft").setName(ChatUtil.fixColor("&c&lWstecz")).toItemStack(), new GuildLogblockAction(this.plugin, user, guild, location, GuildLogblockActionType.BACK, page));
         return gui;
     }
 }

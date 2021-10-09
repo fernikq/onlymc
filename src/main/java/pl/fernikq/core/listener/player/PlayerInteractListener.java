@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
@@ -26,8 +27,11 @@ import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.drill.GuildDrill;
+import pl.fernikq.core.guild.logblock.LogBlock;
+import pl.fernikq.core.guild.logblock.LogBlockActionType;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildPermission;
+import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.magiccase.MagicCase;
 import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.region.RegionFeedback;
@@ -339,5 +343,57 @@ public class PlayerInteractListener implements Listener {
             this.plugin.getMagicCaseManager().openCase(player, magicCase);
             return;
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onLogBlock(PlayerInteractEvent event){
+        if(event.isCancelled()){
+            return;
+        }
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+        ItemStack itemStack = event.getItem();
+        if(event.getAction() != Action.RIGHT_CLICK_BLOCK){
+            return;
+        }
+        if(!player.isSneaking()){
+            return;
+        }
+        if(Objects.isNull(block)){
+            return;
+        }
+        if(Objects.isNull(itemStack)){
+            return;
+        }
+        if(itemStack.getType() != Material.WOOD_PICKAXE){
+            return;
+        }
+        Location location = block.getLocation();
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(Objects.isNull(guild)){
+            return;
+        }
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(Objects.isNull(user)){
+            ChatUtil.sendMessage(user.asPlayer(), MessagesManager.error("Zglos blad administracji!"));
+            return;
+        }
+        if(!guild.equals(user.getGuild())){
+            return;
+        }
+        GuildMember guildMember = guild.getMemberByName(user.getName()).orElse(null);
+        if(Objects.isNull(guildMember)){
+            return;
+        }
+        if(!guildMember.hasPermission(GuildPermission.CHECK_LOGBLOCK)){
+            ChatUtil.sendMessage(player, MessagesManager.error("Nie posiadasz uprawnienia do uzycia logblocka!"));
+            return;
+        }
+        if(guild.getLogBlocksAtLocation(location).isEmpty()){
+            return;
+        }
+        InventoryGUI gui = this.plugin.getGuildInventory().guildLogBlockInventory(user, location, guild, 0);
+        user.addInventory(gui);
+        gui.openInventory(player);
     }
 }

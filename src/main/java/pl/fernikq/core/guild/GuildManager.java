@@ -14,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.drill.GuildDrill;
+import pl.fernikq.core.guild.logblock.LogBlockData;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.member.GuildMemberData;
 import pl.fernikq.core.guild.member.GuildPermission;
@@ -43,6 +44,7 @@ public class GuildManager {
     private GuildRegionData guildRegionData;
     private GuildTreasureData guildTreasureData;
     private GuildMemberData guildMemberData;
+    private LogBlockData logBlockData;
 
     public GuildManager(CorePlugin plugin){
         this.plugin = plugin;
@@ -54,6 +56,7 @@ public class GuildManager {
         this.guildMemberData = new GuildMemberData(this.plugin);
         this.guildRegionData = new GuildRegionData(this.plugin);
         this.guildTreasureData = new GuildTreasureData(this.plugin);
+        this.logBlockData = new LogBlockData(this.plugin);
     }
 
     public Option<Guild> getGuildByTag(String tag){
@@ -344,5 +347,9 @@ public class GuildManager {
 
     public GuildData getGuildData() {
         return guildData;
+    }
+
+    public LogBlockData getLogBlockData() {
+        return logBlockData;
     }
 }

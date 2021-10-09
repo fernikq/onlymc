@@ -1,12 +1,14 @@
 package pl.fernikq.core.listener.block;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,12 +19,16 @@ import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.guild.Guild;
 import pl.fernikq.core.guild.drill.GuildDrill;
+import pl.fernikq.core.guild.logblock.LogBlock;
+import pl.fernikq.core.guild.logblock.LogBlockActionType;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.TimeUtil;
+
+import java.util.Objects;
 
 public class BlockPlaceListener implements Listener {
 
@@ -208,5 +214,24 @@ public class BlockPlaceListener implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onLogBlock(BlockPlaceEvent event){
+        if(event.isCancelled()){
+            return;
+        }
+        Player player = event.getPlayer();
+        Block block = event.getBlock();
+        Location location = block.getLocation();
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(Objects.isNull(guild)){
+            return;
+        }
+        LogBlock logBlock = new LogBlock(location, System.currentTimeMillis(), player.getName(), LogBlockActionType.PLACE_BLOCK, block.getType().name());
+        guild.addLogBlockAtLocation(logBlock);
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            this.plugin.getGuildManager().getLogBlockData().insertLogBlock(logBlock, guild);
+        });
     }
 }

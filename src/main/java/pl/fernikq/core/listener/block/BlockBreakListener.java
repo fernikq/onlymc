@@ -2,6 +2,7 @@ package pl.fernikq.core.listener.block;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -18,6 +19,9 @@ import pl.fernikq.core.crafting.GeneratorType;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGenerator;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
+import pl.fernikq.core.guild.Guild;
+import pl.fernikq.core.guild.logblock.LogBlock;
+import pl.fernikq.core.guild.logblock.LogBlockActionType;
 import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
@@ -28,6 +32,7 @@ import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.RandomUtil;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class BlockBreakListener implements Listener {
 
@@ -117,6 +122,25 @@ public class BlockBreakListener implements Listener {
             user.getUserStat().setMinedWood(user.getUserStat().getMinedWood() + 1);
             this.plugin.getQuestManager().checkQuest(user, QuestType.MINED_WOOD);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onLogBlock(BlockBreakEvent event){
+        if(event.isCancelled()){
+            return;
+        }
+        Player player = event.getPlayer();
+        Block block = event.getBlock();
+        Location location = block.getLocation();
+        Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
+        if(Objects.isNull(guild)){
+            return;
+        }
+        LogBlock logBlock = new LogBlock(location, System.currentTimeMillis(), player.getName(), LogBlockActionType.DESTROY_BLOCK, block.getType().name());
+        guild.addLogBlockAtLocation(logBlock);
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            this.plugin.getGuildManager().getLogBlockData().insertLogBlock(logBlock, guild);
+        });
     }
 
     private int getAmountOfDrop(Drop drop, Player player){

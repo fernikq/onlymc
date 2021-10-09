@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import org.bukkit.Location;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.guild.drill.GuildDrill;
+import pl.fernikq.core.guild.logblock.LogBlock;
 import pl.fernikq.core.guild.member.GuildMember;
 import pl.fernikq.core.guild.region.GuildRegion;
 import pl.fernikq.core.guild.treasure.GuildTreasure;
@@ -36,6 +37,7 @@ public class Guild {
     private int health;
     private Cache<Guild, Long> preDeleted;
     private Map<Location, GuildDrill> guildDrills;
+    private Map<Location, List<LogBlock>> logblockMap;
 
     private int enlargeMembersLevel;
     private int enlargeAlliesLevel;
@@ -59,6 +61,7 @@ public class Guild {
         this.enlargeAlliesLevel = 0;
         this.enlargeMembersLevel = 0;
         this.guildDrills = new HashMap<>();
+        this.logblockMap = new HashMap<>();
     }
 
     public Guild(User owner, ResultSet resultSet){
@@ -80,6 +83,7 @@ public class Guild {
             this.enlargeMembersLevel = resultSet.getInt("enlargeMembersLevel");
             this.friendlyFire = false;
             this.guildDrills = new HashMap<>();
+            this.logblockMap = new HashMap<>();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -276,5 +280,22 @@ public class Guild {
 
     public List<GuildMember> getOnlineMembers(){
         return this.members.stream().filter(member -> member.getUser().asPlayer() != null).collect(Collectors.toList());
+    }
+
+    public List<LogBlock> getLogBlocksAtLocation(Location location){
+        List<LogBlock> logBlocks = this.logblockMap.get(location);
+        return Objects.isNull(logBlocks) ? new ArrayList<LogBlock>() : new ArrayList<>(logBlocks);
+    }
+
+    public void addLogBlockAtLocation(LogBlock logBlock){
+        Location location = logBlock.getLocation();
+        List<LogBlock> logBlocks = this.logblockMap.get(location);
+        if(Objects.isNull(logBlocks)){
+            logBlocks = new ArrayList<LogBlock>();
+            logBlocks.add(0, logBlock);
+            this.logblockMap.put(location, logBlocks);
+            return;
+        }
+        logBlocks.add(0, logBlock);
     }
 }
