@@ -18,6 +18,7 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.GeneratorManager;
 import pl.fernikq.core.crafting.stoneGenerator.StoneGeneratorManager;
+import pl.fernikq.core.customenchant.CustomEnchantManager;
 import pl.fernikq.core.discord.DiscordManager;
 import pl.fernikq.core.drop.DropManager;
 import pl.fernikq.core.dummy.DummyManager;
@@ -102,6 +103,7 @@ public class CorePlugin extends JavaPlugin {
     private ProtectionManager protectionManager;
     private CustomInventoryManager customInventoryManager;
     private DiscoArmorManager discoArmorManager;
+    private CustomEnchantManager customEnchantManager;
 
     @Override
     public void onEnable() {
@@ -231,6 +233,7 @@ public class CorePlugin extends JavaPlugin {
         this.protectionManager = new ProtectionManager(this);
         this.customInventoryManager = new CustomInventoryManager(this);
         this.discoArmorManager = new DiscoArmorManager(this);
+        this.customEnchantManager = new CustomEnchantManager();
     }
 
     private void initData(){
@@ -526,5 +529,9 @@ public class CorePlugin extends JavaPlugin {
 
     public DiscoArmorManager getDiscoArmorManager() {
         return discoArmorManager;
+    }
+
+    public CustomEnchantManager getCustomEnchantManager() {
+        return customEnchantManager;
     }
 }

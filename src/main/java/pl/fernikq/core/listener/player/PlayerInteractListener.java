@@ -23,6 +23,7 @@ import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.crafting.Generator;
 import pl.fernikq.core.crafting.GeneratorType;
+import pl.fernikq.core.customenchant.CustomEnchantItemEnum;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
@@ -83,6 +84,24 @@ public class PlayerInteractListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+            return;
+        }
+        if(Objects.nonNull(block) && block.getType() == Material.ENCHANTMENT_TABLE && event.getAction() == Action.RIGHT_CLICK_BLOCK && player.isSneaking()){
+            if(Objects.isNull(player.getItemInHand())){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz zaklac tego przedmiotu!"));
+                event.setCancelled(true);
+                return;
+            }
+            ItemStack itemStack = player.getItemInHand();
+            CustomEnchantItemEnum customEnchantItemEnum = this.plugin.getCustomEnchantManager().getTypeOfTheItem(itemStack);
+            if(Objects.isNull(customEnchantItemEnum)){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz zaklac tego przedmiotu!"));
+                event.setCancelled(true);
+                return;
+            }
+            event.setCancelled(true);
+            User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+            this.plugin.getUserInventory().customEnchantMenu(user, itemStack, customEnchantItemEnum).openInventory(player);
             return;
         }
         if(event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.TNT && player.getItemInHand() != null && player.getItemInHand().getType() == Material.FLINT_AND_STEEL){

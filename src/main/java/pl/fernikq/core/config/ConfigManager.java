@@ -258,7 +258,7 @@ public class ConfigManager {
     }
 
     public static Map<Enchantment, Integer> getEnchantmentIntegerMap(){
-        return enchantmentIntegerMap;
+        return new HashMap<>(enchantmentIntegerMap);
     }
 
     private void setEnchantmentIntegerMap(){

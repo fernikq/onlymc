@@ -5,12 +5,15 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.boss.BossDrop;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.crafting.Generator;
+import pl.fernikq.core.customenchant.CustomEnchantItemEnum;
 import pl.fernikq.core.drop.Drop;
 import pl.fernikq.core.drop.DropType;
 import pl.fernikq.core.guild.Guild;
@@ -18,12 +21,13 @@ import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.inventory.actions.QuestAction;
 import pl.fernikq.core.inventory.actions.TopsAction;
 import pl.fernikq.core.inventory.actions.user.*;
+import pl.fernikq.core.inventory.actions.user.customenchant.CustomEnchantEnchantmentChoiceAction;
+import pl.fernikq.core.inventory.actions.user.customenchant.CustomEnchantLevelChoiceAction;
 import pl.fernikq.core.inventory.enums.QuestActionType;
 import pl.fernikq.core.inventory.enums.TopsActionType;
 import pl.fernikq.core.inventory.enums.user.*;
 import pl.fernikq.core.kit.Kit;
 import pl.fernikq.core.kit.KitItem;
-import pl.fernikq.core.magiccase.MagicCase;
 import pl.fernikq.core.magiccase.MagicCaseDrop;
 import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.shop.Shop;
@@ -38,12 +42,12 @@ import pl.fernikq.core.user.UserStat;
 import pl.fernikq.core.user.backup.Backup;
 import pl.fernikq.core.user.incognito.IncognitoType;
 import pl.fernikq.core.user.incognito.UserIncognito;
-import pl.fernikq.core.user.quests.Quest;
 import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.*;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class UserInventory {
@@ -865,6 +869,56 @@ public class UserInventory {
             gui.addItem(dropItem.toItemStack());
         }
         gui.setItem(44, this.backGlass, new MagicCaseAction(this.plugin, MagicCaseActionType.BACK_TO_MENU, null, user));
+        user.addInventory(gui);
+        return gui;
+    }
+
+    public InventoryGUI customEnchantMenu(User user, ItemStack itemStack, CustomEnchantItemEnum customEnchantItemEnum){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lENCHANT &8]", 5, true);
+        int slot = 10;
+        int counter = 0;
+        for(Enchantment enchantment : this.plugin.getCustomEnchantManager().enchantmentsByItemType(customEnchantItemEnum)){
+            if(counter >= 3){
+                slot += 9-3;
+                counter = 0;
+            }
+            ItemStack enchantedBook = new ItemStack(Material.ENCHANTED_BOOK);
+            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
+            enchantmentStorageMeta.addStoredEnchant(enchantment, enchantment.getStartLevel(), true);
+            enchantedBook.setItemMeta(enchantmentStorageMeta);
+            gui.setItem(slot, enchantedBook, new CustomEnchantEnchantmentChoiceAction(this.plugin, user, itemStack, enchantment, customEnchantItemEnum));
+            slot++;
+            counter++;
+        }
+        ItemStack stainedGlassPane = new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ")
+                .setDurability((short) 14).toItemStack();
+        gui.setItem(15, stainedGlassPane);
+        gui.setItem(33, stainedGlassPane);
+        gui.setItem(23, stainedGlassPane);
+        gui.setItem(25, stainedGlassPane);
+        gui.setItem(24, new ItemStack(itemStack.getType()));
+        gui.setEmptyItem(this.blank.clone());
+        user.addInventory(gui);
+        return gui;
+    }
+
+    public InventoryGUI customEnchantLevelChoice(User user, ItemStack itemStack, Enchantment enchantment, CustomEnchantItemEnum customEnchantItemEnum){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lWybor poziomu &8]", 1, true);
+        Integer maxLevelRestrict = ConfigManager.getEnchantmentIntegerMap().get(enchantment);
+        for(int i = enchantment.getStartLevel(); i <= enchantment.getMaxLevel(); i++){
+            if(Objects.nonNull(maxLevelRestrict) && i > maxLevelRestrict){
+                break;
+            }
+            ItemStack enchantedBook = new ItemStack(Material.ENCHANTED_BOOK);
+            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
+            enchantmentStorageMeta.addStoredEnchant(enchantment, i, true);
+            enchantedBook.setItemMeta(enchantmentStorageMeta);
+            ItemMeta itemMeta = enchantedBook.getItemMeta();
+            itemMeta.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKoszt&8: {c}"+ (i*4) + " lvl &8(&7XP&8)")));
+            enchantedBook.setItemMeta(itemMeta);
+            gui.addItem(enchantedBook, new CustomEnchantLevelChoiceAction(this.plugin, user, itemStack, enchantment, i, (i*4), customEnchantItemEnum, false));
+        }
+        gui.setItem(8, this.backGlass, new CustomEnchantLevelChoiceAction(this.plugin, user, itemStack, enchantment, 0, 0, customEnchantItemEnum, true));
         user.addInventory(gui);
         return gui;
     }
