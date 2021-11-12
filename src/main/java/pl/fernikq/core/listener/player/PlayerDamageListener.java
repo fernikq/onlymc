@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.region.RegionFeedback;
 
 public class PlayerDamageListener implements Listener {
@@ -34,6 +35,9 @@ public class PlayerDamageListener implements Listener {
                event.setCancelled(true);
            }
         });
+        if(ConfigManager.freeze){
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

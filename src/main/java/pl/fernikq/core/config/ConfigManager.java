@@ -111,6 +111,7 @@ public class ConfigManager {
     public static String discordBotChannelID;
     public static String discordBotMessagePrefix;
     public static String discordBotRewardTime;
+    public static boolean freeze;
 
     private static Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
 
@@ -253,6 +254,7 @@ public class ConfigManager {
         discordBotMessagePrefix = "!";
         discordBotRewardTime = "1d";
         allowedClickPerSecond = 10;
+        freeze = false;
     }
 
     public static Map<Enchantment, Integer> getEnchantmentIntegerMap(){

@@ -113,7 +113,7 @@ public class CorePlugin extends JavaPlugin {
         registerCommands();
         registerListeners();
         initPacketReceiving();
-        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this), new TopsSortTask(this), new DatabaseUpdateTask(this), new PlayerProtectionTask(this));
+        this.simpleTasks = Arrays.asList(new StoneGeneratorTask(this), new DepositeTask(this), new RemoveItemsTask(this), new AntylogoutTask(this), new GuildExpireCheckTask(this), new SpentTimeQuestCheckTask(this), new SidebarUpdateTask(this), new AlwaysDayTask(this), new TopsSortTask(this), new DatabaseUpdateTask(this), new PlayerProtectionTask(this), new FreezeTask(this));
         simpleTasks.forEach(SimpleTask::start);
         registerTablistVariables();
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "", new RguardListener(this));
@@ -299,6 +299,7 @@ public class CorePlugin extends JavaPlugin {
         new MemoryCommand("memory", new String[0], UserGroup.ADMIN, this).register();
         new AdminBossCommand("aboss", new String[0], UserGroup.ADMIN, this).register();
         new AdminCaseCommand("acase", new String[0], UserGroup.ADMIN, this).register();
+        new FreezeCommand("freeze", new String[0], UserGroup.ADMIN, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();

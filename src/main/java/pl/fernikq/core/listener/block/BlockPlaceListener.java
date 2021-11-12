@@ -44,6 +44,11 @@ public class BlockPlaceListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(ConfigManager.freeze && !user.canByGroup(UserGroup.TEST_HELPER)){
+            event.setCancelled(true);
+            ChatUtil.sendMessage(player, "&8[&b&lZamrozenie&8] &fNie mozesz stawiac blokow!");
+            return;
+        }
         RegionFeedback regionFeedback = this.plugin.getRegionManager().canBuild(user, block.getLocation(), player.getItemInHand());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);

@@ -62,6 +62,11 @@ public class EntityDamageByEntityListener implements Listener {
         if(victim.equals(damager)){
             return;
         }
+        if(ConfigManager.freeze){
+            event.setCancelled(true);
+            ChatUtil.sendMessage(damager, "&8[&b&lZamrozenie&8] &fNie mozesz atakowac graczy!");
+            return;
+        }
         User damagerUser = this.plugin.getUserManager().getUser(damager.getUniqueId()).getOrNull();
         User victimUser = this.plugin.getUserManager().getUser(victim.getUniqueId()).getOrNull();
         RegionFeedback regionFeedback = this.plugin.getRegionManager().canHurt(damagerUser, victimUser);

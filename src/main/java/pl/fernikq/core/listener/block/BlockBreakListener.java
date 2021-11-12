@@ -25,6 +25,7 @@ import pl.fernikq.core.guild.logblock.LogBlockActionType;
 import pl.fernikq.core.magiccase.MagicCaseType;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
@@ -48,6 +49,11 @@ public class BlockBreakListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(ConfigManager.freeze && !user.canByGroup(UserGroup.TEST_HELPER)){
+            event.setCancelled(true);
+            ChatUtil.sendMessage(player, "&8[&b&lZamrozenie&8] &fNie mozesz niszczyc blokow!");
+            return;
+        }
         RegionFeedback regionFeedback = this.plugin.getRegionManager().canDestroy(user, block.getLocation());
         if(!regionFeedback.isPermit()){
             event.setCancelled(true);
