@@ -1,5 +1,6 @@
 package pl.fernikq.core.inventory.actions.user.customenchant;
 
+import org.bukkit.GameMode;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -42,6 +43,11 @@ public class CustomEnchantLevelChoiceAction implements InventoryAction {
     @Override
     public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack, InventoryClickEvent event) {
         if(this.back){
+            this.plugin.getUserInventory().customEnchantMenu(this.user, this.itemStack, this.customEnchantItemEnum).openInventory(player);
+            return;
+        }
+        if(player.getGameMode() == GameMode.CREATIVE){
+            new ItemBuilder(player.getItemInHand()).addEnchant(this.enchantment, this.level);
             this.plugin.getUserInventory().customEnchantMenu(this.user, this.itemStack, this.customEnchantItemEnum).openInventory(player);
             return;
         }

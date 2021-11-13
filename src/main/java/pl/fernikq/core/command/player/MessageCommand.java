@@ -31,7 +31,7 @@ public class MessageCommand extends CustomCommand {
             return ChatUtil.sendMessage(sender, Lang.mustBePlayer);
         }
         if(args.length < 2){
-            return ChatUtil.sendMessage(sender, MessagesManager.error("/msg <nick> <wiadomosc>"));
+            return ChatUtil.sendMessage(sender, MessagesManager.usage("/msg <nick> <wiadomosc>"));
         }
         Player player = (Player)sender;
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {

@@ -46,7 +46,7 @@ public class PlayerMoveListener implements Listener {
             if(user == null){
                 return;
             }
-            if(ConfigManager.freeze && !user.canByGroup(UserGroup.TEST_HELPER)){
+            if(ConfigManager.freezeTime > System.currentTimeMillis() && !user.canByGroup(UserGroup.TEST_HELPER)){
                 if(!this.firstPlayerLocation.containsKey(player.getUniqueId())){
                     this.firstPlayerLocation.put(player.getUniqueId(), player.getLocation());
                 }

@@ -62,7 +62,7 @@ public class EntityDamageByEntityListener implements Listener {
         if(victim.equals(damager)){
             return;
         }
-        if(ConfigManager.freeze){
+        if(ConfigManager.freezeTime > System.currentTimeMillis()){
             event.setCancelled(true);
             ChatUtil.sendMessage(damager, "&8[&b&lZamrozenie&8] &fNie mozesz atakowac graczy!");
             return;

@@ -49,4 +49,15 @@ public class InventoryCloseListener implements Listener {
             return;
         }
     }
+
+    @EventHandler
+    public void onGuard(InventoryCloseEvent event){
+        if(!(event.getPlayer() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getPlayer();
+        int currentSlot = player.getInventory().getHeldItemSlot();
+        player.getInventory().setHeldItemSlot(currentSlot > 0 ? 0 : currentSlot + 1);
+        player.getInventory().setHeldItemSlot(currentSlot);
+    }
 }

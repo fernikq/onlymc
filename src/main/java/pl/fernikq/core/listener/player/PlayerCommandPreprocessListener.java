@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.help.HelpTopic;
 import pl.fernikq.core.CorePlugin;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
@@ -40,6 +41,12 @@ public class PlayerCommandPreprocessListener implements Listener {
                 event.setCancelled(true);
             }
             return;
+        }
+        if(ConfigManager.freezeTime > System.currentTimeMillis() && !user.canByGroup(UserGroup.TEST_HELPER)){
+            if(command.toLowerCase().contains("/lobby")){
+                return;
+            }
+            event.setCancelled(true);
         }
     }
 }

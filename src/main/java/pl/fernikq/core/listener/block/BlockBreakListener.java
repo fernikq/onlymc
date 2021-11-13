@@ -49,7 +49,7 @@ public class BlockBreakListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        if(ConfigManager.freeze && !user.canByGroup(UserGroup.TEST_HELPER)){
+        if(ConfigManager.freezeTime > System.currentTimeMillis() && !user.canByGroup(UserGroup.TEST_HELPER)){
             event.setCancelled(true);
             ChatUtil.sendMessage(player, "&8[&b&lZamrozenie&8] &fNie mozesz niszczyc blokow!");
             return;

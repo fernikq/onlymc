@@ -35,7 +35,7 @@ public class PlayerDamageListener implements Listener {
                event.setCancelled(true);
            }
         });
-        if(ConfigManager.freeze){
+        if(ConfigManager.freezeTime > System.currentTimeMillis()){
             event.setCancelled(true);
         }
     }

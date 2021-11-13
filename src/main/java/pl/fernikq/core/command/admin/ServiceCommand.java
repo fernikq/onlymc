@@ -28,7 +28,7 @@ public class ServiceCommand extends CustomCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(args.length < 2){
-            return ChatUtil.sendMessage(sender, MessagesManager.usage("/service <itemy, case, sklep, kity> <czas>"));
+            return ChatUtil.sendMessage(sender, MessagesManager.usage("/service <itemy, case, sklep, kity, freeze> <czas>"));
         }
         long time = TimeUtil.getTime(args[1]);
         if(time == 0){
@@ -61,6 +61,12 @@ public class ServiceCommand extends CustomCommand {
                 ConfigManager.kitsBlockTime = time;
                 this.plugin.getConfigManager().save();
                 ChatUtil.sendMessage(sender, "&8>> &fZablokowales kity premium do {c}"+TimeUtil.getDate(time));
+                return true;
+            }
+            case "freeze":{
+                ConfigManager.freezeTime = time;
+                this.plugin.getConfigManager().save();
+                ChatUtil.sendMessage(sender, "&8>> &fUstawiles zamrozenie do {c}"+TimeUtil.getDate(time));
                 return true;
             }
             default:{

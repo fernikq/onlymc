@@ -302,7 +302,6 @@ public class CorePlugin extends JavaPlugin {
         new MemoryCommand("memory", new String[0], UserGroup.ADMIN, this).register();
         new AdminBossCommand("aboss", new String[0], UserGroup.ADMIN, this).register();
         new AdminCaseCommand("acase", new String[0], UserGroup.ADMIN, this).register();
-        new FreezeCommand("freeze", new String[0], UserGroup.ADMIN, this).register();
 
         //PLAYER
         new SethomeCommand("sethome", new String[0], UserGroup.PLAYER, this).register();
