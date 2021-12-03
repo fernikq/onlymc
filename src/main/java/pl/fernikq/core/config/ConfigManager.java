@@ -106,6 +106,7 @@ public class ConfigManager {
     public static long kitsBlockTime;
     public static long premiumCaseBlockTime;
     public static long freezeTime;
+    public static int tntLimitAtChunk;
 
     public static boolean discordEnableDiscordBot;
     public static String discordBotToken;
@@ -255,6 +256,7 @@ public class ConfigManager {
         discordBotMessagePrefix = "!";
         discordBotRewardTime = "1d";
         allowedClickPerSecond = 10;
+        tntLimitAtChunk = 50;
     }
 
     public static Map<Enchantment, Integer> getEnchantmentIntegerMap(){

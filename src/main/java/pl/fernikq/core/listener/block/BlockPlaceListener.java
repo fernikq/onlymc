@@ -1,6 +1,7 @@
 package pl.fernikq.core.listener.block;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -238,5 +239,31 @@ public class BlockPlaceListener implements Listener {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
             this.plugin.getGuildManager().getLogBlockData().insertLogBlock(logBlock, guild);
         });
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onTNTLimit(BlockPlaceEvent event){
+        if(event.isCancelled()){
+            return;
+        }
+        Block block = event.getBlock();
+        if(block.getType() != Material.TNT){
+            return;
+        }
+        Chunk chunk = event.getBlock().getChunk();
+        int count = 0;
+        for(int x = chunk.getX() * 16; x < chunk.getX() * 16 + 16; x++) {
+            for(int z = chunk.getZ() * 16; z < chunk.getZ() * 16 + 16; z++) {
+                for(int y = 0; y < 256; y++) {
+                    Block blockAtPosition = chunk.getBlock(x, y, z);
+                    if(blockAtPosition != null && blockAtPosition.getType() == Material.TNT)
+                        count++;
+                }
+            }
+        }
+        if(count > ConfigManager.tntLimitAtChunk) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(MessagesManager.error("Nie mozesz postawic wiecej TNT na tym Chunku!"));
+        }
     }
 }
