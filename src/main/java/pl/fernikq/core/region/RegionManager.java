@@ -369,7 +369,7 @@ public class RegionManager {
         return (isOutOfBorder(location) && !isOutOfBorder(from)) ? RegionFeedback.DENY_JOIN_BORDER : RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canUseBuckets(User user, Location location) {
+    public RegionFeedback canUseBuckets(User user, Location location, boolean fill) {
         if(user == null) {
             return RegionFeedback.DENY_ERROR;
         }
@@ -378,12 +378,6 @@ public class RegionManager {
         }
         Guild guild = this.plugin.getGuildManager().getGuildByLocation(location).getOrNull();
         if(guild != null){
-            if(!user.hasGuild()){
-                return RegionFeedback.DENY_BUCKETS_GUILD;
-            }
-            if(!user.getGuild().equals(guild)){
-                return RegionFeedback.DENY_BUCKETS_GUILD;
-            }
             if(guild.getRegion().isInCenter(location)){
                 return RegionFeedback.DENY_BUCKETS_GUILD_CENTER;
             }
@@ -391,6 +385,12 @@ public class RegionManager {
                 if(guildDrill.isIn(location)){
                     return RegionFeedback.DENY_BUCKETS_GUILD_DRILL;
                 }
+            }
+            if(!user.hasGuild()){
+                return fill ? RegionFeedback.DENY_BUCKETS_GUILD : RegionFeedback.ALLOW;
+            }
+            if(!user.getGuild().equals(guild)){
+                return fill ? RegionFeedback.DENY_BUCKETS_GUILD : RegionFeedback.ALLOW;
             }
         }
         if(checkRegions() != null){

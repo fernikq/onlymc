@@ -2,6 +2,7 @@ package pl.fernikq.core;
 
 import codecrafter47.bungeetablistplus.api.bukkit.BungeeTabListPlusBukkitAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.fernikq.core.abyss.AbyssManager;
 import pl.fernikq.core.automessage.AutoMessageManager;
@@ -62,9 +63,13 @@ import pl.fernikq.core.variable.user.*;
 import pl.fernikq.core.warp.WarpManager;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CorePlugin extends JavaPlugin {
+
+    private final Set<Location> locationOfWaterBlocks = new HashSet<>();
 
     private ConfigManager configManager;
     private MessagesManager messagesManager;
@@ -388,6 +393,7 @@ public class CorePlugin extends JavaPlugin {
         new pl.fernikq.core.listener.custom.BlockDigListener(this);
         new EntityDeathListener(this);
         new PlayerToggleSneakListener(this);
+        new BlockFromToListener(this);
     }
 
     public ConfigManager getConfigManager() {
@@ -532,5 +538,9 @@ public class CorePlugin extends JavaPlugin {
 
     public CustomEnchantManager getCustomEnchantManager() {
         return customEnchantManager;
+    }
+
+    public Set<Location> getLocationOfWaterBlocks() {
+        return locationOfWaterBlocks;
     }
 }
