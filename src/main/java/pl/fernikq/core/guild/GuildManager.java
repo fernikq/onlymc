@@ -32,6 +32,7 @@ import pl.fernikq.core.util.TimeUtil;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -145,6 +146,12 @@ public class GuildManager {
             this.plugin.getDrillManager().unregisterDrillTask(guildDrill);
             this.plugin.getDrillManager().deleteGuildDrill(guildDrill);
             this.plugin.runAsync(() -> this.plugin.getDrillManager().getData().delete(guildDrill));
+        }
+        for(ItemStack itemStack : guild.getTreasure().getInventory().getContents()){
+            if(Objects.nonNull(itemStack)){
+                Location center = guild.getRegion().getCenter();
+                center.getWorld().dropItemNaturally(center, itemStack);
+            }
         }
     }
 

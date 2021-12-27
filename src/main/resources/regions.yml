@@ -23,6 +23,7 @@ Regions:
       canDestroy: false
       canThrowPearls: false
       canUseBuckets: false
+      allowWaterTrick: true
       canHurtOther: false
       canBeHurt: false
       canSpawnVehicles: false

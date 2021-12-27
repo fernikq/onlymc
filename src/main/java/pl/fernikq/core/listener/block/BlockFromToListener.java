@@ -23,7 +23,7 @@ public class BlockFromToListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onWaterFlow(BlockFromToEvent event){
         Block block = event.getBlock();
-        if(this.plugin.getLocationOfWaterBlocks().contains(block.getLocation())){
+        if(this.plugin.getLocationOfWaterBlocks().containsKey(block.getLocation())){
             event.setCancelled(true);
         }
     }

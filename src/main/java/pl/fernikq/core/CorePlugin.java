@@ -62,14 +62,11 @@ import pl.fernikq.core.variable.server.RegisteredUsersVariable;
 import pl.fernikq.core.variable.user.*;
 import pl.fernikq.core.warp.WarpManager;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CorePlugin extends JavaPlugin {
 
-    private final Set<Location> locationOfWaterBlocks = new HashSet<>();
+    private final Map<Location, UUID> locationOfWaterBlocks = new HashMap<>();
 
     private ConfigManager configManager;
     private MessagesManager messagesManager;
@@ -345,6 +342,7 @@ public class CorePlugin extends JavaPlugin {
         new CaseCommand("case", new String[0], UserGroup.PLAYER, this).register();
         new ProtectionCommand("ochrona", new String[0], UserGroup.PLAYER, this).register();
         new DiscoArmorCommand("disco", new String[0], UserGroup.PLAYER, this).register();
+        new SellAllCommand("selall", new String[0], UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();
@@ -540,7 +538,7 @@ public class CorePlugin extends JavaPlugin {
         return customEnchantManager;
     }
 
-    public Set<Location> getLocationOfWaterBlocks() {
+    public Map<Location, UUID> getLocationOfWaterBlocks() {
         return locationOfWaterBlocks;
     }
 }

@@ -1,15 +1,17 @@
-package pl.fernikq.core.inventory.actions.user;
+package pl.fernikq.core.command.player;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import pl.fernikq.core.CorePlugin;
-import pl.fernikq.core.inventory.InventoryAction;
+import pl.fernikq.core.command.CustomCommand;
+import pl.fernikq.core.config.Lang;
+import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.shop.ShopType;
 import pl.fernikq.core.user.User;
+import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemUtil;
 
@@ -17,26 +19,30 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SellAllAction implements InventoryAction {
+public class SellAllCommand extends CustomCommand {
 
-    private User user;
-    private CorePlugin plugin;
+    private final CorePlugin plugin;
 
     private Cache<User, Boolean> cache = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build();
 
-    public SellAllAction(CorePlugin plugin, User user){
-        this.user = user;
+    public SellAllCommand(String name, String[] aliases, UserGroup group, CorePlugin plugin){
+        super(name, aliases, group, plugin);
         this.plugin = plugin;
     }
 
     @Override
-    public void execute(Player player, Inventory inventory, int slot, ItemStack itemStack, InventoryClickEvent event) {
-        if(!this.cache.asMap().containsKey(this.user)){
-            ChatUtil.sendMessage(player, "&8[&eSKLEP&8] &fAby sprzedac wszystkie przedmioty musisz potwiedzic swoja decyzje poprzez ponowne wcisniecie LPM.");
-            this.cache.put(this.user, true);
-            return;
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if(!(sender instanceof Player)) {
+            return ChatUtil.sendMessage(sender, Lang.mustBePlayer);
         }
-        this.cache.asMap().remove(this.user);
+        Player player = (Player) sender;
+        User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+        if(!this.cache.asMap().containsKey(user)){
+            ChatUtil.sendMessage(player, "&8[&eSKLEP&8] &fAby sprzedac wszystkie przedmioty musisz potwiedzic swoja decyzje poprzez ponowne wcisniecie LPM.");
+            this.cache.put(user, true);
+            return true;
+        }
+        this.cache.asMap().remove(user);
         AtomicBoolean sold = new AtomicBoolean(false);
         AtomicInteger coins = new AtomicInteger();
         this.plugin.getShopManager().getShops(ShopType.SELL).forEach(shop -> {
@@ -57,5 +63,6 @@ public class SellAllAction implements InventoryAction {
         }else{
             ChatUtil.sendMessage(player, "&8[&eSKLEP&8] &fNie posiadasz zadnego przedmiotu ktory nadaje sie do sprzedania :(");
         }
+        return true;
     }
 }

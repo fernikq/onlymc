@@ -38,6 +38,11 @@ public class Region {
     private boolean allowMobSpawning;
     private boolean allowLeavesDecay;
     private boolean allowPistons;
+    private boolean allowWaterTrick;
+
+    public Region(){
+        this.allowWaterTrick = false;
+    }
 
     public boolean isIn(Location location){
         if(!StringUtils.equals(location.getWorld().getName(), this.lowerCorner.getWorld().getName())){
@@ -305,5 +310,13 @@ public class Region {
     public Region setAllowLeavesDecay(boolean allowLeavesDecay) {
         this.allowLeavesDecay = allowLeavesDecay;
         return this;
+    }
+
+    public boolean isAllowWaterTrick() {
+        return allowWaterTrick;
+    }
+
+    public void setAllowWaterTrick(boolean allowWaterTrick) {
+        this.allowWaterTrick = allowWaterTrick;
     }
 }

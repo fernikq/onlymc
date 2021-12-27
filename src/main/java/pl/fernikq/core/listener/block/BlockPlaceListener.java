@@ -98,8 +98,8 @@ public class BlockPlaceListener implements Listener {
                 ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz postawic wiertla tak blisko innego wiertla!"));
                 return;
             }
-            if(block.getLocation().getBlockY() <= 1){
-                ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz postawic wiertla tak nisko!"));
+            if(block.getLocation().getBlockY() < 10){
+                ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz postawic wiertla tak nisko! (Min. Y: 10)"));
                 return;
             }
             if(guild.getGuildDrills().size() >= 2){

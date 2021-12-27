@@ -153,8 +153,6 @@ public class UserInventory {
         user.addInventory(gui);
         gui.setItem(1, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 5).setName(ChatUtil.fixColor("&a&lKupno"))
                 .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby kupic przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_BUY, user));
-        gui.setItem(4, new ItemBuilder(Material.TRIPWIRE_HOOK).setName(ChatUtil.fixColor("&c&lSprzedaj wszystko"))
-                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby sprzedac wszystkie przedmioty&8!"))).toItemStack(), new SellAllAction(this.plugin, user));
         gui.setItem(7, new ItemBuilder(Material.STAINED_CLAY).setDurability((short) 14).setName(ChatUtil.fixColor("&c&lSprzedaz"))
                 .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Kliknij aby sprzedac przedmioty&8!"))).toItemStack(), new ShopAction(this.plugin, ShopActionType.CHOOSE_SELL, user));
         gui.setEmptyItem(this.blank);

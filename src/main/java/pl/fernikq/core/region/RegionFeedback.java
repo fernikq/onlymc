@@ -6,6 +6,7 @@ public enum RegionFeedback {
 
     ALLOW(true),
     DENY(false),
+    ALLOW_WATER_TRICK(false, MessagesManager.error("Nie mozesz tutaj uzywac wiaderek!")),
 
     DENY_DESTROY_SPAWN(false,  MessagesManager.error("Nie mozesz niszczyc blokow na tym terenie!")),
     DENY_BUILD_SPAWN(false,  MessagesManager.error("Nie mozesz budowac na tym terenie!")),

@@ -97,6 +97,7 @@ public class RegionManager {
                     .setCanEntityExplode(c.getBoolean("entities.canExplode")).setCanEntityIgniteTNT(c.getBoolean("entities.canIgniteTNT")).setStoneGeneratorRegion(c.getBoolean("other.isStoneGeneratorRegion"))
                     .setAllowFireSpread(c.getBoolean("other.allowFireSpread")).setAllowLeavesDecay(c.getBoolean("other.allowLeavesDecay")).setAllowMobSpawning(c.getBoolean("other.allowMobSpawning"))
                     .setCanEntityIgniteBlocks(c.getBoolean("entities.canIgniteBlocks")).setAllowPistons(c.getBoolean("other.allowPistons"));
+            if(c.isSet("player.allowWaterTrick")) region.setAllowWaterTrick(c.getBoolean("player.allowWaterTrick"));
             this.regions.add(region);
         }
 
@@ -369,7 +370,7 @@ public class RegionManager {
         return (isOutOfBorder(location) && !isOutOfBorder(from)) ? RegionFeedback.DENY_JOIN_BORDER : RegionFeedback.ALLOW;
     }
 
-    public RegionFeedback canUseBuckets(User user, Location location, boolean fill) {
+    public RegionFeedback canUseBuckets(User user, Location location) {
         if(user == null) {
             return RegionFeedback.DENY_ERROR;
         }
@@ -387,17 +388,17 @@ public class RegionManager {
                 }
             }
             if(!user.hasGuild()){
-                return fill ? RegionFeedback.DENY_BUCKETS_GUILD : RegionFeedback.ALLOW;
+                return RegionFeedback.ALLOW_WATER_TRICK;
             }
             if(!user.getGuild().equals(guild)){
-                return fill ? RegionFeedback.DENY_BUCKETS_GUILD : RegionFeedback.ALLOW;
+                return RegionFeedback.ALLOW_WATER_TRICK;
             }
         }
         if(checkRegions() != null){
             return checkRegions();
         }
         for(Region region : getRegionsByLocation(location)){
-            return region.isCanPlayerUserBuckets() ? RegionFeedback.ALLOW : RegionFeedback.DENY_BUCKETS;
+            return region.isCanPlayerUserBuckets() ? RegionFeedback.ALLOW : region.isAllowWaterTrick() ? RegionFeedback.ALLOW_WATER_TRICK : RegionFeedback.DENY_BUCKETS;
         }
         return RegionFeedback.ALLOW;
     }
