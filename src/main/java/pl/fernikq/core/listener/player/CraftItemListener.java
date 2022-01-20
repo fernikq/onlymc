@@ -83,4 +83,21 @@ public class CraftItemListener implements Listener {
             return;
         }
     }
+
+    @EventHandler
+    public void onBeacon(CraftItemEvent event) {
+        if(event.getInventory().getType() != InventoryType.WORKBENCH) {
+            return;
+        }
+        if(event.getInventory().getResult() == null) {
+            return;
+        }
+        ItemStack result = event.getInventory().getResult();
+        Player player = (Player) event.getWhoClicked();
+        if(result.getType() == Material.BEACON){
+            ChatUtil.sendMessage(player, MessagesManager.error("Beacon zostal zablokowany!"));
+            event.setCancelled(true);
+            return;
+        }
+    }
 }

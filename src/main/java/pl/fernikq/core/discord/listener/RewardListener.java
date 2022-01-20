@@ -64,22 +64,15 @@ public class RewardListener extends ListenerAdapter {
                 DiscordUserUtil.sendPrivateMessage(discordUser, "Aby odebrac nagrode musisz chociaz raz wejsc na serwer :D");
                 return;
             }
-            if(user.getDiscordRewardTime() > System.currentTimeMillis()){
-                DiscordUserUtil.sendPrivateMessage(discordUser, "Kolejny raz nagrode mozesz odebrac za "+ TimeUtil.getTimeToString(user.getDiscordRewardTime() - System.currentTimeMillis()));
+            if(user.isDiscordRewardAllowed()){
+                DiscordUserUtil.sendPrivateMessage(discordUser, "Zweryfikowales juz swoj nick! Wejdz na serwer i odbierz swoja nagrode pod komenda /nagrody");
                 return;
             }
-            if(user.asPlayer() == null){
-                DiscordUserUtil.sendPrivateMessage(discordUser, "Aby odebrac nagrode musisz byc na serwerze, chyba nie chcesz jej stracic?");
-                return;
-            }
-            user.setDiscordRewardTime(System.currentTimeMillis() + TimeUtil.getTime(ConfigManager.discordBotRewardTime));
-            user.getUserStat().setTurboDropTime(user.getUserStat().getTurboDropTime() + (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30)));
-            ItemUtil.giveItems(user.asPlayer(), new ItemBuilder(this.plugin.getDropManager().getPremiumCaseItem().clone()).setAmount(3).toItemStack());
-            DiscordUserUtil.sendPrivateMessage(discordUser, "Gratulacje! Otrzymales swoja nagrode, zyczymy milej gry :D");
+            user.setDiscordRewardAllowed(true);
+            DiscordUserUtil.sendPrivateMessage(discordUser, "Gratulacje! Wejdz na serwer i odbierz swoja nagrode pod komenda /nagrody");
             Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                this.plugin.getUserManager().getUserData().updateDiscordRewardTime(user);
+                this.plugin.getUserManager().getUserData().updateDiscordReward(user);
             });
-            Bukkit.getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, "&8[&4&lDISCORD&8] &8>> &fGracz &c"+user.getName()+" &fodebral nagrode za wejscie na discorda! Ty tez mozesz ja otrzymac, wszystkie informacje znajduja sie pod komenda &c/discord"));
             return;
         }
     }

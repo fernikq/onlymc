@@ -52,6 +52,8 @@ public class User {
     private boolean logout;
     private Set<Entity> enderPearls;
     private long discordRewardTime;
+    private long clientRewardTime;
+    private boolean discordRewardAllowed;
 
     public User(Player player){
         this.uuid = player.getUniqueId();
@@ -62,6 +64,7 @@ public class User {
         this.inventories = new HashMap<>();
         this.homes = new HashMap<>();
         this.godMode = false;
+        this.discordRewardAllowed = false;
         this.privateMessageSender = null;
         this.kitTimes = new HashMap<>();
         this.userStat = new UserStat(this);
@@ -87,6 +90,8 @@ public class User {
             this.lastAddress = rs.getString("lastAddress");
             this.group = UserGroup.getByName(rs.getString("groupName"));
             this.discordRewardTime = rs.getLong("discordRewardTime");
+            this.discordRewardAllowed = rs.getBoolean("discordRewardAllowed");
+            this.clientRewardTime = rs.getLong("clientRewardTime");
             this.discoArmorPermission = rs.getBoolean("discoArmor");
             this.rainbowNicknamePermission = rs.getBoolean("rainbowNickname");
             this.inventories = new HashMap<>();
@@ -330,6 +335,22 @@ public class User {
 
     public void setScoreboard(Scoreboard scoreboard) {
         this.scoreboard = scoreboard;
+    }
+
+    public boolean isDiscordRewardAllowed() {
+        return discordRewardAllowed;
+    }
+
+    public void setDiscordRewardAllowed(boolean discordRewardAllowed) {
+        this.discordRewardAllowed = discordRewardAllowed;
+    }
+
+    public long getClientRewardTime() {
+        return clientRewardTime;
+    }
+
+    public void setClientRewardTime(long clientRewardTime) {
+        this.clientRewardTime = clientRewardTime;
     }
 
     public Dummy getDummy() {

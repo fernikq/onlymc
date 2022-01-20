@@ -23,8 +23,6 @@ public class SellAllCommand extends CustomCommand {
 
     private final CorePlugin plugin;
 
-    private Cache<User, Boolean> cache = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build();
-
     public SellAllCommand(String name, String[] aliases, UserGroup group, CorePlugin plugin){
         super(name, aliases, group, plugin);
         this.plugin = plugin;
@@ -37,12 +35,6 @@ public class SellAllCommand extends CustomCommand {
         }
         Player player = (Player) sender;
         User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
-        if(!this.cache.asMap().containsKey(user)){
-            ChatUtil.sendMessage(player, "&8[&eSKLEP&8] &fAby sprzedac wszystkie przedmioty musisz potwiedzic swoja decyzje poprzez ponowne wcisniecie LPM.");
-            this.cache.put(user, true);
-            return true;
-        }
-        this.cache.asMap().remove(user);
         AtomicBoolean sold = new AtomicBoolean(false);
         AtomicInteger coins = new AtomicInteger();
         this.plugin.getShopManager().getShops(ShopType.SELL).forEach(shop -> {

@@ -86,7 +86,7 @@ public class PlayerInteractListener implements Listener {
             }
             return;
         }
-        if(Objects.nonNull(block) && block.getType() == Material.ENCHANTMENT_TABLE && event.getAction() == Action.RIGHT_CLICK_BLOCK && player.isSneaking()){
+        if(Objects.nonNull(block) && block.getType() == Material.ENCHANTMENT_TABLE && event.getAction() == Action.RIGHT_CLICK_BLOCK && !player.isSneaking()){
             if(Objects.isNull(player.getItemInHand())){
                 ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz zaklac tego przedmiotu!"));
                 event.setCancelled(true);
@@ -99,6 +99,7 @@ public class PlayerInteractListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+            //todo
             event.setCancelled(true);
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
             this.plugin.getUserInventory().customEnchantMenu(user, itemStack, customEnchantItemEnum).openInventory(player);
@@ -329,7 +330,7 @@ public class PlayerInteractListener implements Listener {
             if(player.getLocation().getBlock().getType() == Material.STONE_PLATE || player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.STONE_PLATE){
                 PlayerUtil.randomTeleport(player, false);
                 player.getWorld().getPlayers().stream().filter(online -> online.getLocation().getBlock().getType() == Material.STONE_PLATE || online.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.STONE_PLATE)
-                        .filter(online -> online.getLocation().distance(block.getLocation()) <= 8).forEach(online -> {
+                        .filter(online -> online.getLocation().distance(block.getLocation()) <= 8).limit(1).forEach(online -> {
                             online.teleport(player);
                             ChatUtil.sendMessage(online, "&8>> {n}Zostales przeteleportowany w {c}losowa lokalizacje!");
                 });

@@ -46,6 +46,7 @@ public class ConfigManager {
     public static long turboDropTime;
     public static long turboExpTime;
     public static double turboDropMultiplier;
+    public static double turboDropCauseClientMultiplier;
     public static double turboExpMultiplier;
     public static int tntExplodeBelow;
     public static String tntHours;
@@ -105,6 +106,7 @@ public class ConfigManager {
     public static long diamondItemsBlockTime;
     public static long kitsBlockTime;
     public static long premiumCaseBlockTime;
+    public static long guildCreateBlockTime;
     public static long freezeTime;
     public static int tntLimitAtChunk;
 
@@ -113,6 +115,7 @@ public class ConfigManager {
     public static String discordBotChannelID;
     public static String discordBotMessagePrefix;
     public static String discordBotRewardTime;
+    public static String clientRewardTime;
 
     private static Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
 
@@ -185,7 +188,8 @@ public class ConfigManager {
         dropObsidianExp = 20;
         turboDropTime = 0L;
         turboExpTime = 0L;
-        turboDropMultiplier = 1.5;
+        turboDropMultiplier = 2.0;
+        turboDropCauseClientMultiplier = 1.5;
         turboExpMultiplier = 2.0;
         playerStartPoints = 500;
         maxAmountOfPointsByKilling = 300;
@@ -249,12 +253,14 @@ public class ConfigManager {
         diamondItemsBlockTime = 0L;
         kitsBlockTime = 0L;
         premiumCaseBlockTime = 0L;
+        guildCreateBlockTime = 0L;
         freezeTime = 0L;
         discordEnableDiscordBot = true;
         discordBotToken = "NjkxMzQ3MDY4ODc0MjYwNTEw.XnepJg.j04AISO7gF1dyaEgKt_GB2Ym1XM";
         discordBotChannelID = "673928220021882891";
         discordBotMessagePrefix = "!";
         discordBotRewardTime = "1d";
+        clientRewardTime = "1d";
         allowedClickPerSecond = 10;
         tntLimitAtChunk = 50;
     }

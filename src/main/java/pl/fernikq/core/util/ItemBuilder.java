@@ -1,5 +1,7 @@
 package pl.fernikq.core.util;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,10 +12,8 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import pl.fernikq.core.config.ConfigManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class ItemBuilder {
 
@@ -136,6 +136,27 @@ public class ItemBuilder {
         }
         ((SkullMeta) itemMeta).setOwner(name);
         this.itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
+    public ItemBuilder setCustomSkullOwner(String value){
+        if(!ConfigManager.usePremiumHeadsInGUI){
+            return this;
+        }
+        ItemMeta itemMeta = this.itemStack.getItemMeta();
+        if(!(itemMeta instanceof SkullMeta)){
+            return this;
+        }
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        profile.getProperties().put("textures", new Property("textures", value));
+        SkullMeta headMeta = (SkullMeta) this.itemStack.getItemMeta();
+        try {
+            Field profileField = headMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(headMeta, profile);
+
+        }catch (IllegalArgumentException|NoSuchFieldException|SecurityException | IllegalAccessException ignored){}
+        this.itemStack.setItemMeta(headMeta);
         return this;
     }
 

@@ -44,6 +44,7 @@ import pl.fernikq.core.user.incognito.IncognitoType;
 import pl.fernikq.core.user.incognito.UserIncognito;
 import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.*;
+import pl.nsclient.spigot.MCPlugin;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -315,7 +316,10 @@ public class UserInventory {
             if(drop.getName() != null){
                 dropItem.setName(ChatUtil.fixColor(drop.getName()));
             }
-            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+(user.getUserStat().isTurboDrop() ? (NumberUtil.formatDouble(drop.getChance() * ConfigManager.turboDropMultiplier)+"% &8[{c}&lTURBO&8]") : drop.getChance()+"%"), "&8>> {n}Wypada w ilosci&8: {c}"+(drop.getMinAmount() == drop.getMaxAmount() ? drop.getMinAmount() : drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount()),
+            double chance = drop.getChance();
+            if(user.getUserStat().isTurboDrop()) chance *= ConfigManager.turboDropMultiplier;
+            if(MCPlugin.getAuthorizedPlayers().contains(user.getName())) chance *= ConfigManager.turboDropCauseClientMultiplier;
+            dropItem.setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> {n}Szansa&8: {c}"+(user.getUserStat().isTurboDrop() ? (NumberUtil.formatDouble(chance)+"% &8[{c}&lTURBO&8]") : NumberUtil.formatDouble(chance)+"%"), "&8>> {n}Wypada w ilosci&8: {c}"+(drop.getMinAmount() == drop.getMaxAmount() ? drop.getMinAmount() : drop.getMinAmount()+"&8-{c}"+drop.getMaxAmount()),
                     "&8>> {n}Wypada ponizej {c}"+drop.getMinY()+" {n}kratki", "&8>> {n}Fortuna&8: "+(drop.isFortune() ? "&aTak" : "&cNie"), " ", "&8>> {n}Aktywny&8: "+(drop.getDisabled().contains(user) ? "&cNie" : "&aTak"))));
             if(!drop.getDisabled().contains(user)){
                 dropItem.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 10);
@@ -918,6 +922,22 @@ public class UserInventory {
         }
         gui.setItem(8, this.backGlass, new CustomEnchantLevelChoiceAction(this.plugin, user, itemStack, enchantment, 0, 0, customEnchantItemEnum, true));
         user.addInventory(gui);
+        return gui;
+    }
+
+    public InventoryGUI userRewards(User user){
+        InventoryGUI gui = new InventoryGUI("&8[ {c}&lNAGRODY &8]", 1, true);
+        user.addInventory(gui);
+        ItemBuilder discordReward = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3)
+                .setCustomSkullOwner("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ0MjMzN2JlMGJkY2EyMTI4MDk3ZjFjNWJiMTEwOWU1YzYzM2MxNzkyNmFmNWZiNmZjMjAwMDAwMTFhZWI1MyJ9fX0=")
+                .setName(ChatUtil.fixColor("&5&lNagroda DISCORD")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby odebrac")));
+        ItemBuilder clientReward = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3)
+                .setCustomSkullOwner("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTYwMDIzZTNkOTUwZGE5ZGFjMDlkYWNjNWNkNGIxMjA0OWYwNTJjMjU5YWRiYzlhYzQ3ZjFjNTIyZmNlYmY0MiJ9fX0=")
+                .setName(ChatUtil.fixColor("&6&lNagroda NsClient"))
+                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby odebrac")));
+        gui.setItem(1, discordReward.toItemStack(), new RewardAction(this.plugin, RewardActionType.DISCORD, user));
+        gui.setItem(7, clientReward.toItemStack(), new RewardAction(this.plugin, RewardActionType.CLIENT, user));
+        gui.setEmptyItem(this.blank);
         return gui;
     }
 }

@@ -5,10 +5,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.command.CustomCommand;
+import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.Lang;
 import pl.fernikq.core.config.MessagesManager;
 import pl.fernikq.core.user.UserGroup;
 import pl.fernikq.core.util.ChatUtil;
+import pl.fernikq.core.util.TimeUtil;
 
 public class GuildItemsCommand extends CustomCommand {
 
@@ -28,6 +30,9 @@ public class GuildItemsCommand extends CustomCommand {
             return ChatUtil.sendMessage(sender, MessagesManager.usage("/g itemy"));
         }
         Player player = (Player) sender;
+        if(ConfigManager.guildCreateBlockTime > System.currentTimeMillis()){
+            return ChatUtil.sendMessage(player, MessagesManager.error("Zakladanie gildii zablokowane jest jeszcze przez "+ TimeUtil.getTimeToString(ConfigManager.guildCreateBlockTime - System.currentTimeMillis())));
+        }
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> this.plugin.getGuildInventory().guildItems(user).openInventory(player));
         return true;
     }

@@ -342,7 +342,8 @@ public class CorePlugin extends JavaPlugin {
         new CaseCommand("case", new String[0], UserGroup.PLAYER, this).register();
         new ProtectionCommand("ochrona", new String[0], UserGroup.PLAYER, this).register();
         new DiscoArmorCommand("disco", new String[0], UserGroup.PLAYER, this).register();
-        new SellAllCommand("selall", new String[0], UserGroup.PLAYER, this).register();
+        new SellAllCommand("sellall", new String[0], UserGroup.PLAYER, this).register();
+        new RewardCommand("nagrody", new String[]{"nagroda"}, UserGroup.PLAYER, this).register();
 
         new GuildCommand("gildia", new String[]{"g"}, UserGroup.PLAYER, this).register();
         new GuildAdminCommand("gildiaadmin", new String[]{"ga"}, UserGroup.ADMIN, this).register();

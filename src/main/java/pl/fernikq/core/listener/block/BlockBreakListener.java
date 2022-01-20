@@ -31,6 +31,8 @@ import pl.fernikq.core.util.ChatUtil;
 import pl.fernikq.core.util.ItemBuilder;
 import pl.fernikq.core.util.ItemUtil;
 import pl.fernikq.core.util.RandomUtil;
+import pl.nsclient.spigot.MCPlugin;
+import pl.nsclient.spigot.MCPluginAPI;
 
 import java.util.Map;
 import java.util.Objects;
@@ -81,7 +83,10 @@ public class BlockBreakListener implements Listener {
                 if(drop.getDisabled().contains(user)){
                     continue;
                 }
-                if(!RandomUtil.getChance(user.getUserStat().isTurboDrop() ? (drop.getChance() * ConfigManager.turboDropMultiplier) : drop.getChance())){
+                double chance = drop.getChance();
+                if(user.getUserStat().isTurboDrop()) chance *= ConfigManager.turboDropMultiplier;
+                if(MCPlugin.getAuthorizedPlayers().contains(player.getName())) chance *= ConfigManager.turboDropCauseClientMultiplier;
+                if(!RandomUtil.getChance(chance)){
                     continue;
                 }
                 if(block.getLocation().getBlockY() >= drop.getMinY()){
