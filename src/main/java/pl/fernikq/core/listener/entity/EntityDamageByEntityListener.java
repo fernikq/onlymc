@@ -181,7 +181,7 @@ public class EntityDamageByEntityListener implements Listener {
                     ((Player)entity).playSound(victim.getLocation(), Sound.EXPLODE, 10, 1);
                 });
             }
-            if(RandomUtil.getChance(3)){
+            if(RandomUtil.getChance(ConfigManager.bossGuardSpawnChance)){
                 int count = 1;
                 List<Entity> players = victim.getNearbyEntities(8, 5, 8).stream().filter(entity -> entity.getType() == EntityType.PLAYER).collect(Collectors.toList());
                 if(players.size() > count) count = players.size();

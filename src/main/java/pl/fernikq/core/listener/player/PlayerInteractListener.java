@@ -35,18 +35,18 @@ import pl.fernikq.core.guild.member.GuildPermission;
 import pl.fernikq.core.inventory.InventoryGUI;
 import pl.fernikq.core.magiccase.MagicCase;
 import pl.fernikq.core.magiccase.MagicCaseType;
+import pl.fernikq.core.protection.ProtectionManager;
 import pl.fernikq.core.region.RegionFeedback;
 import pl.fernikq.core.top.TopType;
 import pl.fernikq.core.user.User;
 import pl.fernikq.core.user.UserGroup;
+import pl.fernikq.core.user.fight.FightManager;
 import pl.fernikq.core.user.quests.QuestType;
 import pl.fernikq.core.util.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
 public class PlayerInteractListener implements Listener {
@@ -86,7 +86,11 @@ public class PlayerInteractListener implements Listener {
             }
             return;
         }
-        if(Objects.nonNull(block) && block.getType() == Material.ENCHANTMENT_TABLE && event.getAction() == Action.RIGHT_CLICK_BLOCK && !player.isSneaking()){
+        if(Objects.nonNull(block) && block.getType() == Material.ENCHANTMENT_TABLE && event.getAction() == Action.RIGHT_CLICK_BLOCK){
+            if(player.isSneaking()){
+                player.openEnchanting(block.getLocation(), true);
+                return;
+            }
             if(Objects.isNull(player.getItemInHand())){
                 ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz zaklac tego przedmiotu!"));
                 event.setCancelled(true);
@@ -99,7 +103,6 @@ public class PlayerInteractListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            //todo
             event.setCancelled(true);
             User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
             this.plugin.getUserInventory().customEnchantMenu(user, itemStack, customEnchantItemEnum).openInventory(player);
@@ -136,6 +139,16 @@ public class PlayerInteractListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+            User user = this.plugin.getUserManager().getUser(player.getUniqueId()).getOrNull();
+            if(user == null) {
+                ChatUtil.sendMessage(player, MessagesManager.errorMessage);
+                return;
+            }
+            if(user.getUserFight().isDuringFight()){
+                ChatUtil.sendMessage(player, "&8>> {n}"+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+"'y {n}wylaczone sa podczas walki!");
+                event.setCancelled(true);
+                return;
+            }
             List<String> dropMessages = new ArrayList<>();
             for(Drop drop : this.plugin.getDropManager().getDrops(DropType.PREMIUMCASE)){
                 if(items >= this.plugin.getDropManager().getMaxItemsInOneCase()){
@@ -154,10 +167,8 @@ public class PlayerInteractListener implements Listener {
             ItemUtil.removeFromHand(player, 1);
             this.plugin.runAsync(() -> this.plugin.getTopManager().getTopByType(TopType.USER_CASE).setSorted(false));
             if(items == 0){
-                this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
-                    user.getUserStat().addOpenedPremiumCase(1);
-                    this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_PREMIUMCASE);
-                });
+                user.getUserStat().addOpenedPremiumCase(1);
+                this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_PREMIUMCASE);
                 ChatUtil.sendMessage(player, "&8>> {n}Otworzyles "+this.plugin.getDropManager().getPremiumCaseItem().getItemMeta().getDisplayName()+" {n}ale niestety nic nie wypadlo :(");
                 return;
             }
@@ -169,10 +180,8 @@ public class PlayerInteractListener implements Listener {
                 }
                 ChatUtil.sendMessage(onlineUser.asPlayer(), " ");
             });
-            this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
-                user.getUserStat().addOpenedPremiumCase(1);
-                this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_PREMIUMCASE);
-            });
+            user.getUserStat().addOpenedPremiumCase(1);
+            this.plugin.getQuestManager().checkQuest(user, QuestType.OPENED_PREMIUMCASE);
             return;
         }
         if(block != null && block.getType() == Material.ENDER_PORTAL_FRAME){
@@ -328,11 +337,22 @@ public class PlayerInteractListener implements Listener {
         if(block != null && block.getType() == Material.STONE_BUTTON && block.getRelative(((Button)block.getState().getData()).getAttachedFace()).getType() == Material.JUKEBOX){
             event.setCancelled(true);
             if(player.getLocation().getBlock().getType() == Material.STONE_PLATE || player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.STONE_PLATE){
+                Set<Entity> nearPlayers = player.getWorld().getNearbyEntities(block.getLocation(), 8, 5, 8).stream().filter(entity ->
+                        entity.getType() == EntityType.PLAYER).filter(entity -> entity.getLocation().getBlock().getType() == Material.STONE_PLATE ||
+                        entity.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.STONE_PLATE)
+                        .filter(entity -> !this.plugin.getProtectionManager().isProtected(entity.getUniqueId())).limit(1).collect(Collectors.toSet());
+                if(nearPlayers.isEmpty()){
+                    ChatUtil.sendMessage(player, MessagesManager.error("Aby uzyc grupowego teleportu, nie mozesz byc sam!"));
+                    return;
+                }
+                if(this.plugin.getProtectionManager().isProtected(player.getUniqueId())){
+                    ChatUtil.sendMessage(player, MessagesManager.error("Nie mozesz uzyc grupowej teleportacji, posiadajac ochrone startowa!"));
+                    return;
+                }
                 PlayerUtil.randomTeleport(player, false);
-                player.getWorld().getPlayers().stream().filter(online -> online.getLocation().getBlock().getType() == Material.STONE_PLATE || online.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.STONE_PLATE)
-                        .filter(online -> online.getLocation().distance(block.getLocation()) <= 8).limit(1).forEach(online -> {
-                            online.teleport(player);
-                            ChatUtil.sendMessage(online, "&8>> {n}Zostales przeteleportowany w {c}losowa lokalizacje!");
+                nearPlayers.forEach(entity -> {
+                    entity.teleport(player);
+                    ChatUtil.sendMessage(entity, "&8>> {n}Zostales przeteleportowany w {c}losowa lokalizacje!");
                 });
             }else{
                 ChatUtil.sendMessage(player, MessagesManager.error("Aby to zrobic musisz stac na plytkach!"));

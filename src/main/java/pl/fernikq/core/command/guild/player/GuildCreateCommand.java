@@ -33,15 +33,15 @@ public class GuildCreateCommand extends CustomCommand {
         if(!(sender instanceof Player)){
             return ChatUtil.sendMessage(sender, Lang.mustBePlayer);
         }
+        Player player = (Player)sender;
+        if(ConfigManager.guildCreateBlockTime > System.currentTimeMillis()){
+            return ChatUtil.sendMessage(player, MessagesManager.error("Zakladanie gildii zablokowane jest jeszcze przez "+ TimeUtil.getTimeToString(ConfigManager.guildCreateBlockTime - System.currentTimeMillis())));
+        }
         if(args.length < 3){
             return ChatUtil.sendMessage(sender, MessagesManager.usage("/g zaloz <tag> <nazwa>"));
         }
         String tag = args[1].toUpperCase();
         String name = args[2];
-        Player player = (Player)sender;
-        if(ConfigManager.guildCreateBlockTime > System.currentTimeMillis()){
-            return ChatUtil.sendMessage(player, MessagesManager.error("Zakladanie gildii zablokowane jest jeszcze przez "+ TimeUtil.getTimeToString(ConfigManager.guildCreateBlockTime - System.currentTimeMillis())));
-        }
         this.plugin.getUserManager().getUser(player.getUniqueId()).peek(user -> {
             if(user.hasGuild()){
                 ChatUtil.sendMessage(sender, MessagesManager.error("Posiadasz juz gildie!"));

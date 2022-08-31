@@ -27,6 +27,13 @@
             <version>4.1.1_147</version>
         </dependency>
         <dependency>
+            <groupId>nsclient</groupId>
+            <artifactId>nsclient</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>D:\Dane\Minecraft - pliki\NsClient-Auth-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>spigot</groupId>
             <artifactId>spigot</artifactId>
             <version>1.0</version>

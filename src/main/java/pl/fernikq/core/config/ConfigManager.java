@@ -109,6 +109,7 @@ public class ConfigManager {
     public static long guildCreateBlockTime;
     public static long freezeTime;
     public static int tntLimitAtChunk;
+    public static double bossGuardSpawnChance;
 
     public static boolean discordEnableDiscordBot;
     public static String discordBotToken;
@@ -263,6 +264,7 @@ public class ConfigManager {
         clientRewardTime = "1d";
         allowedClickPerSecond = 10;
         tntLimitAtChunk = 50;
+        bossGuardSpawnChance = 4.0;
     }
 
     public static Map<Enchantment, Integer> getEnchantmentIntegerMap(){

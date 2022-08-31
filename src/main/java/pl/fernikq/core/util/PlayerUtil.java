@@ -81,6 +81,8 @@ public class PlayerUtil {
         player.teleport(randomLocation);
         if(solo){
             ItemUtil.giveItems(player, new ItemStack(Material.COOKED_BEEF, 64), new ItemStack(Material.ENDER_CHEST), new ItemStack(Material.LOG, 16));
+        }else{
+            player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
         }
         ChatUtil.sendMessage(player, "&8>> {n}Zostales przeteleportowany w {c}losowa lokalizacje!");
         return true;

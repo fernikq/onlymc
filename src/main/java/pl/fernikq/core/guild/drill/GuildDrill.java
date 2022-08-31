@@ -74,9 +74,9 @@ public class GuildDrill {
     }
 
     public int[] getAmountByLevel(){
-        if(this.level < 1) return new int[]{1, 3};
-        if(this.level == 1) return new int[]{2, 5};
-        if(this.level == 2) return new int[]{3, 7};
+        if(this.level < 1) return new int[]{5, 10};
+        if(this.level == 1) return new int[]{7, 14};
+        if(this.level == 2) return new int[]{12, 21};
         return new int[]{4, 9};
     }
 

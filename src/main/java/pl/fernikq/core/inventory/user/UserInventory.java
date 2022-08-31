@@ -930,11 +930,12 @@ public class UserInventory {
         user.addInventory(gui);
         ItemBuilder discordReward = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3)
                 .setCustomSkullOwner("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ0MjMzN2JlMGJkY2EyMTI4MDk3ZjFjNWJiMTEwOWU1YzYzM2MxNzkyNmFmNWZiNmZjMjAwMDAwMTFhZWI1MyJ9fX0=")
-                .setName(ChatUtil.fixColor("&5&lNagroda DISCORD")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby odebrac")));
+                .setName(ChatUtil.fixColor("&5&lNagroda DISCORD")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fOdebrac mozesz poprzez klikniecie LPM",
+                        " ", "&fWymagania&8: &fWejdz na discord ", "&fa nastepine na kanale #nagroda", "&fwpisz &5!nagroda <nick>", " ", "&8>> &fDiscord&8: &5discord.gg/bfWmzhtDAH")));
         ItemBuilder clientReward = new ItemBuilder(Material.SKULL_ITEM).setDurability((short) 3)
                 .setCustomSkullOwner("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTYwMDIzZTNkOTUwZGE5ZGFjMDlkYWNjNWNkNGIxMjA0OWYwNTJjMjU5YWRiYzlhYzQ3ZjFjNTIyZmNlYmY0MiJ9fX0=")
-                .setName(ChatUtil.fixColor("&6&lNagroda NsClient"))
-                .setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fKliknij aby odebrac")));
+                .setName(ChatUtil.fixColor("&6&lNagroda NsClient")).setLore(ChatUtil.fixColor(Arrays.asList(" ", "&8>> &fOdebrac mozesz poprzez klikniecie LPM",
+                        " ", "&fWymagania&8: &fMusisz grac na kliencie &6NsClient", " ", "&8>> &fStrona&8: &ewww.nsclient.pl")));
         gui.setItem(1, discordReward.toItemStack(), new RewardAction(this.plugin, RewardActionType.DISCORD, user));
         gui.setItem(7, clientReward.toItemStack(), new RewardAction(this.plugin, RewardActionType.CLIENT, user));
         gui.setEmptyItem(this.blank);
