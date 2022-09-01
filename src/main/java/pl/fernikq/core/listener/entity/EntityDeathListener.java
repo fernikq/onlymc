@@ -39,7 +39,7 @@ public class EntityDeathListener implements Listener {
                     ItemBuilder itemBuilder = new ItemBuilder(bossDrop.getItemStack().clone()).setAmount(RandomUtil.getRandInt(bossDrop.getMinAmount(), bossDrop.getMaxAmount()));
                     killer.getWorld().dropItemNaturally(entity.getLocation(), itemBuilder.toItemStack());
                 });
-                entity.getWorld().getNearbyEntities(entity.getLocation(), 1, 1, 1).stream()
+                entity.getWorld().getNearbyEntities(entity.getLocation(), 50, 50, 50).stream()
                         .filter(nearbyEntity -> nearbyEntity.getCustomName().equalsIgnoreCase(ChatUtil.fixColor("&c&lObronca Bossa")))
                             .forEach(nearbyEntity -> {
                                 nearbyEntity.getLocation().getWorld().playEffect(nearbyEntity.getLocation(), Effect.EXPLOSION_LARGE, 1);

@@ -340,7 +340,8 @@ public class PlayerInteractListener implements Listener {
                 Set<Entity> nearPlayers = player.getWorld().getNearbyEntities(block.getLocation(), 8, 5, 8).stream().filter(entity ->
                         entity.getType() == EntityType.PLAYER).filter(entity -> entity.getLocation().getBlock().getType() == Material.STONE_PLATE ||
                         entity.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.STONE_PLATE)
-                        .filter(entity -> !this.plugin.getProtectionManager().isProtected(entity.getUniqueId())).limit(1).collect(Collectors.toSet());
+                        .filter(entity -> !this.plugin.getProtectionManager().isProtected(entity.getUniqueId()))
+                        .filter(entity -> !Objects.equals(entity.getUniqueId(), player.getUniqueId())).limit(1).collect(Collectors.toSet());
                 if(nearPlayers.isEmpty()){
                     ChatUtil.sendMessage(player, MessagesManager.error("Aby uzyc grupowego teleportu, nie mozesz byc sam!"));
                     return;

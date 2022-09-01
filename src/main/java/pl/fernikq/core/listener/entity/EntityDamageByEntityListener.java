@@ -16,6 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import pl.fernikq.core.CorePlugin;
 import pl.fernikq.core.config.ConfigManager;
 import pl.fernikq.core.config.MessagesManager;
@@ -197,6 +199,8 @@ public class EntityDamageByEntityListener implements Listener {
                     zombie.getEquipment().setArmorContents(this.littleZombiesArmor);
                     zombie.getEquipment().setBootsDropChance(100);
                     zombie.getEquipment().setItemInHand(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.FIRE_ASPECT, 1).addEnchant(Enchantment.DAMAGE_ALL, 3).toItemStack());
+                    PotionEffect speedEffect = new PotionEffect(PotionEffectType.SPEED, 20 * 300, 2);
+                    zombie.getActivePotionEffects().add(speedEffect);
                 }
             }
             return;
