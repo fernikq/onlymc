@@ -3,6 +3,7 @@ package pl.fernikq.core.listener.entity;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -40,9 +41,11 @@ public class EntityDeathListener implements Listener {
                     killer.getWorld().dropItemNaturally(entity.getLocation(), itemBuilder.toItemStack());
                 });
                 entity.getWorld().getNearbyEntities(entity.getLocation(), 50, 50, 50).stream()
-                        .filter(nearbyEntity -> nearbyEntity.getCustomName().equalsIgnoreCase(ChatUtil.fixColor("&c&lObronca Bossa")))
+                        .filter(nearbyEntity -> Objects.nonNull(nearbyEntity.getCustomName()) &&
+                                nearbyEntity.getCustomName().equalsIgnoreCase(ChatUtil.fixColor("&c&lObronca Bossa")))
                             .forEach(nearbyEntity -> {
-                                nearbyEntity.getLocation().getWorld().playEffect(nearbyEntity.getLocation(), Effect.EXPLOSION_LARGE, 1);
+                                nearbyEntity.getLocation().getWorld().playEffect(nearbyEntity.getLocation(), Effect.EXPLOSION_LARGE, 2);
+                                nearbyEntity.getLocation().getWorld().playSound(nearbyEntity.getLocation(), Sound.EXPLODE, 5, 1);
                                 nearbyEntity.remove();
                             });
                 this.plugin.getServer().getOnlinePlayers().forEach(online -> ChatUtil.sendMessage(online, "&8[&e&lBOSSY&8] &fGracz &e" + killer.getName() + " &fpokonal bestie, a ta wyrzucila na ziemie &6cenne &fprzedmioty!"));

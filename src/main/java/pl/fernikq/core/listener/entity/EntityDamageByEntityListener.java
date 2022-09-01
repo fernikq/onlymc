@@ -200,7 +200,7 @@ public class EntityDamageByEntityListener implements Listener {
                     zombie.getEquipment().setBootsDropChance(100);
                     zombie.getEquipment().setItemInHand(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.FIRE_ASPECT, 1).addEnchant(Enchantment.DAMAGE_ALL, 3).toItemStack());
                     PotionEffect speedEffect = new PotionEffect(PotionEffectType.SPEED, 20 * 300, 2);
-                    zombie.getActivePotionEffects().add(speedEffect);
+                    zombie.addPotionEffect(speedEffect);
                 }
             }
             return;
